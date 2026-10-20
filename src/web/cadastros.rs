@@ -35,7 +35,7 @@ fn formulario(
             "/alimentos"
         },
         conteudo: html! {
-            (cabecalho("DADOS COM PROCEDÊNCIA", if tipo == "lote" { "Cadastro de lote" }
+            (cabecalho(if tipo == "lote" { "Cadastro de lote" }
                 else { "Composição do alimento" },
                 "Cada alteração cria uma revisão. Execuções anteriores permanecem iguais."))
             (cadastro)

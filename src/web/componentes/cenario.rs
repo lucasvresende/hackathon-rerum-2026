@@ -37,8 +37,7 @@ impl Render for FormularioCenario<'_> {
                 input type="hidden" name="original_id" value=(self.valor("original_id"));
                 (erros(self.erros))
                 section.card {
-                    div.section-title { h2 { "01 · O cenário" } span.pill {
-                    "PREMISSAS EXPLÍCITAS" } }
+                    h2 { "1. Dados do cenário" }
                     div.form-grid {
                         (Campo { erro: self.erro("nome"), nome: "nome", rotulo:
                         "Nome do cenário", valor: self.valor("nome"),
@@ -56,7 +55,7 @@ impl Render for FormularioCenario<'_> {
                             }
                             small { a href="/lotes/novo" { "+ Cadastrar outro lote" } }
                         }
-                        div.field { label for="modo" { "O que você quer fazer?" }
+                        div.field { label for="modo" { "Tipo de cálculo" }
                             select #modo name="modo" {
                                 option value="verificar" selected[self.valor("modo") !=
                                 "formular"] {
@@ -129,7 +128,7 @@ impl Render for FormularioCenario<'_> {
                     }
                 }
                 section.card {
-                    div.section-title { h2 { "02 · Ingredientes e disponibilidade" }
+                    div.section-title { h2 { "2. Ingredientes e disponibilidade" }
                         a href="/alimentos" { "Consultar catálogo ↗" }
                     }
                     p.muted {
@@ -206,7 +205,7 @@ impl Render for FormularioCenario<'_> {
                     }
                 }
                 section.card {
-                    h2 { "03 · O que permanece fixo na comparação?" }
+                    h2 { "3. Base da comparação" }
                     div.field { label for="base_comparacao" { "Base da simulação de MS" }
                         select #base_comparacao name="base_comparacao" {
                             @for v in ["Consumo de MS fixo", "Quantidade de MN fixa"] {
@@ -233,8 +232,7 @@ impl Render for FormularioCenario<'_> {
 
 pub fn titulo() -> Markup {
     cabecalho(
-        "PLANEJAR COM CONHECIMENTO",
-        "Um novo cenário para o seu lote.",
-        "Informe o que você sabe. O sistema mostra os cálculos e aponta o que ainda falta.",
+        "Novo cenário",
+        "Selecione o lote, o tipo de cálculo e os ingredientes.",
     )
 }

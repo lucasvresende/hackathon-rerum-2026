@@ -24,19 +24,15 @@ impl Render for Pagina<'_> {
                 body {
                     a.skip href="#principal" { "Pular para o conteúdo" }
                     aside.sidebar aria-label="Menu principal" {
-                        a.brand href="/" {
-                            span.brand-icon aria-hidden="true" { "F" }
-                            span { "FeedYourCow" small { "NUTRIÇÃO COM CLAREZA" } }
-                        }
-                        p.nav-label { "SEU REBANHO, EM EQUILÍBRIO" }
+                        a.brand href="/" { "FeedYourCow" }
                         nav {
                             @for (url, texto, icone) in [
                                 ("/", "Visão geral", "◫"),
-                                ("/lotes", "Meus lotes", "♧"),
+                                ("/lotes", "Lotes", "♧"),
                                 ("/alimentos", "Alimentos", "❋"),
                                 ("/cenarios/novo", "Novo cenário", "+"),
                                 ("/historico", "Histórico", "◷"),
-                                ("/conhecimento", "Conhecimento", "▤"),
+                                ("/conhecimento", "Perfil e fontes", "▤"),
                             ] {
                                 a class=(if self.ativo == url { "nav-link active" }
                                     else { "nav-link" }) href=(url)
@@ -46,21 +42,12 @@ impl Render for Pagina<'_> {
                             }
                         }
                         div.sidebar-bottom {
-                            span.local-dot {} "Aplicação local"
-                            small { "Seus dados ficam neste computador." }
-                            div.version { "MVP v" (env!("CARGO_PKG_VERSION")) }
+                            span.local-dot {} "Uso local"
+                            small { "Versão " (env!("CARGO_PKG_VERSION")) }
                         }
                     }
                     div.workspace {
-                        header.topbar {
-                            span { "GESTÃO NUTRICIONAL" }
-                            div { span.local-dot {} "Localhost" span.avatar { "FC" } }
-                        }
                         main #principal tabindex="-1" { (self.conteudo) }
-                        footer {
-                            "FeedYourCow · Decisões explicáveis, do ingrediente ao cocho."
-                            span { "Perfil nutricional delimitado · Uso local" }
-                        }
                     }
                 }
             }
@@ -96,12 +83,11 @@ impl Render for Campo<'_> {
     }
 }
 
-pub fn cabecalho(selo: &str, titulo: &str, texto: &str) -> Markup {
+pub fn cabecalho(titulo: &str, texto: &str) -> Markup {
     html! {
         div.page-heading {
-            div {
-                p.eyebrow { (selo) }
-                h1 { (titulo) }
+            h1 { (titulo) }
+            @if !texto.is_empty() {
                 p.subtitle { (texto) }
             }
         }

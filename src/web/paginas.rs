@@ -31,15 +31,14 @@ pub async fn inicio(State(e): State<EstadoApp>) -> Result<Markup, ErroWeb> {
 pub async fn lotes(State(e): State<EstadoApp>) -> Result<Markup, ErroWeb> {
     let lotes = cadastros::lotes(&e.pool).await?;
     Ok(Pagina {
-        titulo: "Meus lotes",
+        titulo: "Lotes",
         ativo: "/lotes",
         conteudo: html! {
-            (cabecalho("COMECE PELO REBANHO", "Meus lotes",
-            "Grupos homogêneos, com revisões preservadas."))
+            (cabecalho("Lotes", ""))
             div.actions { a.button href="/lotes/novo" { "+ Cadastrar lote" } }
             section.card.table-wrap {
                 @if lotes.is_empty() { p.empty {
-                "Nenhum lote cadastrado. Comece pelo primeiro grupo." } }
+                "Nenhum lote cadastrado." } }
                 @else {
                     table { thead { tr { th { "Lote" } th { "Animais" } th { "Peso (kg)" }
                         th { "Leite (kg/animal/dia)" } th { "Dias em lactação" } th {} } }
@@ -66,8 +65,7 @@ pub async fn alimentos(
         titulo: "Alimentos",
         ativo: "/alimentos",
         conteudo: html! {
-            (cabecalho("DO INGREDIENTE À COMPOSIÇÃO", "Catálogo de alimentos",
-                "Composições independentes de preços. Cada versão identifica sua procedência."))
+            (cabecalho("Catálogo de alimentos", ""))
             div.actions { a.button href="/alimentos/novo" { "+ Cadastrar composição" }
                 form.search method="get" action="/alimentos" {
                     label.sr-only for="busca" { "Pesquisar alimento" }
@@ -79,7 +77,6 @@ pub async fn alimentos(
                 @for a in alimentos.iter().filter(|a|
                 a.nome.to_lowercase().contains(&busca.to_lowercase())) {
                     article.card.food-card {
-                        span.food-icon aria-hidden="true" { "❋" }
                         span.pill { (&a.natureza) }
                         h2 { (&a.nome) }
                         p.muted { (format!("{:?}", a.classe)) " · fonte " (&a.fonte_id) }
@@ -142,8 +139,7 @@ pub async fn historico(
         titulo: "Histórico",
         ativo: "/historico",
         conteudo: html! {
-            (cabecalho("UMA MEMÓRIA PARA CADA DECISÃO", "Histórico de cenários",
-                "Entradas, versões e pareceres preservados. Consulte por lote e data local."))
+            (cabecalho("Histórico de cenários", ""))
             form.card method="get" action="/historico" {
                 div.form-grid {
                     div.field { label for="filtro-lote" { "Nome do lote" }
@@ -200,11 +196,10 @@ pub async fn historico(
 pub async fn conhecimento(State(e): State<EstadoApp>) -> Result<Markup, ErroWeb> {
     let c = base::ler(&e.pool).await?;
     Ok(Pagina {
-        titulo: "Conhecimento",
+        titulo: "Perfil nutricional e fontes",
         ativo: "/conhecimento",
         conteudo: html! {
-            (cabecalho("FONTES ANTES DAS CONCLUSÕES", "Conhecimento que você pode consultar",
-                "Referência técnica, norma brasileira e política do MVP têm papéis distintos."))
+            (cabecalho("Perfil nutricional e fontes", ""))
             section.card { h2 { (&c.perfil_id) }
                 p { "Adultas em lactação, confinadas, estáveis e sem gestação/crescimento. \
                 O perfil histórico NRC 1989 não implementa integralmente NASEM 2021 ou

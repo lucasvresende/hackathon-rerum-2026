@@ -25,7 +25,7 @@ impl Render for ResultadoExecucao<'_> {
             })
             .unwrap_or(e.criada_em.clone());
         html! {
-            (cabecalho("RESULTADO EXPLICÁVEL", &c.nome, &format!("{} · {} · Execução {}",
+            (cabecalho(&c.nome, &format!("{} · {} · Execução {}",
                 c.lote.nome, data, e.id)))
             div.actions.no-print {
                 a.button href=(format!("/execucoes/{}/duplicar", e.id)) { "Duplicar e simular" }
@@ -52,7 +52,7 @@ impl Render for ResultadoExecucao<'_> {
                 ] { article.stat { small { (nome) } strong { (valor) } span { (dica) } } }
             }
             section.card {
-                h2 { "O resultado por dimensão" }
+                h2 { "Resultados por dimensão" }
                 div.dimension-grid {
                     @for nome in ["Dados", "Elegibilidade", "Núcleo químico", "Barreiras ruminais",
                         "Ingredientes", "Contaminantes", "Inclusão e estoque",
@@ -100,7 +100,7 @@ impl Render for ResultadoExecucao<'_> {
                     Excesso não é diagnóstico de intoxicação." }
             }
             section.card.table-wrap {
-                h2 { "Do cálculo ao fornecimento" }
+                h2 { "Quantidades de fornecimento" }
                 p.muted {
                 "Consumo estimado e oferta são grandezas diferentes. MN: matéria natural." }
                 table {
@@ -163,7 +163,7 @@ impl Render for ResultadoExecucao<'_> {
                 }
             }
             section.card {
-                h2 { "Por que o sistema chegou a esse resultado?" }
+                h2 { "Cálculos e regras aplicadas" }
                 p.muted { "Entradas → normalização → cálculo → comparação → conclusão. \
                     Todas as verificações independentes são preservadas." }
                 ol { @for etapa in &p.caminho { li { (etapa) } } }

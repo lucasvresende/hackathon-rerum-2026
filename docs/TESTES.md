@@ -65,6 +65,7 @@ workflow.
 | CT-26 | Fluxos Playwright nos três navegadores, incluindo foco, mobile e impressão. |
 | CT-27 | CSRF/origem, escape, base ausente, loopback e ausência de recursos externos. |
 | CT-28 | Build, testes, clippy, formatação, SQLx, instalação e ensaio de desempenho. |
+| CT-29 | Títulos funcionais, ações de cálculo diretas, sem slogans/banner; desktop e mobile. |
 
 Os testes Rust estão agrupados em `nucleo`, `cenarios`, `otimizacao`, `integracao` e `entrega`.
 A matriz vincula obrigações aos testes; não representa prova científica ou cobertura de todas as
@@ -72,9 +73,18 @@ combinações possíveis. Novas fontes/perfis exigem novos testes e revisão de 
 
 ## Inspeção visual
 
-Capturas de início, erro, resultado, impressão e tela de 390 px são produzidas para Chromium,
-Firefox e WebKit. Foram verificadas a identidade verde-esmeralda, legibilidade, estados por texto,
-rolagem das tabelas e preservação do foco após erro de fragmento.
+Capturas de início, catálogo, erro, resultado, impressão e telas de 390 px são produzidas para
+Chromium, Firefox e WebKit. Foram verificados o tema verde-esmeralda, legibilidade, estados por
+texto, rolagem das tabelas e preservação do foco após erro de fragmento.
+
+CT-29 verifica títulos funcionais nas telas de início, lotes, composição, cenário, resultado,
+histórico, comparação e perfil/fontes. Os atalhos “Verificar dieta” e “Formular dieta” devem abrir
+o formulário com o modo correspondente selecionado. O teste também verifica a remoção dos slogans
+anteriores e das estruturas promocionais. O catálogo e a visão geral não devem transbordar em
+390 px; a inspeção das capturas confere a apresentação sem banner e sem subtítulos redundantes.
+Na revisão de RNF-14 em 20/10/2026, CT-29 e os fluxos completos passaram nos três navegadores;
+os 34 testes Rust, build, clippy, formatação e limite de linhas também passaram.
+Falhas no roteiro de navegador registram captura e conteúdo da tela para diagnóstico.
 
 A impressão é verificada por emulação de mídia, com menu oculto e conteúdo do parecer preservado.
 O acesso aos recursos locais foi verificado com bloqueio de solicitações externas.

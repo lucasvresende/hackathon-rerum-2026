@@ -26,6 +26,7 @@ try {
     const executavel = process.env[`PW_${nome.toUpperCase()}_EXECUTAVEL`];
     const browser = await navegador.launch({ headless: true,
       ...(executavel ? { executablePath: executavel } : {}) });
+    let page;
     try {
       const contexto = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
       const erros = [];
@@ -37,11 +38,32 @@ try {
         }
         return route.continue();
       });
-      const page = await contexto.newPage();
+      page = await contexto.newPage();
+      async function conferirTela(titulo) {
+        await page.getByRole('heading', { level: 1, name: titulo, exact: true }).waitFor();
+        const texto = await page.locator('body').innerText();
+        const slogans = ['nutrição com clareza', 'conhecimento que você pode consultar',
+          'uma memória para cada decisão', 'mais confiança nas escolhas',
+          'decisões explicáveis, do ingrediente'];
+        assert.doesNotMatch(texto, new RegExp(slogans.join('|'), 'iu'));
+        assert.equal(await page.locator('.hero, .eyebrow, .hero-art').count(), 0);
+        await page.getByRole('navigation').getByRole('link', { name: 'Perfil e fontes' }).waitFor();
+      }
       await page.goto(url);
-      await page.getByRole('heading', { name: 'Uma boa dieta começa com clareza.' }).waitFor();
+      await conferirTela('Visão geral');
       await page.screenshot({ path: join(artefatos, `${nome}-inicio.png`), fullPage: true });
+      await page.getByRole('link', { name: 'Verificar dieta', exact: true }).click();
+      await conferirTela('Novo cenário');
+      assert.equal(await page.locator('#modo').inputValue(), 'verificar');
+      await page.goto(url);
+      await page.getByRole('link', { name: 'Formular dieta', exact: true }).click();
+      await conferirTela('Novo cenário');
+      assert.equal(await page.locator('#modo').inputValue(), 'formular');
+      await page.goto(`${url}/conhecimento`);
+      await conferirTela('Perfil nutricional e fontes');
+      await page.getByRole('heading', { name: 'Coeficientes do perfil' }).waitFor();
       await page.goto(`${url}/lotes/novo`);
+      await conferirTela('Cadastro de lote');
       for (const [id, valor] of Object.entries({ nome: `Lote ${nome}`, animais: '20',
         peso: '400', producao: '10', gordura: '4', dias_lactacao: '150' })) {
         await page.locator(`#${id}`).fill(valor);
@@ -51,9 +73,13 @@ try {
         peso_estavel: 'SIM', confinada: 'SIM' })) await page.locator(`#${id}`).selectOption(valor);
       await page.getByRole('button', { name: 'Salvar revisão' }).click();
       await page.waitForURL(`${url}/lotes`);
+      await conferirTela('Lotes');
       await page.getByText(`Lote ${nome}`, { exact: true }).waitFor();
       await page.goto(`${url}/alimentos`);
+      await conferirTela('Catálogo de alimentos');
+      await page.screenshot({ path: join(artefatos, `${nome}-alimentos.png`), fullPage: true });
       await page.getByRole('link', { name: 'Criar revisão ou nova análise' }).first().click();
+      await conferirTela('Composição do alimento');
       await page.locator('#metodo').fill('Revisão sintética do teste de navegador');
       await page.getByRole('button', { name: 'Salvar revisão' }).click();
       await page.waitForURL(`${url}/alimentos`);
@@ -72,7 +98,10 @@ try {
       await page.locator('#sobras').fill('0');
       await page.getByRole('button', { name: 'Calcular e salvar cenário' }).click();
       await page.waitForURL(/\/execucoes\/[a-f0-9-]+$/);
+      await conferirTela(`Verificação ${nome}`);
       await page.getByRole('heading', { name: 'Balanço nutricional' }).waitFor();
+      await page.getByRole('heading', { name: 'Quantidades de fornecimento' }).waitFor();
+      await page.getByRole('heading', { name: 'Cálculos e regras aplicadas' }).waitFor();
       assert.match(await page.locator('main').innerText(), /R\$ 11,79/);
       await page.screenshot({ path: join(artefatos, `${nome}-resultado.png`), fullPage: true });
       await page.getByRole('link', { name: 'Duplicar e simular' }).click();
@@ -102,21 +131,31 @@ try {
       await page.screenshot({ path: join(artefatos, `${nome}-impressao.png`), fullPage: true });
       await page.emulateMedia({ media: 'screen' });
       await page.goto(`${url}/historico`);
-      await page.getByRole('heading', { name: 'Histórico de cenários' }).waitFor();
+      await conferirTela('Histórico de cenários');
       await page.locator('#a').selectOption({ index: 1 });
       await page.getByRole('button', { name: 'Comparar premissas e custos' }).click();
-      await page.getByRole('heading', { name: 'Comparação de cenários' }).waitFor();
+      await conferirTela('Comparação de cenários');
       await page.goto(`${url}/alimentos`);
       await page.getByRole('heading', { name: 'Catálogo de alimentos' }).waitFor();
-      await page.goto(`${url}/`);
       await page.setViewportSize({ width: 390, height: 844 });
+      await page.screenshot({ path: join(artefatos, `${nome}-alimentos-mobile.png`),
+        fullPage: true });
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth),
+        false, 'Catálogo deve caber na tela móvel');
+      await page.goto(`${url}/`);
       await page.screenshot({ path: join(artefatos, `${nome}-mobile.png`), fullPage: true });
       const transbordou = await page.evaluate(
         () => document.documentElement.scrollWidth > innerWidth);
       assert.equal(transbordou, false);
       assert.deepEqual(erros, [], `${nome}: erros de JavaScript ou dependência externa`);
       console.log(`${nome}: cadastro, validação, fragmento, verificação, formulação, simulação, ` +
-        'histórico, comparação, impressão e mobile passaram');
+        'histórico, comparação, impressão, mobile e interface objetiva passaram');
+    } catch (erro) {
+      if (page) {
+        await page.screenshot({ path: join(artefatos, `${nome}-falha.png`), fullPage: true });
+        console.error(`${nome}: ${page.url()}\n${await page.locator('body').innerText()}`);
+      }
+      throw erro;
     } finally { await browser.close(); }
   }
 } finally {

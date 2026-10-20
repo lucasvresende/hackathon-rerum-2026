@@ -34,6 +34,10 @@ O arquivo `.env.example` serve como referência; exporte as variáveis no ambien
 5. Leia as dimensões, balanços, fornecimento, fontes e explicações.
 6. Consulte o histórico, duplique para simular, compare e imprima pelo navegador.
 
+A tela “Visão geral” oferece acesso direto a “Verificar dieta” e “Formular dieta”, além de
+cadastros e cenários recentes. O menu “Perfil e fontes” reúne o perfil nutricional, coeficientes,
+normas e referências. Os textos auxiliares se limitam a orientar operações e interpretar dados.
+
 Atendimento químico não significa adequação nutricional integral. Fibra física, micronutrientes
 ou contaminantes sem dados suficientes permanecem identificados. O perfil histórico é
 `E2020_NRC1989_RUMEN_MVP_v1`, sem implementação integral de NASEM/BR-LEITE.

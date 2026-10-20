@@ -7,6 +7,11 @@ conhecimento dos dados e versões. Componentes Maud implementam `Render`; a deci
 A interface usa htmx 4.0.0 e hx-live 4.0.0, distribuídos localmente sob licença 0BSD.
 O tema usa variáveis de cor no início de um único CSS plano, com verde-esmeralda predominante.
 
+A apresentação segue RNF-14: FeedYourCow identifica o software, sem slogans ou banner de promoção.
+Os cabeçalhos indicam a tarefa/conteúdo; descrições aparecem apenas quando orientam a operação.
+O início oferece atalhos para verificar/formular dietas, cadastros e execuções recentes.
+Unidades, hipóteses, fontes, erros e limitações permanecem nos formulários e pareceres.
+
 O motor valida entradas, enquadra o lote, normaliza, deriva fatos, avalia regras independentes e
 conclui por dimensão. Uma agenda finita mantém ordem estável e impede reaproveitar fatos antigos.
 Lógica desconhecida não equivale a falso; bloqueios não desaparecem após um resultado químico.

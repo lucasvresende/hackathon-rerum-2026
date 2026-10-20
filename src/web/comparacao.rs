@@ -18,8 +18,7 @@ pub async fn comparar(
         && a.cenario.horizonte == b.cenario.horizonte
         && a.cenario.referencia_ue == b.cenario.referencia_ue;
     Ok(Pagina { titulo: "Comparar cenários", ativo: "/historico", conteudo: html! {
-        (cabecalho("TESTE HIPÓTESES, PRESERVE RESULTADOS", "Comparação de cenários",
-            "Leia as diferenças de premissas antes de interpretar a economia."))
+        (cabecalho("Comparação de cenários", ""))
         section.card.table-wrap {
             table { thead { tr { th { "Premissa" } th { (&a.cenario.nome) } th {
             (&b.cenario.nome) } } }
