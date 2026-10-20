@@ -1,10 +1,10 @@
 # Requisitos do FeedYourCow: dietas para bovinos leiteiros
 
-**Tema 2 · Hackathon UFJF/RERUM 2026 · Versão documental 1.1 · 20/10/2026**
+**Tema 2 · Hackathon UFJF/RERUM 2026 · Versão documental 1.2 · 20/10/2026**
 
 Este documento especifica o comportamento do FeedYourCow. A implementação está em `src/`;
 `README.md` documenta a operação e `docs/TESTES.md` registra a cobertura e sua verificação.
-O nome FeedYourCow e o tema verde-esmeralda integram a identidade do produto.
+FeedYourCow é o nome do software especialista; a interface usa o tema verde-esmeralda.
 As descrições abaixo continuam sendo critérios de aceitação, sem substituir a evidência dos testes.
 
 ## 1. Objetivo e referências
@@ -54,6 +54,10 @@ O produto será uma aplicação web local para um operador que cadastra lotes, c
 informa custos e disponibilidade, verifica dietas, solicita formulações e consulta o histórico.
 O mesmo operador poderá executar comandos locais documentados de instalação, carga e backup.
 Não haverá exigência inicial de usuários, permissões ou colaboração simultânea entre fazendas.
+
+A interface será uma ferramenta de trabalho para quem já adquiriu o software e precisa calcular
+a dieta dos animais, como o responsável por uma fazenda. Deverá priorizar acesso às operações,
+dados e resultados, sem apresentação comercial ou promoção do nome FeedYourCow.
 
 O núcleo será identificado como **E2020_NRC1989_RUMEN_MVP_v1**:
 
@@ -828,6 +832,25 @@ Configurar autoreload com tower-livereload e acompanhamento com bacon para desen
 Separar esses recursos da execução de entrega. Iterar com compilador, testes e clippy até passar.
 Não introduzir frameworks/dependências quando o stack já oferecer solução adequada.
 
+### RNF-14 — Interface de trabalho e linguagem objetiva
+
+Apresentar FeedYourCow como nome do software especialista, sem slogans ou chamadas de marketing.
+Usar títulos que identifiquem a tarefa ou o conteúdo, como “Catálogo de alimentos”, “Novo cenário”,
+“Histórico de cenários” e “Perfil nutricional e fontes”. Remover frases de efeito como “Nutrição
+com clareza”, “Conhecimento que você pode consultar” e “Uma memória para cada decisão”.
+
+A tela inicial deverá dar acesso direto a verificar e formular dietas, cadastros e execuções
+recentes. Não usar banner promocional, ilustração de campanha ou etapas de apresentação comercial.
+Manter o tema verde-esmeralda com hierarquia visual simples, títulos legíveis e ações descritivas.
+
+Textos auxiliares deverão explicar unidades, preenchimento, hipóteses, erros ou interpretação
+dos resultados. Eliminar subtítulos redundantes e benefícios genéricos. Preservar as informações
+técnicas e limitações necessárias para usar e avaliar os cálculos.
+
+**Aceite:** nas telas de início, cadastros, cenário, resultado, comparação, histórico e fontes,
+o título identificará o conteúdo ou a tarefa; menu e rodapé não conterão slogans. O operador
+encontrará as ações de cálculo na tela inicial sem passar por uma apresentação do produto.
+
 ## 9. Casos de aceitação e rastreabilidade
 
 Os valores abaixo serão calculados pelo sistema em testes; não deverão ser respostas fixas na UI.
@@ -931,6 +954,10 @@ com as tolerâncias de RN-24. Na interface, os totais monetários serão apresen
 - **CT-28 — Entrega técnica:** executar build, testes, clippy, formatação, limite de linhas e
   ensaio de desempenho no ambiente documentado; iniciar entrega sem recursos de autoreload.
   Cobertura: RNF-01, RNF-04, RNF-08, RNF-11, RNF-12, RNF-13.
+- **CT-29 — Interface objetiva:** conferir títulos funcionais, acesso direto a verificar/formular,
+  ausência de slogans/banners e preservação de unidades, hipóteses, erros e limitações nas telas.
+  Validar a navegação e o layout em Chromium, WebKit e Firefox.
+  Cobertura: RF-06, RF-07, RF-13; RNF-03, RNF-10, RNF-14.
 
 ## 10. Condições para considerar o MVP concluído
 

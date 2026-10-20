@@ -2,6 +2,8 @@
 
 Sistema especialista local para verificar e formular dietas de vacas adultas em lactação.
 Interface em português do Brasil com tema verde-esmeralda, cálculos explicáveis e histórico.
+Os requisitos de interface priorizam tarefas, dados e resultados para o operador da fazenda.
+FeedYourCow identifica o software; telas, menu e rodapé não devem conter slogans ou publicidade.
 
 ## Executar
 
@@ -95,4 +97,4 @@ fórmulas e procedência. A implementação foi desenvolvida com auxílio de IA,
 compilador e testes. O cálculo operacional é determinístico e não usa modelos de linguagem.
 
 A arquitetura, precisão e decisões estão em [docs/ARQUITETURA.md](docs/ARQUITETURA.md).
-A matriz CT-01 a CT-28 e os comandos de validação estão em [docs/TESTES.md](docs/TESTES.md).
+A matriz CT-01 a CT-29 e os comandos de validação estão em [docs/TESTES.md](docs/TESTES.md).
