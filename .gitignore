@@ -52,5 +52,8 @@ Thumbs.db
 *.tmp
 *.bak
 
+# Cache local de pesquisa na web
+.firecrawl/
+
 # Python
 .venv/
