@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO lotes(id, nome) VALUES (?, ?);\n",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "16b575f66dbc153a71127c64d03c5df3e7598f9d55aadcce74abb4735660e026"
+}

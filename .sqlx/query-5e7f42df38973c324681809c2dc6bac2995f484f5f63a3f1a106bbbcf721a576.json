@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO cargas(versao, hash, conteudo) VALUES (?, ?, ?);\n",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 3
+    },
+    "nullable": []
+  },
+  "hash": "5e7f42df38973c324681809c2dc6bac2995f484f5f63a3f1a106bbbcf721a576"
+}

@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO execucoes\n(id, cenario_id, criada_em, metodo, versao_app, estado, custo, duracao_ms, resultado, artefatos)\nVALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);\n",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 10
+    },
+    "nullable": []
+  },
+  "hash": "20a79cccc9b8d6ece2e980569365de23d2104e546a65e41555bf358e14cd20fa"
+}

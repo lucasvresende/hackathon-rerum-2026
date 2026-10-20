@@ -1,0 +1,16 @@
+default_job = "verificar"
+
+[jobs.verificar]
+command = ["cargo", "check", "--all-targets", "--all-features"]
+need_stdout = false
+
+[jobs.testar]
+command = ["cargo", "test"]
+need_stdout = true
+
+[jobs.servir]
+command = ["cargo", "run", "--features", "desenvolvimento", "--", "servir"]
+need_stdout = true
+allow_warnings = true
+background = false
+on_change_strategy = "kill_then_restart"

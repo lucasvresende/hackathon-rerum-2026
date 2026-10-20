@@ -1,0 +1,122 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT * FROM coeficientes WHERE perfil_id = ? ORDER BY tabela, eixo, eixo2;\n",
+  "describe": {
+    "columns": [
+      {
+        "name": "perfil_id",
+        "ordinal": 0,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "coeficientes",
+            "name": "perfil_id"
+          }
+        }
+      },
+      {
+        "name": "tabela",
+        "ordinal": 1,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "coeficientes",
+            "name": "tabela"
+          }
+        }
+      },
+      {
+        "name": "eixo",
+        "ordinal": 2,
+        "type_info": "Float",
+        "origin": {
+          "Table": {
+            "table": "coeficientes",
+            "name": "eixo"
+          }
+        }
+      },
+      {
+        "name": "eixo2",
+        "ordinal": 3,
+        "type_info": "Float",
+        "origin": {
+          "Table": {
+            "table": "coeficientes",
+            "name": "eixo2"
+          }
+        }
+      },
+      {
+        "name": "a",
+        "ordinal": 4,
+        "type_info": "Float",
+        "origin": {
+          "Table": {
+            "table": "coeficientes",
+            "name": "a"
+          }
+        }
+      },
+      {
+        "name": "b",
+        "ordinal": 5,
+        "type_info": "Float",
+        "origin": {
+          "Table": {
+            "table": "coeficientes",
+            "name": "b"
+          }
+        }
+      },
+      {
+        "name": "c",
+        "ordinal": 6,
+        "type_info": "Float",
+        "origin": {
+          "Table": {
+            "table": "coeficientes",
+            "name": "c"
+          }
+        }
+      },
+      {
+        "name": "d",
+        "ordinal": 7,
+        "type_info": "Float",
+        "origin": {
+          "Table": {
+            "table": "coeficientes",
+            "name": "d"
+          }
+        }
+      },
+      {
+        "name": "unidade",
+        "ordinal": 8,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "coeficientes",
+            "name": "unidade"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "cb23c7f2ac411dacfd2580b5b2d5c48e810b1a6eb4d4f16829ae05d9b9127cc2"
+}

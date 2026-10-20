@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO verificacoes\n(execucao_id, ordem, regra, dimensao, estado, valor, limite, unidade, fonte,\nexplicacao, dependencias) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);\n",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 11
+    },
+    "nullable": []
+  },
+  "hash": "5069c50666e6886bd7403b5ae72309986500d11c53627a48e2f3588849f8d10f"
+}

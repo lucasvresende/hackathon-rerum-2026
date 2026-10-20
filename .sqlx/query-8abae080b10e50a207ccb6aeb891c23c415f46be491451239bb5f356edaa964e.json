@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO revisoes_lote\n(id, lote_id, numero, peso, animais, producao, gordura, dias_lactacao, conteudo)\nVALUES (?, ?, (SELECT COALESCE(MAX(numero), 0) + 1 FROM revisoes_lote WHERE lote_id = ?),\n?, ?, ?, ?, ?, ?);\n",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 9
+    },
+    "nullable": []
+  },
+  "hash": "8abae080b10e50a207ccb6aeb891c23c415f46be491451239bb5f356edaa964e"
+}

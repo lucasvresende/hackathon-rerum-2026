@@ -1,0 +1,110 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT e.id, c.nome, e.criada_em, e.estado, e.custo, c.entradas,\ne.resultado, e.artefatos FROM execucoes e JOIN cenarios c ON c.id = e.cenario_id\nORDER BY e.criada_em DESC, e.id LIMIT 100;\n",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "execucoes",
+            "name": "id"
+          }
+        }
+      },
+      {
+        "name": "nome",
+        "ordinal": 1,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "cenarios",
+            "name": "nome"
+          }
+        }
+      },
+      {
+        "name": "criada_em",
+        "ordinal": 2,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "execucoes",
+            "name": "criada_em"
+          }
+        }
+      },
+      {
+        "name": "estado",
+        "ordinal": 3,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "execucoes",
+            "name": "estado"
+          }
+        }
+      },
+      {
+        "name": "custo",
+        "ordinal": 4,
+        "type_info": "Float",
+        "origin": {
+          "Table": {
+            "table": "execucoes",
+            "name": "custo"
+          }
+        }
+      },
+      {
+        "name": "entradas",
+        "ordinal": 5,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "cenarios",
+            "name": "entradas"
+          }
+        }
+      },
+      {
+        "name": "resultado",
+        "ordinal": 6,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "execucoes",
+            "name": "resultado"
+          }
+        }
+      },
+      {
+        "name": "artefatos",
+        "ordinal": 7,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "execucoes",
+            "name": "artefatos"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "52c211fe086e08c71d37bd1fbaf6f6cf3ea2d7d2cd7be07f31c8b19fa3b51311"
+}

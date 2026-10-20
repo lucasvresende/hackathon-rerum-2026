@@ -1,0 +1,110 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT * FROM perfis WHERE ativo = 1;\n",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "perfis",
+            "name": "id"
+          }
+        }
+      },
+      {
+        "name": "versao",
+        "ordinal": 1,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "perfis",
+            "name": "versao"
+          }
+        }
+      },
+      {
+        "name": "fonte_id",
+        "ordinal": 2,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "perfis",
+            "name": "fonte_id"
+          }
+        }
+      },
+      {
+        "name": "fdn_min",
+        "ordinal": 3,
+        "type_info": "Float",
+        "origin": {
+          "Table": {
+            "table": "perfis",
+            "name": "fdn_min"
+          }
+        }
+      },
+      {
+        "name": "amido_max",
+        "ordinal": 4,
+        "type_info": "Float",
+        "origin": {
+          "Table": {
+            "table": "perfis",
+            "name": "amido_max"
+          }
+        }
+      },
+      {
+        "name": "ee_max",
+        "ordinal": 5,
+        "type_info": "Float",
+        "origin": {
+          "Table": {
+            "table": "perfis",
+            "name": "ee_max"
+          }
+        }
+      },
+      {
+        "name": "discrepancia",
+        "ordinal": 6,
+        "type_info": "Float",
+        "origin": {
+          "Table": {
+            "table": "perfis",
+            "name": "discrepancia"
+          }
+        }
+      },
+      {
+        "name": "ativo",
+        "ordinal": 7,
+        "type_info": "Integer",
+        "origin": {
+          "Table": {
+            "table": "perfis",
+            "name": "ativo"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "f557704fe0c217cb02271252dd0df32948fba1fff9252929df374f94628263ee"
+}

@@ -1,0 +1,62 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT r.id, l.id AS lote_id, l.nome, r.conteudo FROM lotes l\nJOIN revisoes_lote r ON r.lote_id = l.id WHERE l.ativo = 1\nAND r.numero = (SELECT MAX(v.numero) FROM revisoes_lote v WHERE v.lote_id = l.id)\nORDER BY l.nome, l.id;\n",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "revisoes_lote",
+            "name": "id"
+          }
+        }
+      },
+      {
+        "name": "lote_id",
+        "ordinal": 1,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "lotes",
+            "name": "id"
+          }
+        }
+      },
+      {
+        "name": "nome",
+        "ordinal": 2,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "lotes",
+            "name": "nome"
+          }
+        }
+      },
+      {
+        "name": "conteudo",
+        "ordinal": 3,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "revisoes_lote",
+            "name": "conteudo"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "b2d05e64ad6f892e73bb66038732adc221376908039c920b0a1bbdb402d543ed"
+}

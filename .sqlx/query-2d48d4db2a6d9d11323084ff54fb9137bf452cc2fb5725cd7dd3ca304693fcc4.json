@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO alimentos(id, nome, classe) VALUES (?, ?, ?) ON CONFLICT(id) DO NOTHING;\n",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 3
+    },
+    "nullable": []
+  },
+  "hash": "2d48d4db2a6d9d11323084ff54fb9137bf452cc2fb5725cd7dd3ca304693fcc4"
+}

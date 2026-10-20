@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO cenarios\n(id, nome, revisao_lote_id, perfil_id, original_id, horizonte, data_aplicacao, entradas)\nVALUES (?, ?, ?, ?, ?, ?, ?, ?);\n",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 8
+    },
+    "nullable": []
+  },
+  "hash": "56eb6eb3b5c5841c17742b0e3b175594275763936bb7d73cc41cb69f4bde09df"
+}

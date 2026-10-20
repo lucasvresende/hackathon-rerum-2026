@@ -1,0 +1,98 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT * FROM fontes ORDER BY id;\n",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "fontes",
+            "name": "id"
+          }
+        }
+      },
+      {
+        "name": "titulo",
+        "ordinal": 1,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "fontes",
+            "name": "titulo"
+          }
+        }
+      },
+      {
+        "name": "edicao",
+        "ordinal": 2,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "fontes",
+            "name": "edicao"
+          }
+        }
+      },
+      {
+        "name": "localizador",
+        "ordinal": 3,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "fontes",
+            "name": "localizador"
+          }
+        }
+      },
+      {
+        "name": "natureza",
+        "ordinal": 4,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "fontes",
+            "name": "natureza"
+          }
+        }
+      },
+      {
+        "name": "conteudo",
+        "ordinal": 5,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "fontes",
+            "name": "conteudo"
+          }
+        }
+      },
+      {
+        "name": "hash",
+        "ordinal": 6,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "fontes",
+            "name": "hash"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "2da92965f1a38d4892a58f4a3157b889c68aacb70ed9b5324358b2a3e03357a0"
+}

@@ -506,12 +506,12 @@ Amido não será estimado como diferença entre PB e FDN.
 Selecionar a maior linha cujo limiar de FDN de forragem seja menor ou igual ao valor da dieta:
 
 | Limiar de FDN de forragem, % MS | FDN total mínima, % MS | Amido máximo, % MS |
-| ---: | ---: | ---: |
-| 19 | 25 | 30 |
-| 18 | 27 | 28 |
-| 17 | 29 | 26 |
-| 16 | 31 | 24 |
-| 15 | 33 | 22 |
+| ------------------------------: | ---------------------: | -----------------: |
+|                              19 |                     25 |                 30 |
+|                              18 |                     27 |                 28 |
+|                              17 |                     29 |                 26 |
+|                              16 |                     31 |                 24 |
+|                              15 |                     33 |                 22 |
 
 Abaixo de 15%, a dieta violará o perfil. Sobre a linha selecionada, aplicar FDN mínima =
 max(mínimo da linha, 30%); amido máximo = min(máximo da linha, 25%); EE máximo = 6% MS.

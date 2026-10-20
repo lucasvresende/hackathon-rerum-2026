@@ -1,0 +1,62 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT c.id, a.id AS alimento_id, a.nome, c.conteudo\nFROM composicoes c JOIN alimentos a ON a.id = c.alimento_id\nWHERE a.ativo = 1 ORDER BY a.nome, c.numero DESC;\n",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "composicoes",
+            "name": "id"
+          }
+        }
+      },
+      {
+        "name": "alimento_id",
+        "ordinal": 1,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "alimentos",
+            "name": "id"
+          }
+        }
+      },
+      {
+        "name": "nome",
+        "ordinal": 2,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "alimentos",
+            "name": "nome"
+          }
+        }
+      },
+      {
+        "name": "conteudo",
+        "ordinal": 3,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "composicoes",
+            "name": "conteudo"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "22a3abd45d0510c08a55f731b969189012ee93c224dc24202c322fdb9ba6931a"
+}

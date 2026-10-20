@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO composicoes\n(id, alimento_id, fonte_id, numero, ms, ndt, pb, ca, p, fdn, amido, ee, natureza, conteudo)\nVALUES (?, ?, ?, (SELECT COALESCE(MAX(numero), 0) + 1 FROM composicoes WHERE alimento_id = ?),\n?, ?, ?, ?, ?, ?, ?, ?, ?, ?);\n",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 14
+    },
+    "nullable": []
+  },
+  "hash": "3bc14de6b827a06a4d863b55eac8b0aca72765eba89726c6d4f5b28d5cceaa3a"
+}

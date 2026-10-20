@@ -1,0 +1,28 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT\n(SELECT COUNT(*) FROM perfis WHERE ativo = 1) AS \"perfis!: i64\",\n(SELECT COUNT(*) FROM fontes) AS \"fontes!: i64\";\n",
+  "describe": {
+    "columns": [
+      {
+        "name": "perfis!: i64",
+        "ordinal": 0,
+        "type_info": "Integer",
+        "origin": "Expression"
+      },
+      {
+        "name": "fontes!: i64",
+        "ordinal": 1,
+        "type_info": "Integer",
+        "origin": "Expression"
+      }
+    ],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": [
+      false,
+      false
+    ]
+  },
+  "hash": "16690b7504ec3b0c333c6ba643083bfdd86cc9a2c101b4a07d95acd29bf64b46"
+}

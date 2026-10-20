@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO itens_cenario\n(cenario_id, composicao_id, quantidade, preco, estoque, perda, minimo, maximo)\nVALUES (?, ?, ?, ?, ?, ?, ?, ?);\n",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 8
+    },
+    "nullable": []
+  },
+  "hash": "6a8db3b3420ee616cd023a6f04624b287f7af142c1a65468d6015bc3ade43470"
+}
