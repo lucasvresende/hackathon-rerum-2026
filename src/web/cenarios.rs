@@ -35,6 +35,7 @@ async fn formulario(
     Ok(Pagina {
         titulo: "Novo cenário",
         ativo: "/cenarios/novo",
+        ajuda: "cenarios",
         conteudo: html! {
             (titulo())
             @if lotes.is_empty() { div.alert { "Cadastre um lote antes de calcular." } }
@@ -116,6 +117,7 @@ pub async fn resultado(
     Ok(Pagina {
         titulo: &execucao.cenario.nome,
         ativo: "/historico",
+        ajuda: "resultados",
         conteudo: super::componentes::resultado::ResultadoExecucao {
             execucao: &execucao,
             token: &e.csrf,

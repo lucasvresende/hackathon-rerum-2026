@@ -78,3 +78,24 @@ novo e confere hashes, integridade e referências do banco antes do uso.
 
 A IA auxiliou leitura, implementação e testes. Dados sintéticos têm identificação explícita.
 Nenhuma conclusão operacional é delegada à IA. Limitações científicas seguem `REQUISITOS.md`.
+
+## Ajuda contextual
+
+A rota `/ajuda` renderiza o componente Maud `Ajuda`, separado em `componentes/ajuda.rs`.
+Dez cartas explicam visão geral, lotes, alimentos, cenários, verificação, formulação, pareceres,
+histórico, comparação e fontes. Cada `Pagina` declara sua seção de ajuda; o layout apresenta
+“Ajuda nesta página” com `/ajuda#secao`, inclusive em cadastros, pareceres e telas de erro.
+
+O estado `data-aberta` pertence a cada carta. O hx-live sincroniza `aria-expanded`, o indicador
+e a visibilidade do conteúdo; botões nativos permitem usar Enter e Espaço. O fragmento inicial
+abre apenas a seção indicada. Mudanças do fragmento (índice e navegação voltar/avançar) abrem a
+carta por meio da API `htmx.live.q`, preservando as outras cartas abertas. Sem JavaScript, todo
+o conteúdo permanece disponível com títulos; a impressão também inclui as cartas recolhidas.
+Não há novas dependências nem requisições para expandir cartas.
+
+Sintaxe conferida na [documentação oficial do hx-live](https://four.htmx.org/extensions/hx-live)
+em 20/10/2026: estado compartilhado `data`, bindings `hx-live:*` e API pública `htmx.live.q`.
+
+Os scripts locais htmx e hx-live carregam em ordem no `head`, antes de o documento terminar
+de ser analisado. Isso registra a extensão antes da inicialização do htmx 4, inclusive quando
+os arquivos chegam em tempos diferentes. O script de apresentação continua usando `defer`.

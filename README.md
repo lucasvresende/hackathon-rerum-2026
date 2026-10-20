@@ -102,3 +102,11 @@ compilador e testes. O cálculo operacional é determinístico e não usa modelo
 
 A arquitetura, precisão e decisões estão em [docs/ARQUITETURA.md](docs/ARQUITETURA.md).
 A matriz CT-01 a CT-29 e os comandos de validação estão em [docs/TESTES.md](docs/TESTES.md).
+
+## Ajuda de uso
+
+Acesse **Ajuda** no menu ou **Ajuda nesta página** para abrir as instruções da tarefa atual.
+A página `/ajuda` explica os cadastros, cenários, cálculos, pareceres, simulações, histórico,
+comparação e fontes em cartas expansíveis. Use o índice para ir direto ao assunto e clique
+no título da carta (ou pressione Enter/Espaço) para expandir ou recolher seu conteúdo.
+Links como `/ajuda#resultados` abrem automaticamente a carta relacionada ao parecer.

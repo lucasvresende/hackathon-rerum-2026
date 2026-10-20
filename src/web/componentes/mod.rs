@@ -1,3 +1,4 @@
+pub mod ajuda;
 pub mod cadastro;
 pub mod cenario;
 pub mod entradas;

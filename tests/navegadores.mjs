@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { testarAjuda, conferirLinkAjuda } from './ajuda.mjs';
 import { mkdtempSync, mkdirSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { resolve, join } from 'node:path';
@@ -30,7 +31,10 @@ try {
     try {
       const contexto = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
       const erros = [];
-      contexto.on('page', page => page.on('pageerror', e => erros.push(e.message)));
+      contexto.on('page', page => {
+        page.on('pageerror', e => erros.push(e.message));
+        page.on('console', m => { if (m.type() === 'error') erros.push(m.text()); });
+      });
       await contexto.route('**/*', route => {
         if (new URL(route.request().url()).origin !== new URL(url).origin) {
           erros.push(`Recurso externo: ${route.request().url()}`);
@@ -40,6 +44,7 @@ try {
       });
       page = await contexto.newPage();
       async function conferirTela(titulo) {
+        await conferirLinkAjuda(page);
         await page.getByRole('heading', { level: 1, name: titulo, exact: true }).waitFor();
         const texto = await page.locator('body').innerText();
         const slogans = ['nutrição com clareza', 'conhecimento que você pode consultar',
@@ -49,6 +54,7 @@ try {
         assert.equal(await page.locator('.hero, .eyebrow, .hero-art').count(), 0);
         await page.getByRole('navigation').getByRole('link', { name: 'Perfil e fontes' }).waitFor();
       }
+      await testarAjuda(page, url, artefatos, nome);
       await page.goto(url);
       await conferirTela('Visão geral');
       await page.screenshot({ path: join(artefatos, `${nome}-inicio.png`), fullPage: true });

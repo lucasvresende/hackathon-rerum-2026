@@ -160,3 +160,16 @@ details.ingredient { border: 1px solid var(--borda); border-radius: 10px; paddin
     .stats { gap: 8px; } .stat strong { font-size: 18px; }
     a { color: inherit; } .table-wrap { overflow: visible; }
 }
+.page-help { display: flex; justify-content: flex-end; margin-bottom: 14px; }
+.help-index { display: flex; flex-wrap: wrap; gap: 10px 24px; font-size: 13px; }
+.help-card { scroll-margin-top: 20px; }
+.help-card h2 { margin: 0; }
+.help-toggle { display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    width: 100%; border: 0; padding: 0; background: transparent; color: var(--texto);
+    font-size: 18px; font-weight: 600; text-align: left; }
+.help-indicator { color: var(--esmeralda); font-size: 24px; flex-shrink: 0; }
+.help-content { margin-top: 18px; font-size: 14px; }
+.help-content ol { padding-left: 22px; }
+.help-content li { margin-bottom: 12px; }
+[hidden] { display: none !important; }
+@media print { .help-content[hidden] { display: block !important; } }

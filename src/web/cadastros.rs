@@ -29,6 +29,7 @@ fn formulario(
     }
     Pagina {
         titulo: "Cadastro",
+        ajuda: if tipo == "lote" { "lotes" } else { "alimentos" },
         ativo: if tipo == "lote" {
             "/lotes"
         } else {

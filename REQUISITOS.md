@@ -753,6 +753,11 @@ implementam maud::Render e geram maud::Markup, separados por responsabilidade.
 Usar htmx v4 e hx-live com cópias locais minificadas, versões/origens/licenças registradas.
 Validação e decisão permanecerão no servidor.
 
+A rota `/ajuda` deverá ensinar cada funcionalidade em cartas expansíveis controladas por hx-live.
+Todas as páginas deverão apresentar um botão de ajuda com link para a seção correspondente.
+O fragmento da URL deverá abrir a carta indicada; teclado e atributos acessíveis deverão refletir
+seu estado. O conteúdo deverá continuar disponível sem JavaScript.
+
 ### RNF-03 — Estilo e acessibilidade
 
 Usar um arquivo CSS plano, com variáveis no início. Interface em português do Brasil,
@@ -958,6 +963,10 @@ com as tolerâncias de RN-24. Na interface, os totais monetários serão apresen
   ausência de slogans/banners e preservação de unidades, hipóteses, erros e limitações nas telas.
   Validar a navegação e o layout em Chromium, WebKit e Firefox.
   Cobertura: RF-06, RF-07, RF-13; RNF-03, RNF-10, RNF-14.
+
+- **CT-30 — Ajuda contextual:** conferir as instruções de todas as tarefas, cartas expansíveis
+  via hx-live, navegação por fragmentos, links em cada página, teclado e layout móvel nos três
+  navegadores. Cobertura: RNF-02, RNF-03, RNF-10, RNF-12.
 
 ## 10. Condições para considerar o MVP concluído
 

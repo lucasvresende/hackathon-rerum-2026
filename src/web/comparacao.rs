@@ -17,7 +17,8 @@ pub async fn comparar(
         && proximos(a.parecer.consumo_ms, b.parecer.consumo_ms)
         && a.cenario.horizonte == b.cenario.horizonte
         && a.cenario.referencia_ue == b.cenario.referencia_ue;
-    Ok(Pagina { titulo: "Comparar cenários", ativo: "/historico", conteudo: html! {
+    Ok(Pagina { titulo: "Comparar cenários", ajuda: "comparacao",
+        ativo: "/historico", conteudo: html! {
         (cabecalho("Comparação de cenários", ""))
         section.card.table-wrap {
             table { thead { tr { th { "Premissa" } th { (&a.cenario.nome) } th {

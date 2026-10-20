@@ -3,6 +3,7 @@ use maud::{DOCTYPE, Markup, Render, html};
 pub struct Pagina<'a> {
     pub titulo: &'a str,
     pub ativo: &'a str,
+    pub ajuda: &'a str,
     pub conteudo: Markup,
 }
 
@@ -17,8 +18,8 @@ impl Render for Pagina<'_> {
                     title { (self.titulo) " · FeedYourCow" }
                     link rel="stylesheet" href="/static/app.css";
                     link rel="icon" href="/static/favicon.svg" type="image/svg+xml";
-                    script src="/static/vendor/htmx.min.js" defer {}
-                    script src="/static/vendor/hx-live.min.js" defer {}
+                    script src="/static/vendor/htmx.min.js" {}
+                    script src="/static/vendor/hx-live.min.js" {}
                     script src="/static/app.js" defer {}
                 }
                 body {
@@ -33,6 +34,7 @@ impl Render for Pagina<'_> {
                                 ("/cenarios/novo", "Novo cenário", "+"),
                                 ("/historico", "Histórico", "◷"),
                                 ("/conhecimento", "Perfil e fontes", "▤"),
+                                ("/ajuda", "Ajuda", "?"),
                             ] {
                                 a class=(if self.ativo == url { "nav-link active" }
                                     else { "nav-link" }) href=(url)
@@ -47,7 +49,14 @@ impl Render for Pagina<'_> {
                         }
                     }
                     div.workspace {
-                        main #principal tabindex="-1" { (self.conteudo) }
+                        main #principal tabindex="-1" {
+                            div.page-help.no-print {
+                                a.button.secondary href=(format!("/ajuda#{}", self.ajuda)) {
+                                    "Ajuda nesta página"
+                                }
+                            }
+                            (self.conteudo)
+                        }
                     }
                 }
             }

@@ -106,3 +106,19 @@ Rust 1.98.1, perfil debug. O ensaio final obteve p95 aproximado de 23 ms para ve
 `.github/workflows/ci.yml` reproduz os checks de Rust, texto, SQLx e navegadores, preservando
 capturas como artefato. O workflow está configurado para push e pull request; a execução remota
 no GitHub depende de publicar os commits. A validação desta entrega é local.
+
+## Ajuda contextual (CT-30)
+
+O teste Rust `ajuda_disponivel_com_secoes_e_links_contextuais` verifica a rota, as dez seções,
+os controles acessíveis e os links de ajuda em páginas completas e no erro 404.
+`tests/ajuda.mjs`, executado pelo roteiro existente em Chromium, Firefox e WebKit, verifica
+expansão/recolhimento de todas as cartas, Enter/Espaço, isolamento do estado, links com fragmento,
+índice, retorno do navegador, recarga, conteúdo sem JavaScript e ausência de transbordamento
+em 390 px. O roteiro também confere os destinos contextuais nos cadastros, cenário, resultado,
+histórico, comparação e fontes. Capturas `*-ajuda.png` e `*-ajuda-mobile.png` apoiam a inspeção.
+
+Validação da ajuda em 20/10/2026: build, 35 testes Rust, clippy com todas as features,
+formatação e fluxos completos nos três navegadores passaram. Inspeção visual das capturas de ajuda
+em desktop e mobile confirmou legibilidade e expansão. Todos os arquivos desta implementação
+respeitam 100 caracteres por linha. O check global de texto ainda aponta uma linha de 122
+caracteres em `hackathon/SEQUENCIA_IMPLEMENTACAO.md:18`, em alteração preexistente preservada.

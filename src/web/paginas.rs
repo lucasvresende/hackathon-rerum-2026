@@ -17,6 +17,7 @@ pub async fn inicio(State(e): State<EstadoApp>) -> Result<Markup, ErroWeb> {
     Ok(Pagina {
         titulo: "Visão geral",
         ativo: "/",
+        ajuda: "inicio",
         conteudo: super::componentes::inicio::Inicio {
             lotes: &lotes,
             alimentos: &alimentos,
@@ -33,6 +34,7 @@ pub async fn lotes(State(e): State<EstadoApp>) -> Result<Markup, ErroWeb> {
     Ok(Pagina {
         titulo: "Lotes",
         ativo: "/lotes",
+        ajuda: "lotes",
         conteudo: html! {
             (cabecalho("Lotes", ""))
             div.actions { a.button href="/lotes/novo" { "+ Cadastrar lote" } }
@@ -64,6 +66,7 @@ pub async fn alimentos(
     Ok(Pagina {
         titulo: "Alimentos",
         ativo: "/alimentos",
+        ajuda: "alimentos",
         conteudo: html! {
             (cabecalho("Catálogo de alimentos", ""))
             div.actions { a.button href="/alimentos/novo" { "+ Cadastrar composição" }
@@ -138,6 +141,7 @@ pub async fn historico(
     Ok(Pagina {
         titulo: "Histórico",
         ativo: "/historico",
+        ajuda: "historico",
         conteudo: html! {
             (cabecalho("Histórico de cenários", ""))
             form.card method="get" action="/historico" {
@@ -198,6 +202,7 @@ pub async fn conhecimento(State(e): State<EstadoApp>) -> Result<Markup, ErroWeb>
     Ok(Pagina {
         titulo: "Perfil nutricional e fontes",
         ativo: "/conhecimento",
+        ajuda: "conhecimento",
         conteudo: html! {
             (cabecalho("Perfil nutricional e fontes", ""))
             section.card { h2 { (&c.perfil_id) }
@@ -243,8 +248,20 @@ pub async fn nao_encontrado() -> (StatusCode, Markup) {
         Pagina {
             titulo: "Página não encontrada",
             ativo: "",
+            ajuda: "inicio",
             conteudo: html! { h1 { "Página não encontrada" } a href="/" { "Voltar ao início" } },
         }
         .render(),
     )
+}
+
+/// Ajuda estática disponível sem consultar cadastros ou execuções.
+pub async fn ajuda() -> Markup {
+    Pagina {
+        titulo: "Ajuda",
+        ativo: "/ajuda",
+        ajuda: "inicio",
+        conteudo: super::componentes::ajuda::Ajuda.render(),
+    }
+    .render()
 }

@@ -32,6 +32,7 @@ impl EstadoApp {
 pub fn app(estado: EstadoApp) -> Router {
     let app = Router::new()
         .route("/", get(paginas::inicio))
+        .route("/ajuda", get(paginas::ajuda))
         .route("/saude", get(|| async { "FeedYourCow: disponível" }))
         .route("/lotes", get(paginas::lotes).post(cadastros::salvar_lote))
         .route("/lotes/novo", get(cadastros::novo_lote))
@@ -86,6 +87,7 @@ impl IntoResponse for ErroWeb {
         let corpo = super::componentes::estrutura::Pagina {
             titulo: "Não foi possível concluir",
             ativo: "",
+            ajuda: "inicio",
             conteudo: maud::html! {
                 h1 { "Não foi possível concluir esta operação" }
                 p { "Houve uma falha operacional. Seus resultados anteriores estão preservados. \

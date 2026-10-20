@@ -208,3 +208,50 @@ async fn ct01_estrutura_incompativel_impede_inicializacao_silenciosa() {
         .unwrap();
     assert!(banco::verificar_estrutura(&pool).await.is_err());
 }
+
+#[tokio::test]
+async fn ajuda_disponivel_com_secoes_e_links_contextuais() {
+    let (_d, pool) = ambiente().await;
+    let app = app(EstadoApp::novo(pool, "http://127.0.0.1:3000".into()));
+    for (rota, secao) in [
+        ("/", "inicio"),
+        ("/lotes", "lotes"),
+        ("/lotes/novo", "lotes"),
+        ("/alimentos", "alimentos"),
+        ("/alimentos/novo", "alimentos"),
+        ("/cenarios/novo", "cenarios"),
+        ("/historico", "historico"),
+        ("/conhecimento", "conhecimento"),
+        ("/ajuda", "inicio"),
+        ("/inexistente", "inicio"),
+    ] {
+        let resposta = app
+            .clone()
+            .oneshot(Request::builder().uri(rota).body(Body::empty()).unwrap())
+            .await
+            .unwrap();
+        let esperado = if rota == "/inexistente" { 404 } else { 200 };
+        assert_eq!(resposta.status().as_u16(), esperado);
+        let corpo = resposta.into_body().collect().await.unwrap().to_bytes();
+        let html = std::str::from_utf8(&corpo).unwrap();
+        assert!(html.contains(&format!("href=\"/ajuda#{secao}\"")), "{rota}");
+        if rota == "/ajuda" {
+            for id in [
+                "inicio",
+                "lotes",
+                "alimentos",
+                "cenarios",
+                "verificar",
+                "formular",
+                "resultados",
+                "historico",
+                "comparacao",
+                "conhecimento",
+            ] {
+                assert!(html.contains(&format!("id=\"{id}\"")));
+                assert!(html.contains(&format!("aria-controls=\"{id}-conteudo\"")));
+            }
+            assert!(html.contains("hx-live:hidden=\"!data.aberta\""));
+        }
+    }
+}
