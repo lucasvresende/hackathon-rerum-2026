@@ -1,10 +1,11 @@
-# Requisitos do sistema especialista de dietas para bovinos leiteiros
+# Requisitos do FeedYourCow: dietas para bovinos leiteiros
 
-**Tema 2 · Hackathon UFJF/RERUM 2026 · Versão documental 1.0 · 20/10/2026**
+**Tema 2 · Hackathon UFJF/RERUM 2026 · Versão documental 1.1 · 20/10/2026**
 
-Este documento define o comportamento esperado da futura aplicação. Os requisitos não representam
-funcionalidades já implementadas. A entrega desta etapa é a especificação; não inclui implementação
-do sistema, criação do banco ou carga operacional de alimentos.
+Este documento especifica o comportamento do FeedYourCow. A implementação está em `src/`;
+`README.md` documenta a operação e `docs/TESTES.md` registra a cobertura e sua verificação.
+O nome FeedYourCow e o tema verde-esmeralda integram a identidade do produto.
+As descrições abaixo continuam sendo critérios de aceitação, sem substituir a evidência dos testes.
 
 ## 1. Objetivo e referências
 

@@ -15,7 +15,8 @@ cargo run -- servir
 ```
 
 Abra <http://127.0.0.1:3000>. `demonstrar` prepara o banco, carrega quatro composições sintéticas,
-cria um lote e calcula as dietas A/B. Dados sintéticos não são análises nem cotações reais.
+cria lotes e calcula as dietas A/B, uma pendência e um bloqueio. Dados sintéticos não são análises
+nem cotações reais.
 Para instalar sem exemplos, use `cargo run -- preparar` no lugar de `demonstrar`.
 
 Configuração por variáveis de ambiente: `FEEDYOURCOW_BANCO` (padrão `dados/aplicacao.sqlite3`),
@@ -41,9 +42,20 @@ ou contaminantes sem dados suficientes permanecem identificados. O perfil histó
 cargo fmt --check
 cargo test
 cargo clippy --all-targets --all-features -- -D warnings
+python3 scripts/qualidade.py
+python3 scripts/verificar_sqlx.py
+npm ci --ignore-scripts
+npx playwright install --with-deps chromium firefox webkit
+npm test
+RUST_LOG=warn cargo run --quiet -- ensaiar
 bacon
 bacon servir
 ```
+
+Node e os navegadores são usados somente para testes. O aplicativo continua sendo Rust nativo.
+As evidências ficam em `output/playwright/`, fora do Git. Consulte `docs/TESTES.md`.
+O script SQLx confere o cache contra banco temporário criado pelas migrações, sem depender da
+configuração de drivers da SQLx CLI instalada no computador.
 
 O recurso `desenvolvimento` ativa tower-livereload; a execução normal não inclui autoreload.
 O motor usa Rust tipado, sem código `unsafe` próprio. Bibliotecas existentes são priorizadas.
@@ -71,7 +83,8 @@ cargo run -- backup /tmp/feedyourcow-backup
 cargo run -- restaurar /tmp/feedyourcow-backup /tmp/feedyourcow-restaurado
 ```
 
-Cargas têm versão/hash e são idempotentes; colisões de versão são rejeitadas.
+Cargas têm versão/hash e são idempotentes; colisões de versão são rejeitadas. Nunca edite uma carga
+já distribuída.
 Backup usa `VACUUM INTO`, preserva documentos locais e gera manifesto de integridade.
 Restauração exige diretório novo e verifica hashes, integridade e vínculos do SQLite.
 
@@ -80,3 +93,6 @@ Restauração exige diretório novo e verifica hashes, integridade e vínculos d
 `REQUISITOS.md` define o comportamento; o anexo específico em `hackathon/` contém tabelas,
 fórmulas e procedência. A implementação foi desenvolvida com auxílio de IA, revisada por
 compilador e testes. O cálculo operacional é determinístico e não usa modelos de linguagem.
+
+A arquitetura, precisão e decisões estão em [docs/ARQUITETURA.md](docs/ARQUITETURA.md).
+A matriz CT-01 a CT-28 e os comandos de validação estão em [docs/TESTES.md](docs/TESTES.md).

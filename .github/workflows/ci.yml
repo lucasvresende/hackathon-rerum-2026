@@ -1,0 +1,31 @@
+name: Qualidade do FeedYourCow
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  rust:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - run: cargo build --locked
+      - run: cargo test --locked
+      - run: cargo clippy --locked --all-targets --all-features -- -D warnings
+      - run: cargo fmt --check
+      - run: python3 scripts/qualidade.py
+      - run: python3 scripts/verificar_sqlx.py
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npx playwright install --with-deps chromium firefox webkit
+      - run: npm test
+      - run: RUST_LOG=warn cargo run --quiet -- ensaiar
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: evidencias-navegadores
+          path: output/playwright
