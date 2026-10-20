@@ -15,7 +15,7 @@
 2. Web framework: [Axum](https://github.com/tokio-rs/axum) com tracing
 3. Templating engine: [Maud](https://github.com/lambda-fairy/maud), com structs implementando o trait _Maud::Render_ e gerando _Maud::Markup_. Utilizar componentes e evitar muitos templates em um mesmo arquivo para funcionalidades diferentes
 4. Reatividade e AJAX: [htmx v4](https://four.htmx.org/) para requisições e substituição de trechos de html da página. Extensão [hx-live](https://four.htmx.org/extensions/hx-live) para reatividade client-side e sincronização de comportamentos com o htmx. Mantidos em cópia local minificada do javascript
-5. Fase de desenvolvimento: autoreload com ferramentas como **tower-livereload**
+5. Fase de desenvolvimento: autoreload com ferramentas como [tower-livereload](https://github.com/leotaku/tower-livereload) e [bacon](https://github.com/canop/bacon)
 6. Banco de dados: Arquivo **SQLite** local
 7. Gestão do banco de dados: [SQLx](https://docs.rs/sqlx/latest/sqlx/), utilizando obrigatoriamente macros para validação em tempo de compilação e o sistema próprio de migração. Os queries devem estar em arquivos .sql separados.
 8. Estilo: Um arquivo **css plano**, com variáveis definidas na parte inicial.
