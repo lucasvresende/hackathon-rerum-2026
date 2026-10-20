@@ -1,5 +1,6 @@
 pub mod cadastros;
 pub mod cenarios;
+pub mod comparacao;
 pub mod componentes;
 pub mod formularios;
 pub mod paginas;

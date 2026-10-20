@@ -4,7 +4,8 @@ CREATE TABLE fontes (
     conteudo TEXT NOT NULL, hash TEXT NOT NULL
 );
 CREATE TABLE perfis (
-    id TEXT PRIMARY KEY NOT NULL, versao TEXT NOT NULL, fonte_id TEXT NOT NULL REFERENCES fontes(id),
+    id TEXT PRIMARY KEY NOT NULL, versao TEXT NOT NULL,
+    fonte_id TEXT NOT NULL REFERENCES fontes(id),
     fdn_min REAL NOT NULL CHECK(fdn_min BETWEEN 0 AND 1),
     amido_max REAL NOT NULL CHECK(amido_max BETWEEN 0 AND 1),
     ee_max REAL NOT NULL CHECK(ee_max BETWEEN 0 AND 1),
@@ -62,7 +63,8 @@ CREATE TABLE produtos (
     conteudo TEXT NOT NULL CHECK(json_valid(conteudo))
 );
 CREATE TABLE cenarios (
-    id TEXT PRIMARY KEY NOT NULL, nome TEXT NOT NULL, revisao_lote_id TEXT NOT NULL REFERENCES revisoes_lote(id),
+    id TEXT PRIMARY KEY NOT NULL, nome TEXT NOT NULL,
+    revisao_lote_id TEXT NOT NULL REFERENCES revisoes_lote(id),
     perfil_id TEXT NOT NULL REFERENCES perfis(id), original_id TEXT REFERENCES cenarios(id),
     horizonte INTEGER NOT NULL CHECK(horizonte > 0), data_aplicacao TEXT NOT NULL,
     entradas TEXT NOT NULL CHECK(json_valid(entradas))

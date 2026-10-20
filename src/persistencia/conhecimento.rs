@@ -1,8 +1,9 @@
+pub use super::validacao::validar;
 use sha2::{Digest, Sha256};
 use sqlx::SqlitePool;
 
 use crate::Resultado;
-use crate::dominio::{Coeficiente, Conhecimento, Fonte, Norma};
+use crate::dominio::{Coeficiente, Conhecimento, Fonte, LimiteContaminante, Norma};
 
 pub fn hash(conteudo: &str) -> String {
     format!("{:x}", Sha256::digest(conteudo.as_bytes()))
@@ -99,6 +100,19 @@ async fn ler_conexao(conexao: &mut sqlx::SqliteConnection) -> Resultado<Conhecim
             acao: r.acao,
         })
         .collect();
+    let limites_contaminantes = sqlx::query_file!("queries/limites_contaminantes.sql", perfil.id)
+        .fetch_all(&mut *conexao)
+        .await?
+        .into_iter()
+        .map(|r| LimiteContaminante {
+            norma_id: r.norma_id,
+            analito: r.analito,
+            matriz: r.matriz,
+            limite: r.limite,
+            umidade: r.umidade,
+            unidade: r.unidade,
+        })
+        .collect();
     let conhecimento = Conhecimento {
         perfil_id: perfil.id,
         versao: perfil.versao,
@@ -109,31 +123,10 @@ async fn ler_conexao(conexao: &mut sqlx::SqliteConnection) -> Resultado<Conhecim
         coeficientes,
         fontes,
         normas,
+        limites_contaminantes,
         versao_app: env!("CARGO_PKG_VERSION").into(),
         metodo: "microlp-0.6.0 / cinco subproblemas contínuos / RN-24".into(),
     };
     validar(&conhecimento)?;
     Ok(conhecimento)
-}
-
-pub fn validar(c: &Conhecimento) -> Resultado<()> {
-    for (tabela, n, unidade) in [
-        ("mantenca", 7, "kg/dia"),
-        ("leite", 5, "kg/kg leite"),
-        ("consumo", 18, "% PV"),
-        ("fibra", 5, "% MS"),
-    ] {
-        let linhas: Vec<_> = c
-            .coeficientes
-            .iter()
-            .filter(|v| v.tabela == tabela)
-            .collect();
-        if linhas.len() != n || linhas.iter().any(|v| v.unidade != unidade) {
-            return Err(format!("Tabela {tabela} incompleta ou unidade incompatível.").into());
-        }
-    }
-    if c.fontes.iter().any(|f| hash(&f.conteudo) != f.hash) {
-        return Err("Fonte com conteúdo/hash incompatível.".into());
-    }
-    Ok(())
 }

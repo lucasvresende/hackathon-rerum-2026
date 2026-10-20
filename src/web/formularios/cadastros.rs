@@ -1,7 +1,7 @@
 use uuid::Uuid;
 
 use super::*;
-use crate::dominio::{Alimento, Classe, Laudo, Lote};
+use crate::dominio::{Alimento, Classe, EstadoProdutivo, Laudo, Lote};
 
 pub fn ler_lote(c: &Campos) -> Result<Lote, Vec<Problema>> {
     let mut erros = Vec::new();
@@ -12,10 +12,18 @@ pub fn ler_lote(c: &Campos) -> Result<Lote, Vec<Problema>> {
             texto(c, "id").into()
         },
         revisao_id: String::new(),
+        estado_produtivo: match texto(c, "estado_produtivo") {
+            "LACTACAO" => EstadoProdutivo::Lactacao,
+            "SECA" => EstadoProdutivo::Seca,
+            "TRANSICAO" => EstadoProdutivo::Transicao,
+            "RECRIA" => EstadoProdutivo::Recria,
+            _ => EstadoProdutivo::Desconhecido,
+        },
+        destinacao: texto(c, "destinacao").into(),
         nome: texto(c, "nome").into(),
         animais: inteiro(c, "animais", &mut erros),
         raca: texto(c, "raca").into(),
-        idade_meses: numero(c, "idade_meses", &mut erros).map(|v| v as u32),
+        idade_meses: inteiro_opcional(c, "idade_meses", &mut erros),
         peso: obrigatorio(c, "peso", &mut erros),
         producao: obrigatorio(c, "producao", &mut erros),
         gordura: obrigatorio(c, "gordura", &mut erros),
@@ -28,7 +36,7 @@ pub fn ler_lote(c: &Campos) -> Result<Lote, Vec<Problema>> {
         correcao_ambiente: estado(c, "correcao_ambiente"),
         correcao_atividade: estado(c, "correcao_atividade"),
         agua: estado(c, "agua"),
-        ordem_parto: numero(c, "ordem_parto", &mut erros).map(|v| v as u32),
+        ordem_parto: inteiro_opcional(c, "ordem_parto", &mut erros),
         dispersao_peso: numero(c, "dispersao_peso", &mut erros),
         condicao_corporal: numero(c, "condicao_corporal", &mut erros),
         observacoes: texto(c, "observacoes").into(),

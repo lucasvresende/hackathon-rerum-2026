@@ -4,7 +4,7 @@ use std::path::PathBuf;
 
 use feed_your_cow::Resultado;
 use feed_your_cow::aplicacao::{demonstracao, execucao::PedidoMotor};
-use feed_your_cow::persistencia::{banco, cadastros, conhecimento, historico, recuperacao};
+use feed_your_cow::persistencia::{banco, conhecimento, recuperacao};
 
 #[tokio::main]
 async fn main() -> Resultado<()> {
@@ -27,20 +27,12 @@ async fn main() -> Resultado<()> {
         std::env::var("FEEDYOURCOW_BANCO").unwrap_or("dados/aplicacao.sqlite3".into()),
     );
     match comando {
+        "ensaiar" => feed_your_cow::aplicacao::ensaio::executar().await?,
         "preparar" | "demonstrar" => {
             let pool = banco::preparar(&caminho).await?;
             if comando == "demonstrar" {
                 demonstracao::preparar(&pool).await?;
-                if historico::listar(&pool).await?.is_empty() {
-                    let lote = cadastros::lotes(&pool).await?.remove(0);
-                    let alimentos = cadastros::alimentos(&pool).await?;
-                    let base = conhecimento::ler(&pool).await?;
-                    for dieta_a in [true, false] {
-                        let c = demonstracao::cenario(lote.clone(), alimentos.clone(), dieta_a);
-                        let p = feed_your_cow::dominio::inferencia::verificar(&c, &base);
-                        historico::salvar(&pool, &c, &p, &base).await?;
-                    }
-                }
+                demonstracao::cenarios_salvos(&pool).await?;
             }
             conhecimento::ler(&pool).await?;
             println!("FeedYourCow preparado em {}", caminho.display());
@@ -76,6 +68,7 @@ async fn main() -> Resultado<()> {
                 return Err("O MVP aceita somente endereço de loopback.".into());
             }
             let pool = banco::abrir(&caminho, false).await?;
+            banco::verificar_estrutura(&pool).await?;
             conhecimento::ler(&pool).await?;
             let estado =
                 feed_your_cow::web::rotas::EstadoApp::novo(pool, format!("http://{endereco}"));
@@ -89,7 +82,8 @@ async fn main() -> Resultado<()> {
         }
         _ => {
             return Err(
-                "Comandos: preparar, demonstrar, servir, carregar, backup, restaurar".into(),
+                "Comandos: preparar, demonstrar, servir, carregar, backup, restaurar, ensaiar"
+                    .into(),
             );
         }
     }

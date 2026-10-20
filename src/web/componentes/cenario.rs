@@ -16,6 +16,13 @@ pub struct FormularioCenario<'a> {
 }
 
 impl FormularioCenario<'_> {
+    fn erro(&self, nome: &str) -> Option<&str> {
+        self.erros
+            .iter()
+            .find(|e| e.campo == nome)
+            .map(|e| e.mensagem.as_str())
+    }
+
     fn valor(&self, nome: &str) -> &str {
         self.campos.get(nome).map(String::as_str).unwrap_or("")
     }
@@ -30,15 +37,20 @@ impl Render for FormularioCenario<'_> {
                 input type="hidden" name="original_id" value=(self.valor("original_id"));
                 (erros(self.erros))
                 section.card {
-                    div.section-title { h2 { "01 · O cenário" } span.pill { "PREMISSAS EXPLÍCITAS" } }
+                    div.section-title { h2 { "01 · O cenário" } span.pill {
+                    "PREMISSAS EXPLÍCITAS" } }
                     div.form-grid {
-                        (Campo { nome: "nome", rotulo: "Nome do cenário", valor: self.valor("nome"),
-                            tipo: "text", dica: "Uma identificação para comparar depois", obrigatorio: true })
+                        (Campo { erro: self.erro("nome"), nome: "nome", rotulo:
+                        "Nome do cenário", valor: self.valor("nome"),
+                            tipo: "text", dica: "Uma identificação para comparar depois",
+                            obrigatorio: true })
                         div.field { label for="lote" { "Lote e revisão atual" }
                             select #lote name="lote" required {
                                 @for lote in self.lotes {
-                                    option value=(&lote.id) selected[self.valor("lote") == lote.id] {
-                                        (&lote.nome) " · " (lote.animais) " animais · " (lote.peso) " kg"
+                                    option value=(&lote.id) selected[self.valor("lote") ==
+                                    lote.id] {
+                                        (&lote.nome) " · " (lote.animais) " animais · "
+                                        (lote.peso) " kg"
                                     }
                                 }
                             }
@@ -46,7 +58,8 @@ impl Render for FormularioCenario<'_> {
                         }
                         div.field { label for="modo" { "O que você quer fazer?" }
                             select #modo name="modo" {
-                                option value="verificar" selected[self.valor("modo") != "formular"] {
+                                option value="verificar" selected[self.valor("modo") !=
+                                "formular"] {
                                     "Verificar as quantidades informadas"
                                 }
                                 option value="formular" selected[self.valor("modo") == "formular"] {
@@ -56,7 +69,8 @@ impl Render for FormularioCenario<'_> {
                         }
                         @for (nome, rotulo, tipo, dica, obrigatorio) in [
                             ("horizonte", "Horizonte (dias)", "number", "Inteiro positivo", true),
-                            ("data_avaliacao", "Data de avaliação", "date", "Calendário Brasil", true),
+                            ("data_avaliacao", "Data de avaliação", "date",
+                            "Calendário Brasil", true),
                             ("data_aplicacao", "Data de aplicação das regras", "date",
                                 "Define a vigência normativa", true),
                             ("consumo_alvo", "Consumo-alvo (kg MS/animal/dia)", "number",
@@ -66,7 +80,9 @@ impl Render for FormularioCenario<'_> {
                             ("preco_leite", "Preço do leite (R$/kg)", "text",
                                 "Opcional; permite margem sobre alimentação", false),
                         ] {
-                            (Campo { nome, rotulo, valor: self.valor(nome), tipo, dica, obrigatorio })
+                            (Campo { erro: self.erro(nome), nome, rotulo, valor:
+                            self.valor(nome), tipo, dica,
+                            obrigatorio })
                         }
                         div.field { label for="base" { "Quantidade informada por ingrediente" }
                             select #base name="base" {
@@ -80,35 +96,44 @@ impl Render for FormularioCenario<'_> {
                     }
                     div.form-grid {
                         @for (nome, rotulo, dica) in [
-                            ("origem_consumo", "Origem do consumo", "Estimado, informado ou observado"),
-                            ("origem_sobras", "Origem das sobras e perdas", "Medição ou hipótese explícita"),
+                            ("origem_consumo", "Origem do consumo",
+                            "Estimado, informado ou observado"),
+                            ("origem_sobras", "Origem das sobras e perdas",
+                            "Medição ou hipótese explícita"),
                         ] {
-                            (Campo { nome, rotulo, valor: self.valor(nome), tipo: "text", dica,
+                            (Campo { erro: self.erro(nome), nome, rotulo, valor:
+                            self.valor(nome), tipo: "text", dica,
                                 obrigatorio: true })
                         }
                     }
                     details {
                         summary { "Consumo observado por pesagem do lote (opcional)" }
                         p.muted { "Mesmos animais e período; informe MS de oferta e sobras. \
-                            Isso não determina a composição ingerida quando há seleção de partículas." }
+                            Isso não determina a composição ingerida quando há seleção de
+                            partículas." }
                         div.form-grid {
-                            @for (nome, rotulo) in [("oferta_observada", "MS ofertada ao lote (kg)"),
+                            @for (nome, rotulo) in [("oferta_observada",
+                            "MS ofertada ao lote (kg)"),
                                 ("sobras_observadas", "MS das sobras do lote (kg)"),
                                 ("periodo_observado", "Período da medição (dias)")] {
-                                (Campo { nome, rotulo, valor: self.valor(nome), tipo: "number",
-                                    dica: "Deixe consumo-alvo vazio ao usar medição", obrigatorio: false })
+                                (Campo { erro: self.erro(nome), nome, rotulo, valor:
+                                self.valor(nome), tipo: "number",
+                                    dica: "Deixe consumo-alvo vazio ao usar medição",
+                                    obrigatorio: false })
                             }
                         }
                     }
                     label.check { input type="checkbox" name="ue" checked[self.valor("ue") == "on"];
-                        "Ativar referência UE adicional para contaminantes (não é legislação brasileira)"
+                        "Ativar referência UE adicional para contaminantes (não é legislação \
+                        brasileira)"
                     }
                 }
                 section.card {
                     div.section-title { h2 { "02 · Ingredientes e disponibilidade" }
                         a href="/alimentos" { "Consultar catálogo ↗" }
                     }
-                    p.muted { "Selecione uma composição por alimento. Formulação: até 10; verificação: \
+                    p.muted {
+                    "Selecione uma composição por alimento. Formulação: até 10; verificação: \
                         até 20. Preços em R$/kg MN; limites em kg MS/animal/dia." }
                     @for a in self.alimentos {
                         @let id = &a.composicao_id;
@@ -125,13 +150,19 @@ impl Render for FormularioCenario<'_> {
                             }
                             div.form-grid {
                                 div.field {
-                                    label for=(format!("unidade-preco-{id}")) { "Unidade comercial do preço" }
+                                    label for=(format!("unidade-preco-{id}")) {
+                                    "Unidade comercial do preço" }
                                     select id=(format!("unidade-preco-{id}"))
                                         name=(format!("unidade-preco-{id}")) {
                                         @for (v, rotulo) in [("kg", "R$/kg MN"),
-                                            ("t", "R$/tonelada MN"), ("embalagem", "R$/embalagem")] {
+                                            ("t", "R$/tonelada MN"), ("embalagem",
+                                            "R$/embalagem")] {
                                             option value=(v)
-                                                selected[self.valor(&format!("unidade-preco-{id}")) == v] {
+                                                selected[
+                                                    self.valor(
+                                                        &format!("unidade-preco-{id}")
+                                                    ) == v
+                                                ] {
                                                 (rotulo)
                                             }
                                         }
@@ -139,23 +170,31 @@ impl Render for FormularioCenario<'_> {
                                 }
                                 @for (prefixo, rotulo, dica) in [
                                     ("q", "Quantidade na base escolhida", "Ignorada ao formular"),
-                                    ("preco", "Preço na unidade comercial", "Cotação decimal; zero precisa de justificativa"),
+                                    ("preco", "Preço na unidade comercial",
+                                    "Cotação decimal; zero precisa de justificativa"),
                                     ("embalagem", "Massa da embalagem (kg MN)",
                                         "Obrigatória para preço por embalagem"),
-                                    ("ms", "MS neste cenário (%)", "Simula alteração sem editar o catálogo"),
-                                    ("perda", "Perda anterior ao fornecimento (%)", "Entre 0 e 100% exclusive"),
-                                    ("estoque", "Estoque bruto (kg MN)", "Vazio significa desconhecido"),
-                                    ("min", "Inclusão mínima (kg MS)", "Positivo torna a inclusão obrigatória"),
-                                    ("max", "Inclusão máxima (kg MS)", "Vazio: sem restrição adicional"),
+                                    ("ms", "MS neste cenário (%)",
+                                    "Simula alteração sem editar o catálogo"),
+                                    ("perda", "Perda anterior ao fornecimento (%)",
+                                    "Entre 0 e 100% exclusive"),
+                                    ("estoque", "Estoque bruto (kg MN)",
+                                    "Vazio significa desconhecido"),
+                                    ("min", "Inclusão mínima (kg MS)",
+                                    "Positivo torna a inclusão obrigatória"),
+                                    ("max", "Inclusão máxima (kg MS)",
+                                    "Vazio: sem restrição adicional"),
                                     ("resolucao", "Resolução de oferta (kg MN/animal)",
                                         "Zero mantém a quantidade contínua"),
                                 ] {
                                     @let nome = format!("{prefixo}-{id}");
-                                    (Campo { nome: &nome, rotulo, valor: self.valor(&nome),
+                                    (Campo { erro: self.erro(&nome), nome: &nome, rotulo,
+                                    valor: self.valor(&nome),
                                         tipo: "number", dica, obrigatorio: false })
                                 }
                                 @let nome = format!("origem-{id}");
-                                (Campo { nome: &nome, rotulo: "Origem e data da cotação",
+                                (Campo { erro: self.erro(&nome), nome: &nome, rotulo:
+                                "Origem e data da cotação",
                                     valor: self.valor(&nome), tipo: "text",
                                     dica: "Justifique também preços zero", obrigatorio: false })
                             }
@@ -174,9 +213,11 @@ impl Render for FormularioCenario<'_> {
                                 option selected[self.valor("base_comparacao") == v] { (v) }
                             }
                         }
-                        small { "Ao alterar MS em cenário duplicado, essa escolha governa a conversão." }
+                        small {
+                        "Ao alterar MS em cenário duplicado, essa escolha governa a conversão." }
                     }
-                    div.alert { "O resultado avalia o perfil implementado. Fibra física, vitaminas e \
+                    div.alert {
+                    "O resultado avalia o perfil implementado. Fibra física, vitaminas e \
                         demais dimensões sem dados continuam identificadas como não avaliadas." }
                     div.form-actions {
                         a.button.secondary href="/" { "Voltar" }

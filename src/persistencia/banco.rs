@@ -35,5 +35,33 @@ pub async fn preparar(caminho: &Path) -> Resultado<SqlitePool> {
         include_str!("../../dados_referencia/001_conhecimento.sql"),
     )
     .await?;
+    super::conhecimento::carregar(
+        &pool,
+        include_str!("../../dados_referencia/003_contaminantes.sql"),
+    )
+    .await?;
     Ok(pool)
+}
+
+/// Verifica migrações com a API do SQLx; servir não modifica silenciosamente a estrutura.
+pub async fn verificar_estrutura(pool: &SqlitePool) -> Resultado<()> {
+    use sqlx::migrate::Migrate;
+    let mut conexao = pool.acquire().await?;
+    let aplicadas = conexao
+        .list_applied_migrations("_sqlx_migrations")
+        .await
+        .map_err(|_| "Banco sem controle de migrações. Execute `preparar`.")?;
+    if conexao.dirty_version("_sqlx_migrations").await?.is_some()
+        || aplicadas.len() != MIGRACOES.iter().count()
+        || MIGRACOES.iter().any(|m| {
+            !aplicadas
+                .iter()
+                .any(|a| a.version == m.version && a.checksum == m.checksum)
+        })
+    {
+        return Err("Estrutura incompatível. Faça backup e execute `preparar`; \
+            não altere migrações já aplicadas."
+            .into());
+    }
+    Ok(())
 }

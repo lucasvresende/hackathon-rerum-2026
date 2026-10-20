@@ -46,6 +46,10 @@ pub fn formular(c: &Cenario, base: &Conhecimento) -> Parecer {
             let mut seguranca = Parecer::default();
             elegibilidade::ingredientes(&teste, base, &mut seguranca);
             let excluido = seguranca.dimensao("Ingredientes") != "ATENDE";
+            if excluido && item.minimo_ms == 0.0 {
+                variaveis.push(problema.add_var(0.0, (0.0, 0.0)));
+                continue;
+            }
             let mut teto = item.maximo_ms.unwrap_or(alvo).min(alvo);
             if item.alimento.classe == Classe::Suplemento {
                 if let Some(rotulo) = item.alimento.rotulo_max_ms {
@@ -133,9 +137,17 @@ pub fn formular(c: &Cenario, base: &Conhecimento) -> Parecer {
             ComparisonOp::Ge,
             alvo * linha.eixo / 100.0,
         );
+        if let Err(motivo) =
+            super::linear::contaminantes(&mut problema, &variaveis, &ordenado, base, alvo)
+        {
+            estado.motivo = motivo;
+            estados.push(estado);
+            continue;
+        }
         match problema.solve() {
             Ok(SolveOutcome::Solution(solucao)) => {
                 let mut candidata = ordenado.clone();
+                candidata.formular = false;
                 let mut quantidades = Vec::new();
                 for (item, v) in candidata.itens.iter_mut().zip(&variaveis) {
                     item.quantidade = solucao.var_value(*v);
@@ -186,9 +198,6 @@ pub fn formular(c: &Cenario, base: &Conhecimento) -> Parecer {
                 .unwrap_or(std::cmp::Ordering::Equal)
         })
     });
-    let comprovados = estados
-        .iter()
-        .all(|s| s.estado == "OTIMO_NO_MODELO" || s.estado == "INVIAVEL_NO_MODELO");
     let mut p = if let Some((_, quantidades, p)) = candidatas.into_iter().next() {
         let mut pratica = ordenado.clone();
         for ((item, q), f) in pratica
@@ -213,28 +222,32 @@ pub fn formular(c: &Cenario, base: &Conhecimento) -> Parecer {
                     .into(),
             );
         }
-        p.busca = Some(
-            if comprovados {
-                "OTIMO_NO_MODELO"
-            } else {
-                "VIAVEL_SEM_OTIMO"
-            }
-            .into(),
-        );
+        p.busca = Some(classificar_busca(&estados, true).into());
         p
     } else {
-        diagnostico.busca = Some(
-            if estados.iter().all(|s| s.estado == "INVIAVEL_NO_MODELO") {
-                "INVIAVEL_NO_MODELO"
-            } else {
-                "INCONCLUSIVA"
-            }
-            .into(),
-        );
+        diagnostico.busca = Some(classificar_busca(&estados, false).into());
         diagnostico.pratico_valido = false;
         diagnostico
     };
     p.subproblemas = estados;
     p.duracao_ms = inicio.elapsed().as_millis() as u64;
     p
+}
+
+/// Certificado global exige conclusão dos cinco subproblemas; pendência nunca prova inviabilidade.
+pub fn classificar_busca(estados: &[Subproblema], candidata: bool) -> &'static str {
+    let completos = estados.len() == 5;
+    let provas = completos
+        && estados
+            .iter()
+            .all(|s| s.estado == "OTIMO_NO_MODELO" || s.estado == "INVIAVEL_NO_MODELO");
+    if candidata && provas {
+        "OTIMO_NO_MODELO"
+    } else if candidata {
+        "VIAVEL_SEM_OTIMO"
+    } else if completos && estados.iter().all(|s| s.estado == "INVIAVEL_NO_MODELO") {
+        "INVIAVEL_NO_MODELO"
+    } else {
+        "INCONCLUSIVA"
+    }
 }

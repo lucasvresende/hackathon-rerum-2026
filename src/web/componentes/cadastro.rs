@@ -13,6 +13,13 @@ pub struct Cadastro<'a> {
 }
 
 impl Cadastro<'_> {
+    fn erro(&self, nome: &str) -> Option<&str> {
+        self.erros
+            .iter()
+            .find(|e| e.campo == nome)
+            .map(|e| e.mensagem.as_str())
+    }
+
     fn valor(&self, nome: &str) -> &str {
         self.campos.get(nome).map(String::as_str).unwrap_or("")
     }
@@ -142,10 +149,30 @@ impl Render for Cadastro<'_> {
                 (erros(self.erros))
                 h2 { "Identificação e dados" }
                 div.form-grid {
-                    (Campo { nome: "nome", rotulo: "Nome", valor: self.valor("nome"),
-                        tipo: "text", dica: "Identificação para consulta e histórico", obrigatorio: true })
+                    (Campo { erro: self.erro("nome"), nome: "nome", rotulo: "Nome", valor:
+                    self.valor("nome"),
+                        tipo: "text", dica: "Identificação para consulta e histórico",
+                        obrigatorio: true })
                     @if lote {
-                        (Campo { nome: "raca", rotulo: "Raça / grupo genético", valor: self.valor("raca"),
+                        div.field {
+                            label for="estado_produtivo" { "Estado produtivo" }
+                            select #estado_produtivo name="estado_produtivo" {
+                                @for (v, t) in [("DESCONHECIDO", "Desconhecido"),
+                                    ("LACTACAO", "Lactação"), ("SECA", "Seca"),
+                                    ("TRANSICAO", "Transição"), ("RECRIA", "Recria")] {
+                                    option value=(v) selected[self.valor("estado_produtivo") == v] {
+                                        (t)
+                                    }
+                                }
+                            }
+                        }
+                        (Campo { erro: self.erro("destinacao"), nome: "destinacao", rotulo:
+                        "Destinação econômica",
+                            valor: self.valor("destinacao"), tipo: "text",
+                            dica: "Por exemplo: produção de leite", obrigatorio: false })
+                        (Campo { erro: self.erro("raca"), nome: "raca", rotulo:
+                        "Raça / grupo genético", valor:
+                        self.valor("raca"),
                             tipo: "text", dica: "Pode ser desconhecida", obrigatorio: false })
                     } @else {
                         div.field { label for="classe" { "Classificação" }
@@ -158,7 +185,8 @@ impl Render for Cadastro<'_> {
                         }
                     }
                     @for (nome, rotulo, dica, obrigatorio) in numericos {
-                        (Campo { nome, rotulo, valor: self.valor(nome), tipo: "number",
+                        (Campo { erro: self.erro(nome), nome, rotulo, valor:
+                        self.valor(nome), tipo: "number",
                             dica, obrigatorio })
                     }
                 }
@@ -188,22 +216,27 @@ impl Render for Cadastro<'_> {
                             }
                         }
                         @for (nome, rotulo, dica) in [
-                            ("fonte_id", "Identificador da fonte", "Fonte existente em Conhecimento"),
+                            ("fonte_id", "Identificador da fonte",
+                            "Fonte existente em Conhecimento"),
                             ("origem", "Origem", "Procedência e local da coleta"),
                             ("processamento", "Processamento", "Forma de preparo do alimento"),
-                            ("metodo", "Método, edição e página", "Como a composição foi determinada"),
+                            ("metodo", "Método, edição e página",
+                            "Como a composição foi determinada"),
                             ("data", "Data da análise", "Data civil da composição"),
                             ("fornecedor", "Fornecedor / produto", "Identificação comercial"),
                             ("lote_fisico", "Lote físico", "Rastreabilidade do produto"),
-                            ("evidencia", "Evidência de autorização", "Documento e condições de uso"),
+                            ("evidencia", "Evidência de autorização",
+                            "Documento e condições de uso"),
                         ] {
-                            (Campo { nome, rotulo, valor: self.valor(nome), tipo: "text", dica,
+                            (Campo { erro: self.erro(nome), nome, rotulo, valor:
+                            self.valor(nome), tipo: "text", dica,
                                 obrigatorio: nome == "fonte_id" || nome == "metodo" })
                         }
                     }
                     details {
                         summary { "Laudos de contaminantes (opcional)" }
-                        p.muted { "Sem laudo não significa concentração zero. Registre unidade e matriz." }
+                        p.muted {
+                        "Sem laudo não significa concentração zero. Registre unidade e matriz." }
                         @for i in 0..3 {
                             div.form-grid {
                                 @for (sufixo, rotulo, tipo) in [
@@ -217,7 +250,8 @@ impl Render for Cadastro<'_> {
                                     ("documento", "Identificação do laudo", "text"),
                                 ] {
                                     @let nome = format!("laudo_{i}_{sufixo}");
-                                    (Campo { nome: &nome, rotulo, valor: self.valor(&nome), tipo,
+                                    (Campo { erro: self.erro(&nome), nome: &nome, rotulo,
+                                    valor: self.valor(&nome), tipo,
                                         dica: "Matriz: matéria-prima", obrigatorio: false })
                                 }
                             }

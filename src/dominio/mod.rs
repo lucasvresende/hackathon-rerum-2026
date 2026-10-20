@@ -1,7 +1,9 @@
+mod avaliacoes;
 pub mod calculos;
 pub mod contaminantes;
 pub mod elegibilidade;
 pub mod inferencia;
+mod linear;
 pub mod modelos;
 pub mod otimizacao;
 pub mod parecer;

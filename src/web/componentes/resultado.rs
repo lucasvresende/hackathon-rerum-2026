@@ -43,10 +43,12 @@ impl Render for ResultadoExecucao<'_> {
                 @for (nome, valor, dica) in [
                     ("Custo / animal / dia", p.custo.map(dinheiro).unwrap_or("—".into()),
                         "Oferta, perdas e sobras incluídas"),
-                    ("Consumo da dieta", format!("{:.3} kg MS", p.consumo_ms), "Por animal e por dia"),
+                    ("Consumo da dieta", format!("{:.3} kg MS", p.consumo_ms),
+                    "Por animal e por dia"),
                     ("Custo do lote / dia", p.custo.map(|v| dinheiro(v * c.lote.animais as f64))
                         .unwrap_or("—".into()), "Custo alimentar; outros custos não incluídos"),
-                    ("Horizonte", format!("{} dias", c.horizonte), "Estoque não é baixado pelo cálculo"),
+                    ("Horizonte", format!("{} dias", c.horizonte),
+                    "Estoque não é baixado pelo cálculo"),
                 ] { article.stat { small { (nome) } strong { (valor) } span { (dica) } } }
             }
             section.card {
@@ -65,22 +67,31 @@ impl Render for ResultadoExecucao<'_> {
                 @for aviso in &p.avisos { p.alert { (aviso) } }
             }
             section.card.table-wrap {
-                div.section-title { h2 { "Balanço nutricional" } span.pill { "BASE: MATÉRIA SECA" } }
+                div.section-title { h2 { "Balanço nutricional" } span.pill {
+                "BASE: MATÉRIA SECA" } }
                 table {
                     thead { tr { th { "Nutriente" } th { "Oferta (kg/dia)" } th { "Requisito" }
-                        th { "Balanço" } th { "Cobertura" } } }
+                        th { "Balanço" } th { "Déficit" } th { "Excesso" } th { "Cobertura" } } }
                     tbody {
                         @for (i, nome) in NUTRIENTES.iter().enumerate().take(4) {
                             @let requisito = p.requisitos.map(|r| r[i]);
                             @let valor = p.totais[i];
                             tr {
                                 td { strong { (nome) } }
-                                td { (valor.map(|v| format!("{v:.5}")).unwrap_or("Desconhecido".into())) }
+                                td { (valor.map(|v|
+                                format!("{v:.5}")).unwrap_or("Desconhecido".into())) }
                                 td { (requisito.map(|v| format!("{v:.5}")).unwrap_or("—".into())) }
                                 td { (valor.zip(requisito).map(|(v, r)| format!("{:+.5}", v-r))
                                     .unwrap_or("—".into())) }
+                                td { (valor.zip(requisito)
+                                    .map(|(v,r)|format!("{:.5}",(r-v).max(0.0)))
+                                    .unwrap_or("—".into())) }
+                                td { (valor.zip(requisito)
+                                    .map(|(v,r)|format!("{:.5}",(v-r).max(0.0)))
+                                    .unwrap_or("—".into())) }
                                 td { (valor.zip(requisito).filter(|(_, r)| *r > 0.0)
-                                    .map(|(v, r)| format!("{:.1}%", 100.0*v/r)).unwrap_or("—".into())) }
+                                    .map(|(v, r)| format!("{:.1}%",
+                                    100.0*v/r)).unwrap_or("—".into())) }
                             }
                         }
                     }
@@ -90,7 +101,8 @@ impl Render for ResultadoExecucao<'_> {
             }
             section.card.table-wrap {
                 h2 { "Do cálculo ao fornecimento" }
-                p.muted { "Consumo estimado e oferta são grandezas diferentes. MN: matéria natural." }
+                p.muted {
+                "Consumo estimado e oferta são grandezas diferentes. MN: matéria natural." }
                 table {
                     thead { tr { th { "Ingrediente" } th { "Consumo kg MS / animal" }
                         th { "Oferta kg MN / animal" } th { "Oferta kg MN / lote / dia" }
@@ -99,14 +111,17 @@ impl Render for ResultadoExecucao<'_> {
                         @for f in &p.fornecimento {
                             tr { td { (&f.ingrediente) }
                                 @for v in [f.consumo_ms, f.oferta_mn, f.oferta_lote,
-                                    f.necessidade_bruta, f.pratico_mn] { td { (format!("{v:.4}")) } }
+                                    f.necessidade_bruta, f.pratico_mn] { td {
+                                    (format!("{v:.4}")) } }
                             }
                         }
                     }
                 }
-                p.alert { @if p.pratico_valido { "Quantidades compatíveis com o núcleo e restrições \
+                p.alert { @if p.pratico_valido {
+                "Quantidades compatíveis com o núcleo e restrições \
                     avaliadas. Dimensões não avaliadas permanecem indicadas." }
-                    @else { "Fornecimento sem recomendação prática validada. Consulte as pendências \
+                    @else {
+                    "Fornecimento sem recomendação prática validada. Consulte as pendências \
                         e restrições; uma solução contínua pode continuar disponível." }
                 }
             }
@@ -132,11 +147,13 @@ impl Render for ResultadoExecucao<'_> {
                     dt { "Sobras planejadas" } dd { (format!("{:.2}% · {}", c.sobras*100.0,
                         c.origem_sobras)) }
                     dt { "Base da comparação" } dd { (&c.base_comparacao) }
-                    dt { "Custo no horizonte" } dd { (p.custo.map(|v| dinheiro(v*c.lote.animais as f64
+                    dt { "Custo no horizonte" } dd { (p.custo.map(|v|
+                    dinheiro(v*c.lote.animais as f64
                         * c.horizonte as f64)).unwrap_or("—".into())) }
                     @if let Some(custo) = p.custo {
                         @if c.lote.producao > 0.0 {
-                            dt { "Custo por kg de leite" } dd { (dinheiro(custo / c.lote.producao)) }
+                            dt { "Custo por kg de leite" } dd { (dinheiro(custo /
+                            c.lote.producao)) }
                         }
                         @if let Some(preco) = c.preco_leite.as_deref().and_then(preco_f64) {
                             dt { "Margem sobre alimentação / animal / dia" }
@@ -149,6 +166,7 @@ impl Render for ResultadoExecucao<'_> {
                 h2 { "Por que o sistema chegou a esse resultado?" }
                 p.muted { "Entradas → normalização → cálculo → comparação → conclusão. \
                     Todas as verificações independentes são preservadas." }
+                ol { @for etapa in &p.caminho { li { (etapa) } } }
                 @for v in &p.verificacoes {
                     details.rule {
                         summary { span class=(if v.estado == Estado::Viola { "pill danger" }
@@ -166,6 +184,7 @@ impl Render for ResultadoExecucao<'_> {
                     }
                 }
             }
+            (super::entradas::Entradas(e))
             section.card {
                 h2 { "Fontes e versões preservadas" }
                 p.code { (&e.conhecimento.perfil_id) " · versão " (&e.conhecimento.versao)

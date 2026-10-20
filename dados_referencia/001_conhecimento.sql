@@ -5,7 +5,8 @@ VALUES ('C01',
     'Embrapa 2020, 2ª ed.',
     'Tabelas 3 e 4; anexo numérico, seções 6.6–6.8',
     'TECNICA',
-    'Manual prático de formulação de ração para vacas leiteiras; Embrapa 2020, 2ª ed.; Tabelas 3 e 4; anexo numérico, seções 6.6–6.8',
+    'Manual prático de formulação de ração para vacas leiteiras; Embra' ||
+    'pa 2020, 2ª ed.; Tabelas 3 e 4; anexo numérico, seções 6.6–6.8',
     '2ba59562ad8c76b2d5766983bfa1e07e46f19b48c4af657532ad473c581a281c');
 INSERT INTO fontes(id,titulo,edicao,localizador,natureza,conteudo,hash)
 VALUES ('C16',
@@ -13,7 +14,8 @@ VALUES ('C16',
     'Referência transcrita no anexo numérico',
     'hackathon/TEMA_2_DIETAS_LITERATURA_E_MOTOR.md, seção 6.11',
     'TECNICA',
-    'Barreiras de fibra e amido; Referência transcrita no anexo numérico; hackathon/TEMA_2_DIETAS_LITERATURA_E_MOTOR.md, seção 6.11',
+    'Barreiras de fibra e amido; Referência transcrita no anexo numéri' ||
+    'co; hackathon/TEMA_2_DIETAS_LITERATURA_E_MOTOR.md, seção 6.11',
     '1f5e034fcabf9e5de04bdbf353adbe22bc74e1d179b2926c3f1a7821d675df9c');
 INSERT INTO fontes(id,titulo,edicao,localizador,natureza,conteudo,hash)
 VALUES ('MVP',
@@ -29,7 +31,8 @@ VALUES ('DEMO',
     'v1',
     'Anexo numérico, seção 9.1; não são análises nem cotações reais',
     'SINTETICA',
-    'Composições sintéticas de demonstração; v1; Anexo numérico, seção 9.1; não são análises nem cotações reais',
+    'Composições sintéticas de demonstração; v1; Anexo numérico, seção' ||
+    ' 9.1; não são análises nem cotações reais',
     '28b5ddc6b553ad96b8e1c1c0b1e8531a4a5f721c19e60c4ed8a59b882f8821b5');
 INSERT INTO fontes(id,titulo,edicao,localizador,natureza,conteudo,hash)
 VALUES ('N06',
@@ -37,7 +40,8 @@ VALUES ('N06',
     'Versão pesquisada em 20/10/2026',
     'Anexo numérico, seções 4.3 e N06',
     'BR_LEGAL',
-    'IN 8/2004 e IN 1/2015; Versão pesquisada em 20/10/2026; Anexo numérico, seções 4.3 e N06',
+    'IN 8/2004 e IN 1/2015; Versão pesquisada em 20/10/2026; Anexo num' ||
+    'érico, seções 4.3 e N06',
     'df71db2ba8108d31feb38557b239e2bd8b2d0dd3ff481e873c1d1d110f6520e8');
 INSERT INTO fontes(id,titulo,edicao,localizador,natureza,conteudo,hash)
 VALUES ('N03',
@@ -45,7 +49,8 @@ VALUES ('N03',
     '02/10/2026',
     'Anexo numérico, seção 4.3; substituição prevista em 01/03/2027',
     'BR_LEGAL',
-    'Catálogo MAPA; Portarias 1.180/2024 e 1.566/2026; 02/10/2026; Anexo numérico, seção 4.3; substituição prevista em 01/03/2027',
+    'Catálogo MAPA; Portarias 1.180/2024 e 1.566/2026; 02/10/2026; Ane' ||
+    'xo numérico, seção 4.3; substituição prevista em 01/03/2027',
     '1bca3ccc2840f1123a9a2bdaf804309f02f1a721b11dad6fe6ea8fd9e772fa00');
 INSERT INTO fontes(id,titulo,edicao,localizador,natureza,conteudo,hash)
 VALUES ('N07',
@@ -53,7 +58,8 @@ VALUES ('N07',
     '27/04/2026',
     'Anexo numérico, seção 4.4; condições de transição exigem evidência',
     'BR_LEGAL',
-    'Portaria SDA/MAPA 1.617/2026; 27/04/2026; Anexo numérico, seção 4.4; condições de transição exigem evidência',
+    'Portaria SDA/MAPA 1.617/2026; 27/04/2026; Anexo numérico, seção 4' ||
+    '.4; condições de transição exigem evidência',
     '3863cce4b3c534e560f41bc489382ccd6914e0ded56d61f75707c799b5002596');
 INSERT INTO fontes(id,titulo,edicao,localizador,natureza,conteudo,hash)
 VALUES ('N08',
@@ -61,7 +67,8 @@ VALUES ('N08',
     '2009',
     'Revoga Portaria 7/1988; nenhum teto brasileiro universal foi carregado',
     'BR_LEGAL',
-    'IN 30/2009, art. 10; 2009; Revoga Portaria 7/1988; nenhum teto brasileiro universal foi carregado',
+    'IN 30/2009, art. 10; 2009; Revoga Portaria 7/1988; nenhum teto br' ||
+    'asileiro universal foi carregado',
     '82d0c8fffd7ef27aa02797c4060a517994da715cfe1685f989995413f65ce947');
 INSERT INTO fontes(id,titulo,edicao,localizador,natureza,conteudo,hash)
 VALUES ('N09',
@@ -69,7 +76,8 @@ VALUES ('N09',
     '06/08/2026',
     'AFM1 em leite fluido; não aplicável como limite de AFB1 em ração',
     'BR_LEGAL',
-    'IN Anvisa 463/2026; 06/08/2026; AFM1 em leite fluido; não aplicável como limite de AFB1 em ração',
+    'IN Anvisa 463/2026; 06/08/2026; AFM1 em leite fluido; não aplicáv' ||
+    'el como limite de AFB1 em ração',
     '7d651a591fd08b0b13a1ec9de893cd4ddcdd2362a59adff74184129ae6d3b364');
 INSERT INTO fontes(id,titulo,edicao,localizador,natureza,conteudo,hash)
 VALUES ('N10',
@@ -77,7 +85,8 @@ VALUES ('N10',
     '28/09/2023–28/09/2033',
     'Ureia; referência estrangeira; exclusão de NNP permanece no MVP',
     'REFERENCIA_ESTRANGEIRA',
-    'Regulamento UE 2023/1708; 28/09/2023–28/09/2033; Ureia; referência estrangeira; exclusão de NNP permanece no MVP',
+    'Regulamento UE 2023/1708; 28/09/2023–28/09/2033; Ureia; referênci' ||
+    'a estrangeira; exclusão de NNP permanece no MVP',
     '0bb5119e087c8133ca46671a1f0585b94cc471634605fcd54ccfd0f3beb6dac1');
 INSERT INTO fontes(id,titulo,edicao,localizador,natureza,conteudo,hash)
 VALUES ('N11',
@@ -85,7 +94,9 @@ VALUES ('N11',
     'Consolidação consultada no anexo',
     'AFB1: 20 µg/kg matéria-prima; 5 µg/kg composto leiteiro; base 12% umidade',
     'REFERENCIA_ESTRANGEIRA',
-    'Diretiva UE 2002/32/CE; Consolidação consultada no anexo; AFB1: 20 µg/kg matéria-prima; 5 µg/kg composto leiteiro; base 12% umidade',
+    'Diretiva UE 2002/32/CE; Consolidação consultada no anexo; AFB1: 2' ||
+    '0 µg/kg matéria-prima; 5 µg/kg composto leiteiro; base 12% umidad' ||
+    'e',
     '1ed928698f42740fc9712a7dbb9c7e5c9df1e4e9b90c43322131f4b8d989e5ef');
 INSERT INTO perfis(id,versao,fonte_id,fdn_min,amido_max,ee_max,discrepancia,ativo)
 VALUES ('E2020_NRC1989_RUMEN_MVP_v1',
@@ -446,7 +457,9 @@ VALUES ('E2020_NRC1989_RUMEN_MVP_v1',
     0,
     0,
     '% MS');
-INSERT INTO normas(id,fonte_id,natureza,jurisdicao,publicacao,inicio,fim,transicao,condicoes,excecoes,evidencia,acao)
+INSERT INTO normas
+(id,fonte_id,natureza,jurisdicao,publicacao,inicio,fim,transicao,
+condicoes,excecoes,evidencia,acao)
 VALUES ('LEG-ANIMAL',
     'N06',
     'BR_LEGAL',
@@ -459,7 +472,9 @@ VALUES ('LEG-ANIMAL',
     'Lácteos; ossos calcinados; gelatina de couros/peles; ovo em pó (IN 1/2015)',
     'Identidade, origem e enquadramento documentados',
     'Bloquear após considerar exceções');
-INSERT INTO normas(id,fonte_id,natureza,jurisdicao,publicacao,inicio,fim,transicao,condicoes,excecoes,evidencia,acao)
+INSERT INTO normas
+(id,fonte_id,natureza,jurisdicao,publicacao,inicio,fim,transicao,
+condicoes,excecoes,evidencia,acao)
 VALUES ('LEG-EEB-2027',
     'N03',
     'BR_LEGAL',
@@ -472,7 +487,9 @@ VALUES ('LEG-EEB-2027',
     'Não presumir autorização',
     'Revisão normativa antes de aplicar a substituição',
     'Inconclusivo para origem animal');
-INSERT INTO normas(id,fonte_id,natureza,jurisdicao,publicacao,inicio,fim,transicao,condicoes,excecoes,evidencia,acao)
+INSERT INTO normas
+(id,fonte_id,natureza,jurisdicao,publicacao,inicio,fim,transicao,
+condicoes,excecoes,evidencia,acao)
 VALUES ('LEG-ANTIMICROBIANO',
     'N07',
     'BR_LEGAL',
@@ -485,7 +502,9 @@ VALUES ('LEG-ANTIMICROBIANO',
     'Produtos anteriores podem ter transição de 180 dias',
     'Substância, finalidade, data de fabricação e condição de transição',
     'Excluir do MVP');
-INSERT INTO normas(id,fonte_id,natureza,jurisdicao,publicacao,inicio,fim,transicao,condicoes,excecoes,evidencia,acao)
+INSERT INTO normas
+(id,fonte_id,natureza,jurisdicao,publicacao,inicio,fim,transicao,
+condicoes,excecoes,evidencia,acao)
 VALUES ('LEG-AFLATOXINAS',
     'N08',
     'BR_LEGAL',
@@ -498,7 +517,9 @@ VALUES ('LEG-AFLATOXINAS',
     'Não usar pet food',
     'Analito e matriz compatíveis',
     'Não declarar atendimento sem limite aplicável');
-INSERT INTO normas(id,fonte_id,natureza,jurisdicao,publicacao,inicio,fim,transicao,condicoes,excecoes,evidencia,acao)
+INSERT INTO normas
+(id,fonte_id,natureza,jurisdicao,publicacao,inicio,fim,transicao,
+condicoes,excecoes,evidencia,acao)
 VALUES ('LEG-AFM1-LEITE',
     'N09',
     'BR_LEGAL',
@@ -511,7 +532,9 @@ VALUES ('LEG-AFM1-LEITE',
     'Não aplicável como teto de AFB1 em ração',
     'Laudo de leite e transição',
     'Não aplicar diretamente à dieta');
-INSERT INTO normas(id,fonte_id,natureza,jurisdicao,publicacao,inicio,fim,transicao,condicoes,excecoes,evidencia,acao)
+INSERT INTO normas
+(id,fonte_id,natureza,jurisdicao,publicacao,inicio,fim,transicao,
+condicoes,excecoes,evidencia,acao)
 VALUES ('UE-UREIA',
     'N10',
     'REFERENCIA_ESTRANGEIRA',
@@ -520,11 +543,14 @@ VALUES ('UE-UREIA',
     '2023-09-28',
     '2033-09-28',
     NULL,
-    'Rúmen funcional; adaptação; carboidratos; N de ureia até 30%; até 8800 mg/kg base 12%',
+    'Rúmen funcional; adaptação; carboidratos; N de ureia até 30%; até' ||
+    ' 8800 mg/kg base 12%',
     'Ativação explícita da referência estrangeira',
     'Produto e condições conhecidas',
     'MVP exclui NNP');
-INSERT INTO normas(id,fonte_id,natureza,jurisdicao,publicacao,inicio,fim,transicao,condicoes,excecoes,evidencia,acao)
+INSERT INTO normas
+(id,fonte_id,natureza,jurisdicao,publicacao,inicio,fim,transicao,
+condicoes,excecoes,evidencia,acao)
 VALUES ('UE-AFB1',
     'N11',
     'REFERENCIA_ESTRANGEIRA',

@@ -45,7 +45,7 @@ pub fn normalizar_preco(cotacao: &super::CotacaoOriginal) -> Option<String> {
         return None;
     }
     let divisor = match cotacao.unidade.as_str() {
-        "" | "kg" => Decimal::ONE,
+        "kg" => Decimal::ONE,
         "t" => Decimal::from(1000),
         "embalagem" => {
             let massa = cotacao

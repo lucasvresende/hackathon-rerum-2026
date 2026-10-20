@@ -130,3 +130,33 @@ pub async fn obter(pool: &SqlitePool, id: &str) -> Resultado<Execucao> {
         conhecimento: serde_json::from_str(&r.artefatos)?,
     })
 }
+
+pub async fn filtrar(
+    pool: &SqlitePool,
+    lote: Option<&str>,
+    inicio: Option<&str>,
+    fim: Option<&str>,
+    deslocamento: i64,
+) -> Resultado<Vec<Execucao>> {
+    sqlx::query_file!(
+        "queries/historico_filtrado.sql",
+        lote,
+        inicio,
+        fim,
+        deslocamento
+    )
+    .fetch_all(pool)
+    .await?
+    .into_iter()
+    .map(|r| {
+        Ok(Execucao {
+            id: r.id,
+            cenario_id: r.cenario_id,
+            criada_em: r.criada_em,
+            cenario: serde_json::from_str(&r.entradas)?,
+            parecer: serde_json::from_str(&r.resultado)?,
+            conhecimento: serde_json::from_str(&r.artefatos)?,
+        })
+    })
+    .collect()
+}

@@ -91,6 +91,18 @@ pub async fn salvar_alimento(pool: &SqlitePool, a: &mut Alimento) -> Resultado<(
     )
     .execute(&mut *tx)
     .await?;
+    let produto_id = Uuid::new_v4().to_string();
+    sqlx::query_file!(
+        "queries/inserir_produto.sql",
+        produto_id,
+        a.composicao_id,
+        a.fornecedor,
+        a.lote_fisico,
+        a.evidencia,
+        conteudo
+    )
+    .execute(&mut *tx)
+    .await?;
     tx.commit().await?;
     Ok(())
 }

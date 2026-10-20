@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO produtos(id,composicao_id,fornecedor,lote_fisico,evidencia,conteudo)\nVALUES (?, ?, ?, ?, ?, ?);\n",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 6
+    },
+    "nullable": []
+  },
+  "hash": "78f47a904a02482ea3a001d0090168726cf655ef89cc264d159af8bbac428e27"
+}

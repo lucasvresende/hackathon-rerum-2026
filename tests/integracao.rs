@@ -197,3 +197,14 @@ async fn ct27_protege_escrita_e_escapa_texto() {
     assert!(corpo.contains("&lt;script&gt;"));
     assert!(!corpo.contains("<script>alert(1)</script>"));
 }
+
+#[tokio::test]
+async fn ct01_estrutura_incompativel_impede_inicializacao_silenciosa() {
+    let (_d, pool) = ambiente().await;
+    banco::verificar_estrutura(&pool).await.unwrap();
+    sqlx::raw_sql("UPDATE _sqlx_migrations SET checksum = X'00' WHERE version = 1;")
+        .execute(&pool)
+        .await
+        .unwrap();
+    assert!(banco::verificar_estrutura(&pool).await.is_err());
+}

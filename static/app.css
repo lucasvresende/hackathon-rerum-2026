@@ -14,7 +14,8 @@
     --sombra: 0 3px 14px #183b2710;
 }
 * { box-sizing: border-box; }
-body { margin: 0; background: var(--fundo); color: var(--texto); font: 15px/1.55 Arial, sans-serif; }
+body { margin: 0; background: var(--fundo); color: var(--texto);
+    font: 15px/1.55 Arial, sans-serif; }
 a { color: var(--esmeralda); text-decoration: none; }
 a:hover { text-decoration: underline; }
 button, input, select, textarea { font: inherit; }
@@ -50,7 +51,8 @@ nav { display: grid; gap: 7px; }
 .topbar > span { font-size: 10px; letter-spacing: 1.9px; color: var(--secundario); }
 .topbar > div { font-size: 12px; color: var(--secundario); display: flex; align-items: center; }
 .avatar { background: #e6ede4; color: #406348; border-radius: 50%; font-size: 11px;
-    font-weight: 700; display: grid; place-items: center; width: 33px; height: 33px; margin-left: 22px; }
+    font-weight: 700; display: grid; place-items: center; width: 33px; height: 33px;
+    margin-left: 22px; }
 main { max-width: 1560px; padding: 34px 42px 50px; margin: 0 auto; }
 .eyebrow { font-size: 10px; letter-spacing: 2px; color: var(--esmeralda); font-weight: 700;
     margin: 0 0 10px; }
@@ -66,7 +68,8 @@ h3 { font-size: 14px; margin-bottom: 4px; }
 .hero h2 { font: 400 34px/1.2 Georgia, serif; letter-spacing: -.3px; margin: 15px 0 11px; }
 .hero p { color: #c5dfcf; font-size: 12px; max-width: 430px; margin-bottom: 22px; }
 .hero .text-link { color: #e2f0d8; font-size: 12px; }
-.hero-art { position: relative; overflow: hidden; background: linear-gradient(120deg,#0b6047,#1d7352); }
+.hero-art { position: relative; overflow: hidden;
+    background: linear-gradient(120deg,#0b6047,#1d7352); }
 .orbit { position: absolute; width: 310px; height: 310px; border: 1px solid #ffffff20;
     border-radius: 50%; top: -80px; right: -110px; }
 .orbit.two { width: 410px; height: 410px; top: -130px; right: -160px; }
@@ -79,10 +82,13 @@ h3 { font-size: 14px; margin-bottom: 4px; }
     color: #b8d9b9; }
 .art-caption strong { display: block; font: 400 23px/1.15 Georgia, serif; white-space: pre-line;
     color: #eff9e3; letter-spacing: -.4px; margin-top: 8px; }
-.stats { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 16px; margin: 22px 0 26px; }
-.stat { background: var(--papel); border: 1px solid var(--borda); border-radius: 12px; padding: 20px; }
+.stats { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 16px;
+    margin: 22px 0 26px; }
+.stat { background: var(--papel); border: 1px solid var(--borda); border-radius: 12px;
+    padding: 20px; }
 .stat small { color: #5b7061; font-size: 11px; display: block; }
-.stat strong { display: block; font-size: 29px; font-weight: 500; margin: 9px 0 3px; line-height: 1.2; }
+.stat strong { display: block; font-size: 29px; font-weight: 500; margin: 9px 0 3px;
+    line-height: 1.2; }
 .stat span { display: block; font-size: 10px; color: #829085; }
 .columns { display: grid; grid-template-columns: 1.35fr 1fr; gap: 23px; }
 .card { border: 1px solid var(--borda); border-radius: var(--raio); background: var(--papel);
@@ -138,6 +144,8 @@ input, select, textarea { width: 100%; background: #fcfdfb; color: var(--texto);
     border: 1px solid #cad8c8; border-radius: 7px; padding: 10px 11px; min-height: 42px; }
 input:focus, select:focus, textarea:focus { border-color: var(--esmeralda); }
 small { font-size: 10px; color: var(--secundario); }
+.field-error { color: var(--erro); font-size: 11px; }
+[aria-invalid="true"] { border-color: var(--erro); }
 textarea { min-height: 100px; resize: vertical; }
 .check { display: flex; align-items: center; gap: 9px; }
 .check input { width: 16px; min-height: 16px; height: 16px; accent-color: var(--esmeralda); }
@@ -150,10 +158,12 @@ summary { font-size: 12px; }
 details p { font-size: 12px; margin: 14px 0 5px; }
 details.ingredient { border: 1px solid var(--borda); border-radius: 10px; padding: 17px;
     margin: 13px 0; background: #fcfdfb; }
-.ingredient summary { display: flex; justify-content: space-between; gap: 8px; align-items: center; }
+.ingredient summary { display: flex; justify-content: space-between; gap: 8px;
+    align-items: center; }
 .ingredient .form-grid { margin-bottom: 16px; }
 .dimension-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 12px; }
-.dimension { padding: 14px; border: 1px solid var(--borda); border-radius: 8px; background: #f5f7f3; }
+.dimension { padding: 14px; border: 1px solid var(--borda); border-radius: 8px;
+    background: #f5f7f3; }
 .dimension strong { display: block; font-size: 11px; margin-top: 8px; }
 .dimension.ok { background: #edf7ec; color: #397044; }
 .dimension.bad { background: #fff1ea; color: #9b4633; border-color: #f3d9ce; }

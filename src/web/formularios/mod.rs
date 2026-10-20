@@ -66,3 +66,15 @@ fn campos_serializados<T: serde::Serialize>(valor: &T) -> Campos {
     }
     campos
 }
+
+fn inteiro_opcional(c: &Campos, nome: &str, erros: &mut Vec<Problema>) -> Option<u32> {
+    let valor = numero(c, nome, erros)?;
+    if valor < 0.0 || valor.fract() != 0.0 || valor > u32::MAX as f64 {
+        erros.push(problema(
+            nome,
+            "Informe um inteiro não negativo ou deixe desconhecido.",
+        ));
+        return None;
+    }
+    Some(valor as u32)
+}

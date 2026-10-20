@@ -32,27 +32,35 @@ impl Render for Inicio<'_> {
                 div.hero-art aria-hidden="true" {
                     div.orbit.one {} div.orbit.two {} div.orbit.three {}
                     div.grain.g1 {} div.grain.g2 {} div.grain.g3 {}
-                    div.art-caption { "DADOS + CONHECIMENTO" strong { "Uma dieta.\nToda a explicação." } }
+                    div.art-caption { "DADOS + CONHECIMENTO" strong {
+                    "Uma dieta.\nToda a explicação." } }
                 }
             }
             section.stats aria-label="Resumo da aplicação" {
                 @for (numero, nome, dica) in [
-                    (self.lotes.len().to_string(), "Lotes cadastrados", "Grupos com revisões preservadas"),
+                    (self.lotes.len().to_string(), "Lotes cadastrados",
+                    "Grupos com revisões preservadas"),
                     (animais.to_string(), "Animais no planejamento", "Distribuídos nos seus lotes"),
-                    (self.alimentos.len().to_string(), "Composições disponíveis", "Fontes e versões identificadas"),
-                    (self.execucoes.len().to_string(), "Execuções recentes", "Entradas e pareceres preservados"),
+                    (self.alimentos.len().to_string(), "Composições disponíveis",
+                    "Fontes e versões identificadas"),
+                    (self.execucoes.len().to_string(), "Execuções recentes",
+                    "Entradas e pareceres preservados"),
                 ] {
                     article.stat { small { (nome) } strong { (numero) } span { (dica) } }
                 }
             }
             div.columns {
                 section.card {
-                    div.section-title { h2 { "Por onde começar?" } span.muted { "SEU PRÓXIMO PASSO" } }
+                    div.section-title { h2 { "Por onde começar?" } span.muted {
+                    "SEU PRÓXIMO PASSO" } }
                     @for (n, titulo, texto, url) in [
-                        ("01", "Conheça seu lote", "Registre os animais e o perfil de produção.", "/lotes"),
-                        ("02", "Monte um cenário", "Selecione ingredientes, quantidades e premissas.",
+                        ("01", "Conheça seu lote",
+                        "Registre os animais e o perfil de produção.", "/lotes"),
+                        ("02", "Monte um cenário",
+                        "Selecione ingredientes, quantidades e premissas.",
                             "/cenarios/novo"),
-                        ("03", "Entenda o resultado", "Consulte balanços, custos e o caminho das regras.",
+                        ("03", "Entenda o resultado",
+                        "Consulte balanços, custos e o caminho das regras.",
                             "/historico"),
                     ] {
                         a.step-card href=(url) { span.step-number { (n) }
@@ -63,7 +71,8 @@ impl Render for Inicio<'_> {
                 section.card.knowledge-card {
                     span.pill { "CONHECIMENTO VERSIONADO" }
                     h2 { "Cada conclusão tem uma fonte." }
-                    p { "NDT, proteína, cálcio, fósforo e barreiras ruminais, com hipóteses explícitas." }
+                    p { "NDT, proteína, cálcio, fósforo e barreiras ruminais, com hipóteses \
+                    explícitas." }
                     dl {
                         dt { "Perfil ativo" } dd.code { (&self.conhecimento.perfil_id) }
                         dt { "Cobertura" } dd { "Vacas adultas em lactação e confinamento" }
@@ -72,11 +81,13 @@ impl Render for Inicio<'_> {
                     a.text-link href="/conhecimento" { "Ver fontes e limitações ↗" }
                 }
             }
-            section.card {
-                div.section-title { h2 { "Últimos cenários" } a href="/historico" { "Ver histórico →" } }
+            section.card.table-wrap {
+                div.section-title { h2 { "Últimos cenários" } a href="/historico" {
+                "Ver histórico →" } }
                 @if self.execucoes.is_empty() {
                     div.empty { span { "◷" } h3 { "Seu histórico começa no primeiro cenário" }
-                        p { "Os resultados calculados aparecerão aqui, com suas fontes e premissas." }
+                        p { "Os resultados calculados aparecerão aqui, com suas fontes e \
+                        premissas." }
                         a.button href="/cenarios/novo?dieta=B" { "Explorar dieta B sintética" }
                     }
                 } @else {
@@ -85,7 +96,8 @@ impl Render for Inicio<'_> {
                             th { "Núcleo químico" } th {} } }
                         tbody {
                             @for e in self.execucoes.iter().take(5) {
-                                tr { td { strong { (&e.cenario.nome) } } td { (&e.cenario.lote.nome) }
+                                tr { td { strong { (&e.cenario.nome) } } td {
+                                (&e.cenario.lote.nome) }
                                     td { (e.parecer.custo.map(dinheiro).unwrap_or("—".into())) }
                                     td { span.pill { (e.parecer.dimensao("Núcleo químico")) } }
                                     td { a href=(format!("/execucoes/{}", e.id)) { "Abrir ↗" } }

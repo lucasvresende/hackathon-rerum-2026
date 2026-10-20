@@ -45,7 +45,7 @@ pub fn app(estado: EstadoApp) -> Router {
         .route("/cenarios/novo", get(cenarios::novo))
         .route("/cenarios", post(cenarios::executar))
         .route("/historico", get(paginas::historico))
-        .route("/comparar", get(paginas::comparar))
+        .route("/comparar", get(super::comparacao::comparar))
         .route("/conhecimento", get(paginas::conhecimento))
         .route("/execucoes/{id}", get(cenarios::resultado))
         .route("/execucoes/{id}/duplicar", get(cenarios::duplicar))

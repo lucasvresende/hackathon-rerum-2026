@@ -1,0 +1,86 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT norma_id,analito,matriz,limite,umidade,unidade FROM limites_contaminantes\nWHERE perfil_id = ? ORDER BY analito, matriz;\n",
+  "describe": {
+    "columns": [
+      {
+        "name": "norma_id",
+        "ordinal": 0,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "limites_contaminantes",
+            "name": "norma_id"
+          }
+        }
+      },
+      {
+        "name": "analito",
+        "ordinal": 1,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "limites_contaminantes",
+            "name": "analito"
+          }
+        }
+      },
+      {
+        "name": "matriz",
+        "ordinal": 2,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "limites_contaminantes",
+            "name": "matriz"
+          }
+        }
+      },
+      {
+        "name": "limite",
+        "ordinal": 3,
+        "type_info": "Float",
+        "origin": {
+          "Table": {
+            "table": "limites_contaminantes",
+            "name": "limite"
+          }
+        }
+      },
+      {
+        "name": "umidade",
+        "ordinal": 4,
+        "type_info": "Float",
+        "origin": {
+          "Table": {
+            "table": "limites_contaminantes",
+            "name": "umidade"
+          }
+        }
+      },
+      {
+        "name": "unidade",
+        "ordinal": 5,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "limites_contaminantes",
+            "name": "unidade"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "d791813c3d5e411d35fa65aa35f1473e88b614f5212fafcf2c1d8aa0f6612550"
+}

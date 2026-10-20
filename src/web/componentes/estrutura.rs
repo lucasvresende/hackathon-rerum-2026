@@ -75,6 +75,7 @@ pub struct Campo<'a> {
     pub tipo: &'a str,
     pub dica: &'a str,
     pub obrigatorio: bool,
+    pub erro: Option<&'a str>,
 }
 
 impl Render for Campo<'_> {
@@ -84,8 +85,12 @@ impl Render for Campo<'_> {
                 label for=(self.nome) { (self.rotulo) }
                 input id=(self.nome) name=(self.nome) type=(self.tipo) value=(self.valor)
                     step=[(self.tipo == "number").then_some("any")]
-                    required[self.obrigatorio] aria-describedby=(format!("{}-dica", self.nome));
+                    required[self.obrigatorio] aria-invalid=[self.erro.map(|_| "true")]
+                    aria-describedby=(format!("{}-dica", self.nome));
                 small id=(format!("{}-dica", self.nome)) { (self.dica) }
+                @if let Some(erro) = self.erro {
+                    span.field-error { (erro) }
+                }
             }
         }
     }

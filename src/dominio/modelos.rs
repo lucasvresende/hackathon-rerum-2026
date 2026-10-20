@@ -16,6 +16,10 @@ pub struct Lote {
     pub animais: u32,
     pub raca: String,
     pub idade_meses: Option<u32>,
+    #[serde(default)]
+    pub estado_produtivo: EstadoProdutivo,
+    #[serde(default)]
+    pub destinacao: String,
     pub peso: f64,
     pub producao: f64,
     pub gordura: f64,
@@ -179,6 +183,8 @@ pub struct Conhecimento {
     pub coeficientes: Vec<Coeficiente>,
     pub fontes: Vec<Fonte>,
     pub normas: Vec<Norma>,
+    #[serde(default)]
+    pub limites_contaminantes: Vec<LimiteContaminante>,
     pub versao_app: String,
     pub metodo: String,
 }
@@ -236,4 +242,25 @@ impl Conhecido {
             Self::Desconhecido => Self::Desconhecido,
         }
     }
+}
+
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum EstadoProdutivo {
+    Lactacao,
+    Seca,
+    Transicao,
+    Recria,
+    #[default]
+    Desconhecido,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct LimiteContaminante {
+    pub norma_id: String,
+    pub analito: String,
+    pub matriz: String,
+    pub limite: f64,
+    pub umidade: f64,
+    pub unidade: String,
 }

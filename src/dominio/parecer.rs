@@ -68,6 +68,8 @@ pub struct Parecer {
     pub pratico_valido: bool,
     pub duracao_ms: u64,
     pub avisos: Vec<String>,
+    #[serde(default)]
+    pub caminho: Vec<String>,
 }
 
 impl Default for Parecer {
@@ -88,6 +90,7 @@ impl Default for Parecer {
             pratico_valido: false,
             duracao_ms: 0,
             avisos: Vec::new(),
+            caminho: Vec::new(),
         }
     }
 }

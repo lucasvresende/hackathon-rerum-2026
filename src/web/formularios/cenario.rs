@@ -15,7 +15,14 @@ pub fn ler_cenario(
     let base = match texto(c, "base") {
         "CONSUMO_MN" => BaseQuantidade::ConsumoMn,
         "OFERTA_MN" => BaseQuantidade::OfertaMn,
-        _ => BaseQuantidade::ConsumoMs,
+        "CONSUMO_MS" => BaseQuantidade::ConsumoMs,
+        _ => {
+            erros.push(problema(
+                "base",
+                "Declare a unidade e o significado da quantidade.",
+            ));
+            BaseQuantidade::ConsumoMs
+        }
     };
     let mut itens = Vec::new();
     for a in alimentos {

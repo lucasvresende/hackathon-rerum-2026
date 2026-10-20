@@ -1,4 +1,4 @@
-use chrono::Local;
+use chrono::Utc;
 use sqlx::SqlitePool;
 use uuid::Uuid;
 
@@ -13,6 +13,8 @@ pub fn lote() -> Lote {
         animais: 12,
         raca: "Sintética / não determinada".into(),
         idade_meses: Some(48),
+        estado_produtivo: EstadoProdutivo::Lactacao,
+        destinacao: "Produção de leite".into(),
         peso: 400.0,
         producao: 10.0,
         gordura: 4.0,
@@ -33,7 +35,10 @@ pub fn lote() -> Lote {
 }
 
 pub fn cenario(lote: Lote, alimentos: Vec<Alimento>, dieta_a: bool) -> Cenario {
-    let hoje = Local::now().date_naive().to_string();
+    let hoje = Utc::now()
+        .with_timezone(&chrono_tz::America::Sao_Paulo)
+        .date_naive()
+        .to_string();
     Cenario {
         nome: if dieta_a {
             "Dieta A · demonstração"
@@ -97,6 +102,41 @@ pub async fn preparar(pool: &SqlitePool) -> Resultado<()> {
     {
         let mut lote = lote();
         crate::persistencia::cadastros::salvar_lote(pool, &mut lote, true).await?;
+    }
+    Ok(())
+}
+
+pub async fn cenarios_salvos(pool: &SqlitePool) -> Resultado<()> {
+    use crate::persistencia::{cadastros, conhecimento, historico};
+    if !historico::listar(pool).await?.is_empty() {
+        return Ok(());
+    }
+    let lote = cadastros::lotes(pool).await?.remove(0);
+    let alimentos = cadastros::alimentos(pool).await?;
+    let base = conhecimento::ler(pool).await?;
+    let mut cenarios = vec![
+        cenario(lote.clone(), alimentos.clone(), true),
+        cenario(lote.clone(), alimentos.clone(), false),
+    ];
+    let mut pendente = self::lote();
+    pendente.nome = "Lote pendente · sintético".into();
+    pendente.peso = 650.0;
+    cadastros::salvar_lote(pool, &mut pendente, true).await?;
+    let mut pendencia = cenario(pendente, alimentos.clone(), false);
+    pendencia.nome = "Pendência · consumo acima de 600 kg".into();
+    cenarios.push(pendencia);
+    let mut bloqueio = cenario(lote, alimentos, false);
+    bloqueio.nome = "Bloqueio · NNP adicionado sintético".into();
+    let item = &mut bloqueio.itens[0];
+    item.alimento.id = "demo-nnp".into();
+    item.alimento.nome = "Ingrediente com NNP · sintético".into();
+    item.alimento.nnp_adicionado = Conhecido::Sim;
+    item.alimento.evidencia = "Hipótese sintética para demonstrar exclusão pelo MVP.".into();
+    cadastros::salvar_alimento(pool, &mut item.alimento).await?;
+    cenarios.push(bloqueio);
+    for c in cenarios {
+        let p = crate::dominio::inferencia::verificar(&c, &base);
+        historico::salvar(pool, &c, &p, &base).await?;
     }
     Ok(())
 }

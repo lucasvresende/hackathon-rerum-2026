@@ -16,6 +16,14 @@ pub struct PedidoMotor {
 
 /// O processo filho é encerrado e aguardado ao expirar o orçamento; não sobra cálculo em thread.
 pub async fn calcular(cenario: Cenario, conhecimento: Conhecimento) -> Resultado<Parecer> {
+    calcular_no_executavel(cenario, conhecimento, &std::env::current_exe()?).await
+}
+
+pub async fn calcular_no_executavel(
+    cenario: Cenario,
+    conhecimento: Conhecimento,
+    executavel: &std::path::Path,
+) -> Resultado<Parecer> {
     if !cenario.formular {
         return Ok(crate::dominio::inferencia::verificar(
             &cenario,
@@ -29,7 +37,8 @@ pub async fn calcular(cenario: Cenario, conhecimento: Conhecimento) -> Resultado
             &conhecimento,
         ));
     }
-    let mut filho = tokio::process::Command::new(std::env::current_exe()?)
+    let prazo = tokio::time::Instant::now() + Duration::from_secs_f64(limite);
+    let mut filho = tokio::process::Command::new(executavel)
         .arg("__motor")
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
@@ -41,8 +50,19 @@ pub async fn calcular(cenario: Cenario, conhecimento: Conhecimento) -> Resultado
         conhecimento,
     })?;
     if let Some(mut entrada) = filho.stdin.take() {
-        entrada.write_all(&bytes).await?;
-        entrada.shutdown().await?;
+        let envio = tokio::time::timeout_at(prazo, async {
+            entrada.write_all(&bytes).await?;
+            entrada.shutdown().await
+        })
+        .await;
+        match envio {
+            Ok(resultado) => resultado?,
+            Err(_) => {
+                filho.kill().await?;
+                filho.wait().await?;
+                return Ok(interrompido());
+            }
+        }
     }
     let stdout = filho.stdout.take().ok_or("Saída do motor indisponível")?;
     let leitura = tokio::spawn(async move {
@@ -51,7 +71,7 @@ pub async fn calcular(cenario: Cenario, conhecimento: Conhecimento) -> Resultado
         let mut bytes = Vec::new();
         stdout.read_to_end(&mut bytes).await.map(|_| bytes)
     });
-    match tokio::time::timeout(Duration::from_secs_f64(limite), filho.wait()).await {
+    match tokio::time::timeout_at(prazo, filho.wait()).await {
         Ok(Ok(status)) if status.success() => {
             let bytes = leitura.await??;
             Ok(serde_json::from_slice(&bytes)?)
@@ -64,12 +84,7 @@ pub async fn calcular(cenario: Cenario, conhecimento: Conhecimento) -> Resultado
             filho.kill().await?;
             filho.wait().await?;
             leitura.abort();
-            Ok(Parecer {
-                condicao: "INCONCLUSIVO".into(),
-                busca: Some("INCONCLUSIVA".into()),
-                avisos: vec!["Formulação encerrada efetivamente pelo limite de tempo.".into()],
-                ..Parecer::default()
-            })
+            Ok(interrompido())
         }
     }
 }
@@ -86,4 +101,13 @@ pub async fn executar(
     tracing::info!(execucao_id = %id, duracao_ms = inicio.elapsed().as_millis(),
         metodo = %base.metodo, "Execução persistida com entradas e traço");
     Ok(id)
+}
+
+fn interrompido() -> Parecer {
+    Parecer {
+        condicao: "INCONCLUSIVO".into(),
+        busca: Some("INCONCLUSIVA".into()),
+        avisos: vec!["Formulação encerrada efetivamente pelo limite de tempo.".into()],
+        ..Parecer::default()
+    }
 }

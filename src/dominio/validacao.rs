@@ -41,6 +41,18 @@ pub fn validar_lote(lote: &Lote) -> Vec<Problema> {
             ));
         }
     }
+    if lote
+        .dispersao_peso
+        .is_some_and(|v| !v.is_finite() || v < 0.0)
+        || lote
+            .condicao_corporal
+            .is_some_and(|v| !v.is_finite() || v < 0.0)
+    {
+        erros.push(problema(
+            "observacoes",
+            "Dispersão e condição corporal devem ser não negativas.",
+        ));
+    }
     erros
 }
 
@@ -50,6 +62,23 @@ pub fn validar_alimento(a: &Alimento) -> Vec<Problema> {
         erros.push(problema(
             "nome",
             "Informe identidade e evidência com tamanho válido.",
+        ));
+    }
+    if a.fonte_id.is_empty()
+        || a.metodo.is_empty()
+        || a.origem.is_empty()
+        || ![
+            "ANALISE",
+            "MEDIA_TABELADA",
+            "SINTETICA",
+            "GARANTIA_MINIMA",
+            "GARANTIA_MAXIMA",
+        ]
+        .contains(&a.natureza.as_str())
+    {
+        erros.push(problema(
+            "fonte_id",
+            "Informe fonte, método, origem e natureza da composição.",
         ));
     }
     if !a.ms.is_finite() || a.ms <= 0.0 || a.ms > 1.0 {
@@ -82,8 +111,8 @@ pub fn validar(c: &Cenario) -> Vec<Problema> {
             erros.push(problema(campo, "Informe uma data civil válida."));
         }
     }
-    if let Some(m) = &c.medicao {
-        if !m.oferta_ms.is_finite()
+    if let Some(m) = &c.medicao
+        && (!m.oferta_ms.is_finite()
             || !m.sobras_ms.is_finite()
             || !m.periodo_dias.is_finite()
             || m.oferta_ms <= 0.0
@@ -92,14 +121,13 @@ pub fn validar(c: &Cenario) -> Vec<Problema> {
             || m.periodo_dias <= 0.0
             || m.animais != c.lote.animais
             || m.animais == 0
-            || c.consumo_alvo.is_some()
-        {
-            erros.push(problema(
-                "medicao",
-                "Oferta, sobras, período ou animais incompatíveis; \
+            || c.consumo_alvo.is_some())
+    {
+        erros.push(problema(
+            "medicao",
+            "Oferta, sobras, período ou animais incompatíveis; \
                 não combine consumo-alvo informado e medição observada.",
-            ));
-        }
+        ));
     }
     if c.horizonte == 0 {
         erros.push(problema(

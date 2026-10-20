@@ -39,6 +39,10 @@ O cálculo roda em processo filho do mesmo executável Rust. O servidor limita o
 processo e aguarda sua finalização. Isso evita deixar threads calculando após o timeout e mantém
 o executor assíncrono disponível. Um timeout não representa inviabilidade comprovada.
 
+Os limites estrangeiros de contaminantes são parâmetros SQL versionados. Quando ativados,
+integram o modelo linear e a revalidação; matéria-prima irregular não é autorizada por diluição.
+Um resultado <LOQ insuficiente permanece desconhecido.
+
 O estado de cada subproblema é preservado. A alegação de ótimo depende de todos estarem resolvidos
 como ótimos ou inviáveis. Desempate compara custo sem centavos, quantidade de ingredientes positivos
 e vetor canônico. Não prova mínimo global de ingredientes entre todas as soluções ótimas.

@@ -1,8 +1,11 @@
-use super::{Cenario, Conhecido, Conhecimento, Estado, Parecer};
+use super::{Cenario, Conhecido, Conhecimento, Estado, EstadoProdutivo, Parecer};
 
 pub fn avaliar(c: &Cenario, base: &Conhecimento, p: &mut Parecer) -> bool {
     let l = &c.lote;
-    let fora = !(400.0..=700.0).contains(&l.peso)
+    let fora = !matches!(
+        l.estado_produtivo,
+        EstadoProdutivo::Lactacao | EstadoProdutivo::Desconhecido
+    ) || !(400.0..=700.0).contains(&l.peso)
         || !(3.0..=5.0).contains(&l.gordura)
         || !(5.0..=30.0).contains(&p.lcg4)
         || !(60..=250).contains(&l.dias_lactacao)
@@ -13,14 +16,15 @@ pub fn avaliar(c: &Cenario, base: &Conhecimento, p: &mut Parecer) -> bool {
         || l.confinada == Conhecido::Nao
         || l.correcao_ambiente == Conhecido::Sim
         || l.correcao_atividade == Conhecido::Sim;
-    let pendente = [
-        l.adulta,
-        l.gestante,
-        l.crescimento,
-        l.peso_estavel,
-        l.confinada,
-    ]
-    .contains(&Conhecido::Desconhecido);
+    let pendente = l.estado_produtivo == EstadoProdutivo::Desconhecido
+        || [
+            l.adulta,
+            l.gestante,
+            l.crescimento,
+            l.peso_estavel,
+            l.confinada,
+        ]
+        .contains(&Conhecido::Desconhecido);
     let estado = if fora {
         Estado::Viola
     } else if pendente {
