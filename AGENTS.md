@@ -8,6 +8,7 @@
 6. Evitar dependências não rust-native
 7. Novas funcionalidades devem sempre estar cobertas por um conjunto de testes para testá-las individualmente ou em conjunto com o restante da aplicação
 8. Tenha como referência a documentação mais recente dos recursos e bibliotecas utilizados, incluindo sintaxe, boas práticas e exemplos.
+9. Use o compilador de Rust a seu favor. Itere com o código até o build passar.
 
 ## Tech Stack
 
