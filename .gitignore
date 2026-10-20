@@ -53,4 +53,4 @@ Thumbs.db
 *.bak
 
 # Python
-*.venv/
+.venv/
