@@ -6,3 +6,4 @@
 6. Escolha do tema 2.
 7. Criação de relatório específico para o tema 2, incluindo busca profunda da literatura científica e normas, extração de conceitos e fórmulas, e concepção da árvore de decisões com codex.
 8. Definição do documento de requisitos de software.
+9. Definição de plano de implementação em alto nível
