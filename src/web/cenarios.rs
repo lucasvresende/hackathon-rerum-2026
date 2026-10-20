@@ -51,9 +51,14 @@ pub async fn novo(
     let lotes = cadastros::lotes(&e.pool).await?;
     let alimentos = cadastros::alimentos(&e.pool).await?;
     let mut campos = if let Some(lote) = lotes.first() {
+        let mut selecionados = std::collections::BTreeSet::new();
         let alimentos = alimentos
             .into_iter()
-            .filter(|a| a.natureza == "SINTETICA")
+            .filter(|a| {
+                ["silagem", "milho", "soja", "mineral"].contains(&a.id.as_str())
+                    && a.natureza == "SINTETICA"
+                    && selecionados.insert(a.id.clone())
+            })
             .collect();
         formularios::campos_cenario(&demonstracao::cenario(
             lote.clone(),

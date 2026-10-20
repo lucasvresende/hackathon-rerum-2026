@@ -48,7 +48,7 @@ pub fn avaliar(c: &Cenario, base: &Conhecimento, p: &mut Parecer) -> bool {
             .push("Hipótese: ausência de correção ambiental/atividade; não foi avaliada.".into());
     }
     p.consumo_referencia = super::calculos::consumo_referencia(base, l.peso, p.lcg4);
-    if l.peso > 600.0 && c.consumo_alvo.is_none() {
+    if l.peso > 600.0 && c.consumo_informado().is_none() {
         p.registrar(
             "ESC-02",
             "Elegibilidade",

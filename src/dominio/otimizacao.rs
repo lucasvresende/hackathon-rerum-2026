@@ -11,7 +11,7 @@ pub fn formular(c: &Cenario, base: &Conhecimento) -> Parecer {
     let mut sonda = c.clone();
     sonda.formular = false;
     let mut diagnostico = inferencia::verificar(&sonda, base);
-    let alvo = c.consumo_alvo.or(diagnostico.consumo_referencia);
+    let alvo = c.consumo_informado().or(diagnostico.consumo_referencia);
     if !validacao::validar(c).is_empty() || alvo.is_none() || diagnostico.requisitos.is_none() {
         diagnostico.busca = Some("INCONCLUSIVA".into());
         return diagnostico;
@@ -142,7 +142,7 @@ pub fn formular(c: &Cenario, base: &Conhecimento) -> Parecer {
                     item.base = BaseQuantidade::ConsumoMs;
                     quantidades.push(item.quantidade);
                 }
-                let mut p = inferencia::verificar(&candidata, base);
+                let mut p = inferencia::verificar_continua(&candidata, base);
                 if p.pratico_valido && proximos(p.consumo_ms, alvo) {
                     estado.estado = if solucao.status() == SolutionStatus::Optimal {
                         "OTIMO_NO_MODELO"
@@ -174,7 +174,7 @@ pub fn formular(c: &Cenario, base: &Conhecimento) -> Parecer {
         estados.push(estado);
     }
     candidatas.sort_by(|a, b| {
-        if !proximos(a.0, b.0) {
+        if (a.0 - b.0).abs() > TOLERANCIA {
             return a.0.total_cmp(&b.0);
         }
         let positivos = |v: &[f64]| v.iter().filter(|q| **q > TOLERANCIA).count();

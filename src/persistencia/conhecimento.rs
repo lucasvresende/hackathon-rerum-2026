@@ -36,20 +36,26 @@ pub async fn carregar(pool: &SqlitePool, sql: &str) -> Resultado<()> {
     if contagem.perfis != 1 || contagem.fontes == 0 {
         return Err("Carga sem perfil único ou fontes.".into());
     }
+    let base = ler_conexao(&mut tx).await?;
+    validar(&base)?;
     sqlx::query_file!("queries/inserir_carga.sql", versao, resumo, sql)
         .execute(&mut *tx)
         .await?;
     tx.commit().await?;
-    // Validação adicional dos eixos também ocorre antes de toda execução.
     Ok(())
 }
 
 pub async fn ler(pool: &SqlitePool) -> Resultado<Conhecimento> {
+    let mut conexao = pool.acquire().await?;
+    ler_conexao(&mut conexao).await
+}
+
+async fn ler_conexao(conexao: &mut sqlx::SqliteConnection) -> Resultado<Conhecimento> {
     let perfil = sqlx::query_file!("queries/perfil.sql")
-        .fetch_one(pool)
+        .fetch_one(&mut *conexao)
         .await?;
     let coeficientes = sqlx::query_file!("queries/coeficientes.sql", perfil.id)
-        .fetch_all(pool)
+        .fetch_all(&mut *conexao)
         .await?
         .into_iter()
         .map(|r| Coeficiente {
@@ -61,7 +67,7 @@ pub async fn ler(pool: &SqlitePool) -> Resultado<Conhecimento> {
         })
         .collect();
     let fontes = sqlx::query_file!("queries/fontes.sql")
-        .fetch_all(pool)
+        .fetch_all(&mut *conexao)
         .await?
         .into_iter()
         .map(|r| Fonte {
@@ -75,7 +81,7 @@ pub async fn ler(pool: &SqlitePool) -> Resultado<Conhecimento> {
         })
         .collect();
     let normas = sqlx::query_file!("queries/normas.sql")
-        .fetch_all(pool)
+        .fetch_all(&mut *conexao)
         .await?
         .into_iter()
         .map(|r| Norma {

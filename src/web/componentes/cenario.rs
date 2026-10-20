@@ -87,6 +87,19 @@ impl Render for FormularioCenario<'_> {
                                 obrigatorio: true })
                         }
                     }
+                    details {
+                        summary { "Consumo observado por pesagem do lote (opcional)" }
+                        p.muted { "Mesmos animais e período; informe MS de oferta e sobras. \
+                            Isso não determina a composição ingerida quando há seleção de partículas." }
+                        div.form-grid {
+                            @for (nome, rotulo) in [("oferta_observada", "MS ofertada ao lote (kg)"),
+                                ("sobras_observadas", "MS das sobras do lote (kg)"),
+                                ("periodo_observado", "Período da medição (dias)")] {
+                                (Campo { nome, rotulo, valor: self.valor(nome), tipo: "number",
+                                    dica: "Deixe consumo-alvo vazio ao usar medição", obrigatorio: false })
+                            }
+                        }
+                    }
                     label.check { input type="checkbox" name="ue" checked[self.valor("ue") == "on"];
                         "Ativar referência UE adicional para contaminantes (não é legislação brasileira)"
                     }
@@ -111,9 +124,24 @@ impl Render for FormularioCenario<'_> {
                                     " · " (&id[..id.len().min(12)]) }
                             }
                             div.form-grid {
+                                div.field {
+                                    label for=(format!("unidade-preco-{id}")) { "Unidade comercial do preço" }
+                                    select id=(format!("unidade-preco-{id}"))
+                                        name=(format!("unidade-preco-{id}")) {
+                                        @for (v, rotulo) in [("kg", "R$/kg MN"),
+                                            ("t", "R$/tonelada MN"), ("embalagem", "R$/embalagem")] {
+                                            option value=(v)
+                                                selected[self.valor(&format!("unidade-preco-{id}")) == v] {
+                                                (rotulo)
+                                            }
+                                        }
+                                    }
+                                }
                                 @for (prefixo, rotulo, dica) in [
                                     ("q", "Quantidade na base escolhida", "Ignorada ao formular"),
-                                    ("preco", "Preço (R$/kg MN)", "Cotação decimal; zero precisa de justificativa"),
+                                    ("preco", "Preço na unidade comercial", "Cotação decimal; zero precisa de justificativa"),
+                                    ("embalagem", "Massa da embalagem (kg MN)",
+                                        "Obrigatória para preço por embalagem"),
                                     ("ms", "MS neste cenário (%)", "Simula alteração sem editar o catálogo"),
                                     ("perda", "Perda anterior ao fornecimento (%)", "Entre 0 e 100% exclusive"),
                                     ("estoque", "Estoque bruto (kg MN)", "Vazio significa desconhecido"),

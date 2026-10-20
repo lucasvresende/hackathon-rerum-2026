@@ -82,6 +82,25 @@ pub fn validar(c: &Cenario) -> Vec<Problema> {
             erros.push(problema(campo, "Informe uma data civil válida."));
         }
     }
+    if let Some(m) = &c.medicao {
+        if !m.oferta_ms.is_finite()
+            || !m.sobras_ms.is_finite()
+            || !m.periodo_dias.is_finite()
+            || m.oferta_ms <= 0.0
+            || m.sobras_ms < 0.0
+            || m.sobras_ms >= m.oferta_ms
+            || m.periodo_dias <= 0.0
+            || m.animais != c.lote.animais
+            || m.animais == 0
+            || c.consumo_alvo.is_some()
+        {
+            erros.push(problema(
+                "medicao",
+                "Oferta, sobras, período ou animais incompatíveis; \
+                não combine consumo-alvo informado e medição observada.",
+            ));
+        }
+    }
     if c.horizonte == 0 {
         erros.push(problema(
             "horizonte",

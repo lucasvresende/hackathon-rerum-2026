@@ -7,6 +7,28 @@ use super::*;
 
 /// Agenda finita e determinística: cada etapa deriva fatos uma vez, sem ciclos nem estado antigo.
 pub fn verificar(c: &Cenario, base: &Conhecimento) -> Parecer {
+    let mut p = verificar_continua(c, base);
+    if c.itens.iter().any(|i| i.resolucao_mn > 0.0) && p.pratico_valido {
+        let mut pratico = c.clone();
+        for (item, f) in pratico.itens.iter_mut().zip(&p.fornecimento) {
+            item.quantidade = f.pratico_mn * item.alimento.ms * (1.0 - c.sobras);
+            item.base = BaseQuantidade::ConsumoMs;
+            item.resolucao_mn = 0.0;
+        }
+        let revalidado = verificar_continua(&pratico, base);
+        p.pratico_valido = revalidado.pratico_valido;
+        if !p.pratico_valido {
+            p.avisos.push(
+                "FORNECIMENTO_INCOMPATIVEL: quantidades arredondadas \
+                violam restrições. Solução contínua preservada."
+                    .into(),
+            );
+        }
+    }
+    p
+}
+
+pub(crate) fn verificar_continua(c: &Cenario, base: &Conhecimento) -> Parecer {
     let inicio = Instant::now();
     let mut p = Parecer::default();
     let erros = validacao::validar(c);
@@ -30,6 +52,12 @@ pub fn verificar(c: &Cenario, base: &Conhecimento) -> Parecer {
         }
         return p;
     }
+    p.registrar(
+        "DAT-01",
+        "Dados",
+        Estado::Atende,
+        "Entradas finitas, unidades canônicas e referências do cenário validadas.".into(),
+    );
     let mut fatos = BTreeSet::from([0]);
     for etapa in 0..8 {
         if !fatos.contains(&etapa) {
@@ -44,7 +72,7 @@ pub fn verificar(c: &Cenario, base: &Conhecimento) -> Parecer {
                 }
                 elegibilidade::ingredientes(c, base, &mut p);
             }
-            1 => calcular(c, &mut p),
+            1 => calcular(c, base, &mut p),
             2 => nutrientes(&mut p),
             3 => barreiras(base, &mut p),
             4 => restricoes(c, &mut p),
@@ -68,7 +96,7 @@ pub fn verificar(c: &Cenario, base: &Conhecimento) -> Parecer {
     p
 }
 
-fn calcular(c: &Cenario, p: &mut Parecer) {
+fn calcular(c: &Cenario, base: &Conhecimento, p: &mut Parecer) {
     let (mut totais, consumo, fdnf) = calculos::totais(c);
     if c.itens
         .iter()
@@ -119,7 +147,8 @@ fn calcular(c: &Cenario, p: &mut Parecer) {
     }
     if let Some(referencia) = p.consumo_referencia {
         let diferenca = (consumo - referencia).abs() / referencia;
-        if diferenca > 0.10 && !super::unidades::proximos(diferenca, 0.10) {
+        if diferenca > base.discrepancia && !super::unidades::proximos(diferenca, base.discrepancia)
+        {
             p.avisos.push(format!(
                 "MS da dieta difere {:.2}% da referência; aviso operacional, \
                 sem diagnóstico de capacidade de consumo.",
@@ -315,5 +344,8 @@ fn concluir(p: &mut Parecer) {
     .iter()
     .all(|d| p.dimensao(d) == "ATENDE")
         && p.condicao == "AVALIADO";
+    if p.verificacoes.iter().any(|v| v.regra == "CON-01") {
+        p.pratico_valido &= p.dimensao("Contaminantes") == "ATENDE";
+    }
     p.verificacoes.sort_by(|a, b| a.regra.cmp(&b.regra));
 }

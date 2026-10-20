@@ -1,5 +1,7 @@
 use super::*;
-use crate::dominio::{Alimento, BaseQuantidade, Cenario, Item, Lote};
+use crate::dominio::{
+    Alimento, BaseQuantidade, Cenario, CotacaoOriginal, Item, Lote, MedicaoConsumo,
+};
 
 pub fn ler_cenario(
     c: &Campos,
@@ -35,11 +37,24 @@ pub fn ler_cenario(
                 quantidade *= a.ms / alimento.ms;
             }
         }
+        let cotacao = CotacaoOriginal {
+            valor: texto(c, &chave("preco")).replace(',', "."),
+            unidade: texto(c, &chave("unidade-preco")).into(),
+            massa_embalagem: numero(c, &chave("embalagem"), &mut erros),
+        };
+        let preco = crate::dominio::unidades::normalizar_preco(&cotacao).unwrap_or_else(|| {
+            erros.push(problema(
+                &chave("preco"),
+                "Preço ou unidade comercial inválida.",
+            ));
+            String::new()
+        });
         itens.push(Item {
             alimento,
             quantidade,
             base,
-            preco: texto(c, &chave("preco")).replace(',', "."),
+            preco,
+            cotacao_original: Some(cotacao),
             origem_preco: texto(c, &chave("origem")).into(),
             perda: obrigatorio(c, &chave("perda"), &mut erros) / 100.0,
             estoque: numero(c, &chave("estoque"), &mut erros),
@@ -60,6 +75,16 @@ pub fn ler_cenario(
         sobras: obrigatorio(c, "sobras", &mut erros) / 100.0,
         origem_sobras: texto(c, "origem_sobras").into(),
         consumo_alvo: numero(c, "consumo_alvo", &mut erros),
+        medicao: if texto(c, "oferta_observada").is_empty() {
+            None
+        } else {
+            Some(MedicaoConsumo {
+                oferta_ms: obrigatorio(c, "oferta_observada", &mut erros),
+                sobras_ms: obrigatorio(c, "sobras_observadas", &mut erros),
+                periodo_dias: obrigatorio(c, "periodo_observado", &mut erros),
+                animais: lote.animais,
+            })
+        },
         origem_consumo: texto(c, "origem_consumo").into(),
         referencia_ue: texto(c, "ue") == "on",
         preco_leite: c
@@ -104,7 +129,28 @@ pub fn campos_cenario(c: &Cenario) -> Campos {
         for (nome, valor) in [
             ("usar", "on".into()),
             ("q", i.quantidade.to_string()),
-            ("preco", i.preco.clone()),
+            (
+                "preco",
+                i.cotacao_original
+                    .as_ref()
+                    .map(|c| c.valor.clone())
+                    .unwrap_or(i.preco.clone()),
+            ),
+            (
+                "unidade-preco",
+                i.cotacao_original
+                    .as_ref()
+                    .map(|c| c.unidade.clone())
+                    .unwrap_or("kg".into()),
+            ),
+            (
+                "embalagem",
+                i.cotacao_original
+                    .as_ref()
+                    .and_then(|c| c.massa_embalagem)
+                    .map(|v| v.to_string())
+                    .unwrap_or_default(),
+            ),
             ("ms", (i.alimento.ms * 100.0).to_string()),
             ("perda", (i.perda * 100.0).to_string()),
             ("min", i.minimo_ms.to_string()),
@@ -124,6 +170,11 @@ pub fn campos_cenario(c: &Cenario) -> Campos {
         if i.sem_limite {
             campos.insert(format!("livre-{id}"), "on".into());
         }
+    }
+    if let Some(m) = &c.medicao {
+        campos.insert("oferta_observada".into(), m.oferta_ms.to_string());
+        campos.insert("sobras_observadas".into(), m.sobras_ms.to_string());
+        campos.insert("periodo_observado".into(), m.periodo_dias.to_string());
     }
     campos
 }

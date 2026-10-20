@@ -98,6 +98,8 @@ pub struct Item {
     pub quantidade: f64,
     pub base: BaseQuantidade,
     pub preco: String,
+    #[serde(default)]
+    pub cotacao_original: Option<CotacaoOriginal>,
     pub origem_preco: String,
     pub perda: f64,
     pub estoque: Option<f64>,
@@ -119,6 +121,8 @@ pub struct Cenario {
     pub sobras: f64,
     pub origem_sobras: String,
     pub consumo_alvo: Option<f64>,
+    #[serde(default)]
+    pub medicao: Option<MedicaoConsumo>,
     pub origem_consumo: String,
     pub referencia_ue: bool,
     pub preco_leite: Option<String>,
@@ -182,5 +186,54 @@ pub struct Conhecimento {
 impl Norma {
     pub fn vigente(&self, data: &str) -> bool {
         data >= self.inicio.as_str() && self.fim.as_ref().is_none_or(|fim| data < fim.as_str())
+    }
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct CotacaoOriginal {
+    pub valor: String,
+    pub unidade: String,
+    pub massa_embalagem: Option<f64>,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct MedicaoConsumo {
+    pub oferta_ms: f64,
+    pub sobras_ms: f64,
+    pub periodo_dias: f64,
+    pub animais: u32,
+}
+
+impl Cenario {
+    pub fn consumo_informado(&self) -> Option<f64> {
+        self.consumo_alvo.or_else(|| {
+            self.medicao
+                .as_ref()
+                .map(|m| (m.oferta_ms - m.sobras_ms) / (m.animais as f64 * m.periodo_dias))
+        })
+    }
+}
+
+impl Conhecido {
+    pub fn e(self, outro: Self) -> Self {
+        match (self, outro) {
+            (Self::Nao, _) | (_, Self::Nao) => Self::Nao,
+            (Self::Sim, Self::Sim) => Self::Sim,
+            _ => Self::Desconhecido,
+        }
+    }
+    pub fn ou(self, outro: Self) -> Self {
+        match (self, outro) {
+            (Self::Sim, _) | (_, Self::Sim) => Self::Sim,
+            (Self::Nao, Self::Nao) => Self::Nao,
+            _ => Self::Desconhecido,
+        }
+    }
+    pub fn negar(self) -> Self {
+        match self {
+            Self::Sim => Self::Nao,
+            Self::Nao => Self::Sim,
+            Self::Desconhecido => Self::Desconhecido,
+        }
     }
 }

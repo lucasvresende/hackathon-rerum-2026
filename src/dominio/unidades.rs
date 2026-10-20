@@ -37,3 +37,23 @@ pub fn dinheiro(valor: f64) -> String {
         .map(|v| format!("R$ {v:.2}").replace('.', ","))
         .unwrap_or_else(|| "Não calculável".into())
 }
+
+/// Normaliza preço por tonelada/embalagem com aritmética decimal, preservando a cotação original.
+pub fn normalizar_preco(cotacao: &super::CotacaoOriginal) -> Option<String> {
+    let valor: Decimal = cotacao.valor.parse().ok()?;
+    if valor < Decimal::ZERO {
+        return None;
+    }
+    let divisor = match cotacao.unidade.as_str() {
+        "" | "kg" => Decimal::ONE,
+        "t" => Decimal::from(1000),
+        "embalagem" => {
+            let massa = cotacao
+                .massa_embalagem
+                .filter(|m| m.is_finite() && *m > 0.0)?;
+            Decimal::from_f64_retain(massa)?
+        }
+        _ => return None,
+    };
+    Some((valor / divisor).normalize().to_string())
+}
