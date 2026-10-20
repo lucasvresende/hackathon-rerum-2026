@@ -1,14 +1,16 @@
 ## Instruções
 
-1. Commits contínuos sempre que uma nova funcionalidade ou alteração for realizada, ainda que dentro de uma mesma sessão de execução
-2. Commit messages curtas, descritivas e fáceis de identificar. ex.: "docs: atualiza a documentação de <substituir>", "feat: adiciona <substituir>", etc.
-3. Repositório em português do Brasil
-4. Sempre atualizar a documentação quando houver mudanças no repositório
-5. Antes de implementar uma funcionalidade, verifique se já existem recursos no tech stack que permitem uma resolução mais elegante
-6. Evitar dependências não rust-native
-7. Novas funcionalidades devem sempre estar cobertas por um conjunto de testes para testá-las individualmente ou em conjunto com o restante da aplicação
-8. Tenha como referência a documentação mais recente dos recursos e bibliotecas utilizados, incluindo sintaxe, boas práticas e exemplos.
-9. Use o compilador de Rust a seu favor. Itere com o código até o build passar.
+1. Leia o documento EQUISITOS.md para a implementação
+2. Pause a execução e pergunte ao programador como proceder quando houver decisões relevantes
+3. Faça commits contínuos sempre que uma nova funcionalidade ou alteração for realizada, ainda que dentro de uma mesma sessão de execução
+4. Commit messages curtas, descritivas e fáceis de identificar. ex.: "docs: atualiza a documentação de <substituir>", "feat: adiciona <substituir>", etc
+5. Repositório em português do Brasil
+6. Sempre atualizar a documentação quando houver mudanças no repositório
+7. Antes de implementar uma funcionalidade, verifique se já existem recursos no tech stack que permitem uma resolução mais elegante
+8. Evitar dependências não rust-native
+9. Novas funcionalidades devem sempre estar cobertas por um conjunto de testes para testá-las individualmente ou em conjunto com o restante da aplicação
+10. Tenha como referência a documentação mais recente dos recursos e bibliotecas utilizados, incluindo sintaxe, boas práticas e exemplos
+11. Use o compilador de Rust a seu favor. Itere corrigindo os erros encontrados pelo compilador. A utilização de blocos unsafe está vedada
 
 ## Tech Stack
 
