@@ -20,7 +20,8 @@
 6. Banco de dados: Arquivo **SQLite** local
 7. Gestão do banco de dados: [SQLx](https://docs.rs/sqlx/latest/sqlx/), utilizando obrigatoriamente macros para validação em tempo de compilação e o sistema próprio de migração. Os queries devem estar em arquivos .sql separados.
 8. Estilo: Um arquivo **css plano**, com variáveis definidas na parte inicial.
-9. Outras bibliotecas/crates e recursos podem ser adicionados caso necessário, priorizando recursos bem mantidos e sem excesso de dependências
+9. Teste no browser: Playwright, inspeção visual, testar no chromium, webkit e firefox
+10. Outras bibliotecas/crates e recursos podem ser adicionados caso necessário, priorizando recursos bem mantidos e sem excesso de dependências
 
 ## Formatação e Documentação
 
