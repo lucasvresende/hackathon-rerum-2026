@@ -124,6 +124,15 @@ fn calcular(c: &Cenario, base: &Conhecimento, p: &mut Parecer) {
                 .into(),
         );
     }
+    if totais.iter().any(Option::is_none) {
+        p.registrar(
+            "DAT-02",
+            "Dados",
+            Estado::Desconhecido,
+            "Composição obrigatória desconhecida; cálculos independentes permanecem disponíveis."
+                .into(),
+        );
+    }
     p.totais = totais;
     p.consumo_ms = consumo;
     p.fdn_forragem = fdnf;

@@ -2,7 +2,12 @@ use super::{Cenario, Comparacao, Conhecimento, Estado, Laudo, Parecer};
 
 /// Mantém o analito e a matriz; converte somente unidades e bases de umidade compatíveis.
 pub fn base_ms(laudo: &Laudo) -> Option<f64> {
-    if !laudo.valor.is_finite() || laudo.valor < 0.0 || laudo.ms <= 0.0 || laudo.ms > 1.0 {
+    if !laudo.valor.is_finite()
+        || !laudo.ms.is_finite()
+        || laudo.valor < 0.0
+        || laudo.ms <= 0.0
+        || laudo.ms > 1.0
+    {
         return None;
     }
     let valor = match laudo.qualificador.as_str() {

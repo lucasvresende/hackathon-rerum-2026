@@ -10,6 +10,7 @@ O tema usa variáveis de cor no início de um único CSS plano, com verde-esmera
 O motor valida entradas, enquadra o lote, normaliza, deriva fatos, avalia regras independentes e
 conclui por dimensão. Uma agenda finita mantém ordem estável e impede reaproveitar fatos antigos.
 Lógica desconhecida não equivale a falso; bloqueios não desaparecem após um resultado químico.
+Composição ausente mantém pendência de dados e preserva os cálculos de nutrientes independentes.
 Os IDs DAT/ESC/LEG/NUT/RUM/CON/FOR/MVP vinculam verificações ao anexo numérico.
 
 ## Conhecimento e banco

@@ -138,3 +138,14 @@ async fn ct08_observacao_de_consumo_nao_e_dieta_ingerida_medida() {
     assert!(!validacao::validar(&c).is_empty());
     assert_eq!(verificar(&c, &b).condicao, "INVALIDO");
 }
+
+#[tokio::test]
+async fn ct05_composicao_ausente_mantem_pendencia_sem_apagar_calculos_independentes() {
+    let (mut c, b) = exemplo().await;
+    c.itens[0].alimento.nutrientes[0] = None;
+    let p = verificar(&c, &b);
+    assert_eq!(p.dimensao("Dados"), "INCONCLUSIVO");
+    assert!(p.totais[0].is_none());
+    assert!(p.totais[1].is_some());
+    assert!(!p.pratico_valido);
+}
