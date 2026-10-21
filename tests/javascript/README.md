@@ -121,7 +121,9 @@ FEEDYOURCOW_SUITES=cenario-simplificado npm run test:e2e
 ```
 
 Os testes de seleção aguardam a aplicação dos valores após o swap, incluindo a transição
-`settle` do htmx. Isso evita conferir atributos temporários no WebKit durante a troca do HTML.
+`settle` do htmx. A checagem das animações também espera a inicialização do expansível para não
+ler seu estilo antes de `expand-ready` no WebKit. Isso evita conferir atributos temporários
+durante a troca do HTML.
 As dicas em tela móvel são testadas após abrir as configurações que contêm seus controles.
 
 Validação da branch de simplificação em 21/10/2026: suíte completa aprovada em Chromium,

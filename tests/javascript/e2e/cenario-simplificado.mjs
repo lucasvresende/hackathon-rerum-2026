@@ -23,6 +23,7 @@ export async function testarCenarioSimplificado(browser, url, artefatos, navegad
       if (javaScriptEnabled) {
         await page.emulateMedia({ reducedMotion: 'no-preference' });
         const botao = page.locator('#selecao-ingredientes .expand-toggle');
+        await page.locator('#selecao-ingredientes.expand-ready').waitFor();
         await painel.waitFor({ state: 'hidden' });
         assert.equal(await botao.getAttribute('aria-expanded'), 'false');
         await botao.focus();
