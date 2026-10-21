@@ -1,15 +1,8 @@
-# FeedYourCow!
+# 🐄 FeedYourCow!
 
 Sistema especialista local para verificar e formular dietas de vacas adultas em lactação.
 Oferece cadastros de lotes e alimentos, cálculos explicáveis, comparação de cenários e histórico.
-A interface é em português do Brasil e funciona sem internet após a instalação.
-
-O perfil `E2020_NRC1989_RUMEN_MVP_v1` avalia nutrientes e restrições específicas; não implementa
-integralmente NASEM/BR-LEITE. Atendimento químico não significa adequação nutricional integral:
-dimensões sem dados suficientes, como fibra física e micronutrientes, permanecem identificadas.
-O perfil aceita PV de 300 a 800 kg. As tabelas de referência cobrem apenas 400–700 kg para
-exigências e 400–600 kg para consumo; nas extensões, o sistema usa extrapolação linear e exibe
-um aviso de menor precisão. O consumo-alvo é opcional e, quando informado, tem precedência.
+A interface é em português do Brasil e funciona em localhost e sem internet após a instalação.
 
 ## Índice
 
@@ -31,7 +24,7 @@ cargo run -- preparar
 cargo run -- servir
 ```
 
-Abra [http://127.0.0.1:3000](http://127.0.0.1:3000) e encerre com Ctrl+C.
+Abra [http://127.0.0.1:3000](http://127.0.0.1:3000). Para encerrar, digite Ctrl+C.
 `preparar` aplica migrações e carrega o conhecimento, seis lotes de um animal e quinze alimentos
 sintéticos, incluindo duas misturas. Na Visão geral, use **Abrir cenário de exemplo** para calcular
 sem cadastrar ou preencher dados previamente. Os exemplos seguem o anexo A de `REQUISITOS.md`.
@@ -46,11 +39,11 @@ O aplicativo não precisa de Node, Python ou solver externo para funcionar.
 
 Exporte as variáveis no ambiente antes de executar os comandos:
 
-| Variável | Padrão | Finalidade |
-| --- | --- | --- |
-| `FEEDYOURCOW_BANCO` | `dados/aplicacao.sqlite3` | Caminho do banco SQLite. |
-| `FEEDYOURCOW_ENDERECO` | `127.0.0.1:3000` | Endereço e porta do servidor. |
-| `RUST_LOG` | `info` | Nível de logs. |
+| Variável               | Padrão                    | Finalidade                    |
+| ---------------------- | ------------------------- | ----------------------------- |
+| `FEEDYOURCOW_BANCO`    | `dados/aplicacao.sqlite3` | Caminho do banco SQLite.      |
+| `FEEDYOURCOW_ENDERECO` | `127.0.0.1:3000`          | Endereço e porta do servidor. |
+| `RUST_LOG`             | `info`                    | Nível de logs.                |
 
 O arquivo `.env.example` é uma referência e não é carregado automaticamente.
 O servidor aceita apenas loopback; o MVP não inclui autenticação ou acesso compartilhado.
@@ -174,18 +167,18 @@ O monólito usa Rust, Axum com tracing, Maud, SQLite e SQLx. A interface combina
 no servidor, htmx v4 e hx-live locais, com CSS plano e variáveis no início do arquivo.
 As versões reproduzíveis estão nos lockfiles. Código `unsafe` próprio é proibido.
 
-| Diretório | Responsabilidade |
-| --- | --- |
-| `src/dominio/` | Unidades, validações, cálculos, inferência e otimização. |
-| `src/aplicacao/` | Serviços de cadastros, cenários, execução, histórico e comparação. |
-| `src/persistencia/` | Banco, cargas, revisões, histórico e recuperação. |
-| `src/web/handlers/` | Rotas por recurso e tratamento HTTP. |
-| `src/web/entradas/` | Conversão e validação de formulários HTTP. |
-| `src/web/templates/` | Layouts, páginas, formulários e componentes Maud com `Render`. |
-| `static/` | CSS, JavaScript e dependências locais com licenças. |
-| `tests/` | Testes Rust e testes de navegador em `javascript/e2e/`. |
-| `scripts/` | Qualidade, conferência SQLx, distribuição e teste do pacote. |
-| `fontes/`, `hackathon/` | Fontes, pesquisa, requisitos do evento e planos. |
+| Diretório               | Responsabilidade                                                   |
+| ----------------------- | ------------------------------------------------------------------ |
+| `src/dominio/`          | Unidades, validações, cálculos, inferência e otimização.           |
+| `src/aplicacao/`        | Serviços de cadastros, cenários, execução, histórico e comparação. |
+| `src/persistencia/`     | Banco, cargas, revisões, histórico e recuperação.                  |
+| `src/web/handlers/`     | Rotas por recurso e tratamento HTTP.                               |
+| `src/web/entradas/`     | Conversão e validação de formulários HTTP.                         |
+| `src/web/templates/`    | Layouts, páginas, formulários e componentes Maud com `Render`.     |
+| `static/`               | CSS, JavaScript e dependências locais com licenças.                |
+| `tests/`                | Testes Rust e testes de navegador em `javascript/e2e/`.            |
+| `scripts/`              | Qualidade, conferência SQLx, distribuição e teste do pacote.       |
+| `fontes/`, `hackathon/` | Fontes, pesquisa, requisitos do evento e planos.                   |
 
 As requisições passam pelos handlers e pela conversão das entradas; os serviços coordenam
 o domínio e a persistência. Templates recebem dados preparados, sem consultar o banco ou
@@ -308,3 +301,12 @@ e a rota existente de atualização, com validação e persistência somente ao 
 O seletor de ingredientes usa o mesmo componente expansível dos demais dropdowns, com
 transições de abertura/fechamento, teclado, estado preservado após htmx e respeito à preferência
 de movimento reduzido. Sem JavaScript e na impressão, seu conteúdo fica disponível.
+
+## Notas
+
+O perfil `E2020_NRC1989_RUMEN_MVP_v1` avalia nutrientes e restrições específicas; não implementa
+integralmente NASEM/BR-LEITE. Atendimento químico não significa adequação nutricional integral:
+dimensões sem dados suficientes, como fibra física e micronutrientes, permanecem identificadas.
+O perfil aceita PV de 300 a 800 kg. As tabelas de referência cobrem apenas 400–700 kg para
+exigências e 400–600 kg para consumo; nas extensões, o sistema usa extrapolação linear e exibe
+um aviso de menor precisão. O consumo-alvo é opcional e, quando informado, tem precedência.
