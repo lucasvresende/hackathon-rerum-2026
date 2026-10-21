@@ -72,45 +72,14 @@ const CARTAS: &[Carta] = &[
     Carta {
         id: "alimentos",
         titulo: "Pesquisar alimentos e cadastrar composições",
-        passos: &[
-            "No catálogo, digite parte do nome e use Pesquisar. Confira composição, natureza \
-            do dado e a seção Procedência e condições de cada alimento.",
-            "Use Cadastrar composição ou Criar revisão ou nova análise. Registre identidade, \
-            classe, origem, processamento, fonte, método, data e evidências de uso. \
-            Identifique corretamente dados sintéticos, médias e análises.",
-            "A matéria seca (MS) é expressa em % da matéria natural (MN); NDT, PB, Ca, P, \
-            FDN, amido e EE são expressos em % da MS. Não preencha um nutriente desconhecido \
-            como zero. Registre origem animal, NNP, autorização e limite de rótulo do suplemento.",
-            "Escolha um template, veja a prévia, confirme e carregue a referência publicada. \
-            Edite antes de salvar; a referência original e as alterações são preservadas. \
-            Salve a revisão para novos cenários. Análises anteriores continuam disponíveis; \
-            preço e estoque locais são informados no cenário, sem alterar a composição científica.",
-        ],
+        passos: super::ajuda_conteudos::ALIMENTOS,
         destino: "/alimentos",
         acao: "Abrir catálogo",
     },
     Carta {
         id: "cenarios",
         titulo: "Montar um cenário: consumo, preços e disponibilidade",
-        passos: &[
-            "Em Novo cenário, informe nome, lote, tipo de cálculo, horizonte em dias e datas \
-            de avaliação e aplicação das regras. Escolha a base das quantidades por ingrediente: \
-            consumo em MS, consumo em MN ou oferta em MN, sempre por animal/dia.",
-            "Informe consumo-alvo em kg MS/animal/dia e sua origem ou deixe vazio para usar a \
-            Tabela B, quando aplicável. Acima de 600 kg de peso vivo, o alvo explícito é \
-            obrigatório. Para consumo observado, informe oferta e sobras em MS do lote e período \
-            de medição; deixe o alvo vazio. Seleção de partículas limita essa estimativa.",
-            "Registre sobras planejadas e origem das sobras e perdas. Zero também é uma \
-            hipótese que precisa ser declarada. O preço do leite é opcional para calcular \
-            margem sobre alimentação. A referência UE adicional é uma escolha explícita, \
-            separada da legislação brasileira.",
-            "Selecione uma composição por alimento e abra a carta do ingrediente. Confira MS, \
-            preço, unidade comercial, massa de embalagem, estoque bruto em MN, perda, inclusão \
-            mínima/máxima e resolução de fornecimento. Sem limite de estoque \
-            é uma hipótese explícita; estoque desconhecido não significa infinito.",
-            "Use Calcular e salvar cenário. Se houver erros, corrija os campos indicados; \
-            os valores válidos permanecem no formulário. O resultado salva as entradas e versões.",
-        ],
+        passos: super::ajuda_conteudos::CENARIOS,
         destino: "/cenarios/novo",
         acao: "Montar cenário",
     },
@@ -148,21 +117,7 @@ const CARTAS: &[Carta] = &[
     Carta {
         id: "resultados",
         titulo: "Ler o parecer, imprimir, reproduzir e simular",
-        passos: &[
-            "Leia as dimensões separadamente: integridade, nutrientes, barreiras ruminais, \
-            ingredientes e avaliações fora do núcleo. ATENDE é atendimento ao perfil avaliado; \
-            não é aprovação nutricional integral. DESCONHECIDO e NAO_AVALIADO exigem atenção.",
-            "Confira o balanço nutricional, custos e quantidades em MN/MS por animal, lote e \
-            horizonte. Só use o fornecimento prático quando sua revalidação estiver indicada \
-            como válida. INVALIDO, FORA_DO_PERFIL e BLOQUEADO impedem recomendação automática.",
-            "Abra Cálculos e regras aplicadas para consultar entradas, hipóteses, fontes e \
-            caminho de inferência. Use Imprimir parecer para gerar uma versão de impressão \
-            ou salvar como PDF pelo navegador.",
-            "Use Reproduzir versões originais para executar novamente com as entradas e \
-            artefatos preservados. Use Duplicar e simular para criar outro cenário: altere \
-            preços, MS ou premissas e escolha a base da simulação de MS (MS ou MN fixas). \
-            Calcule com outro nome e compare no histórico; o original continua preservado.",
-        ],
+        passos: super::ajuda_conteudos::RESULTADOS,
         destino: "/historico",
         acao: "Escolher um parecer no histórico",
     },

@@ -66,9 +66,10 @@ Cadastros abrem em nova guia; ao retornar, o cenário atualiza as opções e pre
 “Atualizar cadastros” oferece a atualização manual.
 
 Acesse **Ajuda** no menu ou **Ajuda nesta página** para consultar instruções da tarefa.
-Na Visão geral, os indicadores **?** explicam perfil, cenários e os números do resumo.
-Passe o mouse, use o foco do teclado ou toque/clique para ler; Escape ou clique fora fecha a dica.
-A carta “Visão geral e primeiros passos” da Ajuda detalha esses conceitos com exemplos.
+Os indicadores **?** explicam conceitos na Visão geral, no cenário, no catálogo/cadastro de
+alimentos e nos resultados. Passe o mouse, use o foco do teclado ou toque/clique para ler;
+Escape ou clique fora fecha a dica. As cartas correspondentes da Ajuda trazem mais detalhes
+e exemplos de unidades, consumo, dados e interpretação do parecer.
 Em **Perfil e fontes**, consulte os coeficientes, normas e referências utilizados.
 Os fluxos essenciais também estão disponíveis sem JavaScript.
 

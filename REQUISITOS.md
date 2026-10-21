@@ -798,7 +798,12 @@ explicarão seus conceitos. Deverão abrir por hover, foco, clique ou toque, fec
 clique fora e permanecer dentro da tela. A ativação por clique funcionará sem JavaScript.
 A carta de ajuda inicial detalhará os conceitos com exemplos, incluindo a contagem de animais,
 a distinção entre cenário e execução e o limite de 100 execuções no resumo (cinco na tabela).
-Nesta etapa, os indicadores serão aplicados somente à Visão geral.
+Os mesmos indicadores serão aplicados ao cenário (MS/MN, consumo/oferta, sobras/perdas,
+estoque, horizonte, inclusão e arredondamento), ao catálogo/cadastro de alimentos (composição,
+análise, revisão, procedência e nutrientes) e ao resultado (estados, núcleo químico, balanço,
+fornecimento prático e ótimo no modelo). Usar IDs únicos por campo/composição, manter a associação
+dos rótulos e reativar as dicas após substituições de formulário via htmx. As cartas de ajuda
+correspondentes explicarão esses conceitos com exemplos. O círculo terá 24 px e o símbolo 11 px.
 
 ### RNF-04 — Banco e consultas
 

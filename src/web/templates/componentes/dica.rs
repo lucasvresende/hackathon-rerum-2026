@@ -7,17 +7,24 @@ pub struct Dica {
     pub texto: &'static str,
 }
 
-impl Render for Dica {
-    fn render(&self) -> Markup {
+impl Dica {
+    /// Sufixos por campo ou composição evitam IDs duplicados em listas e formulários.
+    pub fn com_id(&self, id: &str) -> Markup {
         html! {
-            button.concept-trigger type="button" popovertarget=(self.id)
-                aria-label=(format!("Entender: {}", self.conceito)) aria-describedby=(self.id) {
+            button.concept-trigger type="button" popovertarget=(id)
+                aria-label=(format!("Entender: {}", self.conceito)) aria-describedby=(id) {
                 "?"
             }
-            div.concept-tip id=(self.id) popover="auto" role="tooltip" {
+            div.concept-tip id=(id) popover="auto" role="tooltip" {
                 b { (self.conceito) }
                 p { (self.texto) }
             }
         }
+    }
+}
+
+impl Render for Dica {
+    fn render(&self) -> Markup {
+        self.com_id(self.id)
     }
 }

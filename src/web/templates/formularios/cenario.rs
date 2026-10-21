@@ -127,8 +127,9 @@ impl Render for FormularioCenario<'_> {
                                     valor: self.valor(nome), tipo, dica, obrigatorio })
                             }
                         }
-                        div.field { label for="base" {
-                                "Quantidade informada por ingrediente" }
+                        div.field {
+                            (Rotulo { nome: "base", texto: "Quantidade informada por ingrediente",
+                                obrigatorio: false })
                             select #base name="base" {
                                 @for (v, texto) in [("CONSUMO_MS",
                                 "Consumo em kg MS/animal/dia"),
@@ -190,8 +191,9 @@ impl Render for FormularioCenario<'_> {
                 (super::ingredientes::Ingredientes(self))
                 section.card {
                     h2 { "3. Base da comparação" }
-                    div.field { label for="base_comparacao" {
-                            "Base da simulação de MS" }
+                    div.field {
+                        (Rotulo { nome: "base_comparacao", texto: "Base da simulação de MS",
+                            obrigatorio: false })
                         select #base_comparacao name="base_comparacao" {
                             @for v in ["Consumo de MS fixo",
                             "Quantidade de MN fixa"] {

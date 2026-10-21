@@ -1,6 +1,15 @@
 'use strict';
 // O popover nativo cuida de Escape e clique fora; aqui acrescentamos hover e posicionamento.
+let dicaAtual = null;
+let reposicionarDica = () => {};
+window.addEventListener('resize', () => reposicionarDica());
+document.addEventListener('scroll', () => reposicionarDica(), true);
+
 function iniciarDicas() {
+  if (dicaAtual && !dicaAtual.isConnected) {
+    dicaAtual = null;
+    reposicionarDica = () => {};
+  }
   document.querySelectorAll('.concept-trigger:not([data-dica-pronta])').forEach(botao => {
     botao.dataset.dicaPronta = 'true';
     const dica = document.getElementById(botao.getAttribute('popovertarget'));
@@ -8,6 +17,7 @@ function iniciarDicas() {
     let fechamento;
     const aberta = () => dica.matches(':popover-open');
     function posicionar() {
+      if (!dica.isConnected || !aberta()) return;
       const origem = botao.getBoundingClientRect();
       const margem = 12;
       const largura = dica.offsetWidth;
@@ -22,11 +32,14 @@ function iniciarDicas() {
     function mostrar() {
       clearTimeout(fechamento);
       if (!aberta()) dica.showPopover();
+      dicaAtual = dica;
+      reposicionarDica = posicionar;
       posicionar();
     }
     function agendarFechamento() {
       fechamento = setTimeout(() => {
-        if (!fixada && document.activeElement !== botao && !dica.matches(':hover')) {
+        if (dica.isConnected && !fixada && document.activeElement !== botao
+          && !dica.matches(':hover')) {
           dica.hidePopover();
         }
       }, 150);
@@ -45,10 +58,15 @@ function iniciarDicas() {
     dica.addEventListener('pointerenter', () => clearTimeout(fechamento));
     dica.addEventListener('pointerleave', agendarFechamento);
     dica.addEventListener('beforetoggle', evento => {
-      if (evento.newState === 'closed') fixada = false;
+      if (evento.newState === 'closed') {
+        fixada = false;
+        clearTimeout(fechamento);
+        if (dicaAtual === dica) {
+          dicaAtual = null;
+          reposicionarDica = () => {};
+        }
+      }
     });
-    window.addEventListener('resize', () => { if (aberta()) posicionar(); });
-    document.addEventListener('scroll', () => { if (aberta()) posicionar(); }, true);
   });
 }
 iniciarDicas();

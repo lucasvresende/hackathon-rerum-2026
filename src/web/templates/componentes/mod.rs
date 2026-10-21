@@ -1,7 +1,11 @@
 pub mod ajuda;
+mod ajuda_conteudos;
 pub mod cabecalho;
 pub mod campo;
+pub mod conceitos_alimentos;
+pub mod conceitos_cenario;
 pub mod conceitos_inicio;
+pub mod conceitos_resultado;
 pub mod dica;
 pub mod entradas;
 pub mod estrutura;

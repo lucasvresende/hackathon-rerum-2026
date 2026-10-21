@@ -1,6 +1,6 @@
 use maud::{Markup, Render, html};
 
-use super::cabecalho::Cabecalho;
+use super::{cabecalho::Cabecalho, conceitos_resultado as conceitos};
 use crate::dominio::Estado;
 use crate::dominio::calculos::NUTRIENTES;
 use crate::dominio::unidades::{dinheiro, preco_f64};
@@ -58,7 +58,9 @@ impl Render for ResultadoExecucao<'_> {
                 ] { article.stat { small { (nome) } strong { (valor) } span { (dica) } } }
             }
             section.card {
-                h2 { "Resultados por dimensão" }
+                div.concept-label.section-concept {
+                    h2 { "Resultados por dimensão" } (conceitos::ESTADOS)
+                }
                 div.dimension-grid {
                     @for nome in ["Dados", "Elegibilidade", "Núcleo químico",
                     "Barreiras ruminais",
@@ -67,14 +69,20 @@ impl Render for ResultadoExecucao<'_> {
                         @let estado = p.dimensao(nome);
                         div class=(format!("dimension {}", if estado == "ATENDE" { "ok" }
                         else if estado == "NAO_ATENDE" { "bad" } else { "neutral" })) {
-                            small { (nome) } strong { (estado.replace('_', " ")) }
+                            div.concept-label {
+                                small { (nome) }
+                                @if nome == "Núcleo químico" { (conceitos::NUCLEO) }
+                            }
+                            strong { (estado.replace('_', " ")) }
                         }
                     }
                 }
                 @for aviso in &p.avisos { p.alert { (aviso) } }
             }
             section.card.table-wrap {
-                div.section-title { h2 { "Balanço nutricional" } span.pill {
+                div.section-title {
+                    div.concept-label { h2 { "Balanço nutricional" } (conceitos::BALANCO) }
+                    span.pill {
                         "BASE: MATÉRIA SECA" } }
                 table {
                     thead { tr { th { "Nutriente" } th { "Oferta (kg/dia)" } th {
@@ -111,7 +119,9 @@ impl Render for ResultadoExecucao<'_> {
                         Excesso não é diagnóstico de intoxicação." }
             }
             section.card.table-wrap {
-                h2 { "Quantidades de fornecimento" }
+                div.concept-label.section-concept {
+                    h2 { "Quantidades de fornecimento" } (conceitos::FORNECIMENTO)
+                }
                 p.muted {
                     "Consumo estimado e oferta são grandezas diferentes. MN: matéria natural." }
                 table {
@@ -139,7 +149,9 @@ impl Render for ResultadoExecucao<'_> {
             }
             @if let Some(busca) = &p.busca {
                 section.card {
-                    h2 { "Formulação: " (busca) }
+                    div.concept-label.section-concept {
+                        h2 { "Formulação: " (busca) } (conceitos::OTIMO)
+                    }
                     p { (&e.conhecimento.metodo) }
                     p.muted {
                         "Ótimo se refere ao modelo contínuo. Não prova mínimo global de \

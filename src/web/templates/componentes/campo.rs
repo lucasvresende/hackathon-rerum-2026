@@ -20,11 +20,21 @@ impl Render for Rotulo<'_> {
         let nome = self.nome;
         let texto = self.texto;
         let obrigatorio = self.obrigatorio;
-        html! {
+        let rotulo = html! {
             label for=(nome) {
                 (texto)
                 @if obrigatorio { span.required aria-hidden="true" { " *" } }
             }
+        };
+        let dica = super::conceitos_cenario::campo(nome)
+            .or_else(|| super::conceitos_alimentos::campo(nome));
+        html! {
+            @if let Some(dica) = dica {
+                div.concept-label {
+                    (rotulo)
+                    (dica.com_id(&format!("conceito-{nome}")))
+                }
+            } @else { (rotulo) }
         }
     }
 }
