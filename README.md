@@ -5,6 +5,9 @@ Interface em português do Brasil com tema verde-esmeralda, cálculos explicáve
 Os requisitos de interface priorizam tarefas, dados e resultados para o operador da fazenda.
 FeedYourCow identifica o software; telas, menu e rodapé não devem conter slogans ou publicidade.
 
+O [plano de melhorias de interface](hackathon/PLANO_MELHORIAS.md) detalha as sugestões de
+`hackathon/NOTAS_MELHORIAS.md`, as etapas de implementação, os testes e as decisões pendentes.
+
 ## Índice
 
 - [Executar](#executar)
