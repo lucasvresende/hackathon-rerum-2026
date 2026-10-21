@@ -20,13 +20,6 @@ pub const COMPOSICOES: Dica = Dica {
         alimento pode ter várias análises ou revisões; cada composição disponível conta aqui. \
         Preço e estoque são informados separadamente no cenário.",
 };
-pub const EXECUCOES: Dica = Dica {
-    id: "dica-execucoes",
-    conceito: "Execuções recentes",
-    texto: "Cálculos salvos ao verificar ou formular uma dieta, inclusive quando há pendências \
-        ou bloqueios. Este total considera até as 100 últimas execuções; a tabela abaixo \
-        mostra as cinco mais recentes. Consulte as demais no histórico.",
-};
 pub const CENARIOS: Dica = Dica {
     id: "dica-cenarios",
     conceito: "Cenários",

@@ -793,11 +793,14 @@ com rótulos, unidades visíveis, mensagens por campo e navegação por teclado.
 Não depender somente de cor para indicar estado. Resultados parciais deverão ser compreensíveis.
 Substituições de HTML deverão preservar foco e contexto de uso.
 
-Na Visão geral, indicadores de interrogação junto a perfil, cenários e às quatro estatísticas
+Na Visão geral, indicadores de interrogação junto a perfil, cenários e às três estatísticas
 explicarão seus conceitos. Deverão abrir por hover, foco, clique ou toque, fechar com Escape ou
 clique fora e permanecer dentro da tela. A ativação por clique funcionará sem JavaScript.
 A carta de ajuda inicial detalhará os conceitos com exemplos, incluindo a contagem de animais,
-a distinção entre cenário e execução e o limite de 100 execuções no resumo (cinco na tabela).
+a distinção entre cenário e execução e os cinco registros da tabela de últimos cenários.
+O resumo conterá apenas lotes, animais e composições; não exibirá total de execuções recentes.
+O botão “Ajuda nesta página” abrirá a seção correspondente em nova guia, preservando a página
+original, inclusive sem JavaScript.
 Os mesmos indicadores serão aplicados ao cenário (MS/MN, consumo/oferta, sobras/perdas,
 estoque, horizonte, inclusão e arredondamento), ao catálogo/cadastro de alimentos (composição,
 análise, revisão, procedência e nutrientes) e ao resultado (estados, núcleo químico, balanço,

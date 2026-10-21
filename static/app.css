@@ -49,6 +49,7 @@ h3 { font-size: 14px; margin-bottom: 4px; }
 .subtitle { color: var(--secundario); font-size: 13px; margin: 8px 0 0; }
 .stats { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 16px;
     margin: 22px 0 26px; }
+.stats.overview-stats { grid-template-columns: repeat(3,minmax(0,1fr)); }
 .stat { background: var(--papel); border: 1px solid var(--borda); border-radius: 12px;
     padding: 20px; }
 .stat small { color: #5b7061; font-size: 11px; display: block; }
@@ -143,7 +144,8 @@ details p { font-size: 12px; margin: 14px 0 5px; }
     .nav-link > span { display: none; }
     .workspace { margin-left: 0; }
     main { padding: 24px 20px; } h1 { font-size: 26px; }
-    .stats { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    .stats, .stats.overview-stats { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    .overview-stats .stat:last-child { grid-column: 1 / -1; }
 }
 @media (max-width: 540px) {
     .card { padding: 20px; }

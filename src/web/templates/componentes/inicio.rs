@@ -24,12 +24,11 @@ impl Render for Inicio<'_> {
                 target="_blank" rel="noopener" title="Abre em nova guia" {
                     "Formular dieta" }
             }
-            section.stats aria-label="Resumo da aplicação" {
+            section.stats.overview-stats aria-label="Resumo da aplicação" {
                 @for (numero, dica) in [
                 (self.lotes.len().to_string(), &conceitos::LOTES),
                 (animais.to_string(), &conceitos::ANIMAIS),
                 (self.alimentos.len().to_string(), &conceitos::COMPOSICOES),
-                (self.execucoes.len().to_string(), &conceitos::EXECUCOES),
                 ] {
                     article.stat {
                         div.concept-label { small { (dica.conceito) } (dica) }

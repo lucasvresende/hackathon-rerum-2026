@@ -7,9 +7,11 @@ Os testes JavaScript de integração ficam em `tests/javascript/e2e/`:
 - `templates.mjs`: referências editáveis, cadastros e componentes dos formulários.
 - `dicas.mjs`: dicas no cenário, catálogo/cadastro e parecer; IDs únicos, rótulos, ausência
   de envio ao abrir dicas, reativação após htmx, tela móvel, impressão e uso sem JavaScript.
-- `inicio.mjs`: seis dicas da Visão geral; hover, teclado, Escape, clique fora, toque,
+- `inicio.mjs`: três estatísticas e cinco dicas da Visão geral; hover, teclado, Escape,
+  clique fora, toque,
   limites da tela, impressão e funcionamento por clique sem JavaScript nos três navegadores.
-- `ajuda.mjs`: navegação contextual, teclado, acessibilidade, impressão e modo sem JavaScript.
+- `ajuda.mjs`: ajuda contextual em nova guia, preservação da origem, teclado, acessibilidade,
+  impressão e modo sem JavaScript.
 
 ```sh
 cargo build --locked

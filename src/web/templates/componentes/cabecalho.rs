@@ -16,7 +16,8 @@ impl Render for Cabecalho<'_> {
             div.page-heading {
                 div.page-title-row {
                     h1 { (titulo) }
-                    a.button.secondary.page-help.no-print href=(format!("/ajuda#{ajuda}")) {
+                    a.button.secondary.page-help.no-print href=(format!("/ajuda#{ajuda}"))
+                        target="_blank" rel="noopener" title="Abre em nova guia" {
                         "Ajuda nesta página"
                     }
                 }

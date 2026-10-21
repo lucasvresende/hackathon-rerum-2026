@@ -65,7 +65,8 @@ autorização de ingredientes nem adequação ao perfil. A procedência acompanh
 Cadastros abrem em nova guia; ao retornar, o cenário atualiza as opções e preserva os campos.
 “Atualizar cadastros” oferece a atualização manual.
 
-Acesse **Ajuda** no menu ou **Ajuda nesta página** para consultar instruções da tarefa.
+Acesse **Ajuda** no menu para consultar as instruções. **Ajuda nesta página** abre a seção
+correspondente em uma nova guia, mantendo a tarefa atual aberta.
 Os indicadores **?** explicam conceitos na Visão geral, no cenário, no catálogo/cadastro de
 alimentos e nos resultados. Passe o mouse, use o foco do teclado ou toque/clique para ler;
 Escape ou clique fora fecha a dica. As cartas correspondentes da Ajuda trazem mais detalhes

@@ -36,8 +36,11 @@ export async function testarAjuda(page, url, artefatos, navegador) {
     await carta.locator('.help-content').waitFor({ state: 'visible' });
   }
   await page.goto(url);
-  await page.getByRole('link', { name: 'Ajuda nesta página' }).click();
-  await page.locator('#inicio-conteudo').waitFor({ state: 'visible' });
+  await conferirNovaGuia(page, url, 'inicio');
+  await page.goto(`${url}/cenarios/novo?dieta=B`);
+  await page.locator('#nome').fill('Cenário em edição');
+  await conferirNovaGuia(page, url, 'cenarios');
+  assert.equal(await page.locator('#nome').inputValue(), 'Cenário em edição');
   await page.goto(url);
   await page.goto(`${url}/ajuda#resultados`);
   await page.locator('#resultados-conteudo').waitFor({ state: 'visible' });
@@ -80,6 +83,10 @@ export async function testarAjuda(page, url, artefatos, navegador) {
     await semJs.goto(`${url}/ajuda#lotes`);
     assert.equal(await semJs.locator('.help-content:visible').count(), 10);
     await semJs.getByRole('heading', { name: 'Cadastrar e revisar lotes' }).waitFor();
+    await semJs.goto(`${url}/cenarios/novo?dieta=B`);
+    await semJs.locator('#nome').fill('Rascunho sem JavaScript');
+    await conferirNovaGuia(semJs, url, 'cenarios');
+    assert.equal(await semJs.locator('#nome').inputValue(), 'Rascunho sem JavaScript');
   } finally { await contexto.close(); }
 }
 
@@ -94,10 +101,25 @@ export async function conferirLinkAjuda(page) {
     : caminho === '/conhecimento' ? 'conhecimento' : 'inicio';
   const link = page.getByRole('link', { name: 'Ajuda nesta página', exact: true });
   assert.equal(await link.getAttribute('href'), `/ajuda#${secao}`);
+  assert.equal(await link.getAttribute('target'), '_blank');
+  assert.equal(await link.getAttribute('rel'), 'noopener');
   const titulo = await page.getByRole('heading', { level: 1 }).boundingBox();
   const botao = await link.boundingBox();
   assert.ok(titulo && botao, 'Título e ajuda devem estar visíveis');
   assert.ok(botao.x >= titulo.x + titulo.width, 'Ajuda deve ficar à direita do título');
   assert.ok(Math.abs((botao.y + botao.height / 2) - (titulo.y + titulo.height / 2)) < 1,
     'Título e ajuda devem estar centralizados na mesma linha');
+}
+
+async function conferirNovaGuia(page, url, secao) {
+  const origem = page.url();
+  const novaGuia = page.context().waitForEvent('page');
+  await page.getByRole('link', { name: 'Ajuda nesta página' }).click();
+  const ajuda = await novaGuia;
+  try {
+    await ajuda.locator(`#${secao}-conteudo`).waitFor({ state: 'visible' });
+    assert.equal(ajuda.url(), `${url}/ajuda#${secao}`);
+    assert.equal(page.url(), origem, 'A página original deve permanecer aberta');
+    assert.equal(await ajuda.evaluate(() => window.opener), null);
+  } finally { await ajuda.close(); }
 }

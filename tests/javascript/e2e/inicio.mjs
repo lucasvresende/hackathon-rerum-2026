@@ -17,8 +17,10 @@ export async function testarInicio(browser, url, artefatos, nome) {
   try {
     const page = await contexto.newPage();
     await page.goto(url);
+    assert.equal(await page.locator('.overview-stats .stat').count(), 3);
+    assert.equal(await page.getByText('Execuções recentes', { exact: true }).count(), 0);
     const indicadores = page.locator('.concept-trigger');
-    assert.equal(await indicadores.count(), 6);
+    assert.equal(await indicadores.count(), 5);
     for (const botao of await indicadores.all()) {
       const id = await botao.getAttribute('popovertarget');
       const dica = page.locator(`#${id}`);

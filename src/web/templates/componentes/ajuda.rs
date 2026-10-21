@@ -18,7 +18,7 @@ const CARTAS: &[Carta] = &[
         titulo: "Visão geral e primeiros passos",
         passos: &[
             "A Visão geral é o ponto de partida para trabalhar com as dietas. Os números no \
-            topo resumem os cadastros e os cálculos salvos. Passe o mouse sobre o ponto de \
+            topo resumem lotes, animais e composições cadastrados. Passe o mouse sobre o ponto de \
             interrogação ou toque nele para entender cada conceito. Pelo teclado, use Tab \
             para chegar ao indicador e Escape para fechar a explicação.",
             "Lote é um grupo de animais que será avaliado com os mesmos dados, como peso \
@@ -35,9 +35,9 @@ const CARTAS: &[Carta] = &[
             cenário e mudar o preço do milho para comparar custos, preservando o original.",
             "Execução é o cálculo salvo de um cenário, com suas entradas e seu resultado. \
             Ela pode apontar atendimento, violações, pendências ou bloqueios; estar no \
-            histórico não significa que a dieta foi aprovada. Execuções recentes conta até \
-            os 100 últimos cálculos. A tabela Últimos cenários mostra os cinco mais recentes; \
-            use Ver histórico para consultar os demais e abrir os pareceres.",
+            histórico não significa que a dieta foi aprovada. A tabela Últimos cenários mostra \
+            os cinco mais recentes; use Ver histórico para consultar os demais e abrir \
+            os pareceres.",
             "Perfil ativo é o conjunto de referências e regras que orienta a avaliação. \
             Ele define a população atendida e os nutrientes e limites considerados. \
             O identificador informa qual versão está em uso. O perfil atual se destina a \

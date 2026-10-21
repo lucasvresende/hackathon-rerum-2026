@@ -24,20 +24,15 @@ async fn visao_geral_explica_conceitos_mesmo_sem_cadastros() {
         let html = std::str::from_utf8(&bytes).unwrap();
         if rota == "/" {
             assert!(html.contains("Nenhum cenário calculado."));
-            assert_eq!(html.matches("<strong>0</strong>").count(), 4);
-            for id in [
-                "lotes",
-                "animais",
-                "composicoes",
-                "execucoes",
-                "cenarios",
-                "perfil",
-            ] {
+            assert_eq!(html.matches("<strong>0</strong>").count(), 3);
+            for id in ["lotes", "animais", "composicoes", "cenarios", "perfil"] {
                 assert!(html.contains(&format!("popovertarget=\"dica-{id}\"")));
                 assert!(html.contains(&format!("aria-describedby=\"dica-{id}\"")));
                 assert!(html.contains(&format!("id=\"dica-{id}\" popover=\"auto\"")));
             }
-            assert!(html.contains("até as 100 últimas execuções"));
+            assert!(!html.contains("Execuções recentes"));
+            assert!(!html.contains("dica-execucoes"));
+            assert!(html.contains("Últimos cenários"));
             assert!(html.contains("não garante adequação nutricional completa"));
         } else {
             assert!(!html.contains("class=\"concept-trigger\""));

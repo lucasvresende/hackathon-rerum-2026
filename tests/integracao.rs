@@ -235,6 +235,12 @@ async fn ajuda_disponivel_com_secoes_e_links_contextuais() {
         let corpo = resposta.into_body().collect().await.unwrap().to_bytes();
         let html = std::str::from_utf8(&corpo).unwrap();
         assert!(html.contains(&format!("href=\"/ajuda#{secao}\"")), "{rota}");
+        assert!(
+            html.contains(&format!(
+                "href=\"/ajuda#{secao}\" target=\"_blank\" rel=\"noopener\""
+            )),
+            "{rota}"
+        );
         if rota == "/ajuda" {
             for id in [
                 "inicio",
