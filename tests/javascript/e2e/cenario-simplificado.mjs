@@ -4,6 +4,7 @@ import { join } from 'node:path';
 export async function testarCenarioSimplificado(browser, url, artefatos, navegador) {
   for (const javaScriptEnabled of [true, false]) {
     const contexto = await browser.newContext({ javaScriptEnabled });
+    contexto.setDefaultTimeout(10000);
     const page = await contexto.newPage();
     const erros = [];
     page.on('pageerror', erro => erros.push(erro.message));
@@ -31,12 +32,20 @@ export async function testarCenarioSimplificado(browser, url, artefatos, navegad
       await page.locator('.ingredient').waitFor();
       assert.equal(await page.locator('.ingredient').count(), 1);
       assert.equal(await page.locator('#nome').inputValue(), 'Rascunho do teste');
+      await page.waitForFunction(() =>
+        !document.querySelector('.htmx-request, .htmx-settling, .htmx-swapping'));
       await page.locator(`[name="q-${id}"]`).fill('3.5');
+      await page.locator(`[name="q-${id}"]`).press('Tab');
+      await page.waitForFunction(id =>
+        document.querySelector(`[name="q-${id}"]`)?.value === '3.5', id);
+      assert.equal(await page.locator(`[name="q-${id}"]`).inputValue(), '3.5');
       // Selecionar outro ingrediente não exige preço nem lote já preenchidos.
       const segundo = page.locator('#selecao-ingredientes input[type=checkbox]').nth(1);
       await segundo.check();
       if (!javaScriptEnabled) await atualizar();
       await page.waitForFunction(() => document.querySelectorAll('.ingredient').length === 2);
+      await page.waitForFunction(id =>
+        document.querySelector(`[name="q-${id}"]`)?.value === '3.5', id);
       assert.equal(await page.locator(`[name="q-${id}"]`).inputValue(), '3.5');
       await seletor.uncheck();
       if (!javaScriptEnabled) await atualizar();
@@ -46,6 +55,8 @@ export async function testarCenarioSimplificado(browser, url, artefatos, navegad
       await seletor.check();
       if (!javaScriptEnabled) await atualizar();
       await page.locator(`[data-composicao="${id}"]`).waitFor();
+      await page.waitForFunction(id =>
+        document.querySelector(`[name="q-${id}"]`)?.value === '3.5', id);
       assert.equal(await page.locator(`[name="q-${id}"]`).inputValue(), '3.5');
       if (javaScriptEnabled) {
         await page.setViewportSize({ width: 390, height: 844 });

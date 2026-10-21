@@ -48,7 +48,7 @@ export async function testarCondicionais(browser, url, artefatos, navegador) {
     await ms.fill('0');
     assert.equal(await ms.evaluate(e => e.validity.customError), true);
     await usar.uncheck();
-    await ingrediente.waitFor({ state: 'detached' });
+    await page.locator(`[data-composicao="${id}"]`).waitFor({ state: 'detached' });
     assert.equal(await page.locator(`[name="ms-${id}"]`).getAttribute('type'), 'hidden');
 
   });

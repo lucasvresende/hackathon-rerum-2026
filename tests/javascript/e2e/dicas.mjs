@@ -103,6 +103,9 @@ export async function testarDicas(browser, url, artefatos, nome) {
         for (const [rota, id] of [['/alimentos', 'dica-composicao'],
           ['/cenarios/novo?dieta=B', 'conceito-sobras'], [parecer, 'dica-estados']]) {
           await mobile.goto(rota.startsWith('http') ? rota : `${url}${rota}`);
+          if (id === 'conceito-sobras' && javaScriptEnabled) {
+            await abrirConfiguracoesCenario(mobile);
+          }
           if (id === 'dica-composicao' && javaScriptEnabled) {
             const cabecalho = mobile.locator('.food-card .expand-heading').first();
             await cabecalho.locator('.expand-toggle').waitFor({ state: 'visible' });

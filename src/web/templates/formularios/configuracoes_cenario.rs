@@ -8,10 +8,10 @@ pub struct ConfiguracoesCenario<'a, 'b>(pub &'a FormularioCenario<'b>);
 impl Render for ConfiguracoesCenario<'_, '_> {
     fn render(&self) -> Markup {
         html! {
-                    (Expansivel { id: "configuracoes-avancadas",
-                        aberto: self.0.valor("expansao-configuracoes-avancadas") == "true",
-                        titulo: html! { "Configurações avançadas" },
-                        conteudo: html! {
+            (Expansivel { id: "configuracoes-avancadas",
+                aberto: self.0.valor("expansao-configuracoes-avancadas") == "true",
+                titulo: html! { "Configurações avançadas" },
+                conteudo: html! {
                     div.form-grid {
                         @for (nome, rotulo, tipo, dica, obrigatorio) in [
                         ("data_avaliacao", "Data de avaliação", "date",
@@ -108,8 +108,8 @@ impl Render for ConfiguracoesCenario<'_, '_> {
                         small {
                             "Ao alterar MS, esta escolha governa a conversão." }
                     }
-                        },
-                    })
+                },
+            })
         }
     }
 }

@@ -118,3 +118,12 @@ texto `true`/`false`, preservando a abertura após atualizar cadastros ou ingred
 ```sh
 FEEDYOURCOW_SUITES=cenario-simplificado npm run test:e2e
 ```
+
+Os testes de seleção aguardam a aplicação dos valores após o swap, incluindo a transição
+`settle` do htmx. Isso evita conferir atributos temporários no WebKit durante a troca do HTML.
+As dicas em tela móvel são testadas após abrir as configurações que contêm seus controles.
+
+Validação da branch de simplificação em 21/10/2026: suíte completa aprovada em Chromium,
+Firefox e WebKit; o teste de seleção também foi repetido com sua espera final ajustada.
+Build, testes Rust, clippy sem warnings, rustfmt, qualidade textual e `git diff --check`
+aprovados. Capturas móveis de Chromium e WebKit inspecionadas visualmente.

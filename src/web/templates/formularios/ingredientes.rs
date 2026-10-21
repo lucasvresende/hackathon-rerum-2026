@@ -51,99 +51,97 @@ impl Render for Ingredientes<'_, '_> {
                         }
                     }
                 } @else {
-                article.ingredient data-composicao=(id) {
-                    h3 { (&a.nome) }
-                    div.form-grid {
-                        @for (prefixo, rotulo) in [("q", "Quantidade na base escolhida"),
-                            ("preco", "Preço na unidade comercial"),
-                            ("estoque", "Estoque bruto (kg MN)")] {
-                            @let nome = format!("{prefixo}-{id}");
-                            (Campo { erro: self.0.erro(&nome), nome: &nome, rotulo,
-                                valor: self.0.valor(&nome), tipo: "number",
-                                dica: if prefixo == "estoque" { "Vazio significa desconhecido" }
-                                    else if prefixo == "q" { "Ignorada ao formular" }
-                                    else { "Padrão: R$/kg MN; informe sua cotação" },
-                                obrigatorio: prefixo == "preco" || (prefixo == "q"
-                                    && self.0.valor("modo") != "formular") })
+                    article.ingredient data-composicao=(id) {
+                        h3 { (&a.nome) }
+                        div.form-grid {
+                            @for (prefixo, rotulo) in [("q", "Quantidade na base escolhida"),
+                                ("preco", "Preço na unidade comercial"),
+                                ("estoque", "Estoque bruto (kg MN)")] {
+                                @let nome = format!("{prefixo}-{id}");
+                                (Campo { erro: self.0.erro(&nome), nome: &nome, rotulo,
+                                    valor: self.0.valor(&nome), tipo: "number",
+                                    dica: if prefixo == "estoque" { "Vazio significa desconhecido" }
+                                        else if prefixo == "q" { "Ignorada ao formular" }
+                                        else { "Padrão: R$/kg MN; informe sua cotação" },
+                                    obrigatorio: prefixo == "preco" || (prefixo == "q"
+                                        && self.0.valor("modo") != "formular") })
+                            }
                         }
-                    }
-                    (Expansivel {
-                        id: &format!("ingrediente-{id}"),
-                        aberto: match self.0.valor(&format!("expansao-ingrediente-{id}")) {
-                            "true" => true, "false" => false,
-                            _ => false,
-                        },
-                        titulo: html! { "Configurações avançadas do ingrediente" },
-                        conteudo: html! {
-                            div.form-grid {
-                                div.field {
-                                    label for=(format!("unidade-preco-{id}")) {
-                                        "Unidade comercial do preço" }
-                                    select id=(format!("unidade-preco-{id}"))
-                                    name=(format!("unidade-preco-{id}")) {
-                                        @for (v, rotulo) in [("kg", "R$/kg MN"),
-                                        ("t", "R$/tonelada MN"),
-                                        ("embalagem",
-                                        "R$/embalagem")] {
-                                            option value=(v)
-                                            selected[
-                                            self.0.valor(
-                                            &format!("unidade-preco-{id}")
-                                            ) == v
-                                            ] {
-                                                (rotulo)
+                        (Expansivel {
+                            id: &format!("ingrediente-{id}"),
+                            aberto: self.0.valor(&format!("expansao-ingrediente-{id}"))
+                                == "true",
+                            titulo: html! { "Configurações avançadas do ingrediente" },
+                            conteudo: html! {
+                                div.form-grid {
+                                    div.field {
+                                        label for=(format!("unidade-preco-{id}")) {
+                                            "Unidade comercial do preço" }
+                                        select id=(format!("unidade-preco-{id}"))
+                                        name=(format!("unidade-preco-{id}")) {
+                                            @for (v, rotulo) in [("kg", "R$/kg MN"),
+                                            ("t", "R$/tonelada MN"),
+                                            ("embalagem",
+                                            "R$/embalagem")] {
+                                                option value=(v)
+                                                selected[
+                                                self.0.valor(
+                                                &format!("unidade-preco-{id}")
+                                                ) == v
+                                                ] {
+                                                    (rotulo)
+                                                }
                                             }
                                         }
                                     }
+                                    @for (prefixo, rotulo, dica) in [
+                                    ("embalagem", "Massa da embalagem (kg MN)",
+                                    "Obrigatória para preço por embalagem"),
+                                    ("ms", "MS neste cenário (%)",
+                                    "Simula alteração sem editar o catálogo"),
+                                    ("perda",
+                                    "Perda anterior ao fornecimento (%)",
+                                    "Entre 0 e 100% exclusive"),
+                                    ("min", "Inclusão mínima (kg MS)",
+                                    "Positivo torna a inclusão obrigatória"),
+                                    ("max", "Inclusão máxima (kg MS)",
+                                    "Vazio: sem restrição adicional"),
+                                    ("resolucao",
+                                    "Resolução de oferta (kg MN/animal)",
+                                    "Zero mantém a quantidade contínua"),
+                                    ] {
+                                        @let nome = format!("{prefixo}-{id}");
+                                        (Campo { erro: self.0.erro(&nome), nome:
+                                            &nome, rotulo,
+                                            valor: self.0.valor(&nome),
+                                            tipo: "number", dica, obrigatorio:
+                                            self.0.valor(&format!("usar-{id}")) == "on"
+                                            && (["ms", "perda", "preco"].contains(&prefixo)
+                                            || (prefixo == "q" && self.0.valor("modo")
+                                            != "formular")
+                                            || (prefixo == "embalagem" && self.0.valor(
+                                            &format!("unidade-preco-{id}")) ==
+                                            "embalagem"))
+                                        })
+                                    }
+                                    @let nome = format!("origem-{id}");
+                                    (Campo { erro: self.0.erro(&nome), nome: &nome,
+                                        rotulo:
+                                        "Origem e data da cotação",
+                                        valor: self.0.valor(&nome), tipo: "text",
+                                        dica: "Justifique também preços zero",
+                                        obrigatorio: self.0.valor(&format!("usar-{id}")) ==
+                                        "on" })
                                 }
-                                @for (prefixo, rotulo, dica) in [
-                                ("embalagem", "Massa da embalagem (kg MN)",
-                                "Obrigatória para preço por embalagem"),
-                                ("ms", "MS neste cenário (%)",
-                                "Simula alteração sem editar o catálogo"),
-                                ("perda",
-                                "Perda anterior ao fornecimento (%)",
-                                "Entre 0 e 100% exclusive"),
-                                ("min", "Inclusão mínima (kg MS)",
-                                "Positivo torna a inclusão obrigatória"),
-                                ("max", "Inclusão máxima (kg MS)",
-                                "Vazio: sem restrição adicional"),
-                                ("resolucao",
-                                "Resolução de oferta (kg MN/animal)",
-                                "Zero mantém a quantidade contínua"),
-                                ] {
-                                    @let nome = format!("{prefixo}-{id}");
-                                    (Campo { erro: self.0.erro(&nome), nome:
-                                        &nome, rotulo,
-                                        valor: self.0.valor(&nome),
-                                        tipo: "number", dica, obrigatorio:
-                                        self.0.valor(&format!("usar-{id}")) == "on"
-                                        && (["ms", "perda", "preco"].contains(&prefixo)
-                                        || (prefixo == "q" && self.0.valor("modo")
-                                        != "formular")
-                                        || (prefixo == "embalagem" && self.0.valor(
-                                        &format!("unidade-preco-{id}")) ==
-                                        "embalagem"))
-                                    })
+                                label.check { input type="checkbox"
+                                    name=(format!("livre-{id}"))
+                                    checked[self.0.valor(&format!("livre-{id}")) ==
+                                    "on"];
+                                    "Hipótese explícita: disponibilidade sem limite neste cenário"
                                 }
-                                @let nome = format!("origem-{id}");
-                                (Campo { erro: self.0.erro(&nome), nome: &nome,
-                                    rotulo:
-                                    "Origem e data da cotação",
-                                    valor: self.0.valor(&nome), tipo: "text",
-                                    dica: "Justifique também preços zero",
-                                    obrigatorio: self.0.valor(&format!("usar-{id}")) ==
-                                    "on" })
-                            }
-                            label.check { input type="checkbox"
-                                name=(format!("livre-{id}"))
-                                checked[self.0.valor(&format!("livre-{id}")) ==
-                                "on"];
-                                "Hipótese explícita: disponibilidade sem limite neste cenário"
-                            }
-                        },
-                    })
-                }
+                            },
+                        })
+                    }
                 }
             }
         } }
