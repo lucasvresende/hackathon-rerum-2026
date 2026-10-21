@@ -266,7 +266,11 @@ as capturas. O build do pacote de produção é executado localmente.
 
 ## Documentação
 
-- [Requisitos](REQUISITOS.md): escopo, regras, limitações e casos de aceitação CT-01 a CT-32.
+- [Requisitos](REQUISITOS.md) (versão documental 1.5): especificação funcional vigente,
+  escopo, regras, limitações e casos de aceitação CT-01 a CT-35. Os requisitos definem o
+  comportamento esperado; a implementação está em `src/` e a cobertura automatizada em `tests/`.
+  Os testes são a evidência de conformidade. Mudanças de comportamento, regras, escopo ou aceite
+  devem atualizar este documento e o README na mesma alteração.
 - [Anexo nutricional](hackathon/TEMA_2_DIETAS_LITERATURA_E_MOTOR.md): tabelas, fórmulas e pesquisa.
 - [Fontes preservadas](fontes/README.md) e [modelos de preenchimento](fontes/MODELOS.md):
   procedência, unidades, conversões e limitações dos dados.

@@ -84,6 +84,7 @@ export async function testarTemplates(page, url, artefatos, navegador) {
     assert.equal(await page.locator('input[name^="q-"]').first().inputValue(), valor);
   } finally { await novo.close(); }
   // Estado acessível, transição e impressão do componente compartilhado.
+  await page.emulateMedia({ media: 'screen', reducedMotion: 'no-preference' });
   const secao = page.locator('.ingredient .expansivel').first();
   const botao = secao.locator('.expand-toggle');
   await page.waitForFunction(() =>

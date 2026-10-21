@@ -88,22 +88,20 @@ a outros recursos ou a falhas HTTP, que continuam sendo verificadas.
 
 ## Validação local
 
-Em 21/10/2026, `npm test` executou a suíte completa com sucesso em Chromium, Firefox e WebKit:
-os dez casos novos passaram em cada navegador (30 execuções), seguidos dos fluxos anteriores.
-As capturas de erro de campo em desktop e formulário móvel foram inspecionadas visualmente.
-Os 46 testes Rust, build, clippy, rustfmt, limite de linhas e 28 consultas SQLx também passaram;
-o ensaio de desempenho atingiu as metas. O YAML do CI foi parseado e os jobs conferidos,
-mas a execução remota depende da publicação dos commits.
+Na validação deste checkout em 21/10/2026, `npm test` passou em Chromium, Firefox e WebKit,
+incluindo formulários, contratos htmx, erros HTTP/rede, atualização entre guias, fluxos sem
+JavaScript, verificação, formulação, simulação, histórico, comparação e impressão. As capturas
+de formulário móvel, erro e resultado foram inspecionadas visualmente.
 
-Após a retirada do preenchimento simplificado, a suíte completa passou novamente em
-Chromium, Firefox e WebKit em 21/10/2026, incluindo visibilidade dos campos, templates,
-erros, trocas por htmx e uso sem JavaScript. As capturas móvel de alimento e desktop de lote
-com erro foram inspecionadas. Build, 53 testes Rust, clippy, rustfmt, qualidade textual e
-verificação das 28 consultas SQLx também passaram.
+`cargo test --locked` passou com 59 testes; build, clippy, rustfmt, qualidade textual e a
+verificação SQLx passaram, com 37 consultas conferidas contra banco limpo. O ensaio de
+desempenho passou: p95 de 18,94 ms para verificar 20 ingredientes e 25,71 ms para formular
+com 10 ingredientes, abaixo das metas de 1 s e 5 s. A execução remota do GitHub Actions depende
+da publicação dos commits.
 
 ## Cadastros de exemplo
 
 A suíte `exemplos` verifica primeiro cálculo com cinco ingredientes preenchidos, identificação
 sintética, remoção e restauração explícita, filtro por categoria, layout móvel e uso sem JavaScript.
 As capturas `*-exemplos-*` e `*-exemplo-*` complementam a inspeção dos cadastros e do parecer.
-Os três navegadores passaram na suíte completa e na verificação final de exemplos em 21/10/2026.
+Os três navegadores passaram na suíte completa de 21/10/2026, incluindo a verificação de exemplos.

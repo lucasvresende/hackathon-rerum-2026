@@ -1,6 +1,6 @@
 ## Instruções
 
-1. Leia o documento EQUISITOS.md para a implementação
+1. Leia o documento REQUISITOS.md para a implementação
 2. Pause a execução e pergunte ao programador como proceder quando houver decisões relevantes
 3. Faça commits contínuos sempre que uma nova funcionalidade ou alteração for realizada, ainda que
    dentro de uma mesma sessão de execução
@@ -14,9 +14,9 @@
 9. Novas funcionalidades devem sempre estar cobertas por um conjunto de testes para testá-las
    individualmente ou em conjunto com o restante da aplicação
 10. Tenha como referência a documentação mais recente dos recursos e bibliotecas utilizados,
-   incluindo sintaxe, boas práticas e exemplos
+    incluindo sintaxe, boas práticas e exemplos
 11. Use o compilador de Rust a seu favor. Itere corrigindo os erros encontrados pelo compilador. A
-   utilização de blocos unsafe está vedada
+    utilização de blocos unsafe está vedada
 
 ## Tech Stack
 
@@ -39,7 +39,7 @@
 8. Estilo: Um arquivo **css plano**, com variáveis definidas na parte inicial.
 9. Teste no browser: Playwright, inspeção visual, testar no chromium, webkit e firefox
 10. Outras bibliotecas/crates e recursos podem ser adicionados caso necessário, priorizando recursos
-   bem mantidos e sem excesso de dependências
+    bem mantidos e sem excesso de dependências
 
 ## Formatação e Documentação
 
