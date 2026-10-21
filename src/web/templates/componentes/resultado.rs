@@ -200,8 +200,8 @@ impl Render for ResultadoExecucao<'_> {
                     }
                 }
             }
-            section.card {
-                h2 { "Cálculos e regras aplicadas" }
+            (super::expansivel::Expansivel { id: "calculos-regras",
+                aberto: false, titulo: html! { "Cálculos e regras aplicadas" }, conteudo: html! {
                 p.muted { "Entradas → normalização → cálculo → comparação → conclusão. \
                         Todas as verificações independentes são preservadas." }
                 ol { @for etapa in &p.caminho { li { (etapa) } } }
@@ -224,10 +224,12 @@ impl Render for ResultadoExecucao<'_> {
                             p.muted { "Dependências: " (v.dependencias.join(" → ")) }
                         }, })
                 }
-            }
-            (super::entradas::Entradas(e))
-            section.card {
-                h2 { "Fontes e versões preservadas" }
+            }, })
+            (super::expansivel::Expansivel { id: "entradas-preservadas",
+                aberto: false, titulo: html! { "Entradas preservadas nesta execução" },
+                conteudo: html! { (super::entradas::Entradas(e)) }, })
+            (super::expansivel::Expansivel { id: "fontes-versoes",
+                aberto: false, titulo: html! { "Fontes e versões preservadas" }, conteudo: html! {
                 p.code { (&e.conhecimento.perfil_id) " · versão " (&e.conhecimento.versao)
                     " · aplicação " (&e.conhecimento.versao_app) }
                 @for f in &e.conhecimento.fontes {
@@ -238,7 +240,7 @@ impl Render for ResultadoExecucao<'_> {
                             p { (&f.conteudo) } p.code { "SHA-256 " (&f.hash) }
                         }, })
                 }
-            }
+            }, })
         }
     }
 }

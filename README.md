@@ -64,6 +64,9 @@ O servidor aceita apenas loopback; o MVP não inclui autenticação ou acesso co
 5. Consulte balanços, restrições, fornecimento, custo, fontes e explicações do resultado.
 6. Use o histórico para reproduzir, duplicar, simular, comparar e imprimir cenários.
 
+No parecer, cálculos e regras, entradas preservadas e fontes e versões ficam em cartas
+expansíveis. Ao imprimir, o conteúdo dessas cartas é mostrado mesmo quando estavam recolhidas.
+
 Os formulários apresentam todos os campos, sem modo de preenchimento simplificado.
 As seções expansíveis continuam disponíveis para organizar grupos de informações.
 Use **Preencher com exemplo** em um formulário ou **Criar cópia** em um cadastro existente.

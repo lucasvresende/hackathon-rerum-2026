@@ -212,6 +212,12 @@ input:user-invalid, select:user-invalid { border-color: var(--erro); }
     transition-delay: 0s; }
 .expand-inner { min-height: 0; overflow: hidden; }
 .expand-body { padding-top: 14px; }
+.expansivel#calculos-regras, .expansivel#entradas-preservadas,
+.expansivel#fontes-versoes { border: 1px solid var(--borda); border-radius: 12px;
+    background: var(--papel); padding: 20px; margin-bottom: 16px; }
+.expansivel#calculos-regras .expand-toggle,
+.expansivel#entradas-preservadas .expand-toggle,
+.expansivel#fontes-versoes .expand-toggle { font-size: 18px; font-weight: 600; }
 .templates { border-bottom: 1px solid var(--borda); padding-bottom: 22px; margin-bottom: 22px; }
 .templates button { margin-top: 12px; }
 .template-preview { margin-top: 20px; }

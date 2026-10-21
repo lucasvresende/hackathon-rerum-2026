@@ -16,8 +16,7 @@ impl Render for Entradas<'_> {
         let c = &self.0.cenario;
         let l = &c.lote;
         html! {
-            section.card {
-                h2 { "Entradas preservadas nesta execução" }
+            div {
                 (super::expansivel::Expansivel { id: "lote-premissas",
                     aberto: false,
                     titulo: html! { "Lote, enquadramento e premissas" },
