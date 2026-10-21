@@ -1,9 +1,10 @@
 use std::collections::BTreeMap;
 
+use super::super::componentes::campo::{MensagemErro, Rotulo};
 use maud::{Markup, Render, html};
 
-use super::cadastro::erros;
-use super::estrutura::{Campo, cabecalho};
+use super::super::componentes::campo::Campo;
+use super::super::componentes::resumo_erros::ResumoErros;
 use crate::dominio::validacao::Problema;
 use crate::dominio::{Alimento, Lote};
 
@@ -39,7 +40,7 @@ impl Render for FormularioCenario<'_> {
                 input type="hidden" name="csrf" value=(self.token);
                 input type="hidden" name="original_id"
                 value=(self.valor("original_id"));
-                (erros(self.erros))
+                (ResumoErros(self.erros))
                 div.actions {
                     button #atualizar-cadastros.button.secondary type="submit"
                     formnovalidate
@@ -51,7 +52,7 @@ impl Render for FormularioCenario<'_> {
                     a href="/cenarios/novo?dieta=B" { "Demonstração B" }
                 }
                 p.muted { "Campos obrigatórios: *" }
-                (super::expansivel::Visualizacao)
+                (super::super::componentes::expansivel::Visualizacao)
                 section.card {
                     h2 { "1. Dados do cenário" }
                     div.form-grid {
@@ -60,10 +61,12 @@ impl Render for FormularioCenario<'_> {
                             tipo: "text", dica:
                             "Uma identificação para comparar depois",
                             obrigatorio: true })
-                        div.field { (super::campo::rotulo("lote",
-                            "Lote e revisão atual",
-                            true))
-                            (super::campo::mensagem("lote", self.erro("lote")))
+                        div.field { (Rotulo {
+                            nome: "lote",
+                            texto: "Lote e revisão atual",
+                            obrigatorio: true
+                        })
+                            (MensagemErro { nome: "lote", erro: self.erro("lote") })
                             select #lote name="lote" required {
                                 option value=""
                                 selected[self.valor("lote").is_empty()] {
@@ -150,7 +153,7 @@ impl Render for FormularioCenario<'_> {
                                 obrigatorio: true })
                         }
                     }
-                    (super::expansivel::Expansivel { id: "medicao", aberto:
+                    (super::super::componentes::expansivel::Expansivel { id: "medicao", aberto:
                         false, titulo:
                         html! { "Consumo observado por pesagem do lote (opcional)" },
                         conteudo:
@@ -213,12 +216,4 @@ impl Render for FormularioCenario<'_> {
             }
         }
     }
-}
-
-pub fn titulo() -> Markup {
-    cabecalho(
-        "Novo cenário",
-        "Selecione o lote, o tipo de cálculo e os ingredientes.",
-        "cenarios",
-    )
 }

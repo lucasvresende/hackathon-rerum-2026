@@ -1,8 +1,10 @@
 use std::collections::BTreeMap;
 
+use super::super::componentes::campo::{MensagemErro, Rotulo};
 use maud::{Markup, Render, html};
 
-use super::estrutura::Campo;
+use super::super::componentes::campo::Campo;
+use super::super::componentes::resumo_erros::ResumoErros;
 use crate::dominio::validacao::Problema;
 
 pub struct Cadastro<'a> {
@@ -26,18 +28,6 @@ impl Cadastro<'_> {
     }
 }
 
-pub fn erros(problemas: &[Problema]) -> Markup {
-    html! {
-        @if !problemas.is_empty() {
-            div #erros-formulario.alert.error tabindex="-1" role="alert" {
-                strong { "Revise os campos para continuar" }
-                ul { @for erro in problemas { li { a href=(format!("#{}", erro.campo)) {
-                                (&erro.campo) ": " (&erro.mensagem) } } } }
-            }
-        }
-    }
-}
-
 impl Render for Cadastro<'_> {
     fn render(&self) -> Markup {
         let lote = self.tipo == "lote";
@@ -51,10 +41,10 @@ impl Render for Cadastro<'_> {
                 input type="hidden" name="id" value=(self.valor("id"));
                 input type="hidden" name="anterior"
                 value=(self.valor("anterior"));
-                (erros(self.erros))
+                (ResumoErros(self.erros))
                 p.muted { "Campos obrigatórios: *" }
-                (super::expansivel::Visualizacao)
-                (super::templates::Templates {
+                (super::super::componentes::expansivel::Visualizacao)
+                (super::super::componentes::templates::Templates {
                     tipo: self.tipo, modelos: self.modelos, campos: self.campos,
                 })
                 h2 { "Identificação e dados" }
@@ -67,11 +57,15 @@ impl Render for Cadastro<'_> {
                         obrigatorio: true })
                     @if lote {
                         div.field {
-                            (super::campo::rotulo("estado_produtivo",
-                            "Estado produtivo",
-                            false))
-                            (super::campo::mensagem("estado_produtivo",
-                            self.erro("estado_produtivo")))
+                            (Rotulo {
+                                nome: "estado_produtivo",
+                                texto: "Estado produtivo",
+                                obrigatorio: false
+                            })
+                            (MensagemErro {
+                                nome: "estado_produtivo",
+                                erro: self.erro("estado_produtivo")
+                            })
                             select #estado_produtivo name="estado_produtivo" {
                                 @for (v, t) in [("DESCONHECIDO",
                                 "Desconhecido"),
@@ -98,10 +92,12 @@ impl Render for Cadastro<'_> {
                             obrigatorio:
                             false })
                     } @else {
-                        div.field { (super::campo::rotulo("classe",
-                            "Classificação", true))
-                            (super::campo::mensagem("classe",
-                            self.erro("classe")))
+                        div.field { (Rotulo {
+                            nome: "classe",
+                            texto: "Classificação",
+                            obrigatorio: true
+                        })
+                            (MensagemErro { nome: "classe", erro: self.erro("classe") })
                             select #classe name="classe" required {
                                 @for (v, texto) in [("FORRAGEM", "Forragem"),
                                 ("CONCENTRADO", "Concentrado"),
@@ -145,10 +141,12 @@ impl Render for Cadastro<'_> {
                 @if !lote {
                     h2 { "Procedência da composição" }
                     div.form-grid {
-                        div.field { (super::campo::rotulo("natureza",
-                            "Natureza dos valores", true))
-                            (super::campo::mensagem("natureza",
-                            self.erro("natureza")))
+                        div.field { (Rotulo {
+                            nome: "natureza",
+                            texto: "Natureza dos valores",
+                            obrigatorio: true
+                        })
+                            (MensagemErro { nome: "natureza", erro: self.erro("natureza") })
                             select #natureza name="natureza" required {
                                 @for v in ["ANALISE", "MEDIA_TABELADA",
                                 "SINTETICA",
@@ -185,7 +183,7 @@ impl Render for Cadastro<'_> {
                             }
                         }
                     }
-                    (super::expansivel::Expansivel { id: "laudos", aberto:
+                    (super::super::componentes::expansivel::Expansivel { id: "laudos", aberto:
                         false,
                         titulo: html! { "Laudos de contaminantes (opcional)" },
                         conteudo: html! {

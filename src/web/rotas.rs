@@ -43,7 +43,10 @@ pub fn app(estado: EstadoApp) -> Router {
         )
         .route("/alimentos/novo", get(cadastros::novo_alimento))
         .route("/alimentos/{id}/revisar", get(cadastros::revisar_alimento))
-        .route("/cadastros/{tipo}/modelo", post(super::templates::carregar))
+        .route(
+            "/cadastros/{tipo}/modelo",
+            post(super::modelos_preenchimento::carregar),
+        )
         .route("/cadastros/salvo", get(super::cadastro_salvo::pagina))
         .route("/cenarios/atualizar", post(cenarios::atualizar))
         .route("/cenarios/novo", get(cenarios::novo))
@@ -87,19 +90,7 @@ impl From<crate::Erro> for ErroWeb {
 impl IntoResponse for ErroWeb {
     fn into_response(self) -> Response {
         tracing::error!(erro = %self.0, "Falha operacional");
-        let corpo = super::componentes::estrutura::Pagina {
-            titulo: "Não foi possível concluir",
-            ativo: "",
-            conteudo: maud::html! {
-                (super::componentes::estrutura::cabecalho(
-                "Não foi possível concluir esta operação", "", "inicio"
-                ))
-                p { "Houve uma falha operacional. Seus resultados anteriores estão preservados. \
-                            Volte à tela anterior para tentar novamente." }
-                a.button href="/" { "Voltar à visão geral" }
-            },
-        }
-        .render();
+        let corpo = super::templates::paginas::erro::Erro::Operacional.render();
         (StatusCode::INTERNAL_SERVER_ERROR, corpo).into_response()
     }
 }
@@ -107,7 +98,7 @@ impl IntoResponse for ErroWeb {
 pub fn autorizado(
     estado: &EstadoApp,
     headers: &HeaderMap,
-    campos: &super::formularios::Campos,
+    campos: &super::entradas::Campos,
 ) -> bool {
     super::seguranca::validar(headers, campos, &estado.csrf, &estado.origem)
 }

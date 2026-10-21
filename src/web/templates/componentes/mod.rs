@@ -1,12 +1,10 @@
 pub mod ajuda;
-pub mod cadastro;
+pub mod cabecalho;
 pub mod campo;
-mod campos_cadastro;
-pub mod cenario;
 pub mod entradas;
 pub mod estrutura;
 pub mod expansivel;
-mod ingredientes;
 pub mod inicio;
 pub mod resultado;
+pub mod resumo_erros;
 pub mod templates;

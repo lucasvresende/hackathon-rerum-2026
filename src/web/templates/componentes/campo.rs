@@ -10,19 +10,36 @@ pub struct Campo<'a> {
     pub erro: Option<&'a str>,
 }
 
-pub fn rotulo(nome: &str, texto: &str, obrigatorio: bool) -> Markup {
-    html! {
-        label for=(nome) {
-            (texto)
-            @if obrigatorio { span.required aria-hidden="true" { " *" } }
+pub struct Rotulo<'a> {
+    pub nome: &'a str,
+    pub texto: &'a str,
+    pub obrigatorio: bool,
+}
+impl Render for Rotulo<'_> {
+    fn render(&self) -> Markup {
+        let nome = self.nome;
+        let texto = self.texto;
+        let obrigatorio = self.obrigatorio;
+        html! {
+            label for=(nome) {
+                (texto)
+                @if obrigatorio { span.required aria-hidden="true" { " *" } }
+            }
         }
     }
 }
-
-pub fn mensagem(nome: &str, erro: Option<&str>) -> Markup {
-    html! {
-        span.field-error id=(format!("{nome}-erro")) hidden[erro.is_none()] {
-            @if let Some(erro) = erro { (erro) }
+pub struct MensagemErro<'a> {
+    pub nome: &'a str,
+    pub erro: Option<&'a str>,
+}
+impl Render for MensagemErro<'_> {
+    fn render(&self) -> Markup {
+        let nome = self.nome;
+        let erro = self.erro;
+        html! {
+            span.field-error id=(format!("{nome}-erro")) hidden[erro.is_none()] {
+                @if let Some(erro) = erro { (erro) }
+            }
         }
     }
 }
@@ -50,8 +67,8 @@ impl Render for Campo<'_> {
         let numero = self.tipo == "number";
         html! {
             div.field {
-                (rotulo(self.nome, self.rotulo, self.obrigatorio))
-                (mensagem(self.nome, self.erro))
+                (Rotulo { nome: self.nome, texto: self.rotulo, obrigatorio: self.obrigatorio })
+                (MensagemErro { nome: self.nome, erro: self.erro })
                 input id=(self.nome) name=(self.nome) type=(self.tipo) value=(self.valor)
                     step=[numero.then_some(passo)] min=[numero.then_some(minimo).flatten()]
                     max=[numero.then_some(maximo).flatten()]

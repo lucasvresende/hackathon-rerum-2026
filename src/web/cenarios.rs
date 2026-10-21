@@ -4,12 +4,11 @@ use axum::Form;
 use axum::extract::{Path, Query, State};
 use axum::http::{HeaderMap, StatusCode};
 use axum::response::{IntoResponse, Response};
-use maud::{Markup, Render, html};
+use maud::{Markup, Render};
 
-use super::componentes::cenario::{FormularioCenario, titulo};
-use super::componentes::estrutura::Pagina;
-use super::formularios::{self, Campos};
+use super::entradas::{self as formularios, Campos};
 use super::rotas::{ErroWeb, EstadoApp, autorizado, redirecionar};
+use super::templates::formularios::cenario::FormularioCenario;
 use crate::aplicacao::{demonstracao, execucao};
 use crate::persistencia::{cadastros, conhecimento, historico};
 
@@ -32,14 +31,9 @@ async fn formulario(
     if parcial {
         return Ok(formulario);
     }
-    Ok(Pagina {
-        titulo: "Novo cenário",
-        ativo: "cadastro",
-        conteudo: html! {
-            (titulo())
-            @if lotes.is_empty() { div.alert { "Cadastre um lote antes de calcular." } }
-            (formulario)
-        },
+    Ok(super::templates::paginas::cenario::Cenario {
+        sem_lotes: lotes.is_empty(),
+        formulario,
     }
     .render())
 }
@@ -119,14 +113,9 @@ pub async fn resultado(
     Path(id): Path<String>,
 ) -> Result<Markup, ErroWeb> {
     let execucao = historico::obter(&e.pool, &id).await?;
-    Ok(Pagina {
-        titulo: &execucao.cenario.nome,
-        ativo: "/historico",
-        conteudo: super::componentes::resultado::ResultadoExecucao {
-            execucao: &execucao,
-            token: &e.csrf,
-        }
-        .render(),
+    Ok(super::templates::paginas::execucao::Execucao {
+        execucao: &execucao,
+        token: &e.csrf,
     }
     .render())
 }

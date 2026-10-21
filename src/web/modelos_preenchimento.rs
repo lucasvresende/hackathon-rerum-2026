@@ -3,7 +3,7 @@ use axum::extract::{Path, Query, State};
 use axum::http::{HeaderMap, StatusCode};
 use axum::response::{IntoResponse, Response};
 
-use super::formularios::{Campos, texto};
+use super::entradas::{Campos, texto};
 use super::rotas::{ErroWeb, EstadoApp, autorizado};
 use crate::dominio::templates::{CampoPreenchido, ProcedenciaModelo, equivalentes};
 use crate::dominio::validacao::{Problema, problema};

@@ -2,12 +2,11 @@ use axum::Form;
 use axum::extract::{Path, State};
 use axum::http::{HeaderMap, StatusCode};
 use axum::response::{IntoResponse, Response};
-use maud::{Markup, Render, html};
+use maud::{Markup, Render};
 
-use super::componentes::cadastro::Cadastro;
-use super::componentes::estrutura::{Pagina, cabecalho};
-use super::formularios::{self, Campos};
+use super::entradas::{self as formularios, Campos};
 use super::rotas::{ErroWeb, EstadoApp, autorizado, redirecionar};
+use super::templates::formularios::cadastro::Cadastro;
 use crate::persistencia::cadastros as banco;
 
 pub(super) async fn formulario(
@@ -32,16 +31,9 @@ pub(super) async fn formulario(
     if parcial {
         return Ok(cadastro);
     }
-    Ok(Pagina {
-        titulo: "Cadastro",
-        ativo: "cadastro",
-        conteudo: html! {
-            (cabecalho(if tipo == "lote" { "Cadastro de lote" }
-            else { "Composição do alimento" },
-            "Cada alteração cria uma revisão. Execuções anteriores permanecem iguais.",
-            if tipo == "lote" { "lotes" } else { "alimentos" }))
-            (cadastro)
-        },
+    Ok(super::templates::paginas::cadastro::PaginaCadastro {
+        tipo,
+        formulario: cadastro,
     }
     .render())
 }
@@ -94,8 +86,13 @@ pub async fn salvar_lote(
     }
     let erros = match formularios::ler_lote(&c) {
         Ok(mut lote) => {
-            match super::templates::procedencia(&e, &c, &formularios::campos_lote(&lote), "lote")
-                .await
+            match super::modelos_preenchimento::procedencia(
+                &e,
+                &c,
+                &formularios::campos_lote(&lote),
+                "lote",
+            )
+            .await
             {
                 Ok(p) => lote.procedencia = p,
                 Err(erro) => {
@@ -141,7 +138,7 @@ pub async fn salvar_alimento(
     }
     let erros = match formularios::ler_alimento(&c) {
         Ok(mut a) => {
-            match super::templates::procedencia(
+            match super::modelos_preenchimento::procedencia(
                 &e,
                 &c,
                 &formularios::campos_alimento(&a),

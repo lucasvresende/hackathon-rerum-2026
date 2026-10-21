@@ -1,7 +1,7 @@
 use maud::{Markup, Render, html};
 
 use crate::dominio::templates::{ModeloPreenchimento, ProcedenciaModelo};
-use crate::web::formularios::{Campos, texto};
+use crate::web::entradas::{Campos, texto};
 
 pub struct Templates<'a> {
     pub tipo: &'a str,

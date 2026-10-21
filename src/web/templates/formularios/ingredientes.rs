@@ -1,5 +1,5 @@
+use super::super::componentes::campo::Campo;
 use super::cenario::FormularioCenario;
-use super::estrutura::Campo;
 use maud::{Markup, Render, html};
 
 pub struct Ingredientes<'a, 'b>(pub &'a FormularioCenario<'b>);
@@ -31,7 +31,7 @@ impl Render for Ingredientes<'_, '_> {
                             100.0))
                             " · " (&id[..id.len().min(12)]) }
                     }
-                    (super::expansivel::Expansivel {
+                    (super::super::componentes::expansivel::Expansivel {
                         id: &format!("ingrediente-{id}"),
                         aberto: match self.0.valor(&format!("expansao-ingrediente-{id}")) {
                             "true" => true, "false" => false,

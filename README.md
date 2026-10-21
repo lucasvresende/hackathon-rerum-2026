@@ -173,7 +173,12 @@ Os comandos completos de testes estão em
 - `src/dominio/`: unidades, validações, cálculos, inferência, parecer e otimização.
 - `src/aplicacao/`: orquestração, processo de cálculo e exemplos sintéticos.
 - `src/persistencia/`: banco, cargas, revisões, histórico e recuperação.
-- `src/web/`: rotas, proteção de escrita, formulários e componentes Maud.
+- `src/web/`: adaptação HTTP e proteção de escrita; `entradas/` decodifica formulários.
+- `src/web/templates/`: apresentação em structs com `maud::Render`, separada em `layouts/`
+  (principal e cadastro), `paginas/`, `formularios/` e `componentes/` reutilizáveis.
+  Templates recebem dados preparados; não consultam o banco nem executam operações de negócio.
+  Os caminhos públicos anteriores `web::componentes` e `web::formularios` têm reexportações
+  de compatibilidade; código novo usa `web::templates` e `web::entradas`.
 - `migrations/`, `.sqlx/`: esquema SQLx e metadados de compilação.
 - `queries/`: consultas agrupadas por recurso: `lotes/`, `alimentos/`, `cenarios/`,
   `execucoes/`, `modelos_preenchimento/`, `conhecimento/` e operações de `banco/`.
@@ -309,7 +314,7 @@ Nenhuma conclusão operacional é delegada à IA. Limitações científicas segu
 
 ### Ajuda contextual
 
-A rota `/ajuda` renderiza o componente Maud `Ajuda`, separado em `componentes/ajuda.rs`.
+A rota `/ajuda` renderiza o componente Maud `Ajuda`, separado em `templates/componentes/ajuda.rs`.
 Dez cartas explicam visão geral, lotes, alimentos, cenários, verificação, formulação, pareceres,
 histórico, comparação e fontes. O cabeçalho de cada página declara sua seção de ajuda e apresenta
 “Ajuda nesta página” com `/ajuda#secao`, inclusive em cadastros, pareceres e telas de erro.

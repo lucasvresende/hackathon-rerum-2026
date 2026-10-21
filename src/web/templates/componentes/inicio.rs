@@ -1,6 +1,6 @@
 use maud::{Markup, Render, html};
 
-use super::estrutura::cabecalho;
+use super::cabecalho::Cabecalho;
 use crate::dominio::unidades::dinheiro;
 use crate::dominio::{Alimento, Conhecimento, Lote};
 use crate::persistencia::historico::Execucao;
@@ -16,7 +16,7 @@ impl Render for Inicio<'_> {
     fn render(&self) -> Markup {
         let animais: u32 = self.lotes.iter().map(|l| l.animais).sum();
         html! {
-            (cabecalho("Visão geral", "", "inicio"))
+            (Cabecalho { titulo: "Visão geral", texto: "", ajuda: "inicio" })
             div.actions {
                 a.button href="/cenarios/novo" target="_blank"
                 rel="noopener" title="Abre em nova guia" { "Verificar dieta" }

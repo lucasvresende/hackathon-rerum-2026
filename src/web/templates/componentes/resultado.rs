@@ -1,6 +1,6 @@
 use maud::{Markup, Render, html};
 
-use super::estrutura::cabecalho;
+use super::cabecalho::Cabecalho;
 use crate::dominio::Estado;
 use crate::dominio::calculos::NUTRIENTES;
 use crate::dominio::unidades::{dinheiro, preco_f64};
@@ -25,8 +25,8 @@ impl Render for ResultadoExecucao<'_> {
             })
             .unwrap_or(e.criada_em.clone());
         html! {
-            (cabecalho(&c.nome, &format!("{} · {} · Execução {}",
-            c.lote.nome, data, e.id), "resultados"))
+            (Cabecalho { titulo: &c.nome, texto: &format!("{} · {} · Execução {}",
+            c.lote.nome, data, e.id), ajuda: "resultados" })
             div.actions.no-print {
                 a.button href=(format!("/execucoes/{}/duplicar", e.id))
                 target="_blank" rel="noopener" title="Abre em nova guia" {

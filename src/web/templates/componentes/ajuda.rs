@@ -1,6 +1,6 @@
 use maud::{Markup, Render, html};
 
-use super::estrutura::cabecalho;
+use super::cabecalho::Cabecalho;
 
 pub struct Ajuda;
 
@@ -227,8 +227,11 @@ impl Render for Carta {
 impl Render for Ajuda {
     fn render(&self) -> Markup {
         html! {
-            (cabecalho("Ajuda", "Abra uma carta para consultar as instruções de cada tarefa.",
-                "inicio"))
+            (Cabecalho {
+                titulo: "Ajuda",
+                texto: "Abra uma carta para consultar as instruções de cada tarefa.",
+                ajuda: "inicio"
+            })
             nav.card.help-index aria-label="Seções da ajuda" {
                 @for carta in CARTAS {
                     a href=(format!("#{}", carta.id))
