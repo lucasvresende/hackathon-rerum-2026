@@ -1,6 +1,6 @@
 # Plano revisado de melhorias e sugestões com fontes
 
-Data: 20/10/2026. Estado: execução autorizada; validação final em andamento.
+Data: 20/10/2026. Estado: implementado e validado localmente.
 Este documento substitui o [plano anterior](PLANO_MELHORIAS.md) para a retomada do trabalho.
 
 ## 1. Orientações incorporadas
@@ -216,3 +216,13 @@ Resultados de testes e limitações de entrega devem ser conferidos no README e 
 [silagem]: https://www.feedipedia.org/node/12871
 [embrapa]: https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/1007523
 [gir]: https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/594820
+
+
+## 9. Conclusão da execução
+
+Etapas A–D concluídas. A seleção de modelos parciais foi aprovada; fontes e exclusões estão
+em `fontes/MODELOS.md`. Templates são carregáveis e editáveis, com origem e alterações preservadas.
+Foram verificados 40 testes Rust, build, clippy, rustfmt, qualidade textual e 28 consultas SQLx.
+A suíte completa passou em Chromium, Firefox e WebKit, incluindo CT-31, IDs únicos e ausência
+de erros JavaScript ou recursos externos. Inspeção visual e ensaio de desempenho concluídos.
+As limitações dos modelos permanecem explícitas; o perfil nutricional não foi ampliado.

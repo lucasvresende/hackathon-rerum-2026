@@ -404,6 +404,7 @@ workflow.
 | CT-28 | Build, testes, clippy, formatação, SQLx, instalação e ensaio de desempenho. |
 | CT-29 | Títulos funcionais, ações de cálculo diretas, sem slogans/banner; desktop e mobile. |
 | CT-30 | Ajuda contextual, cartas hx-live, teclado, fragmentos, impressão e uso sem JavaScript. |
+| CT-31 | Templates, procedência, conversões, backup, nova guia e preenchimento editável. |
 
 Os testes Rust estão agrupados em `nucleo`, `cenarios`, `otimizacao`, `integracao` e `entrega`.
 A matriz vincula obrigações aos testes; não representa prova científica ou cobertura de todas as
@@ -508,3 +509,23 @@ de uma seção recolhida são revelados para correção. As expansões usam o co
 O cabeçalho usa uma cópia local do SVG de vaca solicitado; procedência, licença e atribuição
 estão em [static/README.md](static/README.md). Tabelas destacam linhas no hover e no foco.
 A carga de templates não altera o perfil nutricional nem os exemplos sintéticos A/B.
+
+
+### Verificação das melhorias
+
+A validação local executou 40 testes Rust, build com lockfile, clippy com todos os alvos/features,
+rustfmt, limite de 100 caracteres e conferência de 28 consultas SQLx contra banco limpo.
+Os testes novos de persistência exercitam aplicação sem salvar, confirmação de substituição,
+edição sem alterar a referência, lacunas, carga inválida/transacional e restauração de procedência.
+O ensaio com 100 execuções após aquecimento atingiu as metas: p95 de cerca de 28 ms para
+verificação com 20 ingredientes e 23 ms para formulação com 10, no ambiente local em debug.
+
+A suíte Playwright inclui templates nos três navegadores, uso sem JavaScript, formulários sem
+menu, nova guia, atualização de cadastros sem perder o cenário, erros em português, expansão
+com teclado, movimento reduzido, impressão, layout móvel e unicidade dos IDs.
+As capturas ficam em `output/playwright/`; recursos externos e erros JavaScript causam falha.
+A inspeção visual inclui o formulário, erro acima do campo, versão móvel e ícone local.
+
+Para atualizar uma instalação existente, encerre o servidor, execute `cargo run -- preparar`
+e inicie novamente com `cargo run -- servir`. A preparação aplica a migração e carga de modelos;
+o comando de servir continua recusando banco com estrutura incompatível.
