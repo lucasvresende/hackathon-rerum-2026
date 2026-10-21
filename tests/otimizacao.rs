@@ -202,3 +202,55 @@ async fn ct14_processo_real_respeita_cancelamento_efetivo() {
     assert_eq!(p.busca.as_deref(), Some("INCONCLUSIVA"));
     assert!(inicio.elapsed().as_secs_f64() < 1.0);
 }
+
+#[tokio::test]
+async fn ct14_inviabilidade_por_deficit_nutricional_insuperavel() {
+    let (mut c, base) = exemplo().await;
+    for i in &mut c.itens {
+        i.alimento.nutrientes[1] = Some(0.01);
+    }
+    let p = formular(&c, &base);
+    assert_eq!(p.busca.as_deref(), Some("INVIAVEL_NO_MODELO"));
+    assert_eq!(p.subproblemas.len(), 5);
+    for sub in &p.subproblemas {
+        assert_eq!(sub.estado, "INVIAVEL_NO_MODELO");
+    }
+}
+
+#[tokio::test]
+async fn ct15_soma_de_minimos_excede_consumo_alvo() {
+    let (mut c, base) = exemplo().await;
+    c.itens[0].minimo_ms = 6.0;
+    c.itens[1].minimo_ms = 6.0;
+    let p = formular(&c, &base);
+    assert_eq!(p.busca.as_deref(), Some("INVIAVEL_NO_MODELO"));
+}
+
+#[tokio::test]
+async fn ct16_desempate_lexicografico_com_custos_identicos() {
+    let (mut c, base) = exemplo().await;
+    let mut item_a = c
+        .itens
+        .iter()
+        .find(|i| i.alimento.id == "milho")
+        .unwrap()
+        .clone();
+    let mut item_b = item_a.clone();
+    item_a.alimento.id = "conc_a".into();
+    item_a.alimento.nome = "Concentrado A".into();
+    item_b.alimento.id = "conc_b".into();
+    item_b.alimento.nome = "Concentrado B".into();
+    c.itens.retain(|i| i.alimento.id != "milho");
+    c.itens.push(item_b);
+    c.itens.push(item_a);
+    let p1 = formular(&c, &base);
+    assert_eq!(p1.busca.as_deref(), Some("OTIMO_NO_MODELO"));
+    c.itens.reverse();
+    let p2 = formular(&c, &base);
+    assert_eq!(p2.busca.as_deref(), Some("OTIMO_NO_MODELO"));
+    assert!(proximos(p1.custo.unwrap(), p2.custo.unwrap()));
+    for (x, y) in p1.fornecimento.iter().zip(&p2.fornecimento) {
+        assert_eq!(x.ingrediente, y.ingrediente);
+        assert!(proximos(x.consumo_ms, y.consumo_ms));
+    }
+}

@@ -620,3 +620,26 @@ Validação local de CT-32 em 21/10/2026: `npm test` passou com os dez casos nov
 navegadores (30 execuções), além dos fluxos completos anteriores. Inspeção visual em desktop
 e mobile, 46 testes Rust, build, clippy, formatação, qualidade textual, SQLx (28 consultas)
 e ensaio de desempenho passaram. O CI separado está configurado; não houve execução remota.
+
+### Cobertura de robustez e bordas críticas
+
+A suíte Rust foi ampliada com novos testes focados em robustez matemática, bordas fisiológicas
+e consistência de regras de negócio (RN-01, RN-15, RN-17, RN-18 e RN-19):
+
+- `tests/nucleo.rs`: expansão de `ct04` cobrindo dias em lactação fora do perfil (DEL 59 e 251)
+  e gordura do leite fora do perfil (2,99% e 5,01%), gerando `FORA_DO_PERFIL`.
+- `tests/cenarios.rs`: `ct15_sobras_e_perdas_combinadas_sem_dupla_cobranca` exercitando perda no
+  estoque ($l_i > 0$) e sobras planejadas ($r > 0$) simultaneamente, validando a ausência de dupla
+  cobrança e a exatidão das fórmulas canônicas de custo e necessidade bruta de RN-15.
+- `tests/otimizacao.rs`: `ct14_inviabilidade_por_deficit_nutricional_insuperavel` comprovando que o
+  solver identifica inviabilidade matemática em todos os subproblemas quando a concentração
+  máxima dos alimentos disponíveis é insuficiente para o requisito químico no consumo-alvo;
+  `ct15_soma_de_minimos_excede_consumo_alvo` comprovando inviabilidade quando a soma das inclusões
+  mínimas supera o consumo-alvo; e `ct16_desempate_lexicografico_com_custos_identicos` exercitando
+  o desempate determinístico em candidatos com custos idênticos pela ordem lexicográfica e número
+  de ingredientes positivos (RN-18).
+
+Validação local em 21/10/2026: 50 testes Rust, build, clippy com todos os alvos/features,
+rustfmt, limite de 100 caracteres e 28 consultas SQLx contra banco limpo passaram.
+Os fluxos completos de Chromium, Firefox e WebKit continuam passando.
+

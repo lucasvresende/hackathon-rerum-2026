@@ -73,6 +73,16 @@ async fn ct04_bordas_e_ausencia_de_extrapolacao() {
     assert_ne!(verificar(&c, &base).condicao, "FORA_DO_PERFIL");
     c.lote.peso = 700.01;
     assert_eq!(verificar(&c, &base).condicao, "FORA_DO_PERFIL");
+    c.lote.peso = 400.0;
+    c.lote.gordura = 2.99;
+    assert_eq!(verificar(&c, &base).condicao, "FORA_DO_PERFIL");
+    c.lote.gordura = 5.01;
+    assert_eq!(verificar(&c, &base).condicao, "FORA_DO_PERFIL");
+    c.lote.gordura = 4.0;
+    c.lote.dias_lactacao = 59;
+    assert_eq!(verificar(&c, &base).condicao, "FORA_DO_PERFIL");
+    c.lote.dias_lactacao = 251;
+    assert_eq!(verificar(&c, &base).condicao, "FORA_DO_PERFIL");
 }
 
 #[tokio::test]

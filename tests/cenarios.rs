@@ -1,6 +1,6 @@
 use feed_your_cow::aplicacao::demonstracao;
 use feed_your_cow::dominio::inferencia::verificar;
-use feed_your_cow::dominio::unidades::{normalizar_preco, proximos};
+use feed_your_cow::dominio::unidades::{normalizar_preco, preco_f64, proximos};
 use feed_your_cow::dominio::*;
 use feed_your_cow::persistencia::{banco, cadastros, conhecimento};
 use feed_your_cow::web::entradas::{campos_cenario, ler_cenario};
@@ -148,4 +148,24 @@ async fn ct05_composicao_ausente_mantem_pendencia_sem_apagar_calculos_independen
     assert!(p.totais[0].is_none());
     assert!(p.totais[1].is_some());
     assert!(!p.pratico_valido);
+}
+
+#[tokio::test]
+async fn ct15_sobras_e_perdas_combinadas_sem_dupla_cobranca() {
+    let (mut c, b) = exemplo().await;
+    c.sobras = 0.10;
+    c.itens[0].perda = 0.05;
+    let p = verificar(&c, &b);
+    let item = &c.itens[0];
+    let f = &p.fornecimento[0];
+    let preco_kg_mn = preco_f64(&item.preco).unwrap();
+    let ms = item.alimento.ms;
+    let x = f.consumo_ms;
+    let oferta_mn_esperada = x / (ms * (1.0 - 0.10));
+    assert!(proximos(f.oferta_mn, oferta_mn_esperada));
+    let bruto_esperado =
+        c.horizonte as f64 * c.lote.animais as f64 * x / (ms * (1.0 - 0.10) * (1.0 - 0.05));
+    assert!(proximos(f.necessidade_bruta, bruto_esperado));
+    let custo_esperado = x * preco_kg_mn / (ms * (1.0 - 0.05) * (1.0 - 0.10));
+    assert!(proximos(f.custo, custo_esperado));
 }
