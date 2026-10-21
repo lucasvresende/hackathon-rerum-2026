@@ -1,6 +1,6 @@
 # Plano de implementação das melhorias de interface
 
-Data: 20/10/2026. Estado: proposta para revisão, sem implementação das funcionalidades.
+Data: 20/10/2026. Estado: substituído pelo [plano revisado](PLANO_MELHORIAS_V2.md).
 
 Base: [sugestões](NOTAS_MELHORIAS.md), [requisitos](../REQUISITOS.md) e código atual.
 As decisões abaixo precisam ser alinhadas antes de implementar as etapas correspondentes,
