@@ -615,3 +615,8 @@ via hx-live antes de focar o primeiro inválido. O teste verifica abertura, foco
 A sinalização entre guias usa BroadcastChannel e localStorage com deduplicação, pois o teste
 WebKit não recebeu o evento storage apesar de enxergar o novo valor. Somente o identificador
 de atualização é compartilhado; os cadastros continuam sendo consultados no servidor.
+
+Validação local de CT-32 em 21/10/2026: `npm test` passou com os dez casos novos nos três
+navegadores (30 execuções), além dos fluxos completos anteriores. Inspeção visual em desktop
+e mobile, 46 testes Rust, build, clippy, formatação, qualidade textual, SQLx (28 consultas)
+e ensaio de desempenho passaram. O CI separado está configurado; não houve execução remota.

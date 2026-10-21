@@ -71,3 +71,16 @@ que receber a mesma sinalização pelos dois transportes não dispara outro POST
 A API nativa está documentada em [BroadcastChannel no MDN][broadcast].
 
 [broadcast]: https://developer.mozilla.org/en-US/docs/Web/API/BroadcastChannel
+
+O observador diferencia o cancelamento tardio de `GET /static/favicon.svg` pelo Firefox
+(`NS_BINDING_ABORTED`) durante navegações sucessivas. Essa exceção não se aplica a POSTs,
+a outros recursos ou a falhas HTTP, que continuam sendo verificadas.
+
+## Validação local
+
+Em 21/10/2026, `npm test` executou a suíte completa com sucesso em Chromium, Firefox e WebKit:
+os dez casos novos passaram em cada navegador (30 execuções), seguidos dos fluxos anteriores.
+As capturas de erro de campo em desktop e formulário móvel foram inspecionadas visualmente.
+Os 46 testes Rust, build, clippy, rustfmt, limite de linhas e 28 consultas SQLx também passaram;
+o ensaio de desempenho atingiu as metas. O YAML do CI foi parseado e os jobs conferidos,
+mas a execução remota depende da publicação dos commits.

@@ -10,7 +10,13 @@ export async function executarCaso(browser, url, artefatos, navegador, nome, tes
     p.on('pageerror', erro => erros.push(erro.message));
     p.on('console', msg => { if (msg.type() === 'error') consoleErros.push(msg.text()); });
     p.on('response', r => { if (r.status() >= 400) respostasRuins.push(r); });
-    p.on('requestfailed', r => falhasRede.push(r));
+    p.on('requestfailed', r => {
+      // Firefox pode cancelar a busca tardia do favicon ao navegar para a página seguinte.
+      const faviconCancelado = navegador === 'firefox' && r.method() === 'GET'
+        && new URL(r.url()).pathname === '/static/favicon.svg'
+        && r.failure()?.errorText === 'NS_BINDING_ABORTED';
+      if (!faviconCancelado) falhasRede.push(r);
+    });
   });
   await contexto.route('**/*', route => {
     if (new URL(route.request().url()).origin !== new URL(url).origin) {
@@ -28,7 +34,8 @@ export async function executarCaso(browser, url, artefatos, navegador, nome, tes
       assert.equal(new URL(r.url()).pathname, falha.caminho);
       assert.equal(r.status(), falha.status);
     }
-    assert.equal(falhasRede.length, falha?.rede ? 1 : 0);
+    assert.equal(falhasRede.length, falha?.rede ? 1 : 0,
+      falhasRede.map(r => `${r.method()} ${r.url()}: ${r.failure()?.errorText}`).join('\n'));
     for (const r of falhasRede) assert.equal(new URL(r.url()).pathname, falha.caminho);
     for (const texto of consoleErros) {
       assert.ok(falha, `Erro de console inesperado: ${texto}`);
