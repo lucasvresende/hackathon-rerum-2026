@@ -1,28 +1,30 @@
 //! Montagem das respostas de formulário, preservando rascunhos e fragmentos htmx.
 use super::entradas::Campos;
-use super::templates::formularios::{cadastro::Cadastro, cenario::FormularioCenario};
+use super::templates::formularios::{
+    DadosCadastro, alimento::FormularioAlimento, cenario::FormularioCenario, lote::FormularioLote,
+};
 use super::{erro::ErroWeb, estado::EstadoApp};
-use crate::persistencia::cadastros;
+use crate::aplicacao::cenarios;
+use crate::dominio::templates::TipoCadastro;
 use maud::{Markup, Render};
 pub async fn cadastro(
-    tipo: &str,
+    tipo: TipoCadastro,
     campos: &Campos,
     erros: &[crate::dominio::validacao::Problema],
     estado: &EstadoApp,
     parcial: bool,
 ) -> Result<Markup, ErroWeb> {
-    let modelos = crate::persistencia::templates::ler(
-        &mut *estado.pool.acquire().await.map_err(|e| ErroWeb(e.into()))?,
-    )
-    .await?;
-    let cadastro = Cadastro {
+    let modelos = crate::aplicacao::modelos_preenchimento::listar(&estado.pool).await?;
+    let dados = DadosCadastro {
         modelos: &modelos,
-        tipo,
         campos,
         erros,
         token: &estado.csrf,
-    }
-    .render();
+    };
+    let cadastro = match tipo {
+        TipoCadastro::Lote => FormularioLote(dados).render(),
+        TipoCadastro::Alimento => FormularioAlimento(dados).render(),
+    };
     if parcial {
         return Ok(cadastro);
     }
@@ -39,8 +41,7 @@ pub async fn cenario(
     erros: &[crate::dominio::validacao::Problema],
     parcial: bool,
 ) -> Result<Markup, ErroWeb> {
-    let lotes = cadastros::lotes(&e.pool).await?;
-    let alimentos = cadastros::alimentos(&e.pool).await?;
+    let cenarios::OpcoesCenario { lotes, alimentos } = cenarios::opcoes(&e.pool).await?;
     let formulario = FormularioCenario {
         campos,
         lotes: &lotes,

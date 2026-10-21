@@ -61,7 +61,7 @@ impl Render for Entradas<'_> {
                     },
                 })
                 @if let Some(p) = &l.procedencia {
-                    (super::templates::Procedencia(p)) }
+                    (super::modelos_preenchimento::Procedencia(p)) }
                 @for item in &c.itens {
                     @let a=&item.alimento;
                     (super::expansivel::Expansivel { id: &format!("entrada-{}",
@@ -69,7 +69,7 @@ impl Render for Entradas<'_> {
                         titulo: html! { (&a.nome) " · " (&a.natureza) },
                         conteudo: html! {
                             @if let Some(p) = &a.procedencia {
-                                (super::templates::Procedencia(p)) }
+                                (super::modelos_preenchimento::Procedencia(p)) }
                             p.code { "Composição " (&a.composicao_id) " · fonte "
                                 (&a.fonte_id) }
                             dl.details-grid {

@@ -65,3 +65,18 @@ pub fn equivalentes(a: &str, b: &str) -> bool {
         _ => a.trim() == b.trim(),
     }
 }
+
+/// Recursos que aceitam referências de preenchimento; não altera o formato persistido.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum TipoCadastro {
+    Lote,
+    Alimento,
+}
+impl TipoCadastro {
+    pub fn nome(self) -> &'static str {
+        match self {
+            Self::Lote => "lote",
+            Self::Alimento => "alimento",
+        }
+    }
+}

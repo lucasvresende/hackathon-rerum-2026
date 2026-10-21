@@ -171,7 +171,8 @@ Os comandos completos de testes estão em
 ## Organização
 
 - `src/dominio/`: unidades, validações, cálculos, inferência, parecer e otimização.
-- `src/aplicacao/`: orquestração, processo de cálculo e exemplos sintéticos.
+- `src/aplicacao/`: orquestração, processo de cálculo e exemplos sintéticos; serviços de
+  cadastros, modelos de preenchimento, cenários, histórico e comparação econômica.
 - `src/persistencia/`: banco, cargas, revisões, histórico e recuperação.
 - `src/web/rotas/`: grupos de rotas por recurso, compostos com `Router::merge`.
 - `src/web/handlers/`: adaptação HTTP por recurso; `entradas/` decodifica formulários.
@@ -241,6 +242,27 @@ Links como `/ajuda#resultados` abrem automaticamente a carta relacionada ao pare
 
 O monólito separa domínio, aplicação, persistência e web. Tipos carregam a base das quantidades,
 conhecimento dos dados e versões. Componentes Maud implementam `Render`; a decisão fica no servidor.
+A requisição percorre `rotas → handlers → entradas/aplicacao/persistencia → templates`.
+Handlers decodificam HTTP, validam a proteção de escrita e escolhem a resposta. `entradas/`
+converte o rascunho em dados tipados e preserva valores para correção de erros. A aplicação
+associa procedência aos cadastros, prepara substituições de modelos, escolhe exemplos explícitos,
+executa/duplica/reproduz cenários, filtra datas e calcula equivalência/economia entre snapshots.
+Os serviços recebem dados tipados e `SqlitePool`, sem `State`, cabeçalhos, HTML ou mapas HTTP.
+Consultas simples de leitura podem ser chamadas diretamente pelos handlers.
+
+`templates/` contém apenas apresentação. Cada página, formulário, layout e componente visual é
+uma struct (ou enum de estados visuais) que implementa `Render`; recebe dados preparados e não
+consulta o banco. `layouts::Principal` inclui o menu; `layouts::Cadastro` mantém a guia isolada.
+`formularios::lote::FormularioLote` e `formularios::alimento::FormularioAlimento` compartilham
+campos e metadados de cadastro, enquanto `formularios::cenario` compõe seus ingredientes.
+`apresentacao.rs` seleciona formulário parcial ou página completa; `resposta.rs` conserva os
+redirecionamentos HTTP e htmx. As rotas, status, dados persistidos e snapshots foram preservados.
+
+Os modelos de preenchimento são referências de domínio, distintos dos templates HTML Maud.
+Sua seleção, lacunas e procedência ficam em `aplicacao::modelos_preenchimento`; o componente
+`templates::componentes::modelos_preenchimento` apresenta a seleção e a referência recebida.
+Migrações, cargas de referência e consultas não mudam de responsabilidade com essa separação.
+
 A interface usa htmx 4.0.0 e hx-live 4.0.0, distribuídos localmente sob licença 0BSD.
 O tema usa variáveis de cor no início de um único CSS plano, com verde-esmeralda predominante.
 

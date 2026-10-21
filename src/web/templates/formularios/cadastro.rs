@@ -1,3 +1,4 @@
+//! Estrutura comum dos cadastros; campos específicos ficam em seus módulos de formulário.
 use std::collections::BTreeMap;
 
 use super::super::componentes::campo::{MensagemErro, Rotulo};
@@ -5,10 +6,11 @@ use maud::{Markup, Render, html};
 
 use super::super::componentes::campo::Campo;
 use super::super::componentes::resumo_erros::ResumoErros;
+use crate::dominio::templates::{ModeloPreenchimento, TipoCadastro};
 use crate::dominio::validacao::Problema;
 
-pub struct Cadastro<'a> {
-    pub tipo: &'a str,
+pub(super) struct Cadastro<'a> {
+    pub tipo: TipoCadastro,
     pub campos: &'a BTreeMap<String, String>,
     pub erros: &'a [Problema],
     pub modelos: &'a [crate::dominio::templates::ModeloPreenchimento],
@@ -30,7 +32,7 @@ impl Cadastro<'_> {
 
 impl Render for Cadastro<'_> {
     fn render(&self) -> Markup {
-        let lote = self.tipo == "lote";
+        let lote = self.tipo == TipoCadastro::Lote;
         let rota = if lote { "/lotes" } else { "/alimentos" };
         html! {
             form #formulario.card method="post" action=(rota)
@@ -44,8 +46,8 @@ impl Render for Cadastro<'_> {
                 (ResumoErros(self.erros))
                 p.muted { "Campos obrigatórios: *" }
                 (super::super::componentes::expansivel::Visualizacao)
-                (super::super::componentes::templates::Templates {
-                    tipo: self.tipo, modelos: self.modelos, campos: self.campos,
+                (super::super::componentes::modelos_preenchimento::SeletorModelo {
+                    tipo: self.tipo.nome(), modelos: self.modelos, campos: self.campos,
                 })
                 h2 { "Identificação e dados" }
                 div.form-grid {
@@ -231,6 +233,25 @@ impl Render for Cadastro<'_> {
                     button.button type="submit" { "Salvar revisão" }
                 }
             }
+        }
+    }
+}
+
+/// Parâmetros de apresentação compartilhados pelos dois formulários de cadastro.
+pub struct DadosCadastro<'a> {
+    pub campos: &'a BTreeMap<String, String>,
+    pub erros: &'a [Problema],
+    pub modelos: &'a [ModeloPreenchimento],
+    pub token: &'a str,
+}
+impl DadosCadastro<'_> {
+    pub(super) fn formulario(&self, tipo: TipoCadastro) -> Cadastro<'_> {
+        Cadastro {
+            tipo,
+            campos: self.campos,
+            erros: self.erros,
+            modelos: self.modelos,
+            token: self.token,
         }
     }
 }

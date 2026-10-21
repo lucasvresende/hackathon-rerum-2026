@@ -732,7 +732,8 @@ substituir os campos relacionais necessários à integridade e à consulta.
 
 - **migrations/**: migrações SQLx de estrutura, índices e dados indispensáveis ao esquema.
 - **dados_referencia/**: cargas SQL versionadas de fontes, perfis, coeficientes e catálogo.
-- **queries/**: consultas SQL da aplicação usadas por macros SQLx.
+- **queries/**: consultas SQL em pastas por recurso, usadas por macros SQLx; sem alterar
+  a separação entre migrações de estrutura e cargas de conhecimento.
 - **.sqlx/**: metadados versionados quando adotada compilação offline.
 - **fontes/**: documentos locais permitidos para distribuição, ou manifesto de URL/hash/edição.
 - **dados/**: banco de uso e arquivos operacionais locais, excluídos do Git.
@@ -764,6 +765,8 @@ O procedimento de recuperação deverá ser exercitado em teste, preservando o b
 ### RNF-01 — Arquitetura e linguagem
 
 Implementar monólito modular em Rust, separando domínio, aplicação, persistência e web.
+Handlers HTTP serão agrupados conforme os recursos das rotas. Orquestração e regras de negócio
+ficarão na aplicação/domínio, sem dependência de tipos HTTP ou templates de apresentação.
 Usar tipos para unidades/estados e aproveitar verificações do compilador.
 Priorizar bibliotecas Rust nativas; não exigir runtime Python/Node ou solver externo no uso.
 Ferramentas externas de desenvolvimento/teste poderão ser utilizadas.
@@ -772,6 +775,9 @@ Ferramentas externas de desenvolvimento/teste poderão ser utilizadas.
 
 Usar Axum com tracing e renderização no servidor com Maud. Componentes serão structs que
 implementam maud::Render e geram maud::Markup, separados por responsabilidade.
+O módulo `web::templates` terá pastas próprias de layouts, páginas, formulários e componentes.
+Templates receberão parâmetros preparados, sem consultas ao banco ou execução de negócios.
+A leitura de formulários HTTP ficará em `web::entradas`, separada dos formulários visuais.
 Usar htmx v4 e hx-live com cópias locais minificadas, versões/origens/licenças registradas.
 Validação e decisão permanecerão no servidor.
 

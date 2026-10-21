@@ -1,5 +1,5 @@
-use crate::aplicacao::{demonstracao, execucao};
-use crate::persistencia::{cadastros, conhecimento};
+use crate::aplicacao::cenarios::{self as servico, DietaDemonstracao, FalhaCenario};
+use crate::persistencia::cadastros;
 use crate::web::entradas::Campos;
 use crate::web::{apresentacao, entradas as formularios};
 use crate::web::{
@@ -20,35 +20,20 @@ pub async fn novo(
     State(e): State<EstadoApp>,
     Query(q): Query<BTreeMap<String, String>>,
 ) -> Result<Markup, ErroWeb> {
-    let lotes = cadastros::lotes(&e.pool).await?;
-    let alimentos = cadastros::alimentos(&e.pool).await?;
-    let mut campos = if let Some(lote) = lotes
-        .iter()
-        .find(|l| l.nome == "Lote demonstração")
-        .filter(|_| q.get("dieta").is_some_and(|v| v == "A" || v == "B"))
-    {
-        let mut selecionados = std::collections::BTreeSet::new();
-        let alimentos = alimentos
-            .iter()
-            .filter(|a| {
-                ["silagem", "milho", "soja", "mineral"].contains(&a.id.as_str())
-                    && a.natureza == "SINTETICA"
-                    && selecionados.insert(a.id.clone())
-            })
-            .cloned()
-            .collect();
-        formularios::campos_cenario(&demonstracao::cenario(
-            lote.clone(),
-            alimentos,
-            q.get("dieta").is_some_and(|d| d == "A"),
-        ))
-    } else {
-        Campos::new()
+    let opcoes = servico::opcoes(&e.pool).await?;
+    let dieta = match q.get("dieta").map(String::as_str) {
+        Some("A") => Some(DietaDemonstracao::A),
+        Some("B") => Some(DietaDemonstracao::B),
+        _ => None,
     };
+    let mut campos = dieta
+        .and_then(|dieta| servico::exemplo(&opcoes, dieta))
+        .map(|c| formularios::campos_cenario(&c))
+        .unwrap_or_default();
     if q.get("modo").is_some_and(|v| v == "formular") {
         campos.insert("modo".into(), "formular".into());
     }
-    completar_campos(&mut campos, &alimentos);
+    formularios::completar_cenario(&mut campos, &opcoes.alimentos);
     apresentacao::cenario(&e, &campos, &[], false).await
 }
 
@@ -63,20 +48,17 @@ pub async fn executar(
     let lotes = cadastros::lotes(&e.pool).await?;
     let alimentos = cadastros::alimentos(&e.pool).await?;
     let erros = match formularios::ler_cenario(&c, &lotes, &alimentos) {
-        Ok(mut cenario) => {
-            let base = conhecimento::ler(&e.pool).await?;
-            cenario.perfil_id = base.perfil_id.clone();
-            match execucao::executar(&e.pool, &cenario, &base).await {
-                Ok(id) => return Ok(redirecionar(&format!("/execucoes/{id}"), &headers)),
-                Err(erro) => {
-                    tracing::error!(%erro, "Falha ao executar cenário");
-                    vec![crate::dominio::validacao::problema(
-                        "execução",
-                        "Falha operacional no cálculo ou persistência. Tente novamente.",
-                    )]
-                }
+        Ok(cenario) => match servico::executar_novo(&e.pool, cenario).await {
+            Ok(id) => return Ok(redirecionar(&format!("/execucoes/{id}"), &headers)),
+            Err(FalhaCenario::Conhecimento(erro)) => return Err(ErroWeb(erro)),
+            Err(FalhaCenario::Execucao(erro)) => {
+                tracing::error!(%erro, "Falha ao executar cenário");
+                vec![crate::dominio::validacao::problema(
+                    "execução",
+                    "Falha operacional no cálculo ou persistência. Tente novamente.",
+                )]
             }
-        }
+        },
         Err(erros) => erros,
     };
     Ok(
@@ -84,17 +66,6 @@ pub async fn executar(
             .await?
             .into_response(),
     )
-}
-
-fn completar_campos(campos: &mut Campos, alimentos: &[crate::dominio::Alimento]) {
-    for a in alimentos {
-        campos
-            .entry(format!("ms-{}", a.composicao_id))
-            .or_insert_with(|| (a.ms * 100.0).to_string());
-        campos
-            .entry(format!("unidade-preco-{}", a.composicao_id))
-            .or_insert("kg".into());
-    }
 }
 
 pub async fn atualizar(
@@ -105,7 +76,7 @@ pub async fn atualizar(
     if !autorizado(&e, &headers, &c) {
         return Ok(StatusCode::FORBIDDEN.into_response());
     }
-    completar_campos(&mut c, &cadastros::alimentos(&e.pool).await?);
+    formularios::completar_cenario(&mut c, &cadastros::alimentos(&e.pool).await?);
     Ok(
         apresentacao::cenario(&e, &c, &[], headers.contains_key("hx-request"))
             .await?

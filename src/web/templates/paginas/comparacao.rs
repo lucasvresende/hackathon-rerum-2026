@@ -1,19 +1,16 @@
 use super::super::componentes::cabecalho::Cabecalho;
 use super::super::layouts::Principal;
 use crate::dominio::unidades::dinheiro;
-use crate::persistencia::historico::Execucao;
 use maud::{Markup, Render, html};
 
 pub struct Comparacao<'a> {
-    pub a: &'a Execucao,
-    pub b: &'a Execucao,
-    pub equivalentes: bool,
+    pub comparacao: &'a crate::aplicacao::comparacao::Comparacao,
 }
 impl Render for Comparacao<'_> {
     fn render(&self) -> Markup {
-        let a = self.a;
-        let b = self.b;
-        let equivalentes = self.equivalentes;
+        let a = &self.comparacao.referencia;
+        let b = &self.comparacao.alternativa;
+        let equivalentes = self.comparacao.equivalentes;
         Principal { titulo: "Comparar cenários",
         ativo: "/historico", conteudo: html! {
         (Cabecalho { titulo: "Comparação de cenários", texto: "", ajuda: "comparacao" })
@@ -70,11 +67,14 @@ impl Render for Comparacao<'_> {
             }
             @if !equivalentes { p.alert { "Há mudanças em produção, consumo, horizonte, perfil ou \
                 critérios. Os cenários não são diretamente equivalentes." } }
-            @if let (Some(ca), Some(cb)) = (a.parecer.custo, b.parecer.custo) {
-                p { "Diferença de custo (referência − alternativa): " strong { (dinheiro(ca-cb)) }
-                    @if ca > 0.0 { " · " (format!("{:.2}%", 100.0*(ca-cb)/ca)) }
+            @if let Some(economia) = &self.comparacao.economia {
+                p { "Diferença de custo (referência − alternativa): "
+                    strong { (dinheiro(economia.absoluta)) }
+                    @if let Some(percentual) = economia.percentual {
+                        " · " (format!("{percentual:.2}%")) }
                 }
-                @if !b.parecer.pratico_valido { p.alert { "Alternativa sem fornecimento validado. \
+                @if !economia.alternativa_validada { p.alert {
+                    "Alternativa sem fornecimento validado. \
                     Menor custo não a torna uma substituição equivalente." } }
             }
             div.actions { a.button.secondary href=(format!("/execucoes/{}", a.id)) {

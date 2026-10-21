@@ -1,4 +1,4 @@
-use crate::aplicacao::execucao;
+use crate::aplicacao::cenarios as servico;
 use crate::persistencia::historico;
 use crate::web::entradas::Campos;
 use crate::web::{apresentacao, entradas as formularios};
@@ -31,10 +31,7 @@ pub async fn duplicar(
     State(e): State<EstadoApp>,
     Path(id): Path<String>,
 ) -> Result<Markup, ErroWeb> {
-    let anterior = historico::obter(&e.pool, &id).await?;
-    let mut c = anterior.cenario;
-    c.original_id = Some(anterior.cenario_id);
-    c.nome = format!("{} · simulação", c.nome);
+    let c = servico::duplicar(&e.pool, &id).await?;
     apresentacao::cenario(&e, &formularios::campos_cenario(&c), &[], false).await
 }
 
@@ -47,9 +44,6 @@ pub async fn reproduzir(
     if !autorizado(&e, &headers, &c) {
         return Ok(StatusCode::FORBIDDEN.into_response());
     }
-    let anterior = historico::obter(&e.pool, &id).await?;
-    let mut cenario = anterior.cenario;
-    cenario.original_id = Some(anterior.cenario_id);
-    let novo = execucao::executar(&e.pool, &cenario, &anterior.conhecimento).await?;
+    let novo = servico::reproduzir(&e.pool, &id).await?;
     Ok(redirecionar(&format!("/execucoes/{novo}"), &headers))
 }

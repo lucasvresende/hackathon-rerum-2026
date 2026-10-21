@@ -201,3 +201,15 @@ pub fn campos_cenario(c: &Cenario) -> Campos {
     }
     campos
 }
+
+/// Inclui opções novas sem sobrescrever o rascunho enviado pelo navegador.
+pub fn completar_cenario(campos: &mut Campos, alimentos: &[crate::dominio::Alimento]) {
+    for a in alimentos {
+        campos
+            .entry(format!("ms-{}", a.composicao_id))
+            .or_insert_with(|| (a.ms * 100.0).to_string());
+        campos
+            .entry(format!("unidade-preco-{}", a.composicao_id))
+            .or_insert("kg".into());
+    }
+}

@@ -5,6 +5,6 @@ pub mod entradas;
 pub mod estrutura;
 pub mod expansivel;
 pub mod inicio;
+pub mod modelos_preenchimento;
 pub mod resultado;
 pub mod resumo_erros;
-pub mod templates;

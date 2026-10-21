@@ -1,4 +1,6 @@
-use crate::persistencia::{cadastros, cadastros as banco};
+use crate::aplicacao::cadastros::{self as servico, FalhaCadastro};
+use crate::dominio::templates::TipoCadastro;
+use crate::persistencia::cadastros;
 use crate::web::entradas::Campos;
 use crate::web::{apresentacao, entradas as formularios};
 use crate::web::{
@@ -20,16 +22,19 @@ pub async fn listar(State(e): State<EstadoApp>) -> Result<Markup, ErroWeb> {
 }
 
 pub async fn novo(State(e): State<EstadoApp>) -> Result<Markup, ErroWeb> {
-    apresentacao::cadastro("lote", &Campos::new(), &[], &e, false).await
+    apresentacao::cadastro(TipoCadastro::Lote, &Campos::new(), &[], &e, false).await
 }
 
 pub async fn editar(State(e): State<EstadoApp>, Path(id): Path<String>) -> Result<Markup, ErroWeb> {
-    let lote = banco::lotes(&e.pool)
-        .await?
-        .into_iter()
-        .find(|l| l.id == id)
-        .ok_or_else(|| ErroWeb("Lote não encontrado".into()))?;
-    apresentacao::cadastro("lote", &formularios::campos_lote(&lote), &[], &e, false).await
+    let lote = servico::obter_lote(&e.pool, &id).await?;
+    apresentacao::cadastro(
+        TipoCadastro::Lote,
+        &formularios::campos_lote(&lote),
+        &[],
+        &e,
+        false,
+    )
+    .await
 }
 
 pub async fn salvar(
@@ -42,31 +47,17 @@ pub async fn salvar(
     }
     let erros = match formularios::ler_lote(&c) {
         Ok(mut lote) => {
-            match super::modelos_preenchimento::procedencia(
-                &e,
-                &c,
-                &formularios::campos_lote(&lote),
-                "lote",
+            match servico::salvar_lote(
+                &e.pool,
+                &mut lote,
+                formularios::texto(&c, "id").is_empty(),
+                formularios::texto(&c, "modelo_aplicado"),
             )
             .await
             {
-                Ok(p) => lote.procedencia = p,
-                Err(erro) => {
-                    return Ok(apresentacao::cadastro(
-                        "lote",
-                        &c,
-                        &[erro],
-                        &e,
-                        headers.contains_key("hx-request"),
-                    )
-                    .await?
-                    .into_response());
-                }
-            }
-            let novo = formularios::texto(&c, "id").is_empty();
-            match banco::salvar_lote(&e.pool, &mut lote, novo).await {
                 Ok(()) => return Ok(redirecionar("/cadastros/salvo?tipo=lote", &headers)),
-                Err(erro) => {
+                Err(FalhaCadastro::Referencia(erro)) => vec![erro],
+                Err(FalhaCadastro::Persistencia(erro)) => {
                     tracing::error!(%erro, "Erro ao salvar lote");
                     vec![crate::dominio::validacao::problema(
                         "cadastro",
@@ -77,9 +68,13 @@ pub async fn salvar(
         }
         Err(erros) => erros,
     };
-    Ok(
-        apresentacao::cadastro("lote", &c, &erros, &e, headers.contains_key("hx-request"))
-            .await?
-            .into_response(),
+    Ok(apresentacao::cadastro(
+        TipoCadastro::Lote,
+        &c,
+        &erros,
+        &e,
+        headers.contains_key("hx-request"),
     )
+    .await?
+    .into_response())
 }

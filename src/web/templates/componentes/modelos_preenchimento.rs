@@ -3,12 +3,12 @@ use maud::{Markup, Render, html};
 use crate::dominio::templates::{ModeloPreenchimento, ProcedenciaModelo};
 use crate::web::entradas::{Campos, texto};
 
-pub struct Templates<'a> {
+pub struct SeletorModelo<'a> {
     pub tipo: &'a str,
     pub modelos: &'a [ModeloPreenchimento],
     pub campos: &'a Campos,
 }
-impl Render for Templates<'_> {
+impl Render for SeletorModelo<'_> {
     fn render(&self) -> Markup {
         let rota = format!("/cadastros/{}/modelo", self.tipo);
         let aplicado = texto(self.campos, "modelo_aplicado");

@@ -26,8 +26,7 @@ impl Render for Alimentos<'_> {
                     }
                 }
                 section.food-grid {
-                    @for a in alimentos.iter().filter(|a|
-                    a.nome.to_lowercase().contains(&busca.to_lowercase())) {
+                    @for a in alimentos {
                         article.card.food-card {
                             span.pill { (&a.natureza) }
                             h2 { (&a.nome) }
