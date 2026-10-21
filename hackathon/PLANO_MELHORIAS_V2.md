@@ -42,7 +42,8 @@ Uma publicação antiga não passa a ser atual por ter sido consultada hoje.
 Não juntar silenciosamente nutrientes de tabelas que descrevem produtos diferentes.
 Não converter energia digestível/metabolizável em NDT por equivalência presumida.
 Não usar CNF como amido nem uma média como garantia mínima ou laudo do produto.
-Resultados de busca servem para localizar documentos; os valores precisam ser conferidos no original.
+Resultados de busca servem para localizar documentos; os valores precisam ser conferidos
+no original.
 
 ### 3.1. Valores já encontrados para avaliar como sugestões
 
