@@ -7,6 +7,9 @@ A interface é em português do Brasil e funciona sem internet após a instalaç
 O perfil `E2020_NRC1989_RUMEN_MVP_v1` avalia nutrientes e restrições específicas; não implementa
 integralmente NASEM/BR-LEITE. Atendimento químico não significa adequação nutricional integral:
 dimensões sem dados suficientes, como fibra física e micronutrientes, permanecem identificadas.
+O perfil aceita PV de 300 a 800 kg. As tabelas de referência cobrem apenas 400–700 kg para
+exigências e 400–600 kg para consumo; nas extensões, o sistema usa extrapolação linear e exibe
+um aviso de menor precisão. O consumo-alvo é opcional e, quando informado, tem precedência.
 
 ## Índice
 
@@ -32,7 +35,8 @@ Abra [http://127.0.0.1:3000](http://127.0.0.1:3000) e encerre com Ctrl+C.
 `preparar` aplica migrações e carrega o conhecimento, seis lotes de um animal e quinze alimentos
 sintéticos, incluindo duas misturas. Na Visão geral, use **Abrir cenário de exemplo** para calcular
 sem cadastrar ou preencher dados previamente. Os exemplos seguem o anexo A de `REQUISITOS.md`.
-`demonstrar` acrescenta as fixtures históricas A/B, pendência e bloqueio para regressão e inspeção.
+`demonstrar` acrescenta as fixtures históricas A/B, aviso de extrapolação e bloqueio para regressão
+e inspeção.
 Esses dados não representam análises ou cotações reais.
 
 A compilação usa metadados SQLx versionados em `.sqlx/`, sem exigir um banco operacional.

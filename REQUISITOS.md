@@ -1,6 +1,6 @@
 # Requisitos do FeedYourCow: dietas para bovinos leiteiros
 
-**Tema 2 · Hackathon UFJF/RERUM 2026 · Versão documental 1.4 · 21/10/2026**
+**Tema 2 · Hackathon UFJF/RERUM 2026 · Versão documental 1.5 · 21/10/2026**
 
 Este documento especifica o comportamento do FeedYourCow. A implementação está em `src/`;
 `README.md` reúne operação, arquitetura, decisões e a cobertura dos testes com sua verificação.
@@ -80,10 +80,13 @@ apresentado como implementação integral da NASEM 2021 ou do BR-LEITE 2024.
 Admitir vacas adultas em lactação, confinadas, com dieta total quantificável, peso estável, sem
 gestação nem exigência adicional de crescimento ou mobilização/reposição de reservas.
 
-Os limites serão inclusivos: PV de 400 a 700 kg; gordura do leite de 3 a 5%; LCG4 de 5 a
+Os limites serão inclusivos: PV de 300 a 800 kg; gordura do leite de 3 a 5%; LCG4 de 5 a
 30 kg/animal/dia; dias em lactação de 60 a 250. A faixa de dias é política de escopo do MVP.
-A estimativa pela Tabela B cobrirá somente PV de 400 a 600 kg. Acima de 600 até 700 kg,
-exigir consumo-alvo positivo informado explicitamente e com origem registrada.
+As faixas tabeladas são PV 400–700 kg para exigências e PV 400–600 kg para consumo. Entre
+300–400 kg e 700–800 kg, as exigências usam extrapolação linear pelos dois nós de borda; fora
+de 400–600 kg, o consumo de referência usa o mesmo método. O parecer deverá registrar o aviso
+de menor precisão aplicável. O consumo-alvo positivo informado permanece opcional e prevalece
+sobre a referência estimada.
 
 Necessidade conhecida de correção por ambiente ou atividade produzirá FORA_DO_PERFIL.
 Quando essa necessidade não tiver sido avaliada, registrar a hipótese de ausência de correção,
@@ -118,7 +121,7 @@ Raça desconhecida não autoriza inventar fator racial; idade isolada não deter
 estado produtivo. O enquadramento exigirá informações suficientes sobre os estados fisiológicos.
 Cadastros de exemplo poderão conter perfis sintéticos completos, com condições fisiológicas e de
 manejo assumidas explicitamente. Os seis lotes iniciais terão um animal e atenderão à seção 2.2,
-sem exigir consumo-alvo adicional por peso superior a 600 kg. Hipóteses não serão medições reais.
+sem depender de consumo-alvo adicional. Hipóteses não serão medições reais.
 
 O número de animais será inteiro positivo. Peso e consumo serão positivos. Produção será
 expressa em kg/animal/dia. A ausência de gestação/crescimento deverá ser afirmada, não deduzida
@@ -252,12 +255,14 @@ Validar campos, unidades, consistência, cobertura e dependências antes da reco
 Mostrar erros junto aos campos e preservar os valores válidos já digitados. A validação do
 servidor será obrigatória mesmo quando houver validação no navegador.
 
-**Aceite:** PV 650 kg sem consumo-alvo produzirá pendência de consumo; PV 700,01 kg produzirá
+**Aceite:** PV 650 kg sem consumo-alvo usará referência extrapolada com aviso; PV 300 e 800 kg
+serão aceitos com os avisos aplicáveis; PV abaixo de 300 ou acima de 800 kg produzirá
 FORA_DO_PERFIL. Dados contraditórios deverão ser resolvidos pelo operador.
 
 ### RF-08 — Determinação de consumo
 
-Calcular LCG4 e consumo de referência pela Tabela B, com interpolação sem extrapolação.
+Calcular LCG4 e consumo de referência pela Tabela B, com interpolação e extrapolação linear
+controlada dentro do intervalo operacional de PV.
 Permitir consumo-alvo informado/observado e pesagens de oferta/sobras, com origens distintas.
 Exibir aviso de discrepância entre a MS da dieta e a referência conforme RN-07.
 
@@ -565,8 +570,9 @@ O perfil não conterá exigência quantitativa completa de outros nutrientes.
 ### RN-06 — Interpolação e LCG4
 
 Usar LCG4 = PL * (0,4 + 0,15 * G), com G em pontos percentuais.
-Interpolar somente entre nós existentes, usando valor exato nos nós e reduzindo dimensões
-nas bordas. Não dividir por intervalo de comprimento zero nem extrapolar tabelas.
+Interpolar entre nós existentes, usando valor exato nos nós e reduzindo dimensões nas bordas.
+Para PV dentro da extensão controlada da seção 2.2, extrapolar linearmente usando os dois nós
+mais próximos da borda. Não dividir por intervalo de comprimento zero.
 Consumo pela Tabela B usará interpolação bilinear por PV e LCG4.
 
 ### RN-07 — Escolha de consumo
@@ -1004,8 +1010,9 @@ com as tolerâncias de RN-24. Na interface, os totais monetários serão apresen
 - **CT-03 — Interpolação:** PV 425 kg/G 3,75% deverão produzir mantença NDT 3,275 e coeficiente
   de produção 0,3115; PV 450/LCG4 12,5 deverão produzir consumo 12,7125 kg MS/dia.
   Cobertura: RF-08; RN-05, RN-06.
-- **CT-04 — Bordas:** testar todos os nós e intervalos; PV 700 com consumo informado poderá
-  atender ao enquadramento; 700,01 não. PV 650 sem consumo não usará extrapolação.
+- **CT-04 — Bordas:** testar todos os nós e intervalos; PV 300, 650, 700 e 800 poderão atender
+  ao enquadramento sem consumo informado. Pesos fora de 300–800 serão rejeitados. Confirmar os
+  avisos de extrapolação de exigências fora de 400–700 e de consumo fora de 400–600.
   Testar discrepância de consumo exatamente igual a 10% e superior, com aviso só na segunda.
   Cobertura: RF-07, RF-08; RN-01, RN-06, RN-07.
 - **CT-05 — Campos:** testar zero/negativo/NaN/infinito, unidade ausente, MS zero, gestação

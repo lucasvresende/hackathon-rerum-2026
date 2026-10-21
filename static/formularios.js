@@ -131,7 +131,7 @@ function configurarCondicionais() {
   if (!form) return;
   const lote = form.querySelector('#lote');
   const consumo = form.querySelector('#consumo_alvo');
-  if (consumo && lote) consumo.required = Number(lote.selectedOptions[0]?.dataset.peso) > 600;
+  if (consumo) consumo.required = false;
   form.querySelectorAll('.ingredient').forEach(ingrediente => {
     const usar = ingrediente.querySelector('input[name^="usar-"]');
     const unidade = ingrediente.querySelector('select[name^="unidade-preco-"]');

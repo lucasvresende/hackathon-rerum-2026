@@ -20,11 +20,12 @@ async fn ct18_ct28_demonstracao_cli_calcula_quatro_cenarios_e_e_idempotente() {
     let pool = banco::abrir(&caminho, false).await.unwrap();
     let execucoes = historico::listar(&pool).await.unwrap();
     assert_eq!(execucoes.len(), 4);
-    assert!(
-        execucoes
+    assert!(execucoes.iter().any(|e| {
+        e.parecer
+            .avisos
             .iter()
-            .any(|e| e.parecer.condicao == "INCONCLUSIVO")
-    );
+            .any(|aviso| aviso.contains("Tabela B"))
+    }));
     assert!(execucoes.iter().any(|e| e.parecer.condicao == "BLOQUEADO"));
     assert!(
         execucoes
@@ -32,7 +33,7 @@ async fn ct18_ct28_demonstracao_cli_calcula_quatro_cenarios_e_e_idempotente() {
             .any(|e| e.parecer.dimensao("Barreiras ruminais") == "NAO_ATENDE")
     );
     assert!(execucoes.iter().any(|e| e.parecer.pratico_valido));
-    let filtradas = historico::filtrar(&pool, Some("%pendente%"), None, None, 0)
+    let filtradas = historico::filtrar(&pool, Some("%extrapolado%"), None, None, 0)
         .await
         .unwrap();
     assert_eq!(filtradas.len(), 1);

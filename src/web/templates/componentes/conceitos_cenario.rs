@@ -11,8 +11,8 @@ pub const CONSUMO: Dica = Dica {
     id: "dica-consumo",
     conceito: "Consumo-alvo",
     texto: "Quantidade de matéria seca que se pretende que cada animal consuma por dia. \
-        Na formulação, esse total fica fixo. Quando permitido pelo perfil, o campo vazio \
-        usa uma estimativa; acima de 600 kg de peso vivo, é necessário informar o alvo.",
+        Na formulação, esse total fica fixo. O campo é opcional: quando vazio, \
+        usa a estimativa da Tabela B ou sua extrapolação linear.",
 };
 pub const BASE: Dica = Dica {
     id: "dica-base",

@@ -71,8 +71,9 @@ Confirmar a apresentação dessas hipóteses antes de adotar preenchimentos auto
 
 Bloquear envio de valores malformados ou inconsistentes, mas preservar a distinção entre
 erro de preenchimento e condição `FORA_DO_PERFIL`, conforme RF-07 e RN-01/RN-02.
-Por exemplo: peso negativo é inválido; peso de 700,01 kg excede o perfil do cálculo.
-Não impor 400–700 kg como limite do cadastro sem decisão explícita sobre essa mudança.
+Por exemplo: peso negativo é inválido; peso de 800,01 kg excede o perfil do cálculo.
+O cadastro aceita peso positivo, enquanto o perfil aplica a faixa operacional de 300–800 kg e
+identifica a extrapolação controlada nas suas extensões tabeladas.
 Definir também quais campos são obrigatórios para salvar e quais condicionam a recomendação.
 
 ## 3. Etapas de implementação

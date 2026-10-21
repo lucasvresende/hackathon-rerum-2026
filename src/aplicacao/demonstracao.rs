@@ -128,13 +128,13 @@ pub async fn cenarios_salvos(pool: &SqlitePool) -> Resultado<()> {
         cenario(lote.clone(), alimentos.clone(), true),
         cenario(lote.clone(), alimentos.clone(), false),
     ];
-    let mut pendente = self::lote();
-    pendente.nome = "Lote pendente · sintético".into();
-    pendente.peso = 650.0;
-    cadastros::salvar_lote(pool, &mut pendente, true).await?;
-    let mut pendencia = cenario(pendente, alimentos.clone(), false);
-    pendencia.nome = "Pendência · consumo acima de 600 kg".into();
-    cenarios.push(pendencia);
+    let mut extrapolado = self::lote();
+    extrapolado.nome = "Lote extrapolado · sintético".into();
+    extrapolado.peso = 650.0;
+    cadastros::salvar_lote(pool, &mut extrapolado, true).await?;
+    let mut cenario_extrapolado = cenario(extrapolado, alimentos.clone(), false);
+    cenario_extrapolado.nome = "Aviso · consumo extrapolado acima de 600 kg".into();
+    cenarios.push(cenario_extrapolado);
     let mut bloqueio = cenario(lote, alimentos, false);
     bloqueio.nome = "Bloqueio · NNP adicionado sintético".into();
     let item = &mut bloqueio.itens[0];

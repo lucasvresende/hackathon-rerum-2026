@@ -110,7 +110,7 @@ impl Render for FormularioCenario<'_> {
                         "Define a vigência normativa", true),
                         ("consumo_alvo",
                         "Consumo-alvo (kg MS/animal/dia)", "number",
-                        "Vazio: Tabela B; obrigatório para PV acima de 600 kg",
+                        "Opcional. Vazio: estimativa tabelada/extrapolada",
                         false),
                         ("sobras",
                         "Sobras planejadas (% da MS ofertada)", "number",

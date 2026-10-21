@@ -26,7 +26,7 @@ pub(crate) fn nutrientes(p: &mut Parecer) {
             "NUT-01",
             "Núcleo químico",
             Estado::Desconhecido,
-            "Exigências indisponíveis: resolva o enquadramento; não extrapolar o perfil.".into(),
+            "Exigências indisponíveis: resolva o enquadramento do perfil.".into(),
         );
     }
 }

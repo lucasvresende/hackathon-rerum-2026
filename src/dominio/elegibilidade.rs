@@ -5,7 +5,7 @@ pub fn avaliar(c: &Cenario, base: &Conhecimento, p: &mut Parecer) -> bool {
     let fora = !matches!(
         l.estado_produtivo,
         EstadoProdutivo::Lactacao | EstadoProdutivo::Desconhecido
-    ) || !(400.0..=700.0).contains(&l.peso)
+    ) || !(300.0..=800.0).contains(&l.peso)
         || !(3.0..=5.0).contains(&l.gordura)
         || !(5.0..=30.0).contains(&p.lcg4)
         || !(60..=250).contains(&l.dias_lactacao)
@@ -37,13 +37,21 @@ pub fn avaliar(c: &Cenario, base: &Conhecimento, p: &mut Parecer) -> bool {
         "Elegibilidade",
         estado,
         "Adultas em lactação, confinadas, peso estável, sem gestação/crescimento; \
-         PV 400–700 kg, gordura 3–5%, LCG4 5–30 kg/dia, DEL 60–250."
+         PV 300–800 kg (referência padrão 400–700 kg), gordura 3–5%, LCG4 5–30 kg/dia, DEL 60–250."
             .into(),
     );
     if fora {
         p.condicao = "FORA_DO_PERFIL".into();
     } else if pendente {
         p.condicao = "INCONCLUSIVO".into();
+    }
+    if (300.0..400.0).contains(&l.peso) || (700.0..=800.0).contains(&l.peso) {
+        p.avisos.push(
+            "Peso vivo fora da faixa de referência padrão (400–700 kg). \
+             Os requisitos nutricionais foram estimados por extrapolação linear e podem \
+             apresentar menor precisão."
+                .into(),
+        );
     }
     if l.correcao_ambiente == Conhecido::Desconhecido
         || l.correcao_atividade == Conhecido::Desconhecido
@@ -52,18 +60,13 @@ pub fn avaliar(c: &Cenario, base: &Conhecimento, p: &mut Parecer) -> bool {
             .push("Hipótese: ausência de correção ambiental/atividade; não foi avaliada.".into());
     }
     p.consumo_referencia = super::calculos::consumo_referencia(base, l.peso, p.lcg4);
-    if l.peso > 600.0 && c.consumo_informado().is_none() {
-        p.registrar(
-            "ESC-02",
-            "Elegibilidade",
-            Estado::Desconhecido,
-            "Acima de 600 kg é obrigatório informar consumo-alvo e origem; sem extrapolação."
+    if ((300.0..400.0).contains(&l.peso) || l.peso > 600.0) && c.consumo_informado().is_none() {
+        p.avisos.push(
+            "Consumo-alvo não informado fora da cobertura da Tabela B (400–600 kg); \
+             utilizada referência de consumo estimada por extrapolação linear, que pode \
+             apresentar menor precisão."
                 .into(),
         );
-        if !fora {
-            p.condicao = "INCONCLUSIVO".into();
-        }
-        return false;
     }
     !fora && !pendente
 }

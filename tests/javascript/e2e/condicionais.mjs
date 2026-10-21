@@ -14,13 +14,8 @@ export async function testarCondicionais(browser, url, artefatos, navegador) {
       const opcao = page.locator('#lote option')
         .filter({ hasText: `Consumo ${peso} ${navegador}` });
       await page.locator('#lote').selectOption(await opcao.getAttribute('value'));
-      assert.equal(await page.locator('#consumo_alvo').evaluate(e => e.required), peso === '650');
+      assert.equal(await page.locator('#consumo_alvo').evaluate(e => e.required), false);
     }
-    await semEnvio(page, () => page.getByRole('button',
-      { name: 'Calcular e salvar cenário' }).click());
-    assert.equal(await page.locator('#consumo_alvo').getAttribute('aria-invalid'), 'true');
-    await page.locator('#consumo_alvo').fill('18');
-    assert.equal(await page.locator('#consumo_alvo').evaluate(e => e.validity.valid), true);
     await page.locator('#lote').selectOption(await page.locator('#lote option')
       .filter({ hasText: 'Lote demonstração' }).getAttribute('value'));
     assert.equal(await page.locator('#consumo_alvo').evaluate(e => e.required), false);

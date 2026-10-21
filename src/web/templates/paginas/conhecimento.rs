@@ -15,7 +15,7 @@ impl Render for Conhecimento<'_> {
                 p { "Adultas em lactação, confinadas, estáveis e sem gestação/crescimento. \
                 O perfil histórico NRC 1989 não implementa integralmente NASEM 2021 ou
                 BR-LEITE 2024." }
-                p { "PV 400–700 kg; referência de consumo apenas até 600 kg; gordura 3–5%; \
+                p { "PV 300–800 kg (tabelas 400–700 kg; consumo 400–600 kg); gordura 3–5%; \
                             DEL 60–250; LCG4 5–30 kg/dia." }
             }
             section.card.table-wrap { h2 { "Coeficientes do perfil" }

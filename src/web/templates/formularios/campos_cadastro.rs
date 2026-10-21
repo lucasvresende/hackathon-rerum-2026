@@ -4,7 +4,7 @@ pub fn numericos(lote: bool) -> Vec<CampoNumerico> {
     if lote {
         vec![
             ("animais", "Número de animais", "Inteiro positivo", true),
-            ("peso", "Peso médio (kg)", "Cobertura: 400 a 700 kg", true),
+            ("peso", "Peso médio (kg)", "Cobertura: 300 a 800 kg", true),
             (
                 "producao",
                 "Leite (kg/animal/dia)",

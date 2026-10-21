@@ -7,13 +7,28 @@ pub fn lcg4(producao: f64, gordura: f64) -> f64 {
     producao * (0.4 + 0.15 * gordura)
 }
 
-/// Usa os nós exatos nas bordas e nunca extrapola a cobertura da tabela.
+/// Interpola linearmente entre nós e extrapola linearmente pelas bordas extremas.
 pub fn interpolar(pontos: &[(f64, f64)], eixo: f64) -> Option<f64> {
-    if !eixo.is_finite() {
+    if !eixo.is_finite() || pontos.is_empty() {
         return None;
     }
     if let Some(ponto) = pontos.iter().find(|(x, _)| *x == eixo) {
         return Some(ponto.1);
+    }
+    if pontos.len() == 1 {
+        return Some(pontos[0].1);
+    }
+    let primeiro = &pontos[0];
+    if eixo < primeiro.0 {
+        let segundo = &pontos[1];
+        let inclinacao = (segundo.1 - primeiro.1) / (segundo.0 - primeiro.0);
+        return Some(primeiro.1 + inclinacao * (eixo - primeiro.0));
+    }
+    let ultimo = &pontos[pontos.len() - 1];
+    if eixo > ultimo.0 {
+        let penultimo = &pontos[pontos.len() - 2];
+        let inclinacao = (ultimo.1 - penultimo.1) / (ultimo.0 - penultimo.0);
+        return Some(ultimo.1 + inclinacao * (eixo - ultimo.0));
     }
     pontos.windows(2).find_map(|par| {
         let [(x0, y0), (x1, y1)] = par else {

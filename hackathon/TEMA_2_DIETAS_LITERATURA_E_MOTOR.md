@@ -50,7 +50,9 @@ O primeiro fluxo automático deve admitir vacas adultas, em lactação, sem exig
 crescimento, sem gestação, com peso corporal estável, em confinamento e com dieta total
 quantificável. Limites:
 
-- Peso vivo: de **400 a 700 kg**, inclusive, por cobertura da tabela de exigências.
+- Peso vivo: de **300 a 800 kg**, inclusive. A tabela de exigências cobre 400–700 kg; entre
+  300–400 e 700–800 kg, o sistema adota extrapolação linear pelos dois nós extremos e registra
+  aviso de menor precisão.
 - Gordura do leite: de **3 a 5%**, inclusive, por cobertura da tabela de produção.
 - Leite corrigido para 4% de gordura: de **5 a 30 kg/dia**, por cobertura da tabela de consumo.
 - Dias em lactação: de **60 a 250**, como recorte operacional proposto para a fase intermediária.
@@ -422,7 +424,7 @@ Essas expressões são equivalentes. Usar produção real e gordura real para ex
 Tabela A; usar `LCG4` apenas onde o modelo de consumo pede leite corrigido. Não corrigir duas vezes.
 A identidade é apresentada nos exemplos e referências de [C01] e [C10].
 
-### 6.5. F05 — Interpolação sem extrapolação
+### 6.5. F05 — Interpolação e extrapolação linear controlada
 
 Para uma variável entre dois nós tabelados:
 
@@ -431,9 +433,12 @@ t = (z - z0) / (z1 - z0)
 valor(z) = (1 - t) * valor(z0) + t * valor(z1)
 ```
 
-Aceitar somente `0 <= t <= 1`. Se `z` coincide com um nó, usar o valor desse nó sem divisão
-desnecessária. Fora do intervalo, produzir FORA_DO_PERFIL. A interpolação é a aproximação de
-engenharia adotada, não uma equação fisiológica nova validada na literatura.
+Se `z` coincide com um nó, usar o valor desse nó sem divisão desnecessária. Entre nós, aceitar
+`0 <= t <= 1`. Para PV dentro de 300–800 kg, quando estiver fora da cobertura tabulada, usar os
+dois nós mais próximos da extremidade; o mesmo cálculo admite `t < 0` ou `t > 1`. Registrar que
+o resultado é extrapolado e pode ter menor precisão. Fora do intervalo operacional, produzir
+FORA_DO_PERFIL. Esta aproximação de engenharia não é uma equação fisiológica nova validada na
+literatura.
 
 ### 6.6. Tabela A — Requisitos de mantença e por kg de leite
 
@@ -486,9 +491,10 @@ Tabela 4 de [C01], em **% do PV**, para vacas na fase intermediária de lactaç�
 | 25 | 4.0 | 3.5 | 3.0 |
 | 30 | 4.3 | 4.0 | 3.2 |
 
-**Cobertura efetiva:** com consumo estimado por essa tabela, o perfil automático fica limitado a
-**400–600 kg**. O intervalo 600–700 kg da tabela de exigências só é utilizável com `D_alvo`
-informado e identificado, sem extrapolar a tabela de consumo. Esse detalhe deve estar na árvore.
+**Cobertura tabulada:** a referência de consumo é fornecida para **400–600 kg**. No intervalo
+operacional de 300–800 kg, fora dessa faixa, o sistema extrapola linearmente por PV usando os
+dois nós de borda e registra aviso de menor precisão. `D_alvo` informado é opcional e prevalece
+sobre essa referência.
 
 Interpolação bilinear, primeiro por peso e depois por LCG4:
 
@@ -790,9 +796,8 @@ flowchart TD
     B -- Não --> B1[INVALIDO: listar todos os erros]
     B -- Sim --> C{Animal pertence ao perfil?}
     C -- Não --> C1[FORA_DO_PERFIL: justificar e indicar extensão]
-    C -- Sim --> D{Consumo disponível sem extrapolação?}
-    D -- Não --> D1[INCONCLUSIVO: solicitar D alvo ou outro perfil]
-    D -- Sim --> E[Checar ingredientes, origem, rótulo e normas]
+    C -- Sim --> D[Estimar consumo ou usar D alvo informado]
+    D --> E[Checar ingredientes, origem, rótulo e normas]
     E --> F{Ingrediente vedado ou fora do catálogo automático?}
     F -- Sim --> F1[BLOQUEADO: impedir recomendação automática]
     F1 --> F2[Se dados permitirem, calcular apenas diagnóstico]
@@ -822,10 +827,11 @@ Ordem sugerida:
 1. Categoria = vaca adulta em lactação? Caso contrário, FORA_DO_PERFIL.
 2. Existe crescimento, gestação ou ganho/perda corporal a modelar? Se sim, FORA_DO_PERFIL.
 3. Dias em lactação dentro do recorte operacional? Se não, FORA_DO_PERFIL.
-4. PV entre 400–700 kg, G entre 3–5% e LCG4 entre 5–30 kg/dia? Se não, FORA_DO_PERFIL.
+4. PV entre 300–800 kg, G entre 3–5% e LCG4 entre 5–30 kg/dia? Se não, FORA_DO_PERFIL.
 5. Há confinamento e dieta total quantificável? Se não, FORA_DO_PERFIL; não tratar suplemento
    como dieta completa nem ignorar a energia adicional do pastejo.
-6. PV até 600 kg? Pode usar a Tabela B. Acima disso, exigir D_alvo informado ou outro modelo.
+6. PV entre 400–600 kg? Usar a Tabela B. Fora da faixa, estimar por extrapolação linear e
+   registrar aviso de menor precisão, salvo se houver D_alvo informado.
 7. Há necessidade conhecida de correção por ambiente ou atividade? Se sim, FORA_DO_PERFIL.
    Se essa necessidade não foi avaliada, registrar a hipótese de ausência de correção.
 8. Há dados contraditórios, como lote marcado adulto e composto por recria? Gerar erro de
@@ -889,7 +895,8 @@ apaga “não avaliado” nas outras dimensões. Não emitir uma classificação
 - **DAT-01:** unidade ausente/incompatível ou número inválido → INVALIDO, com o campo afetado.
 - **DAT-02:** composição obrigatória ausente → INCONCLUSIVO; não imputar zero.
 - **ESC-01:** animal, estágio ou variável fora da cobertura → FORA_DO_PERFIL.
-- **ESC-02:** PV acima de 600 sem D_alvo informado → impedir extrapolação de consumo.
+- **ESC-02:** consumo de referência fora de PV 400–600 kg → extrapolar linearmente e registrar
+  aviso de menor precisão; D_alvo informado prevalece.
 - **LEG-01:** ingrediente proibido, após exceções e vigência → BLOQUEADO.
 - **LEG-02:** autorização/origem desconhecida → pendência de segurança e sem recomendação final.
 - **MVP-01:** NNP, subproduto animal ou medicamento fora do catálogo inicial → exclusão automática.
@@ -989,8 +996,9 @@ L_NDT = (0.301 + 0.322) / 2 = 0.3115 kg/kg leite
 Para PV = 450 kg e LCG4 = 12,5 kg/dia, interpolar a Tabela B entre 400/500 kg e 10/15 kg de leite
 corrigido. Obter **2,825% PV**, ou **12,7125 kg MS/dia**.
 
-PV = 650 kg sem D_alvo informado deve interromper a seleção de consumo, mesmo havendo exigência de
-mantença na Tabela A. PV = 700 kg com D_alvo informado é coberto para exigências; 700,01 kg não.
+PV = 650 kg sem D_alvo informado usará consumo de referência extrapolado, com aviso de menor
+precisão. PV = 300 e PV = 800 kg pertencem à extensão operacional e recebem o aviso apropriado;
+PV abaixo de 300 ou acima de 800 kg não pertence ao perfil.
 
 ### 9.3. Unidade e segurança
 
@@ -1006,7 +1014,7 @@ mantença na Tabela A. PV = 700 kg com D_alvo informado é coberto para exigênc
 
 1. Reproduzir todos os valores dos exemplos acima com tolerâncias numéricas declaradas.
 2. Converter %/fração, kg/g, tonelada/kg, matéria natural/MS e base de umidade.
-3. Exercitar nós, bordas e interpolação bidimensional; rejeitar toda extrapolação.
+3. Exercitar nós, bordas, interpolação bidimensional e extrapolação linear controlada em PV.
 4. Testar todos os ramos de categoria, gestação, crescimento, consumo e dados desconhecidos.
 5. Acumular déficit de PB e excesso de amido no mesmo caso.
 6. Distinguir proibição legal de exclusão por política; cobrir as exceções de origem animal.

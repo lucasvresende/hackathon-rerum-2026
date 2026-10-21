@@ -67,21 +67,45 @@ async fn ct02_ct03_requisitos_e_interpolacao() {
 }
 
 #[tokio::test]
-async fn ct04_bordas_e_ausencia_de_extrapolacao() {
+async fn ct04_bordas_e_extrapolacao_controlada() {
     let (_dir, mut c, base) = exemplo(false).await;
-    for peso in [400.0, 450.0, 500.0, 550.0, 600.0, 650.0, 700.0] {
+    for peso in [
+        300.0, 400.0, 450.0, 500.0, 550.0, 600.0, 650.0, 700.0, 800.0,
+    ] {
         assert!(requisitos(&base, peso, 10.0, 4.0).is_some());
     }
     for gordura in [3.0, 3.5, 4.0, 4.5, 5.0] {
         assert!(requisitos(&base, 400.0, 10.0, gordura).is_some());
     }
-    assert!(consumo_referencia(&base, 650.0, 10.0).is_none());
+    assert!(proximos(
+        consumo_referencia(&base, 300.0, 10.0).unwrap(),
+        8.7
+    ));
+    assert!(proximos(
+        consumo_referencia(&base, 650.0, 10.0).unwrap(),
+        13.325
+    ));
+    assert!(proximos(
+        consumo_referencia(&base, 800.0, 10.0).unwrap(),
+        12.8
+    ));
+    c.lote.peso = 300.0;
+    let p = verificar(&c, &base);
+    assert_ne!(p.condicao, "FORA_DO_PERFIL");
+    assert!(
+        p.avisos
+            .iter()
+            .any(|aviso| aviso.contains("extrapolação linear"))
+    );
     c.lote.peso = 650.0;
-    assert_eq!(verificar(&c, &base).condicao, "INCONCLUSIVO");
+    let p = verificar(&c, &base);
+    assert_ne!(p.condicao, "INCONCLUSIVO");
+    assert!(p.avisos.iter().any(|aviso| aviso.contains("Tabela B")));
     c.lote.peso = 700.0;
-    c.consumo_alvo = Some(15.0);
     assert_ne!(verificar(&c, &base).condicao, "FORA_DO_PERFIL");
-    c.lote.peso = 700.01;
+    c.lote.peso = 800.0;
+    assert_ne!(verificar(&c, &base).condicao, "FORA_DO_PERFIL");
+    c.lote.peso = 800.01;
     assert_eq!(verificar(&c, &base).condicao, "FORA_DO_PERFIL");
     c.lote.peso = 400.0;
     c.lote.gordura = 2.99;

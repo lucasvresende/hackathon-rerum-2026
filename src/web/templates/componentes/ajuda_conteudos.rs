@@ -46,8 +46,8 @@ pub const CENARIOS: &[&str] = &[
             de avaliação e aplicação das regras. Escolha a base das quantidades por ingrediente: \
             consumo em MS, consumo em MN ou oferta em MN, sempre por animal/dia.",
     "Informe consumo-alvo em kg MS/animal/dia e sua origem ou deixe vazio para usar a \
-            Tabela B, quando aplicável. Acima de 600 kg de peso vivo, o alvo explícito é \
-            obrigatório. Para consumo observado, informe oferta e sobras em MS do lote e período \
+            estimativa da Tabela B, extrapolada linearmente fora de 400–600 kg. \
+            Para consumo observado, informe oferta e sobras em MS do lote e período \
             de medição; deixe o alvo vazio. Seleção de partículas limita essa estimativa.",
     "Registre sobras planejadas e origem das sobras e perdas. Zero também é uma \
             hipótese que precisa ser declarada. O preço do leite é opcional para calcular \

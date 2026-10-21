@@ -42,7 +42,7 @@ Os casos nomeados usam contextos novos, o htmx real e o servidor temporário:
 - `htmx.mjs`: método/URL/cabeçalhos, CSRF, dados e confirmação do modelo; fragmento sem recarga;
   unicidade dos controles; foco na prévia e no resumo de erros; reativação dos comportamentos
   depois do swap; bloqueio de POST inválido; resposta `HX-Redirect` e navegação resultante.
-- `condicionais.mjs`: consumo obrigatório acima de 600 kg (com teste na borda de 600 kg),
+- `condicionais.mjs`: consumo-alvo opcional nas bordas de 600 kg, ingredientes selecionados,
   ingredientes selecionados, modo formular/verificar, preço por embalagem, laudos parciais
   e abertura de seção recolhida contendo campo inválido.
 - `falhas.mjs`: 403 real por CSRF inválido, 500 simulado e interrupção de rede simulada;
