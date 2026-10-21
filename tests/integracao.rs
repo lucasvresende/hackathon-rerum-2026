@@ -251,7 +251,9 @@ async fn ajuda_disponivel_com_secoes_e_links_contextuais() {
                 assert!(html.contains(&format!("id=\"{id}\"")));
                 assert!(html.contains(&format!("aria-controls=\"{id}-conteudo\"")));
             }
-            assert!(html.contains("hx-live:hidden=\"!data.aberta\""));
+            assert!(html.contains("hx-live:class=\"{ 'help-open': data.aberta, "));
+            assert!(html.contains("'help-ready': data.pronta }\""));
+            assert!(html.contains("hx-live:inert=\"!data.aberta\""));
         }
     }
 }

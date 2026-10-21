@@ -168,8 +168,21 @@ details.ingredient { border: 1px solid var(--borda); border-radius: 10px; paddin
     width: 100%; border: 0; padding: 0; background: transparent; color: var(--texto);
     font-size: 18px; font-weight: 600; text-align: left; }
 .help-indicator { color: var(--esmeralda); font-size: 24px; flex-shrink: 0; }
-.help-content { margin-top: 18px; font-size: 14px; }
+.help-content { display: grid; grid-template-rows: 0fr; opacity: 0; visibility: hidden;
+    font-size: 14px; }
+.help-ready .help-content { transition: grid-template-rows 180ms ease, opacity 180ms ease,
+    visibility 0s linear 180ms; }
+.help-open .help-content { grid-template-rows: 1fr; opacity: 1; visibility: visible;
+    transition-delay: 0s; }
+.help-content-inner { min-height: 0; overflow: hidden; }
+.help-body { padding-top: 18px; }
 .help-content ol { padding-left: 22px; }
 .help-content li { margin-bottom: 12px; }
 [hidden] { display: none !important; }
-@media print { .help-content[hidden] { display: block !important; } }
+@media (prefers-reduced-motion: reduce) {
+    .help-ready .help-content { transition: none; }
+}
+@media print {
+    .help-card .help-content { grid-template-rows: 1fr; opacity: 1; visibility: visible;
+        transition: none; }
+}

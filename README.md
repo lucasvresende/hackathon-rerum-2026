@@ -207,8 +207,13 @@ Dez cartas explicam visão geral, lotes, alimentos, cenários, verificação, fo
 histórico, comparação e fontes. Cada `Pagina` declara sua seção de ajuda; o layout apresenta
 “Ajuda nesta página” com `/ajuda#secao`, inclusive em cadastros, pareceres e telas de erro.
 
-O estado `data-aberta` pertence a cada carta. O hx-live sincroniza `aria-expanded`, o indicador
-e a visibilidade do conteúdo; botões nativos permitem usar Enter e Espaço. O fragmento inicial
+O estado `data-aberta` pertence a cada carta. O hx-live sincroniza a classe `help-open`,
+`aria-expanded`, o indicador e `inert` no conteúdo fechado, impedindo foco em links recolhidos.
+CSS puro anima abertura e fechamento por 180 ms com grid e opacidade, sem altura máxima fixa.
+A classe `help-ready`, também controlada por hx-live após o primeiro frame, evita animar
+os fechamentos da carga inicial. A preferência por movimento reduzido desativa a transição;
+a impressão exibe todas as cartas.
+Botões nativos permitem usar Enter e Espaço. O fragmento inicial
 abre apenas a seção indicada. Mudanças do fragmento (índice e navegação voltar/avançar) abrem a
 carta por meio da API `htmx.live.q`, preservando as outras cartas abertas. Sem JavaScript, todo
 o conteúdo permanece disponível com títulos; a impressão também inclui as cartas recolhidas.
@@ -342,7 +347,8 @@ os controles acessíveis e os links de ajuda em páginas completas e no erro 404
 `tests/ajuda.mjs`, executado pelo roteiro existente em Chromium, Firefox e WebKit, verifica
 expansão/recolhimento de todas as cartas, Enter/Espaço, isolamento do estado, links com fragmento,
 índice, retorno do navegador, recarga, conteúdo sem JavaScript e ausência de transbordamento
-em 390 px. O roteiro também confere os destinos contextuais nos cadastros, cenário, resultado,
+em 390 px. Também confere a classe de abertura, altura recolhida, `inert` e movimento reduzido.
+O roteiro também confere os destinos contextuais nos cadastros, cenário, resultado,
 histórico, comparação e fontes. Capturas `*-ajuda.png` e `*-ajuda-mobile.png` apoiam a inspeção.
 
 Validação da ajuda em 20/10/2026: build, 35 testes Rust, clippy com todas as features,

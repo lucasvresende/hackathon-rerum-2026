@@ -193,8 +193,10 @@ impl Render for Carta {
         let botao = format!("{}-botao", self.id);
         let conteudo = format!("{}-conteudo", self.id);
         html! {
-            article.card.help-card id=(self.id) data-aberta="true"
-                hx-on:load="data.aberta = location.hash === '#' + this.id" {
+            article.card.help-card.help-open id=(self.id) data-aberta="true" data-pronta="false"
+                hx-live:class="{ 'help-open': data.aberta, 'help-ready': data.pronta }"
+                hx-on:load="data.aberta = location.hash === '#' + this.id;
+                    await nextFrame(); await nextFrame(); data.pronta = true" {
                 h2 {
                     button.help-toggle id=(botao) type="button" hidden
                         hx-live:hidden="false" aria-expanded="true"
@@ -206,9 +208,13 @@ impl Render for Carta {
                     }
                     span hx-live:hidden="true" { (self.titulo) }
                 }
-                div.help-content id=(conteudo) hx-live:hidden="!data.aberta" {
-                    ol { @for passo in self.passos { li { (passo) } } }
-                    a.text-link href=(self.destino) { (self.acao) " →" }
+                div.help-content id=(conteudo) hx-live:inert="!data.aberta" {
+                    div.help-content-inner {
+                        div.help-body {
+                            ol { @for passo in self.passos { li { (passo) } } }
+                            a.text-link href=(self.destino) { (self.acao) " →" }
+                        }
+                    }
                 }
             }
         }

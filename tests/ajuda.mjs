@@ -9,13 +9,29 @@ export async function testarAjuda(page, url, artefatos, navegador) {
   for (const carta of await cartas.all()) {
     const botao = carta.getByRole('button');
     await botao.waitFor();
+    await page.waitForFunction(id => document.getElementById(id).classList.contains('help-ready'),
+      await carta.getAttribute('id'));
+    await carta.locator('.help-content').evaluate(async c => {
+      await new Promise(requestAnimationFrame);
+      await Promise.all(c.getAnimations().map(a => a.finished));
+    });
     assert.equal(await botao.getAttribute('aria-expanded'), 'false');
-    assert.equal(await carta.locator('.help-content').isVisible(), false);
+    await carta.locator('.help-content').waitFor({ state: 'hidden' });
+    assert.equal(await carta.evaluate(c => c.classList.contains('help-open')), false);
+    assert.equal(await carta.locator('.help-content').evaluate(c => c.inert), true);
     await botao.click();
     await carta.locator('.help-content').waitFor({ state: 'visible' });
     assert.equal(await botao.getAttribute('aria-expanded'), 'true');
+    assert.equal(await carta.evaluate(c => c.classList.contains('help-open')), true);
+    assert.equal(await carta.locator('.help-content').evaluate(c => c.inert), false);
+    await carta.locator('.help-content').evaluate(async c => {
+      await Promise.all(c.getAnimations().map(a => a.finished));
+    });
+    assert.ok(await carta.locator('.help-content').evaluate(c => c.offsetHeight > 0));
     await botao.press('Enter');
     await carta.locator('.help-content').waitFor({ state: 'hidden' });
+    assert.equal(await carta.locator('.help-content').evaluate(c => c.offsetHeight), 0);
+    assert.equal(await carta.locator('.help-content').evaluate(c => c.inert), true);
     await botao.press('Space');
     await carta.locator('.help-content').waitFor({ state: 'visible' });
   }
@@ -26,7 +42,8 @@ export async function testarAjuda(page, url, artefatos, navegador) {
   await page.goto(`${url}/ajuda#resultados`);
   await page.locator('#resultados-conteudo').waitFor({ state: 'visible' });
   assert.equal(await page.locator('#resultados-botao').getAttribute('aria-expanded'), 'true');
-  assert.equal(await page.locator('#lotes-conteudo').isVisible(), false);
+  await page.locator('#lotes-conteudo').waitFor({ state: 'hidden' });
+  await page.evaluate(() => scrollTo(0, 0));
   await page.screenshot({ path: join(artefatos, `${navegador}-ajuda.png`), fullPage: true });
   await page.getByRole('navigation', { name: 'Seções da ajuda' })
     .getByRole('link', { name: 'Cadastrar e revisar lotes' }).click();
@@ -44,10 +61,18 @@ export async function testarAjuda(page, url, artefatos, navegador) {
   await page.reload();
   await page.locator('#resultados-conteudo').waitFor({ state: 'visible' });
   await page.setViewportSize({ width: 390, height: 844 });
+  await page.evaluate(() => scrollTo(0, 0));
   await page.screenshot({ path: join(artefatos, `${navegador}-ajuda-mobile.png`),
     fullPage: true });
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
   await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  assert.equal(await page.locator('#resultados-conteudo').evaluate(
+    c => getComputedStyle(c).transitionDuration), '0s');
+  await page.locator('#resultados-botao').click();
+  await page.locator('#resultados-conteudo').waitFor({ state: 'hidden' });
+  assert.equal(await page.locator('#resultados-conteudo').evaluate(c => c.offsetHeight), 0);
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
   const contexto = await page.context().browser().newContext({ javaScriptEnabled: false });
   try {
     const semJs = await contexto.newPage();
