@@ -6,6 +6,7 @@ use crate::dominio::{Alimento, Classe, EstadoProdutivo, Laudo, Lote};
 pub fn ler_lote(c: &Campos) -> Result<Lote, Vec<Problema>> {
     let mut erros = Vec::new();
     let lote = Lote {
+        procedencia: None,
         id: if texto(c, "id").is_empty() {
             Uuid::new_v4().to_string()
         } else {
@@ -50,7 +51,11 @@ pub fn ler_lote(c: &Campos) -> Result<Lote, Vec<Problema>> {
 }
 
 pub fn campos_lote(lote: &Lote) -> Campos {
-    campos_serializados(lote)
+    let mut campos = campos_serializados(lote);
+    if let Some(p) = &lote.procedencia {
+        campos.insert("modelo_aplicado".into(), p.modelo.id.clone());
+    }
+    campos
 }
 
 pub fn ler_alimento(c: &Campos) -> Result<Alimento, Vec<Problema>> {
@@ -70,13 +75,36 @@ pub fn ler_alimento(c: &Campos) -> Result<Alimento, Vec<Problema>> {
     let classe = match texto(c, "classe") {
         "FORRAGEM" => Classe::Forragem,
         "SUPLEMENTO" => Classe::Suplemento,
-        _ => Classe::Concentrado,
+        "CONCENTRADO" => Classe::Concentrado,
+        _ => {
+            erros.push(problema("classe", "Selecione a classificação do alimento."));
+            Classe::Concentrado
+        }
     };
     let mut contaminantes = Vec::new();
     for i in 0..3 {
         let campo = |nome: &str| format!("laudo_{i}_{nome}");
-        if texto(c, &campo("analito")).is_empty() {
+        let preenchido = [
+            "analito",
+            "valor",
+            "ms",
+            "unidade",
+            "metodo",
+            "documento",
+            "loq",
+        ]
+        .iter()
+        .any(|v| !texto(c, &campo(v)).is_empty());
+        if !preenchido {
             continue;
+        }
+        for nome in ["analito", "unidade", "qualificador", "metodo", "documento"] {
+            if texto(c, &campo(nome)).is_empty() {
+                erros.push(problema(
+                    &campo(nome),
+                    "Preencha os dados do laudo ou deixe tudo vazio.",
+                ));
+            }
         }
         contaminantes.push(Laudo {
             analito: texto(c, &campo("analito")).into(),
@@ -91,6 +119,7 @@ pub fn ler_alimento(c: &Campos) -> Result<Alimento, Vec<Problema>> {
         });
     }
     let a = Alimento {
+        procedencia: None,
         id,
         composicao_id: String::new(),
         nome: texto(c, "nome").into(),
@@ -122,6 +151,9 @@ pub fn ler_alimento(c: &Campos) -> Result<Alimento, Vec<Problema>> {
 
 pub fn campos_alimento(a: &Alimento) -> Campos {
     let mut c = campos_serializados(a);
+    if let Some(p) = &a.procedencia {
+        c.insert("modelo_aplicado".into(), p.modelo.id.clone());
+    }
     c.insert("ms".into(), (a.ms * 100.0).to_string());
     for (i, nome) in ["ndt", "pb", "ca", "p", "fdn", "amido", "ee"]
         .iter()

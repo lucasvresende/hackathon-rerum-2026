@@ -1,6 +1,12 @@
 'use strict';
 // A API nativa bloqueia envios; o servidor repete a validação antes de persistir.
 function abrirSecoes(controle) {
+  const form = controle.closest('form');
+  if (form?.classList.contains('simplificado')) htmx.live.q(form).data.simples = false;
+  for (let secao = controle.closest('.expansivel'); secao;
+    secao = secao.parentElement.closest('.expansivel')) {
+    htmx.live.q(secao).data.aberta = true;
+  }
   for (const secao of document.querySelectorAll('details')) {
     if (secao.contains(controle)) secao.open = true;
   }
@@ -19,7 +25,14 @@ function erroCampo(controle) {
   }
   if (controle.required && controle.value.trim() === '') mensagem = 'Preencha este campo.';
   controle.setCustomValidity(mensagem);
-  if (!controle.validity.valid) mensagem ||= controle.validationMessage;
+  const validade = controle.validity;
+  if (!mensagem && !validade.valid) {
+    if (validade.stepMismatch) mensagem = 'Informe um inteiro válido para este campo.';
+    else if (validade.rangeUnderflow) mensagem = `O mínimo permitido é ${controle.min}.`;
+    else if (validade.rangeOverflow) mensagem = `O máximo permitido é ${controle.max}.`;
+    else if (validade.tooLong) mensagem = `Use até ${controle.maxLength} caracteres.`;
+    else mensagem = 'Informe um valor válido para este campo.';
+  }
   const campo = controle.closest('.field');
   if (!campo) return;
   let aviso = campo.querySelector('.field-error');
@@ -37,6 +50,10 @@ function erroCampo(controle) {
   else controle.removeAttribute('aria-invalid');
 }
 function configurarCampos() {
+  configurarCondicionais();
+  document.querySelectorAll('[aria-invalid="true"]').forEach(abrirSecoes);
+  const previa = document.querySelector('.template-preview');
+  if (previa) previa.focus();
   document.querySelectorAll('form#formulario select, form#formulario textarea').forEach(c => {
     if (!c.id) c.id = c.name;
   });
@@ -60,7 +77,8 @@ document.addEventListener('change', evento => erroCampo(evento.target));
 document.addEventListener('htmx:after:swap', configurarCampos);
 configurarCampos();
 document.addEventListener('submit', evento => {
-  if (evento.target.id !== 'formulario' || evento.submitter?.hasAttribute('data-sem-validacao')) {
+  if (evento.target.id !== 'formulario'
+    || evento.submitter?.hasAttribute('data-sem-validacao')) {
     return;
   }
   evento.target.querySelectorAll('input, select, textarea').forEach(erroCampo);
@@ -72,7 +90,8 @@ document.addEventListener('submit', evento => {
 
 // As guias compartilham somente uma sinalização; os dados continuam sendo lidos do servidor.
 if (document.querySelector('[data-cadastro-salvo]')) {
-  try { localStorage.setItem('cadastros-atualizados', String(Date.now())); } catch { /* opcional */ }
+  try { localStorage.setItem('cadastros-atualizados', String(Date.now())); }
+  catch { /* sinalização opcional; atualização manual continua disponível */ }
 }
 let atualizarPendente = false;
 window.addEventListener('storage', evento => {
@@ -86,3 +105,37 @@ function atualizarCadastros() {
   if (botao) { atualizarPendente = false; botao.click(); }
 }
 window.addEventListener('focus', atualizarCadastros);
+
+function configurarCondicionais() {
+  const form = document.getElementById('formulario');
+  if (!form) return;
+  const lote = form.querySelector('#lote');
+  const consumo = form.querySelector('#consumo_alvo');
+  if (consumo && lote) consumo.required = Number(lote.selectedOptions[0]?.dataset.peso) > 600;
+  form.querySelectorAll('.ingredient').forEach(ingrediente => {
+    const usar = ingrediente.querySelector('input[name^="usar-"]');
+    const unidade = ingrediente.querySelector('select[name^="unidade-preco-"]');
+    ingrediente.querySelectorAll('input:not([type=checkbox])').forEach(c => {
+      const prefixo = c.name.split('-')[0];
+      c.required = usar.checked && (['ms', 'perda', 'preco', 'origem'].includes(prefixo)
+        || (prefixo === 'q' && form.querySelector('#modo').value !== 'formular')
+        || (prefixo === 'embalagem' && unidade.value === 'embalagem'));
+      if (!usar.checked) c.setCustomValidity('');
+    });
+  });
+  for (let i = 0; i < 3; i++) {
+    const analito = form.querySelector(`[name="laudo_${i}_analito"]`);
+    if (!analito) continue;
+    ['valor', 'unidade', 'ms', 'qualificador', 'metodo', 'documento'].forEach(sufixo => {
+      const c = form.querySelector(`[name="laudo_${i}_${sufixo}"]`);
+      if (c) c.required = !!analito.value.trim();
+    });
+  }
+}
+document.addEventListener('change', evento => {
+  configurarCondicionais();
+  if (evento.target.matches('input[name^="usar-"]') && evento.target.checked) {
+    const secao = evento.target.closest('.ingredient').querySelector('.expansivel');
+    htmx.live.q(secao).data.aberta = true;
+  }
+});

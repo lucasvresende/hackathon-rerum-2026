@@ -1,5 +1,3 @@
-use std::collections::BTreeSet;
-
 use serde::{Deserialize, Serialize};
 
 use super::unidades::preco_f64;
@@ -169,54 +167,7 @@ pub fn validar(c: &Cenario) -> Vec<Problema> {
             "Selecione de 1 a 10 ingredientes para formular ou 20 para verificar.",
         ));
     }
-    let mut ids = BTreeSet::new();
-    for (i, item) in c.itens.iter().enumerate() {
-        let campo = format!("item_{i}");
-        if !ids.insert(&item.alimento.id) {
-            erros.push(problema(
-                &campo,
-                "Selecione somente uma composição de cada ingrediente.",
-            ));
-        }
-        erros.extend(
-            validar_alimento(&item.alimento)
-                .into_iter()
-                .map(|mut erro| {
-                    erro.campo = campo.clone();
-                    erro
-                }),
-        );
-        if !item.quantidade.is_finite()
-            || item.quantidade < 0.0
-            || !item.perda.is_finite()
-            || !(0.0..1.0).contains(&item.perda)
-            || !item.minimo_ms.is_finite()
-            || item.minimo_ms < 0.0
-            || item
-                .maximo_ms
-                .is_some_and(|v| !v.is_finite() || v < item.minimo_ms)
-            || item.estoque.is_some_and(|v| !v.is_finite() || v < 0.0)
-            || !item.resolucao_mn.is_finite()
-            || item.resolucao_mn < 0.0
-        {
-            erros.push(problema(
-                &campo,
-                "Quantidade, perda, estoque ou limites inválidos.",
-            ));
-        }
-        if preco_f64(&item.preco).is_none_or(|v| v < 0.0) || item.origem_preco.trim().is_empty() {
-            erros.push(problema(
-                &campo,
-                "Informe preço decimal não negativo e sua origem.",
-            ));
-        }
-        if item.sem_limite && item.estoque.is_some() {
-            erros.push(problema(
-                &campo,
-                "Escolha estoque informado ou hipótese sem limite.",
-            ));
-        }
-    }
+    erros.extend(super::validacao_itens::validar(c));
     if c.preco_leite
         .as_ref()
         .is_some_and(|p| preco_f64(p).is_none_or(|v| v < 0.0))

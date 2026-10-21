@@ -24,12 +24,22 @@ pub async fn backup(pool: &SqlitePool, destino: &Path) -> Resultado<()> {
         destino.join("conhecimento.sql"),
         include_str!("../../dados_referencia/001_conhecimento.sql"),
     )?;
+    std::fs::write(
+        destino.join("modelos.md"),
+        include_str!("../../fontes/MODELOS.md"),
+    )?;
+    std::fs::write(
+        destino.join("modelos.sql"),
+        include_str!("../../dados_referencia/004_modelos.sql"),
+    )?;
     let mut manifesto = std::collections::BTreeMap::new();
     for nome in [
         "aplicacao.sqlite3",
         "anexo.md",
         "requisitos.md",
         "conhecimento.sql",
+        "modelos.md",
+        "modelos.sql",
     ] {
         let bytes = std::fs::read(destino.join(nome))?;
         use sha2::{Digest, Sha256};
@@ -60,6 +70,15 @@ pub async fn restaurar(origem: &Path, destino: &Path) -> Resultado<()> {
             return Err(format!("Backup corrompido: {nome}").into());
         }
     }
+    for nome in ["modelos.md", "modelos.sql"] {
+        if let Some(esperado) = manifesto.get(nome) {
+            use sha2::{Digest, Sha256};
+            let hash = format!("{:x}", Sha256::digest(std::fs::read(origem.join(nome))?));
+            if esperado != &hash {
+                return Err(format!("Backup corrompido: {nome}").into());
+            }
+        }
+    }
     std::fs::create_dir(destino)?;
     let banco = destino.join("aplicacao.sqlite3");
     std::fs::copy(origem.join("aplicacao.sqlite3"), &banco)?;
@@ -85,6 +104,11 @@ pub async fn restaurar(origem: &Path, destino: &Path) -> Resultado<()> {
         "manifesto.json",
     ] {
         std::fs::copy(origem.join(nome), destino.join(nome))?;
+    }
+    for nome in ["modelos.md", "modelos.sql"] {
+        if manifesto.contains_key(nome) {
+            std::fs::copy(origem.join(nome), destino.join(nome))?;
+        }
     }
     Ok(())
 }

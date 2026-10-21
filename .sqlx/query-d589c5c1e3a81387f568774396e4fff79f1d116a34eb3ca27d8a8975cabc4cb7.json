@@ -1,0 +1,110 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT * FROM valores_modelo ORDER BY modelo_id, campo;\n",
+  "describe": {
+    "columns": [
+      {
+        "name": "modelo_id",
+        "ordinal": 0,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "valores_modelo",
+            "name": "modelo_id"
+          }
+        }
+      },
+      {
+        "name": "campo",
+        "ordinal": 1,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "valores_modelo",
+            "name": "campo"
+          }
+        }
+      },
+      {
+        "name": "valor",
+        "ordinal": 2,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "valores_modelo",
+            "name": "valor"
+          }
+        }
+      },
+      {
+        "name": "unidade",
+        "ordinal": 3,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "valores_modelo",
+            "name": "unidade"
+          }
+        }
+      },
+      {
+        "name": "valor_original",
+        "ordinal": 4,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "valores_modelo",
+            "name": "valor_original"
+          }
+        }
+      },
+      {
+        "name": "unidade_original",
+        "ordinal": 5,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "valores_modelo",
+            "name": "unidade_original"
+          }
+        }
+      },
+      {
+        "name": "natureza",
+        "ordinal": 6,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "valores_modelo",
+            "name": "natureza"
+          }
+        }
+      },
+      {
+        "name": "fonte_id",
+        "ordinal": 7,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "valores_modelo",
+            "name": "fonte_id"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "d589c5c1e3a81387f568774396e4fff79f1d116a34eb3ca27d8a8975cabc4cb7"
+}

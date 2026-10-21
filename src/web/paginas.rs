@@ -36,19 +36,20 @@ pub async fn lotes(State(e): State<EstadoApp>) -> Result<Markup, ErroWeb> {
         conteudo: html! {
             (cabecalho("Lotes", "", "lotes"))
             div.actions { a.button href="/lotes/novo" target="_blank"
-                        rel="noopener" title="Abre em nova guia" { "+ Cadastrar lote" } }
+                rel="noopener" title="Abre em nova guia" { "+ Cadastrar lote" } }
             section.card.table-wrap {
                 @if lotes.is_empty() { p.empty {
-                "Nenhum lote cadastrado." } }
+                        "Nenhum lote cadastrado." } }
                 @else {
                     table { thead { tr { th { "Lote" } th { "Animais" } th { "Peso (kg)" }
-                        th { "Leite (kg/animal/dia)" } th { "Dias em lactação" } th {} } }
+                                th { "Leite (kg/animal/dia)" } th { "Dias em lactação" } th {} } }
                         tbody { @for l in lotes { tr { td { strong { (&l.nome) } }
-                            td { (l.animais) } td { (l.peso) } td { (l.producao) } td {
-                            (l.dias_lactacao) }
-                            td { a href=(format!("/lotes/{}/editar", l.id))
-                                target="_blank" rel="noopener" title="Abre em nova guia" { "Revisar ↗" } }
-                        } } }
+                                    td { (l.animais) } td { (l.peso) } td { (l.producao) } td {
+                                        (l.dias_lactacao) }
+                                    td { a href=(format!("/lotes/{}/editar", l.id))
+                                        target="_blank" rel="noopener" title="Abre em nova guia" {
+                                            "Revisar ↗" } }
+                                } } }
                     }
                 }
             }
@@ -69,10 +70,12 @@ pub async fn alimentos(
         conteudo: html! {
             (cabecalho("Catálogo de alimentos", "", "alimentos"))
             div.actions { a.button href="/alimentos/novo" target="_blank"
-                        rel="noopener" title="Abre em nova guia" { "+ Cadastrar composição" }
+                rel="noopener" title="Abre em nova guia" {
+                    "+ Cadastrar composição" }
                 form.search method="get" action="/alimentos" {
                     label.sr-only for="busca" { "Pesquisar alimento" }
-                    input #busca name="busca" value=(&busca) placeholder="Pesquisar alimento…";
+                    input #busca name="busca" value=(&busca)
+                    placeholder="Pesquisar alimento…";
                     button.button.secondary { "Pesquisar" }
                 }
             }
@@ -83,21 +86,28 @@ pub async fn alimentos(
                         span.pill { (&a.natureza) }
                         h2 { (&a.nome) }
                         p.muted { (format!("{:?}", a.classe)) " · fonte " (&a.fonte_id) }
-                        dl { dt { "Matéria seca" } dd { (format!("{:.1}% MN", a.ms * 100.0)) }
+                        dl { dt { "Matéria seca" } dd { (format!("{:.1}% MN", a.ms *
+                                100.0)) }
                             @for (i, nome) in ["NDT", "PB", "Ca", "P", "FDN", "Amido", "EE"]
-                                .iter().enumerate() {
-                                dt { (nome) } dd { (a.nutrientes[i].map(|v| format!("{:.2}% MS",
-                                v*100.0))
+                            .iter().enumerate() {
+                                dt { (nome) } dd { (a.nutrientes[i].map(|v|
+                                    format!("{:.2}% MS",
+                                    v*100.0))
                                     .unwrap_or("Desconhecido".into())) }
                             }
                         }
-                        details { summary { "Procedência e condições" }
-                            p { (&a.origem) " · " (&a.metodo) " · " (&a.data) }
-                            p { (&a.evidencia) }
-                            p.code { "Versão " (&a.composicao_id) }
-                        }
+                        (super::componentes::expansivel::Expansivel { id:
+                            &format!("alimento-{}",
+                            a.composicao_id), aberto: false,
+                            titulo: html! { "Procedência e condições" },
+                            conteudo: html! {
+                                p { (&a.origem) " · " (&a.metodo) " · " (&a.data) }
+                                p { (&a.evidencia) }
+                                p.code { "Versão " (&a.composicao_id) }
+                            },
+                        })
                         a.text-link href=(format!("/alimentos/{}/revisar", a.composicao_id))
-                            target="_blank" rel="noopener" title="Abre em nova guia" {
+                        target="_blank" rel="noopener" title="Abre em nova guia" {
                             "Criar revisão ou nova análise ↗"
                         }
                     }
@@ -156,8 +166,9 @@ pub async fn historico(
                 button.button.secondary { "Filtrar histórico" }
             }
             div.actions {
-                @if pagina>1 { a.button.secondary href=(format!("/historico?pagina={}",pagina-1)) {
-                    "← Página anterior" } }
+                @if pagina>1 { a.button.secondary
+                    href=(format!("/historico?pagina={}",pagina-1)) {
+                        "← Página anterior" } }
                 span.muted { "Página " (pagina) " · até 100 resultados por página" }
                 @if execucoes.len()==100 { a.button.secondary
                     href=(format!("/historico?pagina={}",pagina+1)) { "Próxima página →" } }
@@ -181,14 +192,15 @@ pub async fn historico(
             }
             section.card.table-wrap {
                 table { thead { tr { th { "Cenário" } th { "Lote" } th { "Estado" }
-                    th { "Custo / animal / dia" } th {} } }
+                            th { "Custo / animal / dia" } th {} } }
                     tbody { @for x in &execucoes {
-                        tr { td { (&x.cenario.nome) } td { (&x.cenario.lote.nome) }
-                            td { span.pill { (&x.parecer.condicao) } }
-                            td { (x.parecer.custo.map(dinheiro).unwrap_or("—".into())) }
-                            td { a href=(format!("/execucoes/{}", x.id)) { "Ver parecer ↗" } }
-                        }
-                    } }
+                            tr { td { (&x.cenario.nome) } td { (&x.cenario.lote.nome) }
+                                td { span.pill { (&x.parecer.condicao) } }
+                                td { (x.parecer.custo.map(dinheiro).unwrap_or("—".into())) }
+                                td { a href=(format!("/execucoes/{}", x.id)) {
+                                        "Ver parecer ↗" } }
+                            }
+                        } }
                 }
                 @if execucoes.is_empty() { p.empty { "Nenhum cenário calculado ainda." } }
             }
@@ -209,32 +221,47 @@ pub async fn conhecimento(State(e): State<EstadoApp>) -> Result<Markup, ErroWeb>
                 O perfil histórico NRC 1989 não implementa integralmente NASEM 2021 ou
                 BR-LEITE 2024." }
                 p { "PV 400–700 kg; referência de consumo apenas até 600 kg; gordura 3–5%; \
-                    DEL 60–250; LCG4 5–30 kg/dia." }
+                            DEL 60–250; LCG4 5–30 kg/dia." }
             }
             section.card.table-wrap { h2 { "Coeficientes do perfil" }
-                table { thead { tr { @for t in ["Tabela", "Eixo", "Eixo 2", "A", "B", "C", "D",
-                "Unidade"] {
-                    th { (t) } } } }
+                table { thead { tr { @for t in ["Tabela", "Eixo", "Eixo 2", "A", "B",
+                            "C", "D",
+                            "Unidade"] {
+                                th { (t) } } } }
                     tbody { @for r in &c.coeficientes { tr {
-                        td { (&r.tabela) } td { (r.eixo) } td { (r.eixo2) }
-                        @for v in r.valores { td { (v) } } td { (&r.unidade) }
-                    } } }
+                                td { (&r.tabela) } td { (r.eixo) } td { (r.eixo2) }
+                                @for v in r.valores { td { (v) } } td { (&r.unidade) }
+                            } } }
                 }
             }
             section.card { h2 { "Fontes preservadas" }
-                @for f in &c.fontes { details { summary { span.pill { (&f.natureza) } " "
-                    (&f.id) " · " (&f.titulo) } p { (&f.edicao) " · " (&f.localizador) }
-                    p { (&f.conteudo) } p.code { (&f.hash) }
-                } }
+                @for f in &c.fontes { (super::componentes::expansivel::Expansivel { id:
+                        &format!("conhecimento-{}", f.id), aberto: false,
+                        titulo: html! { span.pill { (&f.natureza) } " "
+                            (&f.id) " · " (&f.titulo) },
+                        conteudo: html! { p { (&f.edicao) " · " (&f.localizador) }
+                            p { (&f.conteudo) } p.code { (&f.hash) }
+                        },
+                    }) }
             }
             section.card { h2 { "Normas, vigência e condições" }
-                @for n in &c.normas { details { summary { (&n.id) " · " (&n.natureza) }
-                    p { "Início: " (&n.inicio) " · fim exclusivo: "
-                        (n.fim.as_deref().unwrap_or("Sem fim registrado")) }
-                    p { "Transição: " (n.transicao.as_deref().unwrap_or("Não informada")) }
-                    p { (&n.condicoes) } p { "Exceções: " (&n.excecoes) }
-                    p { "Evidência: " (&n.evidencia) } p { "Ação: " (&n.acao) }
-                } }
+                p.muted {
+                    "Ícone de vaca: EmojiOne / JoyPixels, via "
+                    a href="https://www.svgrepo.com/svg/401350/cow" { "SVG Repo" }
+                    ". Arte " a href="https://creativecommons.org/licenses/by/4.0/" { "CC BY 4.0" }
+                    "; dimensões e formatação ajustadas."
+                }
+                @for n in &c.normas { (super::componentes::expansivel::Expansivel { id:
+                        &format!("norma-{}", n.id), aberto: false,
+                        titulo: html! { (&n.id) " · " (&n.natureza) },
+                        conteudo: html! {
+                            p { "Início: " (&n.inicio) " · fim exclusivo: "
+                                (n.fim.as_deref().unwrap_or("Sem fim registrado")) }
+                            p { "Transição: " (n.transicao.as_deref().unwrap_or("Não informada")) }
+                            p { (&n.condicoes) } p { "Exceções: " (&n.excecoes) }
+                            p { "Evidência: " (&n.evidencia) } p { "Ação: " (&n.acao) }
+                        },
+                    }) }
             }
         },
     }

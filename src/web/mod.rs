@@ -7,3 +7,4 @@ pub mod formularios;
 pub mod paginas;
 pub mod rotas;
 pub mod seguranca;
+pub mod templates;

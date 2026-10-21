@@ -10,6 +10,8 @@ pub enum Conhecido {
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Lote {
+    #[serde(default)]
+    pub procedencia: Option<super::templates::ProcedenciaModelo>,
     pub id: String,
     pub revisao_id: String,
     pub nome: String,
@@ -48,6 +50,8 @@ pub enum Classe {
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Alimento {
+    #[serde(default)]
+    pub procedencia: Option<super::templates::ProcedenciaModelo>,
     pub id: String,
     pub composicao_id: String,
     pub nome: String,

@@ -7,6 +7,7 @@ use crate::dominio::*;
 
 pub fn lote() -> Lote {
     Lote {
+        procedencia: None,
         id: Uuid::new_v4().to_string(),
         revisao_id: String::new(),
         nome: "Lote demonstração".into(),

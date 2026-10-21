@@ -7,7 +7,7 @@ FeedYourCow identifica o software; telas, menu e rodapé não devem conter sloga
 
 O [plano revisado de melhorias](hackathon/PLANO_MELHORIAS_V2.md) detalha as sugestões de
 `hackathon/NOTAS_MELHORIAS.md`, os modelos com fontes, os testes e as decisões pendentes.
-A implementação está pausada para revisão do plano e nova instrução do programador.
+A implementação foi retomada após aprovação; as funcionalidades estão descritas abaixo.
 
 ## Índice
 
@@ -477,3 +477,34 @@ Salvar um cadastro mostra confirmação; cancelar não grava. Ao retornar ao cen
 as opções são atualizadas após a sinalização entre guias, mantendo os valores do formulário.
 O botão “Atualizar cadastros” oferece o mesmo fluxo manual, inclusive sem JavaScript.
 Novo cenário exige seleção explícita; as dietas sintéticas A/B têm links de demonstração próprios.
+
+### Templates editáveis e preenchimento simplificado
+
+`preparar` aplica a migração `0004_modelos.sql` e a carga `004_modelos.sql`. No cadastro,
+escolha um template, abra a prévia, confirme a substituição e use “Carregar template para editar”.
+Os campos continuam editáveis; salvar cria uma revisão do cadastro e preserva o template original.
+Não é necessário JavaScript para consultar a prévia, carregar, editar e salvar.
+
+A primeira carga inclui silagem de milho 30–35% MS e milho em grão da Feedipedia, farelo de soja
+da Embrapa e um modelo parcial de Jersey baseado em estudo identificado. Fontes, páginas,
+unidades, conversões e limitações estão em [fontes/MODELOS.md](fontes/MODELOS.md).
+Jersey é exemplo de população estudada, com peso fora do perfil; não é média geral da raça.
+NDT ausente na Feedipedia e amido ausente na tabela de soja continuam desconhecidos.
+Nenhum template confirma autorização, condições fisiológicas, disponibilidade ou ausência de risco.
+
+As tabelas `modelos_preenchimento` e `valores_modelo` armazenam versões imutáveis e referências
+à tabela `fontes`. Rust valida campos e unidades da carga. JavaScript não mantém uma cópia
+independente das tabelas nutricionais. Cada cadastro preserva o modelo, valores de referência,
+valores utilizados e alterações por campo. O servidor reconstrói essa procedência a partir
+do modelo do banco; referências enviadas pelo navegador não são aceitas como fonte científica.
+Alterações de MS no cenário também atualizam o valor utilizado no snapshot de procedência.
+Backup inclui dados, versões e procedência no SQLite, além do manifesto de fontes e da carga.
+
+“Mostrar campos complementares” alterna a apresentação do mesmo formulário. Os valores são
+preservados; condições e informações necessárias continuam disponíveis. Campos inválidos dentro
+de uma seção recolhida são revelados para correção. As expansões usam o componente Maud
+`Expansivel`, hx-live e CSS com movimento reduzido, impressão e conteúdo aberto sem JavaScript.
+
+O cabeçalho usa uma cópia local do SVG de vaca solicitado; procedência, licença e atribuição
+estão em [static/README.md](static/README.md). Tabelas destacam linhas no hover e no foco.
+A carga de templates não altera o perfil nutricional nem os exemplos sintéticos A/B.

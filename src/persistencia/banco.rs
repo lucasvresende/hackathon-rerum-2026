@@ -40,6 +40,11 @@ pub async fn preparar(caminho: &Path) -> Resultado<SqlitePool> {
         include_str!("../../dados_referencia/003_contaminantes.sql"),
     )
     .await?;
+    super::conhecimento::carregar(
+        &pool,
+        include_str!("../../dados_referencia/004_modelos.sql"),
+    )
+    .await?;
     Ok(pool)
 }
 

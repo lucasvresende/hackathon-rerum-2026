@@ -331,6 +331,28 @@ Permitir impressão pelo navegador com identificação da execução e das premi
 **Aceite:** demonstrar uma violação, uma candidata que atende ao núcleo, uma pendência e o efeito
 da mudança de preço/MS, sem consultas externas ou resultados preparados fora do motor.
 
+### RF-19 — Templates editáveis e cadastros isolados
+
+Criação, revisão e duplicação de cenários deverão abrir em nova guia, sem menu principal.
+Após salvar lote/alimento, mostrar confirmação. O cenário de origem deverá atualizar as opções
+quando o usuário retornar, preservando o preenchimento; oferecer atualização manual equivalente.
+
+O usuário poderá consultar a prévia, carregar um template opcionalmente e editar seus valores
+antes de salvar. O template original permanecerá imutável. Registrar versão, contexto, fonte,
+valores originais, unidades/conversões e valores utilizados, com alterações por campo.
+Modelos serão carregados por SQL versionado e consultados no SQLite, sem internet no uso.
+Valores ausentes permanecerão desconhecidos; condições fisiológicas e de segurança não serão
+pré-confirmadas. Médias publicadas não serão apresentadas como laudos ou medições da fazenda.
+
+O modo simplificado deverá usar o mesmo contrato do completo, preservar dados e revelar campos
+inválidos ou necessários. Asteriscos, mensagens acima dos controles e validação do navegador
+complementarão a validação obrigatória no servidor. Expansões respeitarão teclado, foco,
+movimento reduzido, impressão e alternativa sem JavaScript. Recursos visuais serão locais.
+
+**Aceite:** carregar silagem, editar PB e salvar deverá preservar o original e registrar a
+alteração no cadastro e no histórico. O mesmo fluxo deverá funcionar sem JavaScript.
+Trocar template exigirá confirmação e não herdará nutrientes ausentes da referência anterior.
+
 ## 5. Fluxos de uso
 
 ### FL-01 — Preparar a instalação
@@ -967,6 +989,11 @@ com as tolerâncias de RN-24. Na interface, os totais monetários serão apresen
 - **CT-30 — Ajuda contextual:** conferir as instruções de todas as tarefas, cartas expansíveis
   via hx-live, navegação por fragmentos, links em cada página, teclado e layout móvel nos três
   navegadores. Cobertura: RNF-02, RNF-03, RNF-10, RNF-12.
+
+- **CT-31 — Templates:** conferir fontes e conversões, carga atômica/idempotente, modelos
+  imutáveis, prévia, substituição confirmada, edição por campo e preservação após backup.
+  Validar criação/revisão, modo simplificado, atualização entre guias e ausência de JavaScript
+  em Chromium, Firefox e WebKit. Cobertura: RF-19; RN-02/03/23; RNF-02/03/10/12.
 
 ## 10. Condições para considerar o MVP concluído
 

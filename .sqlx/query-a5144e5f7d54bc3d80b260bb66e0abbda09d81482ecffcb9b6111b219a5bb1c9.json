@@ -1,0 +1,122 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT m.*, f.titulo AS fonte_titulo, f.localizador AS fonte_url\nFROM modelos_preenchimento m JOIN fontes f ON f.id = m.fonte_id\nORDER BY m.tipo, m.nome, m.id;\n",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "modelos_preenchimento",
+            "name": "id"
+          }
+        }
+      },
+      {
+        "name": "versao",
+        "ordinal": 1,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "modelos_preenchimento",
+            "name": "versao"
+          }
+        }
+      },
+      {
+        "name": "nome",
+        "ordinal": 2,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "modelos_preenchimento",
+            "name": "nome"
+          }
+        }
+      },
+      {
+        "name": "tipo",
+        "ordinal": 3,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "modelos_preenchimento",
+            "name": "tipo"
+          }
+        }
+      },
+      {
+        "name": "contexto",
+        "ordinal": 4,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "modelos_preenchimento",
+            "name": "contexto"
+          }
+        }
+      },
+      {
+        "name": "lacunas",
+        "ordinal": 5,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "modelos_preenchimento",
+            "name": "lacunas"
+          }
+        }
+      },
+      {
+        "name": "fonte_id",
+        "ordinal": 6,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "modelos_preenchimento",
+            "name": "fonte_id"
+          }
+        }
+      },
+      {
+        "name": "fonte_titulo",
+        "ordinal": 7,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "fontes",
+            "name": "titulo"
+          }
+        }
+      },
+      {
+        "name": "fonte_url",
+        "ordinal": 8,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "fontes",
+            "name": "localizador"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "a5144e5f7d54bc3d80b260bb66e0abbda09d81482ecffcb9b6111b219a5bb1c9"
+}

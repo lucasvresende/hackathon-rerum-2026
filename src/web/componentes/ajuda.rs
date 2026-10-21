@@ -17,7 +17,7 @@ const CARTAS: &[Carta] = &[
         id: "inicio",
         titulo: "Visão geral e primeiros passos",
         passos: &[
-            "Use o menu para acessar os cadastros, os cálculos, o histórico e as fontes. \
+            "Cadastros abrem em nova guia, sem menu. Templates podem ser carregados e editados. \
             Na visão geral, confira os totais cadastrados e abra as execuções recentes.",
             "Comece cadastrando um lote e conferindo as composições dos alimentos. Depois use \
             Verificar dieta para avaliar quantidades conhecidas ou Formular dieta para buscar \
@@ -37,7 +37,8 @@ const CARTAS: &[Carta] = &[
             "Preencha os estados fisiológicos e de manejo. Informe explicitamente se as vacas \
             são adultas, gestantes, em crescimento, com peso estável e confinadas. Desconhecido \
             não significa não. Separe animais com características diferentes em outros lotes.",
-            "Use Salvar revisão. Para corrigir um lote, volte à lista e escolha Revisar. \
+            "Opcionalmente, consulte a prévia de um template, carregue e edite os valores. \
+            Use Salvar revisão. Para corrigir um lote, volte à lista e escolha Revisar. \
             A alteração gera nova revisão; as entradas das execuções antigas ficam preservadas.",
         ],
         destino: "/lotes",
@@ -55,7 +56,9 @@ const CARTAS: &[Carta] = &[
             "A matéria seca (MS) é expressa em % da matéria natural (MN); NDT, PB, Ca, P, \
             FDN, amido e EE são expressos em % da MS. Não preencha um nutriente desconhecido \
             como zero. Registre origem animal, NNP, autorização e limite de rótulo do suplemento.",
-            "Salve a revisão para novos cenários. Análises anteriores continuam disponíveis; \
+            "Escolha um template, veja a prévia, confirme e carregue a referência publicada. \
+            Edite antes de salvar; a referência original e as alterações são preservadas. \
+            Salve a revisão para novos cenários. Análises anteriores continuam disponíveis; \
             preço e estoque locais são informados no cenário, sem alterar a composição científica.",
         ],
         destino: "/alimentos",

@@ -19,36 +19,41 @@ impl Render for Inicio<'_> {
             (cabecalho("Visão geral", "", "inicio"))
             div.actions {
                 a.button href="/cenarios/novo" target="_blank"
-                        rel="noopener" title="Abre em nova guia" { "Verificar dieta" }
+                rel="noopener" title="Abre em nova guia" { "Verificar dieta" }
                 a.button.secondary href="/cenarios/novo?modo=formular"
-                        target="_blank" rel="noopener" title="Abre em nova guia" { "Formular dieta" }
+                target="_blank" rel="noopener" title="Abre em nova guia" {
+                    "Formular dieta" }
             }
             section.stats aria-label="Resumo da aplicação" {
                 @for (numero, nome) in [
-                    (self.lotes.len().to_string(), "Lotes cadastrados"),
-                    (animais.to_string(), "Animais cadastrados"),
-                    (self.alimentos.len().to_string(), "Composições disponíveis"),
-                    (self.execucoes.len().to_string(), "Execuções recentes"),
+                (self.lotes.len().to_string(), "Lotes cadastrados"),
+                (animais.to_string(), "Animais cadastrados"),
+                (self.alimentos.len().to_string(), "Composições disponíveis"),
+                (self.execucoes.len().to_string(), "Execuções recentes"),
                 ] {
                     article.stat { small { (nome) } strong { (numero) } }
                 }
             }
             section.card.table-wrap {
                 div.section-title { h2 { "Últimos cenários" } a href="/historico" {
-                "Ver histórico →" } }
+                        "Ver histórico →" } }
                 @if self.execucoes.is_empty() {
                     p.empty { "Nenhum cenário calculado." }
                 } @else {
                     table {
-                        thead { tr { th { "Cenário" } th { "Lote" } th { "Custo / animal / dia" }
-                            th { "Núcleo químico" } th {} } }
+                        thead { tr { th { "Cenário" } th { "Lote" } th {
+                                    "Custo / animal / dia" }
+                                th { "Núcleo químico" } th {} } }
                         tbody {
                             @for e in self.execucoes.iter().take(5) {
                                 tr { td { strong { (&e.cenario.nome) } } td {
-                                (&e.cenario.lote.nome) }
-                                    td { (e.parecer.custo.map(dinheiro).unwrap_or("—".into())) }
-                                    td { span.pill { (e.parecer.dimensao("Núcleo químico")) } }
-                                    td { a href=(format!("/execucoes/{}", e.id)) { "Abrir ↗" } }
+                                        (&e.cenario.lote.nome) }
+                                    td {
+                                        (e.parecer.custo.map(dinheiro).unwrap_or("—".into())) }
+                                    td { span.pill {
+                                            (e.parecer.dimensao("Núcleo químico")) } }
+                                    td { a href=(format!("/execucoes/{}", e.id)) {
+                                            "Abrir ↗" } }
                                 }
                             }
                         }
@@ -67,7 +72,8 @@ impl Render for Inicio<'_> {
                 dl.details-grid {
                     dt { "Identificador" } dd.code { (&self.conhecimento.perfil_id) }
                     dt { "População" } dd { "Vacas adultas em lactação e confinamento" }
-                    dt { "Limitação" } dd { "Atendimento ao núcleo não é adequação integral." }
+                    dt { "Limitação" } dd {
+                        "Atendimento ao núcleo não é adequação integral." }
                 }
                 a.text-link href="/conhecimento" { "Consultar perfil e fontes" }
             }

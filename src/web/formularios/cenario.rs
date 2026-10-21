@@ -9,6 +9,9 @@ pub fn ler_cenario(
     alimentos: &[Alimento],
 ) -> Result<Cenario, Vec<Problema>> {
     let mut erros = Vec::new();
+    if texto(c, "nome").is_empty() || texto(c, "nome").chars().count() > 150 {
+        erros.push(problema("nome", "Informe um nome de até 150 caracteres."));
+    }
     let Some(lote) = lotes.iter().find(|l| l.id == texto(c, "lote")) else {
         return Err(vec![problema("lote", "Selecione um lote cadastrado.")]);
     };
@@ -32,7 +35,20 @@ pub fn ler_cenario(
         }
         let mut alimento = a.clone();
         alimento.ms = obrigatorio(c, &chave("ms"), &mut erros) / 100.0;
-        let mut quantidade = numero(c, &chave("q"), &mut erros).unwrap_or(0.0);
+        if let Some(p) = &mut alimento.procedencia
+            && let Some(campo) = p.campos.iter_mut().find(|v| v.campo == "ms")
+        {
+            campo.utilizado = (alimento.ms * 100.0).to_string();
+            if let Some(v) = p.modelo.valores.iter().find(|v| v.campo == "ms") {
+                campo.alterado =
+                    !crate::dominio::templates::equivalentes(&campo.utilizado, &v.valor);
+            }
+        }
+        let mut quantidade = if texto(c, "modo") == "formular" {
+            numero(c, &chave("q"), &mut erros).unwrap_or(0.0)
+        } else {
+            obrigatorio(c, &chave("q"), &mut erros)
+        };
         if alimento.ms > 0.0 {
             if texto(c, "base_comparacao") == "Quantidade de MN fixa"
                 && base == BaseQuantidade::ConsumoMs

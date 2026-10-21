@@ -1,3 +1,4 @@
+import { testarTemplates } from './templates.mjs';
 import assert from 'node:assert/strict';
 import { testarAjuda, conferirLinkAjuda } from './ajuda.mjs';
 import { mkdtempSync, mkdirSync, rmSync } from 'node:fs';
@@ -13,7 +14,9 @@ const ambiente = { ...process.env, FEEDYOURCOW_BANCO: join(diretorio, 'app.sqlit
   FEEDYOURCOW_ENDERECO: new URL(url).host };
 const preparo = spawnSync(binario, ['demonstrar'], { env: ambiente, encoding: 'utf8' });
 assert.equal(preparo.status, 0, preparo.stderr);
-const servidor = spawn(binario, ['servir'], { env: ambiente, stdio: 'ignore' });
+const servidor = spawn(binario, ['servir'], { env: ambiente, stdio: ['ignore', 'ignore', 'pipe'] });
+let logServidor = '';
+servidor.stderr.on('data', dados => { logServidor += dados.toString(); });
 const artefatos = resolve('output/playwright');
 mkdirSync(artefatos, { recursive: true });
 try {
@@ -44,6 +47,8 @@ try {
       });
       page = await contexto.newPage();
       async function conferirTela(titulo) {
+        const ids = await page.locator('[id]').evaluateAll(els => els.map(e => e.id));
+        assert.equal(new Set(ids).size, ids.length, 'IDs de controles devem ser únicos');
         await conferirLinkAjuda(page);
         await page.getByRole('heading', { level: 1, name: titulo, exact: true }).waitFor();
         const texto = await page.locator('body').innerText();
@@ -52,17 +57,26 @@ try {
           'decisões explicáveis, do ingrediente'];
         assert.doesNotMatch(texto, new RegExp(slogans.join('|'), 'iu'));
         assert.equal(await page.locator('.hero, .eyebrow, .hero-art').count(), 0);
-        await page.getByRole('navigation').getByRole('link', { name: 'Perfil e fontes' }).waitFor();
+        if (await page.locator('.pagina-cadastro').count() === 0) {
+          await page.getByRole('navigation')
+            .getByRole('link', { name: 'Perfil e fontes' }).waitFor();
+        } else assert.equal(await page.locator('.sidebar').count(), 0);
       }
+      async function novaGuia(link) {
+        const [nova] = await Promise.all([contexto.waitForEvent('page'), link.click()]);
+        await nova.waitForLoadState();
+        page = nova;
+      }
+      await testarTemplates(page, url, artefatos, nome);
       await testarAjuda(page, url, artefatos, nome);
       await page.goto(url);
       await conferirTela('Visão geral');
       await page.screenshot({ path: join(artefatos, `${nome}-inicio.png`), fullPage: true });
-      await page.getByRole('link', { name: 'Verificar dieta', exact: true }).click();
+      await novaGuia(page.getByRole('link', { name: 'Verificar dieta', exact: true }));
       await conferirTela('Novo cenário');
       assert.equal(await page.locator('#modo').inputValue(), 'verificar');
       await page.goto(url);
-      await page.getByRole('link', { name: 'Formular dieta', exact: true }).click();
+      await novaGuia(page.getByRole('link', { name: 'Formular dieta', exact: true }));
       await conferirTela('Novo cenário');
       assert.equal(await page.locator('#modo').inputValue(), 'formular');
       await page.goto(`${url}/conhecimento`);
@@ -78,17 +92,18 @@ try {
         gestante: 'NAO', crescimento: 'NAO',
         peso_estavel: 'SIM', confinada: 'SIM' })) await page.locator(`#${id}`).selectOption(valor);
       await page.getByRole('button', { name: 'Salvar revisão' }).click();
-      await page.waitForURL(`${url}/lotes`);
+      await page.waitForURL(/cadastros\/salvo/);
+      await page.goto(`${url}/lotes`);
       await conferirTela('Lotes');
       await page.getByText(`Lote ${nome}`, { exact: true }).waitFor();
       await page.goto(`${url}/alimentos`);
       await conferirTela('Catálogo de alimentos');
       await page.screenshot({ path: join(artefatos, `${nome}-alimentos.png`), fullPage: true });
-      await page.getByRole('link', { name: 'Criar revisão ou nova análise' }).first().click();
+      await novaGuia(page.getByRole('link', { name: 'Criar revisão ou nova análise' }).first());
       await conferirTela('Composição do alimento');
       await page.locator('#metodo').fill('Revisão sintética do teste de navegador');
       await page.getByRole('button', { name: 'Salvar revisão' }).click();
-      await page.waitForURL(`${url}/alimentos`);
+      await page.waitForURL(/cadastros\/salvo/);
       await page.goto(`${url}/cenarios/novo?dieta=B`);
       const lote = await page.locator('#lote option')
         .filter({ hasText: `Lote ${nome}` }).getAttribute('value');
@@ -96,8 +111,7 @@ try {
       await page.locator('#nome').fill(`Verificação ${nome}`);
       await page.locator('#sobras').fill('100');
       await page.getByRole('button', { name: 'Calcular e salvar cenário' }).click();
-      await page.locator('#erros-formulario').waitFor();
-      await page.waitForFunction(() => document.activeElement.id === 'erros-formulario');
+      assert.equal(await page.locator('#sobras').getAttribute('aria-invalid'), 'true');
       assert.equal(await page.locator('#nome').inputValue(), `Verificação ${nome}`);
       assert.equal(await page.locator('#sobras').inputValue(), '100');
       await page.screenshot({ path: join(artefatos, `${nome}-erro.png`), fullPage: true });
@@ -110,13 +124,13 @@ try {
       await page.getByRole('heading', { name: 'Cálculos e regras aplicadas' }).waitFor();
       assert.match(await page.locator('main').innerText(), /R\$ 11,79/);
       await page.screenshot({ path: join(artefatos, `${nome}-resultado.png`), fullPage: true });
-      await page.getByRole('link', { name: 'Duplicar e simular' }).click();
+      await novaGuia(page.getByRole('link', { name: 'Duplicar e simular' }));
       await page.locator('#nome').fill(`Simulação ${nome}`);
       await page.locator('#sobras').fill('10');
       await page.getByRole('button', { name: 'Calcular e salvar cenário' }).click();
       await page.waitForURL(/\/execucoes\/[a-f0-9-]+$/);
       assert.match(await page.locator('main').innerText(), /R\$ 13,10/);
-      await page.getByRole('link', { name: 'Duplicar e simular' }).click();
+      await novaGuia(page.getByRole('link', { name: 'Duplicar e simular' }));
       await page.locator('#nome').fill(`Preço e MS ${nome}`);
       const ms = page.locator('input[name^="ms-"]').first();
       const preco = page.locator('input[name^="preco-"]').first();
@@ -128,7 +142,7 @@ try {
       const custo = Number((await page.locator('.stats .stat').first().innerText())
         .match(/R\$ ([0-9,]+)/)[1].replace(',', '.'));
       assert.ok(custo > 13.10, 'Mudanças de preço e MS devem alterar o custo');
-      await page.goto(`${url}/cenarios/novo?modo=formular`);
+      await page.goto(`${url}/cenarios/novo?dieta=B&modo=formular`);
       await page.locator('#nome').fill(`Formulação ${nome}`);
       await page.getByRole('button', { name: 'Calcular e salvar cenário' }).click();
       await page.waitForURL(/\/execucoes\/[a-f0-9-]+$/);
@@ -168,11 +182,14 @@ try {
         await page.screenshot({ path: join(artefatos, `${nome}-falha.png`), fullPage: true });
         console.error(`${nome}: ${page.url()}\n${await page.locator('body').innerText()}`);
       }
+      console.error(logServidor.slice(-8000));
       throw erro;
     } finally { await browser.close(); }
   }
 } finally {
-  servidor.kill('SIGTERM');
-  await new Promise(resolve => servidor.once('exit', resolve));
+  if (servidor.exitCode === null) {
+    servidor.kill('SIGTERM');
+    await new Promise(resolve => servidor.once('exit', resolve));
+  }
   rmSync(diretorio, { recursive: true, force: true });
 }

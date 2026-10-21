@@ -26,10 +26,13 @@ impl Render for Pagina<'_> {
                 body class=[isolada.then_some("pagina-cadastro")] {
                     a.skip href="#principal" { "Pular para o conteúdo" }
                     @if !isolada {
-                    aside.sidebar aria-label="Menu principal" {
-                        a.brand href="/" { "FeedYourCow" }
-                        nav {
-                            @for (url, texto, icone) in [
+                        aside.sidebar aria-label="Menu principal" {
+                            a.brand href="/" {
+                                img src="/static/cow.svg" alt="" width="36" height="36";
+                                "FeedYourCow"
+                            }
+                            nav {
+                                @for (url, texto, icone) in [
                                 ("/", "Visão geral", "◫"),
                                 ("/lotes", "Lotes", "♧"),
                                 ("/alimentos", "Alimentos", "❋"),
@@ -37,23 +40,23 @@ impl Render for Pagina<'_> {
                                 ("/historico", "Histórico", "◷"),
                                 ("/conhecimento", "Perfil e fontes", "▤"),
                                 ("/ajuda", "Ajuda", "?"),
-                            ] {
-                                a class=(if self.ativo == url { "nav-link active" }
+                                ] {
+                                    a class=(if self.ativo == url { "nav-link active" }
                                     else { "nav-link" }) href=(url)
                                     aria-current=[(self.ativo == url).then_some("page")]
                                     target=[(url == "/cenarios/novo").then_some("_blank")]
                                     rel=[(url == "/cenarios/novo").then_some("noopener")]
                                     title=[(url == "/cenarios/novo")
-                                        .then_some("Abre em nova guia")] {
-                                    span aria-hidden="true" { (icone) } (texto)
+                                    .then_some("Abre em nova guia")] {
+                                        span aria-hidden="true" { (icone) } (texto)
+                                    }
                                 }
                             }
+                            div.sidebar-bottom {
+                                span.local-dot {} "Uso local"
+                                small { "Versão " (env!("CARGO_PKG_VERSION")) }
+                            }
                         }
-                        div.sidebar-bottom {
-                            span.local-dot {} "Uso local"
-                            small { "Versão " (env!("CARGO_PKG_VERSION")) }
-                        }
-                    }
                     }
                     div.workspace {
                         main #principal tabindex="-1" {

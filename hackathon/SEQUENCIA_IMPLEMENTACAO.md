@@ -1,5 +1,6 @@
 1. Criado o repositório
-2. Definido o agente: OpenAI (Codex) - GPT-6.1 Sol, com nível de esforço dependendo da complexidade da tarefa
+2. Definido o agente: OpenAI (Codex) - GPT-6.1 Sol, com nível de esforço dependendo da complexidade
+da tarefa
 3. Definidas as linguagens, ferramentas e bibliotecas a serem utilizadas
 4. Versão inicial das instruções em AGENTS.md
 5. Criação de relatório com visão geral e temas com codex

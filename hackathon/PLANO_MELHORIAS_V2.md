@@ -1,6 +1,6 @@
 # Plano revisado de melhorias e sugestões com fontes
 
-Data: 20/10/2026. Estado: planejamento; implementação pausada por solicitação do programador.
+Data: 20/10/2026. Estado: execução autorizada; validação final em andamento.
 Este documento substitui o [plano anterior](PLANO_MELHORIAS.md) para a retomada do trabalho.
 
 ## 1. Orientações incorporadas
@@ -12,7 +12,7 @@ Este documento substitui o [plano anterior](PLANO_MELHORIAS.md) para a retomada 
 4. Buscar valores típicos de raças ou composições em fontes confiáveis na internet e usá-los
    como sugestões de preenchimento. Essa orientação substitui o uso de dados sintéticos como
    modelos comuns de alimentos. Exemplos A/B continuam exclusivos da demonstração.
-5. Não retomar a implementação antes da revisão deste plano e de nova instrução do programador.
+5. Retomada autorizada pelo programador após a revisão, incluindo templates editáveis.
 
 O [AGENTS.md](../AGENTS.md) e os [requisitos](../REQUISITOS.md) continuam aplicáveis.
 Preservar condições desconhecidas, unidades, versões, fontes e histórico imutável.
@@ -208,8 +208,10 @@ interface de sugestões; modo simplificado; identidade/tabelas; expansões.
    preenchimento de todo campo por raça. Recomendação: liberar apenas campos com evidência.
 3. Aprovar a seleção final de fontes/modelos após a etapa A, antes de carregá-los como sugestões.
 
-Nenhuma implementação adicional foi realizada para produzir esta revisão. A retomada depende
-de nova instrução do programador; este documento não representa aprovação dos dados candidatos.
+A primeira carga foi aprovada nesta conversa: valores verificados, modelos parciais e lacunas
+explícitas. A matriz final de fontes está em `fontes/MODELOS.md`. A implementação inclui
+isolamento de cadastros, carga/procedência, prévia e edição, modo simplificado e expansões.
+Resultados de testes e limitações de entrega devem ser conferidos no README e no relatório final.
 
 [silagem]: https://www.feedipedia.org/node/12871
 [embrapa]: https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/1007523

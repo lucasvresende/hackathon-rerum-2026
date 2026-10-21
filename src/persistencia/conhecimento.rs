@@ -39,6 +39,7 @@ pub async fn carregar(pool: &SqlitePool, sql: &str) -> Resultado<()> {
     }
     let base = ler_conexao(&mut tx).await?;
     validar(&base)?;
+    super::templates::validar(&mut tx).await?;
     sqlx::query_file!("queries/inserir_carga.sql", versao, resumo, sql)
         .execute(&mut *tx)
         .await?;
