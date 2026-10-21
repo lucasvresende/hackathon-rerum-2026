@@ -5,9 +5,21 @@
 O arquivo foi revisado para conter somente geometria SVG; dimensões e formatação ajustadas.
 Não há scripts, eventos ou referências externas.
 
+`icones/` contém imagens locais de 21 × 21 px para as abas, obtidas no SVG Repo: House Chimney
+para Visão geral, Holstein para Lotes de animais, Food para Alimentos, Add Circle para Nova dieta,
+Magnifying Glass for Search para Histórico e análise, Notebook para Perfil nutricional e Help para
+Ajuda. As origens são
+[Holstein](https://www.svgrepo.com/svg/482249/illustration-of-holstein),
+[Food](https://www.svgrepo.com/svg/494047/food) e
+[lupa](https://www.svgrepo.com/svg/479646/magnifying-glass-9). Os demais foram baixados em SVG Repo
+com os nomes `house-chimney-blank`, `add-circle`, `notebook-1` e `help`. Holstein e Food indicam
+CC0; consulte a licença indicada pelo SVG Repo para cada arquivo antes de redistribuir a aplicação.
+Os arquivos são servidos localmente, sem chamadas externas durante o uso.
+
 A página do SVG Repo indica MIT, mas a licença da versão histórica EmojiOne 2.2.7 distingue
-código e arte: PNG/SVG são CC BY 4.0. A atribuição ao autor e o vínculo para a licença original
-são preservados aqui e na página “Perfil e fontes”. Não tratar a licença do código como a da arte.
+código e arte: PNG/SVG são CC BY 4.0. A atribuição ao autor e o vínculo para a licença
+original são preservados aqui e na página “Perfil nutricional”. Não tratar a licença do
+código como a da arte.
 
 - [Origem e licença EmojiOne 2.2.7][origem].
 - [Creative Commons Attribution 4.0 International][licenca].

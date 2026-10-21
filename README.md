@@ -1,4 +1,4 @@
-# FeedYourCow
+# FeedYourCow!
 
 Sistema especialista local para verificar e formular dietas de vacas adultas em lactação.
 Oferece cadastros de lotes e alimentos, cálculos explicáveis, comparação de cenários e histórico.
@@ -84,7 +84,7 @@ Os indicadores **?** explicam conceitos na Visão geral, no cenário, no catálo
 alimentos e nos resultados. Passe o mouse, use o foco do teclado ou toque/clique para ler;
 Escape ou clique fora fecha a dica. As cartas correspondentes da Ajuda trazem mais detalhes
 e exemplos de unidades, consumo, dados e interpretação do parecer.
-Em **Perfil e fontes**, consulte os coeficientes, normas e referências utilizados.
+Em **Perfil nutricional**, consulte os coeficientes, normas e fontes de referência utilizados.
 Os fluxos essenciais também estão disponíveis sem JavaScript.
 
 ## Banco de dados e recuperação

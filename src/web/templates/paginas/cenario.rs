@@ -10,10 +10,10 @@ pub struct Cenario {
 impl Render for Cenario {
     fn render(&self) -> Markup {
         Cadastro {
-            titulo: "Novo cenário",
+            titulo: "Nova dieta",
             conteudo: html! {
                 (Cabecalho {
-                    titulo: "Novo cenário",
+                    titulo: "Nova dieta",
                     texto: "Selecione o lote, o tipo de cálculo e os ingredientes.",
                     ajuda: "cenarios"
                 })

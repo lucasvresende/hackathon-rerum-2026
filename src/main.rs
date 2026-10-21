@@ -36,7 +36,7 @@ async fn main() -> Resultado<()> {
                 demonstracao::cenarios_salvos(&pool).await?;
             }
             conhecimento::ler(&pool).await?;
-            println!("FeedYourCow preparado em {}", caminho.display());
+            println!("FeedYourCow! preparado em {}", caminho.display());
             pool.close().await;
         }
         "carregar" => {
@@ -74,7 +74,7 @@ async fn main() -> Resultado<()> {
             let estado =
                 feed_your_cow::web::estado::EstadoApp::novo(pool, format!("http://{endereco}"));
             let listener = tokio::net::TcpListener::bind(endereco).await?;
-            tracing::info!(%endereco, "FeedYourCow disponível");
+            tracing::info!(%endereco, "FeedYourCow! disponível");
             axum::serve(listener, feed_your_cow::web::rotas::app(estado))
                 .with_graceful_shutdown(async {
                     let _ = tokio::signal::ctrl_c().await;

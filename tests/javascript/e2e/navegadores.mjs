@@ -74,7 +74,7 @@ try {
         assert.equal(await page.locator('.hero, .eyebrow, .hero-art').count(), 0);
         if (await page.locator('.pagina-cadastro').count() === 0) {
           await page.getByRole('navigation')
-            .getByRole('link', { name: 'Perfil e fontes' }).waitFor();
+            .getByRole('link', { name: 'Perfil nutricional' }).waitFor();
         } else assert.equal(await page.locator('.sidebar').count(), 0);
       }
       async function novaGuia(link) {
@@ -94,17 +94,28 @@ try {
       await testarAjuda(page, url, artefatos, nome);
       await page.goto(url);
       await conferirTela('Visão geral');
+      for (const caminho of ['inicio', 'lotes-de-animais', 'alimentos', 'nova-dieta',
+        'historico', 'perfil-nutricional', 'ajuda']) {
+        const icone = page.locator(`.nav-icon[src="/static/icones/${caminho}.svg"]`);
+        await icone.waitFor();
+        assert.deepEqual(await icone.evaluate(element => [element.width, element.height]), [21, 21],
+          'Todos os ícones do menu devem ter 21 × 21 px');
+      }
       await page.screenshot({ path: join(artefatos, `${nome}-inicio.png`), fullPage: true });
       await novaGuia(page.getByRole('link', { name: 'Verificar dieta', exact: true }));
-      await conferirTela('Novo cenário');
+      await conferirTela('Nova dieta');
       assert.equal(await page.locator('#modo').inputValue(), 'verificar');
       await page.goto(url);
       await novaGuia(page.getByRole('link', { name: 'Formular dieta', exact: true }));
-      await conferirTela('Novo cenário');
+      await conferirTela('Nova dieta');
       assert.equal(await page.locator('#modo').inputValue(), 'formular');
       await page.goto(`${url}/conhecimento`);
-      await conferirTela('Perfil nutricional e fontes');
+      await conferirTela('Perfil nutricional');
       await page.getByRole('heading', { name: 'Coeficientes do perfil' }).waitFor();
+      assert.equal(await page.getByRole('button', { name: /^Entender:/ }).count(), 8,
+        'Cada coluna de coeficientes deve oferecer uma explicação acessível');
+      await page.getByRole('heading', { name: 'Fontes de referência' }).waitFor();
+      await page.getByText(/Um perfil nutricional é o conjunto versionado/).waitFor();
       await page.goto(`${url}/lotes/novo`);
       await conferirTela('Cadastro de lote');
       for (const [id, valor] of Object.entries({ nome: `Lote ${nome}`, animais: '20',
@@ -117,7 +128,7 @@ try {
       await page.getByRole('button', { name: 'Salvar revisão' }).click();
       await page.waitForURL(/cadastros\/salvo/);
       await page.goto(`${url}/lotes`);
-      await conferirTela('Lotes');
+      await conferirTela('Lotes de animais');
       await page.getByText(`Lote ${nome}`, { exact: true }).waitFor();
       await page.goto(`${url}/alimentos`);
       await conferirTela('Catálogo de alimentos');
@@ -174,7 +185,7 @@ try {
       await page.screenshot({ path: join(artefatos, `${nome}-impressao.png`), fullPage: true });
       await page.emulateMedia({ media: 'screen' });
       await page.goto(`${url}/historico`);
-      await conferirTela('Histórico de cenários');
+      await conferirTela('Histórico e análise');
       await page.locator('#a').selectOption({ index: 1 });
       await page.getByRole('button', { name: 'Comparar premissas e custos' }).click();
       await conferirTela('Comparação de cenários');
@@ -192,7 +203,7 @@ try {
       assert.equal(transbordou, false);
       await conferirLinkAjuda(page);
       await page.goto(`${url}/conhecimento`);
-      await conferirTela('Perfil nutricional e fontes');
+      await conferirTela('Perfil nutricional');
       await page.screenshot({ path: join(artefatos, `${nome}-cabecalho-mobile.png`),
         fullPage: true });
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth),

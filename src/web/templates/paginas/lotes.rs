@@ -10,8 +10,8 @@ pub struct Lotes<'a> {
 impl Render for Lotes<'_> {
     fn render(&self) -> Markup {
         let lotes = self.lotes;
-        Principal { titulo: "Lotes", ativo: "/lotes", conteudo: html! {
-            (Cabecalho { titulo: "Lotes", texto: "", ajuda: "lotes" })
+        Principal { titulo: "Lotes de animais", ativo: "/lotes", conteudo: html! {
+            (Cabecalho { titulo: "Lotes de animais", texto: "", ajuda: "lotes" })
             div.actions {
                 a.button.secondary href="/exemplos" { "Restaurar exemplos" }
                 a.button href="/lotes/novo" target="_blank"

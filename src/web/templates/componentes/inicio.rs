@@ -77,7 +77,7 @@ impl Render for Inicio<'_> {
                     h2 { "Cadastros" }
                 }
                 div.actions {
-                    a.button.secondary href="/lotes" { "Lotes" }
+                    a.button.secondary href="/lotes" { "Lotes de animais" }
                     a.button.secondary href="/alimentos" { "Alimentos" }
                 }
                 div.concept-label.profile-title { h2 { "Perfil ativo" } (conceitos::PERFIL) }
@@ -87,7 +87,7 @@ impl Render for Inicio<'_> {
                     dt { "Limitação" } dd {
                         "Atendimento ao núcleo não é adequação integral." }
                 }
-                a.text-link href="/conhecimento" { "Consultar perfil e fontes" }
+                a.text-link href="/conhecimento" { "Consultar perfil nutricional" }
             }
         }
     }

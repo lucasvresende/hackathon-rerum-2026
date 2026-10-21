@@ -43,7 +43,7 @@ const CARTAS: &[Carta] = &[
             Ele define a população atendida e os nutrientes e limites considerados. \
             O identificador informa qual versão está em uso. O perfil atual se destina a \
             vacas adultas em lactação e confinamento, dentro dos limites apresentados em \
-            Perfil e fontes. Atender ao núcleo avaliado não garante uma dieta completa: \
+            Perfil nutricional. Atender ao núcleo avaliado não garante uma dieta completa: \
             confira as limitações e as dimensões que ficaram sem avaliação.",
             "Para começar, cadastre um lote e confira as composições dos alimentos. \
             Verificar dieta avalia quantidades que você informa; Formular dieta busca \
@@ -58,8 +58,11 @@ const CARTAS: &[Carta] = &[
         id: "lotes",
         titulo: "Cadastrar e revisar lotes",
         passos: &[
-            "Em Lotes, escolha Cadastrar lote. Informe identificação, número de animais, peso \
-            médio em kg, produção em kg de leite/animal/dia, gordura em % e dias em lactação.",
+            concat!(
+                "Em Lotes de animais, escolha Cadastrar lote. Informe identificação, número de ",
+                "animais, peso médio em kg, produção em kg de leite/animal/dia, gordura em % e ",
+                "dias em lactação."
+            ),
             "Preencha os estados fisiológicos e de manejo. Informe explicitamente se as vacas \
             são adultas, gestantes, em crescimento, com peso estável e confinadas. Desconhecido \
             não significa não. Separe animais com características diferentes em outros lotes.",
@@ -126,8 +129,11 @@ const CARTAS: &[Carta] = &[
         id: "historico",
         titulo: "Consultar e filtrar o histórico",
         passos: &[
-            "Em Histórico, filtre pelo nome do lote e pela data da execução no horário de \
-            São Paulo. Use Filtrar histórico e navegue pelas páginas de até 100 resultados.",
+            concat!(
+                "Em Histórico e análise, filtre pelo nome do lote e pela data da execução no ",
+                "horário de São Paulo. Use Filtrar histórico e navegue pelas páginas de até 100 ",
+                "resultados."
+            ),
             "Escolha Ver parecer para reabrir as entradas e conclusões congeladas da execução. \
             Revisões posteriores de lotes, alimentos ou fontes não alteram esse registro.",
             "Para comparar, selecione os cenários de referência e alternativo disponíveis na \
@@ -140,7 +146,7 @@ const CARTAS: &[Carta] = &[
         id: "comparacao",
         titulo: "Comparar premissas e custos de cenários",
         passos: &[
-            "No Histórico, selecione duas execuções e use Comparar premissas e custos. \
+            "Em Histórico e análise, selecione duas execuções e use Comparar premissas e custos. \
             A primeira é a referência e a segunda é a alternativa.",
             "Confira perfil, produção, consumo, sobras, horizonte, base de comparação e \
             premissas por ingrediente antes de interpretar a diferença de custo por animal/dia.",
@@ -155,12 +161,15 @@ const CARTAS: &[Carta] = &[
     },
     Carta {
         id: "conhecimento",
-        titulo: "Consultar perfil nutricional, regras e fontes",
+        titulo: "Consultar o perfil nutricional, regras e fontes",
         passos: &[
-            "Em Perfil e fontes, confira o identificador do perfil, sua população e limites \
-            antes de usar os cálculos. O núcleo contempla vacas adultas em lactação, confinadas, \
-            estáveis, sem gestação nem crescimento, dentro das faixas apresentadas.",
-            "Consulte os coeficientes e expanda as fontes para ver edição, localização, \
+            "Em Perfil nutricional, confira o identificador, a versão, a população e os limites \
+            antes de usar os cálculos. Um perfil reúne referências, coeficientes e regras que \
+            definem quais animais e condições são cobertos e como os resultados são calculados. \
+            O perfil atual contempla vacas adultas em lactação, confinadas e estáveis, sem \
+            gestação nem crescimento, dentro das faixas apresentadas.",
+            "Use os pontos de interrogação na tabela para entender tabela, eixos, coeficientes \
+            A–D e unidades. Expanda as fontes de referência para ver edição, localização, \
             conteúdo e hash. Em Normas, vigência e condições, confira datas, transições, \
             exceções, evidências e ações aplicáveis.",
             "Distinga legislação brasileira, referência estrangeira, referência técnica e \
@@ -168,7 +177,7 @@ const CARTAS: &[Carta] = &[
             2021 nem BR-LEITE 2024; fibra física e outras dimensões podem ficar não avaliadas.",
         ],
         destino: "/conhecimento",
-        acao: "Abrir perfil e fontes",
+        acao: "Abrir perfil nutricional",
     },
 ];
 

@@ -32,13 +32,14 @@ impl Render for Menu<'_> {
                 }
                 nav {
                     @for (url, texto, icone) in [
-                    ("/", "Visão geral", "◫"),
-                    ("/lotes", "Lotes", "♧"),
-                    ("/alimentos", "Alimentos", "❋"),
-                    ("/cenarios/novo", "Novo cenário", "+"),
-                    ("/historico", "Histórico", "◷"),
-                    ("/conhecimento", "Perfil e fontes", "▤"),
-                    ("/ajuda", "Ajuda", "?"),
+                    ("/", "Visão geral", "/static/icones/inicio.svg"),
+                    ("/lotes", "Lotes de animais", "/static/icones/lotes-de-animais.svg"),
+                    ("/alimentos", "Alimentos", "/static/icones/alimentos.svg"),
+                    ("/cenarios/novo", "Nova dieta", "/static/icones/nova-dieta.svg"),
+                    ("/historico", "Histórico e análise", "/static/icones/historico.svg"),
+                    ("/conhecimento", "Perfil nutricional",
+                        "/static/icones/perfil-nutricional.svg"),
+                    ("/ajuda", "Ajuda", "/static/icones/ajuda.svg"),
                     ] {
                         a class=(if self.ativo == url { "nav-link active" }
                         else { "nav-link" }) href=(url)
@@ -47,7 +48,11 @@ impl Render for Menu<'_> {
                         rel=[(url == "/cenarios/novo").then_some("noopener")]
                         title=[(url == "/cenarios/novo")
                         .then_some("Abre em nova guia")] {
-                            span aria-hidden="true" { (icone) } (texto)
+                            span aria-hidden="true" {
+                                @if icone.starts_with("/") {
+                                    img.nav-icon src=(icone) alt="" width="21" height="21";
+                                } @else { (icone) }
+                            } (texto)
                         }
                     }
                 }

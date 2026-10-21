@@ -43,7 +43,7 @@ pub const CENARIOS: &[&str] = &[
             Se mantiver o consumo de MS, um alimento mais úmido exigirá mais kg de MN. \
             Se mantiver os kg de MN, a quantidade de MS mudará. Essa escolha ajuda a \
             comparar o efeito da umidade sem misturar bases diferentes.",
-    "Em Novo cenário, informe nome, lote, tipo de cálculo, horizonte em dias e datas \
+    "Em Nova dieta, informe nome, lote, tipo de cálculo, horizonte em dias e datas \
             de avaliação e aplicação das regras. Escolha a base das quantidades por ingrediente: \
             consumo em MS, consumo em MN ou oferta em MN, sempre por animal/dia.",
     "Informe consumo-alvo em kg MS/animal/dia e sua origem ou deixe vazio para usar a \

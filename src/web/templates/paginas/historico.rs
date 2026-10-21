@@ -17,10 +17,10 @@ impl Render for Historico<'_> {
         let busca = self.busca;
         let data = self.data;
         Principal {
-            titulo: "Histórico",
+            titulo: "Histórico e análise",
             ativo: "/historico",
             conteudo: html! {
-                (Cabecalho { titulo: "Histórico de cenários", texto: "", ajuda: "historico" })
+                (Cabecalho { titulo: "Histórico e análise", texto: "", ajuda: "historico" })
                 form.card method="get" action="/historico" {
                     div.form-grid {
                         div.field { label for="filtro-lote" { "Nome do lote" }

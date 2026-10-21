@@ -38,5 +38,5 @@ pub async fn nao_encontrado() -> (StatusCode, Markup) {
 }
 
 async fn saude() -> &'static str {
-    "FeedYourCow: disponível"
+    "FeedYourCow!: disponível"
 }
