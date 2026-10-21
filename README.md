@@ -8,6 +8,7 @@ FeedYourCow identifica o software; telas, menu e rodapé não devem conter sloga
 ## Índice
 
 - [Executar](#executar)
+- [Build de produção](#build-de-producao)
 - [Fluxo de uso](#fluxo-de-uso)
 - [Ajuda de uso](#ajuda-de-uso)
 - [Desenvolvimento](#desenvolvimento)
@@ -36,6 +37,102 @@ Para instalar sem exemplos, use `cargo run -- preparar` no lugar de `demonstrar`
 Configuração por variáveis de ambiente: `FEEDYOURCOW_BANCO` (padrão `dados/aplicacao.sqlite3`),
 `FEEDYOURCOW_ENDERECO` (padrão `127.0.0.1:3000`) e `RUST_LOG`. Somente loopback é aceito.
 O arquivo `.env.example` serve como referência; exporte as variáveis no ambiente de execução.
+
+<a id="build-de-producao"></a>
+
+## Build de produção
+
+O pacote é destinado ao uso local previsto no MVP e compilado para o sistema/arquitetura da
+máquina de build. O setup usa Rust/Cargo estáveis, compilador C e linker exigidos pelas
+dependências,
+mais ferramentas usuais de Linux: `sh`, `tar`, `gzip` e `sha256sum`. Não exige Node nem Python
+para compilar ou usar a distribuição. Python 3.12+ é usado apenas no teste opcional do pacote.
+Não há cross-compilation nem promessa de binário estático: a instalação exige um Linux compatível
+com o alvo e as bibliotecas de sistema da máquina de build, incluindo a versão da glibc no alvo GNU.
+
+```sh
+sh scripts/build_producao.sh
+```
+
+O script pode ser chamado de qualquer diretório. Ele usa `--release --locked --no-default-features`,
+fixa o alvo nativo e o diretório de compilação `target/`, e força `SQLX_OFFLINE=true` para validar
+consultas com o cache `.sqlx/`, sem banco operacional durante o build. O perfil `release` usa
+otimização padrão de nível 3, ThinLTO, uma unidade de geração de código e remoção de símbolos.
+O recurso `desenvolvimento` e o autoreload ficam desativados.
+Essas opções seguem a [documentação oficial de perfis do Cargo][perfis-cargo].
+O build otimizado permanece local; o GitHub Actions não o executa nesta etapa.
+
+[perfis-cargo]: https://doc.rust-lang.org/cargo/reference/profiles.html
+
+A saída é `dist/feedyourcow-<alvo>.tar.gz` e seu arquivo `.sha256`; por exemplo,
+`dist/feedyourcow-x86_64-unknown-linux-gnu.tar.gz`. Repetir o build substitui somente esses
+artefatos gerados. O pacote contém binário, `iniciar.sh`, `static/` com licenças das bibliotecas,
+cargas SQL, migrações, manifesto de fontes, anexo numérico, requisitos, README, `.env.example`
+e `BUILD.txt` com versões do compilador e do Cargo. Migrações e cargas de preparação já estão
+embutidas no executável; os arquivos acompanham o pacote para consulta e cargas administrativas.
+Bancos, backups, `.env`, código-fonte da aplicação e ferramentas de desenvolvimento não entram.
+O diretório `dist/` fica fora do Git.
+
+### Instalar e iniciar
+
+Confira o checksum e extraia em um diretório novo e gravável. Exemplo para o alvo Linux x86-64:
+
+```sh
+cd dist
+sha256sum -c feedyourcow-x86_64-unknown-linux-gnu.tar.gz.sha256
+mkdir instalacao
+tar -xzf feedyourcow-x86_64-unknown-linux-gnu.tar.gz -C instalacao
+./instalacao/feedyourcow/iniciar.sh preparar
+./instalacao/feedyourcow/iniciar.sh servir
+```
+
+Abra <http://127.0.0.1:3000> e encerre com Ctrl+C. `preparar` aplica migrações e carrega o
+conhecimento, sem os exemplos sintéticos. Para uma avaliação com exemplos, use `demonstrar`
+em uma instalação de teste. Não é necessário ter Rust/Cargo instalado na máquina de execução.
+O wrapper resolve os arquivos estáticos e o banco padrão em relação à instalação, mesmo quando
+chamado de outro diretório; executar o binário diretamente exige estar na raiz do pacote.
+Ele repassa todos os comandos administrativos, como `backup`, `restaurar` e `carregar`.
+
+O padrão grava em `feedyourcow/dados/aplicacao.sqlite3`. Para separar os dados da instalação,
+exporte um caminho absoluto antes de preparar e iniciar:
+
+```sh
+export FEEDYOURCOW_BANCO="$HOME/feedyourcow-dados/aplicacao.sqlite3"
+export FEEDYOURCOW_ENDERECO=127.0.0.1:3000
+export RUST_LOG=info
+./instalacao/feedyourcow/iniciar.sh preparar
+./instalacao/feedyourcow/iniciar.sh servir
+```
+
+`.env.example` é uma referência, não um arquivo carregado automaticamente. O endereço continua
+restrito a loopback; o pacote não acrescenta autenticação ou publicação para outros computadores.
+Antes de atualizar uma instalação, encerre o servidor, faça backup com a versão anterior,
+extraia a nova versão em outra pasta e mantenha o caminho absoluto do banco. Execute `preparar`
+para aplicar migrações/cargas antes de `servir`; não substitua uma carga versionada já distribuída.
+Preserve o backup e o pacote anterior; recuperar um esquema anterior exige restaurar o backup
+em um destino novo, em vez de executar um binário antigo sobre um banco já migrado.
+
+### Testar a distribuição
+
+```sh
+python3 scripts/testar_producao.py dist/feedyourcow-x86_64-unknown-linux-gnu.tar.gz
+```
+
+Ajuste o nome ao alvo gerado. O teste confere checksum e conteúdo do pacote, extrai em pasta
+temporária fora do checkout e valida preparação idempotente, histórico da demonstração,
+backup/restauração, formulação no processo filho e HTTP com recursos estáticos locais.
+O ensaio exercita o binário otimizado; o teste também confirma ausência de autoreload no HTML.
+O servidor usa uma porta livre de loopback e é encerrado ao final, sem usar o banco operacional.
+Os testes de interface existentes podem ser executados contra o binário otimizado no checkout:
+
+```sh
+FEEDYOURCOW_BINARIO="$PWD/target/x86_64-unknown-linux-gnu/release/feed-your-cow" npm test
+```
+
+Validação local em 20/10/2026: pacote Linux x86-64 gerado, checksum conferido e teste isolado
+concluído, incluindo preparação, backup/restauração, motor e HTTP. O binário `release` também
+passou nos fluxos de Chromium, Firefox e WebKit; os 35 testes Rust, clippy, formatação e qualidade
+textual passaram. O setup não alterou o workflow do CI.
 
 <a id="fluxo-de-uso"></a>
 
@@ -77,6 +174,8 @@ Os comandos completos de testes estão em
 - `dados_referencia/`, `fontes/`, `hackathon/`: cargas, fontes e anexo numérico preservado.
 - `static/`: CSS plano, JavaScript de apresentação e bibliotecas locais.
 - `tests/`: casos de aceitação e integração.
+- `scripts/`: verificações, build local de produção, inicialização e teste da distribuição.
+- `dist/`: pacotes de produção gerados, excluídos do Git.
 
 O banco ativo fica fora do Git. Cadastros têm revisões; cada execução congela entradas, versões,
 fontes e traço em transação. Editar um cadastro não altera resultados anteriores.

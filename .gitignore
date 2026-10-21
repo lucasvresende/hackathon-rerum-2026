@@ -62,3 +62,6 @@ Thumbs.db
 /node_modules/
 /output/
 /.playwright-cli/
+
+# Pacotes de produção gerados localmente
+/dist/
