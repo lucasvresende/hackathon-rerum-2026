@@ -174,7 +174,7 @@ Os comandos completos de testes estão em
 - `src/aplicacao/`: orquestração, processo de cálculo e exemplos sintéticos; serviços de
   cadastros, modelos de preenchimento, cenários, histórico e comparação econômica.
 - `src/persistencia/`: banco, cargas, revisões, histórico e recuperação.
-- `src/web/rotas/`: roteador principal, composição e middlewares compartilhados.
+- `src/web/rotas.rs`: roteador principal, composição e middlewares compartilhados.
 - `src/web/handlers/`: cada recurso reúne handlers e sua função pública `rotas()`,
   composta no roteador principal com `Router::merge`; `entradas/` decodifica formulários.
   `estado.rs`, `erro.rs`, `resposta.rs` e `seguranca.rs` concentram estado, falhas,
