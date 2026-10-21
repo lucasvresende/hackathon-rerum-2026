@@ -3,7 +3,8 @@ import { join } from 'node:path';
 
 export async function testarCenarioSimplificado(browser, url, artefatos, navegador) {
   for (const javaScriptEnabled of [true, false]) {
-    const contexto = await browser.newContext({ javaScriptEnabled });
+    const contexto = await browser.newContext({ javaScriptEnabled,
+      reducedMotion: 'no-preference' });
     contexto.setDefaultTimeout(10000);
     const page = await contexto.newPage();
     const erros = [];
@@ -20,6 +21,7 @@ export async function testarCenarioSimplificado(browser, url, artefatos, navegad
       await page.locator('#nome').fill('Rascunho do teste');
       const painel = page.locator('#selecao-ingredientes-conteudo');
       if (javaScriptEnabled) {
+        await page.emulateMedia({ reducedMotion: 'no-preference' });
         const botao = page.locator('#selecao-ingredientes .expand-toggle');
         await painel.waitFor({ state: 'hidden' });
         assert.equal(await botao.getAttribute('aria-expanded'), 'false');

@@ -134,8 +134,12 @@ export async function testarDicas(browser, url, artefatos, nome) {
     for (const [secao, exemplo] of [['alimentos', '0,56 kg'], ['cenarios', '9 kg de MS'],
       ['resultados', 'cobertura é 80%']]) {
       await page.goto(`${url}/ajuda#${secao}`);
-      await page.locator(`#${secao}-conteudo`).waitFor({ state: 'visible' });
-      assert.ok((await page.locator(`#${secao}-conteudo`).innerText()).includes(exemplo));
+      const conteudo = page.locator(`#${secao}-conteudo`);
+      await conteudo.waitFor({ state: 'visible' });
+      await page.waitForFunction(({ seletor, texto }) =>
+        document.querySelector(seletor)?.innerText.includes(texto),
+      { seletor: `#${secao}-conteudo`, texto: exemplo });
+      assert.ok((await conteudo.innerText()).includes(exemplo));
     }
   });
 }

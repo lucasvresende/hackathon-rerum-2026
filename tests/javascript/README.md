@@ -11,6 +11,7 @@ Os testes JavaScript de integração ficam em `tests/javascript/e2e/`:
   inclusive após carregar modelos e validar campos.
 - `dicas.mjs`: dicas no cenário, catálogo/cadastro e parecer; IDs únicos, rótulos, ausência
   de envio ao abrir dicas, reativação após htmx, tela móvel, impressão e uso sem JavaScript.
+  Os exemplos da Ajuda aguardam o conteúdo do cartão, inclusive durante a transição no WebKit.
 - `inicio.mjs`: três estatísticas e cinco dicas da Visão geral; hover, teclado, Escape,
   clique fora, toque,
   limites da tela, impressão e funcionamento por clique sem JavaScript nos três navegadores.
@@ -130,6 +131,8 @@ aprovados. Capturas móveis de Chromium e WebKit inspecionadas visualmente.
 
 A suíte `cenario-simplificado` também verifica as transições compartilhadas do seletor,
 Enter/Espaço, `aria-expanded`, movimento reduzido, impressão e acesso sem JavaScript.
+O contexto começa com `reducedMotion: 'no-preference'` para manter determinística a checagem
+da transição; em seguida, o teste ativa movimento reduzido e confere que a animação é desativada.
 
 Transições do seletor validadas em 21/10/2026: `cenario-simplificado` e `condicionais`
 aprovadas nos três navegadores; testes Rust do cenário, clippy e formatação aprovados.

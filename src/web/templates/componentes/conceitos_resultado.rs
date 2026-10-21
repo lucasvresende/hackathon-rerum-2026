@@ -18,37 +18,51 @@ pub const NUCLEO: Dica = Dica {
 pub const DADOS: Dica = Dica {
     id: "dica-dados",
     conceito: "Dados",
-    texto: "Indica se os campos necessários para calcular e interpretar o cenário estão +        presentes e consistentes, como composição, unidades e quantidades. Uma pendência +        aqui pode tornar outras conclusões inconclusivas.",
+    texto: "Indica se os campos necessários para calcular e interpretar o cenário estão \
+        presentes e consistentes, como composição, unidades e quantidades. Uma pendência \
+        aqui pode tornar outras conclusões inconclusivas.",
 };
 pub const ELEGIBILIDADE: Dica = Dica {
     id: "dica-elegibilidade",
     conceito: "Elegibilidade",
-    texto: "Confere se o lote está dentro do perfil implementado: vacas adultas em lactação, +        confinadas e nas faixas previstas de peso, produção, gordura e dias em lactação. +        Estar elegível não significa que a dieta atende às necessidades.",
+    texto: "Confere se o lote está dentro do perfil implementado: vacas adultas em lactação, \
+        confinadas e nas faixas previstas de peso, produção, gordura e dias em lactação. \
+        Estar elegível não significa que a dieta atende às necessidades.",
 };
 pub const BARREIRAS: Dica = Dica {
     id: "dica-barreiras",
     conceito: "Barreiras ruminais",
-    texto: "Compara FDN total, FDN proveniente de forragens, amido e extrato etéreo com +        os limites do perfil. NAO ATENDE aponta ao menos um limite excedido; isso sinaliza +        uma restrição do modelo, não diagnostica um problema clínico.",
+    texto: "Compara FDN total, FDN proveniente de forragens, amido e extrato etéreo com \
+        os limites do perfil. NAO ATENDE aponta ao menos um limite excedido; isso sinaliza \
+        uma restrição do modelo, não diagnostica um problema clínico.",
 };
 pub const INGREDIENTES: Dica = Dica {
     id: "dica-ingredientes",
     conceito: "Ingredientes",
-    texto: "Verifica se os alimentos da dieta podem ser usados conforme as informações +        cadastradas, incluindo identidade, autorização e restrições aplicáveis. Uma hipótese +        de demonstração sobre produto fictício não comprova autorização de um produto real.",
+    texto: "Verifica se os alimentos da dieta podem ser usados conforme as informações \
+        cadastradas, incluindo identidade, autorização e restrições aplicáveis. Uma hipótese \
+        de demonstração sobre produto fictício não comprova autorização de um produto real.",
 };
 pub const CONTAMINANTES: Dica = Dica {
     id: "dica-contaminantes",
     conceito: "Contaminantes",
-    texto: "Avalia os contaminantes cadastrados e seus laudos contra os limites aplicáveis. +        INCONCLUSIVO costuma indicar laudo ou dado insuficiente; ausência de laudo não +        significa ausência de contaminantes.",
+    texto: "Avalia os contaminantes cadastrados e seus laudos contra os limites aplicáveis. \
+        INCONCLUSIVO costuma indicar laudo ou dado insuficiente; ausência de laudo não \
+        significa ausência de contaminantes.",
 };
 pub const INCLUSAO_ESTOQUE: Dica = Dica {
     id: "dica-inclusao-estoque",
     conceito: "Inclusão e estoque",
-    texto: "Confere limites mínimos e máximos de inclusão, disponibilidade no estoque e +        quantidade necessária para o horizonte informado, considerando perdas e sobras. +        ATENDE vale para as quantidades e premissas deste cenário.",
+    texto: "Confere limites mínimos e máximos de inclusão, disponibilidade no estoque e \
+        quantidade necessária para o horizonte informado, considerando perdas e sobras. \
+        ATENDE vale para as quantidades e premissas deste cenário.",
 };
 pub const FIBRA_FISICA: Dica = Dica {
     id: "dica-fibra-fisica",
     conceito: "Fibra física e micronutrientes",
-    texto: "Reúne avaliações como fibra fisicamente efetiva e micronutrientes, que não são +        calculados pelo perfil químico atual. NAO AVALIADO significa que faltam método ou +        dados para emitir parecer; não equivale a atendimento.",
+    texto: "Reúne avaliações como fibra fisicamente efetiva e micronutrientes, que não são \
+        calculados pelo perfil químico atual. NAO AVALIADO significa que faltam método ou \
+        dados para emitir parecer; não equivale a atendimento.",
 };
 pub const BALANCO: Dica = Dica {
     id: "dica-balanco",
