@@ -476,7 +476,7 @@ static/
 tests/
   casos/                     # entradas e resultados esperados
   integracao/                # cenários com banco e aplicação
-docs/                        # execução, arquitetura, regras e processo com IA
+README.md                    # execução, arquitetura, regras e processo com IA
 scripts/                     # limite de linha e avisos de tamanho
 .github/workflows/           # build, testes, clippy e formatação
 ```

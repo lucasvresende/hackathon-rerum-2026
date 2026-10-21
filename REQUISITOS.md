@@ -3,7 +3,7 @@
 **Tema 2 · Hackathon UFJF/RERUM 2026 · Versão documental 1.2 · 20/10/2026**
 
 Este documento especifica o comportamento do FeedYourCow. A implementação está em `src/`;
-`README.md` documenta a operação e `docs/TESTES.md` registra a cobertura e sua verificação.
+`README.md` reúne operação, arquitetura, decisões e a cobertura dos testes com sua verificação.
 FeedYourCow é o nome do software especialista; a interface usa o tema verde-esmeralda.
 As descrições abaixo continuam sendo critérios de aceitação, sem substituir a evidência dos testes.
 
