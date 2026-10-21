@@ -16,7 +16,7 @@ impl Render for Documento<'_> {
                 head {
                     meta charset="utf-8";
                     meta name="viewport" content="width=device-width, initial-scale=1";
-                    title { (self.titulo) " · FeedYourCow" }
+                    title { (self.titulo) " · FeedYourCow!" }
                     link rel="stylesheet" href="/static/app.css";
                     link rel="icon" href="/static/favicon.svg" type="image/svg+xml";
                     script src="/static/vendor/htmx.min.js" {}

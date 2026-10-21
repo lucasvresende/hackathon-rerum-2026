@@ -27,7 +27,7 @@ impl Render for Menu<'_> {
             aside.sidebar aria-label="Menu principal" {
                 a.brand href="/" {
                     img src="/static/cow.svg" alt="" width="36" height="36";
-                    "FeedYourCow"
+                    "FeedYourCow!"
                 }
                 nav {
                     @for (url, texto, icone) in [
