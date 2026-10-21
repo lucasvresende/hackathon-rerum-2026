@@ -30,7 +30,8 @@ pub fn erros(problemas: &[Problema]) -> Markup {
         @if !problemas.is_empty() {
             div #erros-formulario.alert.error tabindex="-1" role="alert" {
                 strong { "Revise os campos para continuar" }
-                ul { @for erro in problemas { li { (&erro.campo) ": " (&erro.mensagem) } } }
+                ul { @for erro in problemas { li { a href=(format!("#{}", erro.campo)) {
+                    (&erro.campo) ": " (&erro.mensagem) } } } }
             }
         }
     }
@@ -147,6 +148,7 @@ impl Render for Cadastro<'_> {
                 input type="hidden" name="id" value=(self.valor("id"));
                 input type="hidden" name="anterior" value=(self.valor("anterior"));
                 (erros(self.erros))
+                p.muted { "Campos obrigatórios: *" }
                 h2 { "Identificação e dados" }
                 div.form-grid {
                     (Campo { erro: self.erro("nome"), nome: "nome", rotulo: "Nome", valor:
@@ -155,7 +157,9 @@ impl Render for Cadastro<'_> {
                         obrigatorio: true })
                     @if lote {
                         div.field {
-                            label for="estado_produtivo" { "Estado produtivo" }
+                            (super::campo::rotulo("estado_produtivo", "Estado produtivo", false))
+                            (super::campo::mensagem("estado_produtivo",
+                                self.erro("estado_produtivo")))
                             select #estado_produtivo name="estado_produtivo" {
                                 @for (v, t) in [("DESCONHECIDO", "Desconhecido"),
                                     ("LACTACAO", "Lactação"), ("SECA", "Seca"),
@@ -175,8 +179,9 @@ impl Render for Cadastro<'_> {
                         self.valor("raca"),
                             tipo: "text", dica: "Pode ser desconhecida", obrigatorio: false })
                     } @else {
-                        div.field { label for="classe" { "Classificação" }
-                            select #classe name="classe" {
+                        div.field { (super::campo::rotulo("classe", "Classificação", true))
+                            (super::campo::mensagem("classe", self.erro("classe")))
+                            select #classe name="classe" required {
                                 @for (v, texto) in [("FORRAGEM", "Forragem"),
                                     ("CONCENTRADO", "Concentrado"), ("SUPLEMENTO", "Suplemento")] {
                                     option value=(v) selected[self.valor("classe") == v] { (texto) }
@@ -207,8 +212,9 @@ impl Render for Cadastro<'_> {
                 @if !lote {
                     h2 { "Procedência da composição" }
                     div.form-grid {
-                        div.field { label for="natureza" { "Natureza dos valores" }
-                            select #natureza name="natureza" {
+                        div.field { (super::campo::rotulo("natureza", "Natureza dos valores", true))
+                            (super::campo::mensagem("natureza", self.erro("natureza")))
+                            select #natureza name="natureza" required {
                                 @for v in ["ANALISE", "MEDIA_TABELADA", "SINTETICA",
                                     "GARANTIA_MINIMA", "GARANTIA_MAXIMA"] {
                                     option selected[self.valor("natureza") == v] { (v) }
@@ -230,7 +236,7 @@ impl Render for Cadastro<'_> {
                         ] {
                             (Campo { erro: self.erro(nome), nome, rotulo, valor:
                             self.valor(nome), tipo: "text", dica,
-                                obrigatorio: nome == "fonte_id" || nome == "metodo" })
+                                obrigatorio: ["fonte_id", "metodo", "origem"].contains(&nome) })
                         }
                     }
                     details {

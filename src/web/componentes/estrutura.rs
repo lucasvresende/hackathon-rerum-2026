@@ -20,6 +20,7 @@ impl Render for Pagina<'_> {
                     script src="/static/vendor/htmx.min.js" {}
                     script src="/static/vendor/hx-live.min.js" {}
                     script src="/static/app.js" defer {}
+                    script src="/static/formularios.js" defer {}
                 }
                 body {
                     a.skip href="#principal" { "Pular para o conteúdo" }
@@ -58,33 +59,7 @@ impl Render for Pagina<'_> {
     }
 }
 
-pub struct Campo<'a> {
-    pub nome: &'a str,
-    pub rotulo: &'a str,
-    pub valor: &'a str,
-    pub tipo: &'a str,
-    pub dica: &'a str,
-    pub obrigatorio: bool,
-    pub erro: Option<&'a str>,
-}
-
-impl Render for Campo<'_> {
-    fn render(&self) -> Markup {
-        html! {
-            div.field {
-                label for=(self.nome) { (self.rotulo) }
-                input id=(self.nome) name=(self.nome) type=(self.tipo) value=(self.valor)
-                    step=[(self.tipo == "number").then_some("any")]
-                    required[self.obrigatorio] aria-invalid=[self.erro.map(|_| "true")]
-                    aria-describedby=(format!("{}-dica", self.nome));
-                small id=(format!("{}-dica", self.nome)) { (self.dica) }
-                @if let Some(erro) = self.erro {
-                    span.field-error { (erro) }
-                }
-            }
-        }
-    }
-}
+pub use super::campo::Campo;
 
 pub fn cabecalho(titulo: &str, texto: &str, ajuda: &str) -> Markup {
     html! {

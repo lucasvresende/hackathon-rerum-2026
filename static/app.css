@@ -188,3 +188,6 @@ details.ingredient { border: 1px solid var(--borda); border-radius: 10px; paddin
     .help-card .help-content { grid-template-rows: 1fr; opacity: 1; visibility: visible;
         transition: none; }
 }
+
+.required { color: var(--erro); }
+input:user-invalid, select:user-invalid { border-color: var(--erro); }

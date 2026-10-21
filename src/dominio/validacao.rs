@@ -41,17 +41,13 @@ pub fn validar_lote(lote: &Lote) -> Vec<Problema> {
             ));
         }
     }
-    if lote
-        .dispersao_peso
-        .is_some_and(|v| !v.is_finite() || v < 0.0)
-        || lote
-            .condicao_corporal
-            .is_some_and(|v| !v.is_finite() || v < 0.0)
-    {
-        erros.push(problema(
-            "observacoes",
-            "Dispersão e condição corporal devem ser não negativas.",
-        ));
+    for (campo, valor) in [
+        ("dispersao_peso", lote.dispersao_peso),
+        ("condicao_corporal", lote.condicao_corporal),
+    ] {
+        if valor.is_some_and(|v| !v.is_finite() || v < 0.0) {
+            erros.push(problema(campo, "Informe um valor finito não negativo."));
+        }
     }
     erros
 }
@@ -64,22 +60,28 @@ pub fn validar_alimento(a: &Alimento) -> Vec<Problema> {
             "Informe identidade e evidência com tamanho válido.",
         ));
     }
-    if a.fonte_id.is_empty()
-        || a.metodo.is_empty()
-        || a.origem.is_empty()
-        || ![
-            "ANALISE",
-            "MEDIA_TABELADA",
-            "SINTETICA",
-            "GARANTIA_MINIMA",
-            "GARANTIA_MAXIMA",
-        ]
-        .contains(&a.natureza.as_str())
+    for (campo, valor) in [
+        ("fonte_id", &a.fonte_id),
+        ("metodo", &a.metodo),
+        ("origem", &a.origem),
+    ] {
+        if valor.trim().is_empty() {
+            erros.push(problema(
+                campo,
+                "Preenchimento obrigatório para identificar a composição.",
+            ));
+        }
+    }
+    if ![
+        "ANALISE",
+        "MEDIA_TABELADA",
+        "SINTETICA",
+        "GARANTIA_MINIMA",
+        "GARANTIA_MAXIMA",
+    ]
+    .contains(&a.natureza.as_str())
     {
-        erros.push(problema(
-            "fonte_id",
-            "Informe fonte, método, origem e natureza da composição.",
-        ));
+        erros.push(problema("natureza", "Selecione a natureza da composição."));
     }
     if !a.ms.is_finite() || a.ms <= 0.0 || a.ms > 1.0 {
         erros.push(problema("ms", "MS deve estar entre 0 (exclusive) e 100%."));
@@ -87,14 +89,14 @@ pub fn validar_alimento(a: &Alimento) -> Vec<Problema> {
     for (i, fracao) in a.nutrientes.iter().enumerate() {
         if fracao.is_some_and(|x| !x.is_finite() || x < 0.0 || (i != 0 && x > 1.0)) {
             erros.push(problema(
-                "nutrientes",
+                ["ndt", "pb", "ca", "p", "fdn", "amido", "ee"][i],
                 "Teor incompatível com a base em fração de MS.",
             ));
         }
     }
     if a.rotulo_max_ms.is_some_and(|v| !v.is_finite() || v < 0.0) {
         erros.push(problema(
-            "rotulo",
+            "rotulo_max_ms",
             "O teto do rótulo em kg MS deve ser não negativo.",
         ));
     }
@@ -141,11 +143,13 @@ pub fn validar(c: &Cenario) -> Vec<Problema> {
             "Sobras devem estar entre 0 e 100% (exclusive).",
         ));
     }
-    if c.origem_sobras.trim().is_empty() || c.origem_consumo.trim().is_empty() {
-        erros.push(problema(
-            "premissas",
-            "Registre a origem do consumo e das sobras.",
-        ));
+    for (campo, valor) in [
+        ("origem_sobras", &c.origem_sobras),
+        ("origem_consumo", &c.origem_consumo),
+    ] {
+        if valor.trim().is_empty() {
+            erros.push(problema(campo, "Registre a origem ou hipótese explícita."));
+        }
     }
     if c.consumo_alvo.is_some_and(|v| !v.is_finite() || v <= 0.0) {
         erros.push(problema(

@@ -36,6 +36,7 @@ impl Render for FormularioCenario<'_> {
                 input type="hidden" name="csrf" value=(self.token);
                 input type="hidden" name="original_id" value=(self.valor("original_id"));
                 (erros(self.erros))
+                p.muted { "Campos obrigatórios: *" }
                 section.card {
                     h2 { "1. Dados do cenário" }
                     div.form-grid {
@@ -43,7 +44,8 @@ impl Render for FormularioCenario<'_> {
                         "Nome do cenário", valor: self.valor("nome"),
                             tipo: "text", dica: "Uma identificação para comparar depois",
                             obrigatorio: true })
-                        div.field { label for="lote" { "Lote e revisão atual" }
+                        div.field { (super::campo::rotulo("lote", "Lote e revisão atual", true))
+                            (super::campo::mensagem("lote", self.erro("lote")))
                             select #lote name="lote" required {
                                 @for lote in self.lotes {
                                     option value=(&lote.id) selected[self.valor("lote") ==
@@ -220,7 +222,7 @@ impl Render for FormularioCenario<'_> {
                         demais dimensões sem dados continuam identificadas como não avaliadas." }
                     div.form-actions {
                         a.button.secondary href="/" { "Voltar" }
-                        button.button type="submit" hx-live:disabled="!q('#nome').value" {
+                        button.button type="submit" {
                             "Calcular e salvar cenário →"
                         }
                     }

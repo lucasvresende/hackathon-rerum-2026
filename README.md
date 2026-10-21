@@ -462,3 +462,11 @@ em desktop e mobile confirmou legibilidade e expansão. Todos os arquivos desta 
 respeitaram 100 caracteres por linha. Naquela validação, o check global apontava uma linha
 longa em uma alteração preexistente de `hackathon/SEQUENCIA_IMPLEMENTACAO.md`, preservada
 na entrega.
+
+### Melhorias dos formulários
+
+Campos obrigatórios apresentam `*`. Restrições HTML e a API nativa de validação dão feedback
+antes do envio; o servidor continua validando POSTs, inclusive sem JavaScript. As mensagens
+ficam acima do controle, ligadas por `aria-describedby`, com resumo e links para correção.
+Inteiros usam passo 1; condições fora do perfil não se confundem com valores malformados.
+`tests/melhorias.rs` cobre renderização acessível, associação de erros e rejeição sem gravação.
