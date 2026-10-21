@@ -119,7 +119,13 @@ export async function testarTemplates(page, url, artefatos, navegador) {
     await p.locator('#modelo').selectOption('ex-a07');
     await p.getByRole('button', { name: 'Ver prévia do exemplo' }).click();
     await p.locator('#confirmar_modelo').check();
+    const aplicacao = p.waitForResponse(resposta =>
+      resposta.request().method() === 'POST'
+      && new URL(resposta.url()).pathname === '/cadastros/alimento/modelo'
+      && new URL(resposta.url()).searchParams.get('acao') === 'aplicar');
     await p.getByRole('button', { name: 'Preencher com exemplo' }).click();
+    await aplicacao;
+    await p.waitForFunction(() => document.querySelector('#ms')?.value === '88.5');
     assert.equal(await p.locator('#ms').inputValue(), '88.5');
     await p.locator('#pb').fill('49');
     assert.equal(await p.locator('#pb').inputValue(), '49');

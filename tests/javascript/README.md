@@ -8,7 +8,8 @@ Os testes JavaScript de integração ficam em `tests/javascript/e2e/`:
   identificação sintética, tela móvel e execução com e sem JavaScript nos três navegadores.
 - `templates.mjs`: preenchimento com exemplos, cadastros e componentes dos formulários.
   Confere campos de lotes e alimentos e as configurações avançadas de cenários,
-  inclusive após carregar modelos e validar campos.
+  inclusive após carregar modelos e validar campos. No fluxo sem JavaScript, aguarda a resposta
+  POST da aplicação do exemplo antes de conferir os valores.
 - `dicas.mjs`: dicas no cenário, catálogo/cadastro e parecer; IDs únicos, rótulos, ausência
   de envio ao abrir dicas, reativação após htmx, tela móvel, impressão e uso sem JavaScript.
   Os exemplos da Ajuda aguardam o conteúdo do cartão, inclusive durante a transição no WebKit.
@@ -123,7 +124,8 @@ FEEDYOURCOW_SUITES=cenario-simplificado npm run test:e2e
 Os testes de seleção aguardam a aplicação dos valores após o swap, incluindo a transição
 `settle` do htmx. A checagem das animações também espera a inicialização do expansível para não
 ler seu estilo antes de `expand-ready` no WebKit. Isso evita conferir atributos temporários
-durante a troca do HTML.
+durante a troca do HTML. O fluxo de resultado localiza “Cálculos e regras aplicadas” pelo botão
+expansível acessível que a interface realmente renderiza.
 As dicas em tela móvel são testadas após abrir as configurações que contêm seus controles.
 
 Validação da branch de simplificação em 21/10/2026: suíte completa aprovada em Chromium,

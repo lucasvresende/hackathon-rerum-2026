@@ -161,15 +161,16 @@ try {
       await conferirTela(`Verificação ${nome}`);
       await page.getByRole('heading', { name: 'Balanço nutricional' }).waitFor();
       await page.getByRole('heading', { name: 'Quantidades de fornecimento' }).waitFor();
-      await page.getByRole('heading', { name: 'Cálculos e regras aplicadas' }).waitFor();
+      await page.locator('#calculos-regras > .expand-heading > .expand-toggle')
+        .waitFor({ state: 'visible' });
       for (const id of ['calculos-regras', 'entradas-preservadas', 'fontes-versoes']) {
-        const carta = page.locator(`#${id}`);
-        assert.equal(await carta.locator('.expand-toggle').getAttribute('aria-expanded'),
+        const botao = page.locator(`#${id} > .expand-heading > .expand-toggle`);
+        assert.equal(await botao.getAttribute('aria-expanded'),
           'false', `${id} deve iniciar recolhida`);
       }
       await page.emulateMedia({ media: 'print' });
       for (const id of ['calculos-regras', 'entradas-preservadas', 'fontes-versoes']) {
-        assert.ok(await page.locator(`#${id} .expand-content`)
+        assert.ok(await page.locator(`#${id} > .expand-content`)
           .evaluate(element => element.getBoundingClientRect().height > 0),
         `${id} deve mostrar seu conteúdo na impressão`);
       }
