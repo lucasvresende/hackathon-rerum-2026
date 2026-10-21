@@ -87,9 +87,10 @@ impl IntoResponse for ErroWeb {
         let corpo = super::componentes::estrutura::Pagina {
             titulo: "Não foi possível concluir",
             ativo: "",
-            ajuda: "inicio",
             conteudo: maud::html! {
-                h1 { "Não foi possível concluir esta operação" }
+                (super::componentes::estrutura::cabecalho(
+                    "Não foi possível concluir esta operação", "", "inicio"
+                ))
                 p { "Houve uma falha operacional. Seus resultados anteriores estão preservados. \
                     Volte à tela anterior para tentar novamente." }
                 a.button href="/" { "Voltar à visão geral" }

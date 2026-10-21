@@ -153,6 +153,13 @@ try {
       const transbordou = await page.evaluate(
         () => document.documentElement.scrollWidth > innerWidth);
       assert.equal(transbordou, false);
+      await conferirLinkAjuda(page);
+      await page.goto(`${url}/conhecimento`);
+      await conferirTela('Perfil nutricional e fontes');
+      await page.screenshot({ path: join(artefatos, `${nome}-cabecalho-mobile.png`),
+        fullPage: true });
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth),
+        false, 'Cabeçalho com título longo e ajuda deve caber na tela móvel');
       assert.deepEqual(erros, [], `${nome}: erros de JavaScript ou dependência externa`);
       console.log(`${nome}: cadastro, validação, fragmento, verificação, formulação, simulação, ` +
         'histórico, comparação, impressão, mobile e interface objetiva passaram');

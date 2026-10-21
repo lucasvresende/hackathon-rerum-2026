@@ -61,6 +61,7 @@ export async function testarAjuda(page, url, artefatos, navegador) {
   await page.reload();
   await page.locator('#resultados-conteudo').waitFor({ state: 'visible' });
   await page.setViewportSize({ width: 390, height: 844 });
+  await conferirLinkAjuda(page);
   await page.evaluate(() => scrollTo(0, 0));
   await page.screenshot({ path: join(artefatos, `${navegador}-ajuda-mobile.png`),
     fullPage: true });
@@ -93,4 +94,10 @@ export async function conferirLinkAjuda(page) {
     : caminho === '/conhecimento' ? 'conhecimento' : 'inicio';
   const link = page.getByRole('link', { name: 'Ajuda nesta página', exact: true });
   assert.equal(await link.getAttribute('href'), `/ajuda#${secao}`);
+  const titulo = await page.getByRole('heading', { level: 1 }).boundingBox();
+  const botao = await link.boundingBox();
+  assert.ok(titulo && botao, 'Título e ajuda devem estar visíveis');
+  assert.ok(botao.x >= titulo.x + titulo.width, 'Ajuda deve ficar à direita do título');
+  assert.ok(Math.abs((botao.y + botao.height / 2) - (titulo.y + titulo.height / 2)) < 1,
+    'Título e ajuda devem estar centralizados na mesma linha');
 }

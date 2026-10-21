@@ -3,7 +3,6 @@ use maud::{DOCTYPE, Markup, Render, html};
 pub struct Pagina<'a> {
     pub titulo: &'a str,
     pub ativo: &'a str,
-    pub ajuda: &'a str,
     pub conteudo: Markup,
 }
 
@@ -50,11 +49,6 @@ impl Render for Pagina<'_> {
                     }
                     div.workspace {
                         main #principal tabindex="-1" {
-                            div.page-help.no-print {
-                                a.button.secondary href=(format!("/ajuda#{}", self.ajuda)) {
-                                    "Ajuda nesta página"
-                                }
-                            }
                             (self.conteudo)
                         }
                     }
@@ -92,10 +86,15 @@ impl Render for Campo<'_> {
     }
 }
 
-pub fn cabecalho(titulo: &str, texto: &str) -> Markup {
+pub fn cabecalho(titulo: &str, texto: &str, ajuda: &str) -> Markup {
     html! {
         div.page-heading {
-            h1 { (titulo) }
+            div.page-title-row {
+                h1 { (titulo) }
+                a.button.secondary.page-help.no-print href=(format!("/ajuda#{ajuda}")) {
+                    "Ajuda nesta página"
+                }
+            }
             @if !texto.is_empty() {
                 p.subtitle { (texto) }
             }

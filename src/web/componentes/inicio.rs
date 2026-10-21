@@ -16,7 +16,7 @@ impl Render for Inicio<'_> {
     fn render(&self) -> Markup {
         let animais: u32 = self.lotes.iter().map(|l| l.animais).sum();
         html! {
-            (cabecalho("Visão geral", ""))
+            (cabecalho("Visão geral", "", "inicio"))
             div.actions {
                 a.button href="/cenarios/novo" { "Verificar dieta" }
                 a.button.secondary href="/cenarios/novo?modo=formular" { "Formular dieta" }

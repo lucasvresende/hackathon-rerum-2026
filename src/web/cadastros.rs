@@ -29,7 +29,6 @@ fn formulario(
     }
     Pagina {
         titulo: "Cadastro",
-        ajuda: if tipo == "lote" { "lotes" } else { "alimentos" },
         ativo: if tipo == "lote" {
             "/lotes"
         } else {
@@ -38,7 +37,8 @@ fn formulario(
         conteudo: html! {
             (cabecalho(if tipo == "lote" { "Cadastro de lote" }
                 else { "Composição do alimento" },
-                "Cada alteração cria uma revisão. Execuções anteriores permanecem iguais."))
+                "Cada alteração cria uma revisão. Execuções anteriores permanecem iguais.",
+                if tipo == "lote" { "lotes" } else { "alimentos" }))
             (cadastro)
         },
     }

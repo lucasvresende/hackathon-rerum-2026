@@ -17,7 +17,6 @@ pub async fn inicio(State(e): State<EstadoApp>) -> Result<Markup, ErroWeb> {
     Ok(Pagina {
         titulo: "Visão geral",
         ativo: "/",
-        ajuda: "inicio",
         conteudo: super::componentes::inicio::Inicio {
             lotes: &lotes,
             alimentos: &alimentos,
@@ -34,9 +33,8 @@ pub async fn lotes(State(e): State<EstadoApp>) -> Result<Markup, ErroWeb> {
     Ok(Pagina {
         titulo: "Lotes",
         ativo: "/lotes",
-        ajuda: "lotes",
         conteudo: html! {
-            (cabecalho("Lotes", ""))
+            (cabecalho("Lotes", "", "lotes"))
             div.actions { a.button href="/lotes/novo" { "+ Cadastrar lote" } }
             section.card.table-wrap {
                 @if lotes.is_empty() { p.empty {
@@ -66,9 +64,8 @@ pub async fn alimentos(
     Ok(Pagina {
         titulo: "Alimentos",
         ativo: "/alimentos",
-        ajuda: "alimentos",
         conteudo: html! {
-            (cabecalho("Catálogo de alimentos", ""))
+            (cabecalho("Catálogo de alimentos", "", "alimentos"))
             div.actions { a.button href="/alimentos/novo" { "+ Cadastrar composição" }
                 form.search method="get" action="/alimentos" {
                     label.sr-only for="busca" { "Pesquisar alimento" }
@@ -141,9 +138,8 @@ pub async fn historico(
     Ok(Pagina {
         titulo: "Histórico",
         ativo: "/historico",
-        ajuda: "historico",
         conteudo: html! {
-            (cabecalho("Histórico de cenários", ""))
+            (cabecalho("Histórico de cenários", "", "historico"))
             form.card method="get" action="/historico" {
                 div.form-grid {
                     div.field { label for="filtro-lote" { "Nome do lote" }
@@ -202,9 +198,8 @@ pub async fn conhecimento(State(e): State<EstadoApp>) -> Result<Markup, ErroWeb>
     Ok(Pagina {
         titulo: "Perfil nutricional e fontes",
         ativo: "/conhecimento",
-        ajuda: "conhecimento",
         conteudo: html! {
-            (cabecalho("Perfil nutricional e fontes", ""))
+            (cabecalho("Perfil nutricional e fontes", "", "conhecimento"))
             section.card { h2 { (&c.perfil_id) }
                 p { "Adultas em lactação, confinadas, estáveis e sem gestação/crescimento. \
                 O perfil histórico NRC 1989 não implementa integralmente NASEM 2021 ou
@@ -248,8 +243,10 @@ pub async fn nao_encontrado() -> (StatusCode, Markup) {
         Pagina {
             titulo: "Página não encontrada",
             ativo: "",
-            ajuda: "inicio",
-            conteudo: html! { h1 { "Página não encontrada" } a href="/" { "Voltar ao início" } },
+            conteudo: html! {
+                (cabecalho("Página não encontrada", "", "inicio"))
+                a href="/" { "Voltar ao início" }
+            },
         }
         .render(),
     )
@@ -260,7 +257,6 @@ pub async fn ajuda() -> Markup {
     Pagina {
         titulo: "Ajuda",
         ativo: "/ajuda",
-        ajuda: "inicio",
         conteudo: super::componentes::ajuda::Ajuda.render(),
     }
     .render()

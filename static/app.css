@@ -160,7 +160,9 @@ details.ingredient { border: 1px solid var(--borda); border-radius: 10px; paddin
     .stats { gap: 8px; } .stat strong { font-size: 18px; }
     a { color: inherit; } .table-wrap { overflow: visible; }
 }
-.page-help { display: flex; justify-content: flex-end; margin-bottom: 14px; }
+.page-title-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.page-title-row h1 { min-width: 0; overflow-wrap: anywhere; }
+.page-help { flex-shrink: 0; }
 .help-index { display: flex; flex-wrap: wrap; gap: 10px 24px; font-size: 13px; }
 .help-card { scroll-margin-top: 20px; }
 .help-card h2 { margin: 0; }

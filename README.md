@@ -204,8 +204,10 @@ Nenhuma conclusão operacional é delegada à IA. Limitações científicas segu
 
 A rota `/ajuda` renderiza o componente Maud `Ajuda`, separado em `componentes/ajuda.rs`.
 Dez cartas explicam visão geral, lotes, alimentos, cenários, verificação, formulação, pareceres,
-histórico, comparação e fontes. Cada `Pagina` declara sua seção de ajuda; o layout apresenta
+histórico, comparação e fontes. O cabeçalho de cada página declara sua seção de ajuda e apresenta
 “Ajuda nesta página” com `/ajuda#secao`, inclusive em cadastros, pareceres e telas de erro.
+O botão fica na mesma linha do título, alinhado à direita e centralizado verticalmente.
+Títulos longos quebram dentro do espaço disponível, preservando o botão na mesma linha no celular.
 
 O estado `data-aberta` pertence a cada carta. O hx-live sincroniza a classe `help-open`,
 `aria-expanded`, o indicador e `inert` no conteúdo fechado, impedindo foco em links recolhidos.
@@ -348,7 +350,8 @@ os controles acessíveis e os links de ajuda em páginas completas e no erro 404
 expansão/recolhimento de todas as cartas, Enter/Espaço, isolamento do estado, links com fragmento,
 índice, retorno do navegador, recarga, conteúdo sem JavaScript e ausência de transbordamento
 em 390 px. Também confere a classe de abertura, altura recolhida, `inert` e movimento reduzido.
-O roteiro também confere os destinos contextuais nos cadastros, cenário, resultado,
+O roteiro também confere o alinhamento entre título e botão de ajuda, inclusive com título longo
+em 390 px, e os destinos contextuais nos cadastros, cenário, resultado,
 histórico, comparação e fontes. Capturas `*-ajuda.png` e `*-ajuda-mobile.png` apoiam a inspeção.
 
 Validação da ajuda em 20/10/2026: build, 35 testes Rust, clippy com todas as features,

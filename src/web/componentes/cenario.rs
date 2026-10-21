@@ -234,5 +234,6 @@ pub fn titulo() -> Markup {
     cabecalho(
         "Novo cenário",
         "Selecione o lote, o tipo de cálculo e os ingredientes.",
+        "cenarios",
     )
 }

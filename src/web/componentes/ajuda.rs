@@ -224,7 +224,8 @@ impl Render for Carta {
 impl Render for Ajuda {
     fn render(&self) -> Markup {
         html! {
-            (cabecalho("Ajuda", "Abra uma carta para consultar as instruções de cada tarefa."))
+            (cabecalho("Ajuda", "Abra uma carta para consultar as instruções de cada tarefa.",
+                "inicio"))
             nav.card.help-index aria-label="Seções da ajuda" {
                 @for carta in CARTAS {
                     a href=(format!("#{}", carta.id))

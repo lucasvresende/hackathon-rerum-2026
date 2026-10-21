@@ -26,7 +26,7 @@ impl Render for ResultadoExecucao<'_> {
             .unwrap_or(e.criada_em.clone());
         html! {
             (cabecalho(&c.nome, &format!("{} · {} · Execução {}",
-                c.lote.nome, data, e.id)))
+                c.lote.nome, data, e.id), "resultados"))
             div.actions.no-print {
                 a.button href=(format!("/execucoes/{}/duplicar", e.id)) { "Duplicar e simular" }
                 button.button.secondary type="button" data-imprimir { "Imprimir parecer" }
