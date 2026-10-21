@@ -12,3 +12,8 @@ pub mod templates;
 // Mantém os caminhos públicos anteriores durante a migração dos consumidores.
 pub use entradas as formularios;
 pub use templates::componentes;
+mod apresentacao;
+pub mod erro;
+pub mod estado;
+pub mod handlers;
+pub mod resposta;

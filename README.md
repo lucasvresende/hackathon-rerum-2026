@@ -173,7 +173,11 @@ Os comandos completos de testes estão em
 - `src/dominio/`: unidades, validações, cálculos, inferência, parecer e otimização.
 - `src/aplicacao/`: orquestração, processo de cálculo e exemplos sintéticos.
 - `src/persistencia/`: banco, cargas, revisões, histórico e recuperação.
-- `src/web/`: adaptação HTTP e proteção de escrita; `entradas/` decodifica formulários.
+- `src/web/rotas/`: grupos de rotas por recurso, compostos com `Router::merge`.
+- `src/web/handlers/`: adaptação HTTP por recurso; `entradas/` decodifica formulários.
+  `estado.rs`, `erro.rs`, `resposta.rs` e `seguranca.rs` concentram estado, falhas,
+  redirecionamentos htmx/HTTP e proteção de escrita. `apresentacao.rs` monta respostas
+  de formulário completas ou parciais para os handlers que compartilham esses fluxos.
 - `src/web/templates/`: apresentação em structs com `maud::Render`, separada em `layouts/`
   (principal e cadastro), `paginas/`, `formularios/` e `componentes/` reutilizáveis.
   Templates recebem dados preparados; não consultam o banco nem executam operações de negócio.

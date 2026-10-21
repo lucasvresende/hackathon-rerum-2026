@@ -1,6 +1,7 @@
 use std::collections::BTreeMap;
 
-use axum::http::HeaderMap;
+use axum::http::{HeaderMap, HeaderValue};
+use axum::response::Response;
 
 pub fn validar(
     headers: &HeaderMap,
@@ -16,4 +17,17 @@ pub fn validar(
         .get("sec-fetch-site")
         .is_none_or(|v| v != "cross-site");
     csrf && mesma_origem && contexto
+}
+
+pub async fn cabecalhos(req: axum::extract::Request, proximo: axum::middleware::Next) -> Response {
+    let mut r = proximo.run(req).await;
+    r.headers_mut().insert(
+        "x-content-type-options",
+        HeaderValue::from_static("nosniff"),
+    );
+    r.headers_mut()
+        .insert("referrer-policy", HeaderValue::from_static("same-origin"));
+    r.headers_mut()
+        .insert("x-frame-options", HeaderValue::from_static("DENY"));
+    r
 }

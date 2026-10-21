@@ -1,0 +1,26 @@
+use crate::persistencia::{cadastros, conhecimento as base, historico};
+use crate::web::{erro::ErroWeb, estado::EstadoApp};
+use axum::extract::State;
+use axum::http::StatusCode;
+use maud::{Markup, Render};
+
+pub async fn inicio(State(e): State<EstadoApp>) -> Result<Markup, ErroWeb> {
+    let lotes = cadastros::lotes(&e.pool).await?;
+    let alimentos = cadastros::alimentos(&e.pool).await?;
+    let execucoes = historico::listar(&e.pool).await?;
+    let conhecimento = base::ler(&e.pool).await?;
+    Ok(crate::web::templates::paginas::inicio::Inicio {
+        lotes: &lotes,
+        alimentos: &alimentos,
+        execucoes: &execucoes,
+        conhecimento: &conhecimento,
+    }
+    .render())
+}
+
+pub async fn nao_encontrado() -> (StatusCode, Markup) {
+    (
+        StatusCode::NOT_FOUND,
+        crate::web::templates::paginas::erro::Erro::NaoEncontrado.render(),
+    )
+}
