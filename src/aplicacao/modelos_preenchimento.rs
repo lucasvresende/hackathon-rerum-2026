@@ -100,6 +100,7 @@ pub async fn preparar(
     Ok(carga)
 }
 
+/// Preserva a representação serializada dos lotes usada nos snapshots anteriores.
 pub async fn procedencia_lote(
     pool: &SqlitePool,
     id: &str,
@@ -112,6 +113,7 @@ pub async fn procedencia_lote(
     .await
 }
 
+/// Compara a composição normalizada com a referência em percentuais de MN/MS.
 pub async fn procedencia_alimento(
     pool: &SqlitePool,
     id: &str,

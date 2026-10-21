@@ -1,4 +1,5 @@
 use super::super::componentes::cabecalho::Cabecalho;
+use super::super::componentes::expansivel::Expansivel;
 use super::super::layouts::Principal;
 use maud::{Markup, Render, html};
 
@@ -29,7 +30,7 @@ impl Render for Conhecimento<'_> {
                 }
             }
             section.card { h2 { "Fontes preservadas" }
-                @for f in &c.fontes { (super::super::componentes::expansivel::Expansivel { id:
+                @for f in &c.fontes { (Expansivel { id:
                         &format!("conhecimento-{}", f.id), aberto: false,
                         titulo: html! { span.pill { (&f.natureza) } " "
                             (&f.id) " · " (&f.titulo) },
@@ -45,7 +46,7 @@ impl Render for Conhecimento<'_> {
                     ". Arte " a href="https://creativecommons.org/licenses/by/4.0/" { "CC BY 4.0" }
                     "; dimensões e formatação ajustadas."
                 }
-                @for n in &c.normas { (super::super::componentes::expansivel::Expansivel { id:
+                @for n in &c.normas { (Expansivel { id:
                         &format!("norma-{}", n.id), aberto: false,
                         titulo: html! { (&n.id) " · " (&n.natureza) },
                         conteudo: html! {

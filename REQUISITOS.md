@@ -1,6 +1,6 @@
 # Requisitos do FeedYourCow: dietas para bovinos leiteiros
 
-**Tema 2 · Hackathon UFJF/RERUM 2026 · Versão documental 1.2 · 20/10/2026**
+**Tema 2 · Hackathon UFJF/RERUM 2026 · Versão documental 1.3 · 21/10/2026**
 
 Este documento especifica o comportamento do FeedYourCow. A implementação está em `src/`;
 `README.md` reúne operação, arquitetura, decisões e a cobertura dos testes com sua verificação.

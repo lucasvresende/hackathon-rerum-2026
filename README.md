@@ -182,7 +182,7 @@ Os comandos completos de testes estão em
 - `src/web/templates/`: apresentação em structs com `maud::Render`, separada em `layouts/`
   (principal e cadastro), `paginas/`, `formularios/` e `componentes/` reutilizáveis.
   Templates recebem dados preparados; não consultam o banco nem executam operações de negócio.
-  Os caminhos públicos anteriores `web::componentes` e `web::formularios` têm reexportações
+  Os módulos HTTP anteriores, `web::componentes` e `web::formularios` têm reexportações
   de compatibilidade; código novo usa `web::templates` e `web::entradas`.
 - `migrations/`, `.sqlx/`: esquema SQLx e metadados de compilação.
 - `queries/`: consultas agrupadas por recurso: `lotes/`, `alimentos/`, `cenarios/`,
@@ -251,7 +251,7 @@ Os serviços recebem dados tipados e `SqlitePool`, sem `State`, cabeçalhos, HTM
 Consultas simples de leitura podem ser chamadas diretamente pelos handlers.
 
 `templates/` contém apenas apresentação. Cada página, formulário, layout e componente visual é
-uma struct (ou enum de estados visuais) que implementa `Render`; recebe dados preparados e não
+uma struct que implementa `Render`; recebe dados preparados e não
 consulta o banco. `layouts::Principal` inclui o menu; `layouts::Cadastro` mantém a guia isolada.
 `formularios::lote::FormularioLote` e `formularios::alimento::FormularioAlimento` compartilham
 campos e metadados de cadastro, enquanto `formularios::cenario` compõe seus ingredientes.
@@ -545,7 +545,6 @@ O cabeçalho usa uma cópia local do SVG de vaca solicitado; procedência, licen
 estão em [static/README.md](static/README.md). Tabelas destacam linhas no hover e no foco.
 A carga de templates não altera o perfil nutricional nem os exemplos sintéticos A/B.
 
-
 ### Verificação das melhorias
 
 A validação local executou 40 testes Rust, build com lockfile, clippy com todos os alvos/features,
@@ -564,3 +563,26 @@ A inspeção visual inclui o formulário, erro acima do campo, versão móvel e 
 Para atualizar uma instalação existente, encerre o servidor, execute `cargo run -- preparar`
 e inicie novamente com `cargo run -- servir`. A preparação aplica a migração e carga de modelos;
 o comando de servir continua recusando banco com estrutura incompatível.
+
+
+### Verificação da refatoração
+
+A separação de apresentação e serviços acrescentou seis testes comportamentais:
+
+- `tests/comparacao.rs`: critérios de equivalência, diferença absoluta, custo desconhecido e
+  ausência de percentual quando o custo de referência é zero.
+- `tests/servicos_modelos.rs`: aplicação parcial sem gravação, confirmação, lacunas, estados
+  desconhecidos, unidades e representação da procedência nos snapshots existentes.
+- `tests/contratos_http.rs`: página completa/fragmento, rascunho preservado, redirecionamento
+  HTTP/htmx, proteção de escrita e rota inválida.
+
+Os testes anteriores continuam cobrindo revisões imutáveis, reprodução, persistência, backup,
+validação, motor e apresentação. As consultas apenas mudaram de pasta; o cache `.sqlx/`,
+o esquema, as migrações e as cargas de referência foram mantidos.
+
+Validação local em 21/10/2026: 46 testes Rust, build, clippy com todos os alvos/features,
+rustfmt, limite de 100 caracteres e 28 consultas SQLx contra banco limpo passaram.
+Os fluxos completos de Chromium, Firefox e WebKit passaram, com inspeção visual das capturas
+em desktop e mobile. O ensaio isolado de 100 execuções após aquecimento atingiu as metas,
+com p95 de 12,6 ms na verificação (20 ingredientes) e 19,5 ms na formulação (10 ingredientes),
+no ambiente local em debug. A execução remota do CI depende da publicação dos commits.

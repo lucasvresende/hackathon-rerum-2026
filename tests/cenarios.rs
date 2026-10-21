@@ -3,7 +3,7 @@ use feed_your_cow::dominio::inferencia::verificar;
 use feed_your_cow::dominio::unidades::{normalizar_preco, proximos};
 use feed_your_cow::dominio::*;
 use feed_your_cow::persistencia::{banco, cadastros, conhecimento};
-use feed_your_cow::web::formularios::{campos_cenario, ler_cenario};
+use feed_your_cow::web::entradas::{campos_cenario, ler_cenario};
 
 async fn exemplo() -> (Cenario, Conhecimento) {
     let d = tempfile::tempdir().unwrap();

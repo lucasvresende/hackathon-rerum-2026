@@ -1,4 +1,5 @@
 use super::super::componentes::campo::Campo;
+use super::super::componentes::expansivel::Expansivel;
 use super::cenario::FormularioCenario;
 use maud::{Markup, Render, html};
 
@@ -31,7 +32,7 @@ impl Render for Ingredientes<'_, '_> {
                             100.0))
                             " · " (&id[..id.len().min(12)]) }
                     }
-                    (super::super::componentes::expansivel::Expansivel {
+                    (Expansivel {
                         id: &format!("ingrediente-{id}"),
                         aberto: match self.0.valor(&format!("expansao-ingrediente-{id}")) {
                             "true" => true, "false" => false,

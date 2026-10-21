@@ -1,4 +1,7 @@
 //! Estrutura comum dos cadastros; campos específicos ficam em seus módulos de formulário.
+use super::super::componentes::expansivel::Expansivel;
+use super::super::componentes::expansivel::Visualizacao;
+use super::super::componentes::modelos_preenchimento::SeletorModelo;
 use std::collections::BTreeMap;
 
 use super::super::componentes::campo::{MensagemErro, Rotulo};
@@ -45,8 +48,8 @@ impl Render for Cadastro<'_> {
                 value=(self.valor("anterior"));
                 (ResumoErros(self.erros))
                 p.muted { "Campos obrigatórios: *" }
-                (super::super::componentes::expansivel::Visualizacao)
-                (super::super::componentes::modelos_preenchimento::SeletorModelo {
+                (Visualizacao)
+                (SeletorModelo {
                     tipo: self.tipo.nome(), modelos: self.modelos, campos: self.campos,
                 })
                 h2 { "Identificação e dados" }
@@ -185,7 +188,7 @@ impl Render for Cadastro<'_> {
                             }
                         }
                     }
-                    (super::super::componentes::expansivel::Expansivel { id: "laudos", aberto:
+                    (Expansivel { id: "laudos", aberto:
                         false,
                         titulo: html! { "Laudos de contaminantes (opcional)" },
                         conteudo: html! {

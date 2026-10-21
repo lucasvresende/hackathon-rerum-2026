@@ -21,6 +21,9 @@ pub async fn inicio(State(e): State<EstadoApp>) -> Result<Markup, ErroWeb> {
 pub async fn nao_encontrado() -> (StatusCode, Markup) {
     (
         StatusCode::NOT_FOUND,
-        crate::web::templates::paginas::erro::Erro::NaoEncontrado.render(),
+        crate::web::templates::paginas::erro::Erro(
+            crate::web::templates::paginas::erro::TipoErro::NaoEncontrado,
+        )
+        .render(),
     )
 }

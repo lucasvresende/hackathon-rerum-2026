@@ -2,11 +2,7 @@ use crate::aplicacao::cadastros::{self as servico, FalhaCadastro};
 use crate::dominio::templates::TipoCadastro;
 use crate::web::entradas::Campos;
 use crate::web::{apresentacao, entradas as formularios};
-use crate::web::{
-    erro::ErroWeb,
-    estado::EstadoApp,
-    resposta::{autorizado, redirecionar},
-};
+use crate::web::{erro::ErroWeb, estado::EstadoApp, resposta::redirecionar, seguranca::autorizado};
 use axum::{
     Form,
     extract::{Path, Query, State},

@@ -1,3 +1,4 @@
+//! Compatibilidade: páginas novas usam `layouts::Principal` ou `layouts::Cadastro`.
 pub use super::cabecalho::Cabecalho;
 pub use super::campo::Campo;
 use maud::{Markup, Render};

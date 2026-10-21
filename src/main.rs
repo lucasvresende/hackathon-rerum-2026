@@ -71,7 +71,7 @@ async fn main() -> Resultado<()> {
             banco::verificar_estrutura(&pool).await?;
             conhecimento::ler(&pool).await?;
             let estado =
-                feed_your_cow::web::rotas::EstadoApp::novo(pool, format!("http://{endereco}"));
+                feed_your_cow::web::estado::EstadoApp::novo(pool, format!("http://{endereco}"));
             let listener = tokio::net::TcpListener::bind(endereco).await?;
             tracing::info!(%endereco, "FeedYourCow disponível");
             axum::serve(listener, feed_your_cow::web::rotas::app(estado))

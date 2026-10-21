@@ -12,7 +12,7 @@ use crate::web::{
     entradas::{Campos, texto},
     erro::ErroWeb,
     estado::EstadoApp,
-    resposta::autorizado,
+    seguranca::autorizado,
 };
 
 /// Traduz a ação HTTP e aplica ao rascunho as substituições preparadas pela aplicação.

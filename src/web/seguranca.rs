@@ -1,3 +1,4 @@
+use super::estado::EstadoApp;
 use std::collections::BTreeMap;
 
 use axum::http::{HeaderMap, HeaderValue};
@@ -30,4 +31,12 @@ pub async fn cabecalhos(req: axum::extract::Request, proximo: axum::middleware::
     r.headers_mut()
         .insert("x-frame-options", HeaderValue::from_static("DENY"));
     r
+}
+
+pub fn autorizado(
+    estado: &EstadoApp,
+    headers: &HeaderMap,
+    campos: &super::entradas::Campos,
+) -> bool {
+    validar(headers, campos, &estado.csrf, &estado.origem)
 }

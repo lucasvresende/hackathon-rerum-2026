@@ -4,7 +4,8 @@ use axum::{Router, extract::DefaultBodyLimit};
 use tower_http::{services::ServeDir, trace::TraceLayer};
 // Compatibilidade com consumidores anteriores à separação dos adaptadores HTTP.
 pub use super::erro::ErroWeb;
-pub use super::resposta::{autorizado, redirecionar};
+pub use super::resposta::redirecionar;
+pub use super::seguranca::autorizado;
 mod alimentos;
 mod cadastros;
 mod cenarios;

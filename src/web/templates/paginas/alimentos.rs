@@ -1,4 +1,5 @@
 use super::super::componentes::cabecalho::Cabecalho;
+use super::super::componentes::expansivel::Expansivel;
 use super::super::layouts::Principal;
 use maud::{Markup, Render, html};
 
@@ -41,7 +42,7 @@ impl Render for Alimentos<'_> {
                                         .unwrap_or("Desconhecido".into())) }
                                 }
                             }
-                            (super::super::componentes::expansivel::Expansivel { id:
+                            (Expansivel { id:
                                 &format!("alimento-{}",
                                 a.composicao_id), aberto: false,
                                 titulo: html! { "Procedência e condições" },

@@ -1,3 +1,5 @@
+use super::super::componentes::expansivel::Expansivel;
+use super::super::componentes::expansivel::Visualizacao;
 use std::collections::BTreeMap;
 
 use super::super::componentes::campo::{MensagemErro, Rotulo};
@@ -52,7 +54,7 @@ impl Render for FormularioCenario<'_> {
                     a href="/cenarios/novo?dieta=B" { "Demonstração B" }
                 }
                 p.muted { "Campos obrigatórios: *" }
-                (super::super::componentes::expansivel::Visualizacao)
+                (Visualizacao)
                 section.card {
                     h2 { "1. Dados do cenário" }
                     div.form-grid {
@@ -153,7 +155,7 @@ impl Render for FormularioCenario<'_> {
                                 obrigatorio: true })
                         }
                     }
-                    (super::super::componentes::expansivel::Expansivel { id: "medicao", aberto:
+                    (Expansivel { id: "medicao", aberto:
                         false, titulo:
                         html! { "Consumo observado por pesagem do lote (opcional)" },
                         conteudo:
