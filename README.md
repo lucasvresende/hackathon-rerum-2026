@@ -191,7 +191,8 @@ Os comandos completos de testes estão em
   alteram o SQL, o esquema ou as cargas versionadas de `dados_referencia/`.
 - `dados_referencia/`, `fontes/`, `hackathon/`: cargas, fontes e anexo numérico preservado.
 - `static/`: CSS plano, JavaScript de apresentação e bibliotecas locais.
-- `tests/`: casos de aceitação e integração.
+- `tests/*.rs`: testes Rust, descobertos automaticamente pelo Cargo.
+- `tests/javascript/e2e/`: roteiros Playwright; veja [testes JavaScript](tests/javascript/README.md).
 - `scripts/`: verificações, build local de produção, inicialização e teste da distribuição.
 - `dist/`: pacotes de produção gerados, excluídos do Git.
 
@@ -383,11 +384,12 @@ python3 scripts/qualidade.py
 python3 scripts/verificar_sqlx.py
 npm ci --ignore-scripts
 npx playwright install --with-deps chromium firefox webkit
-npm test
+npm run test:e2e
 RUST_LOG=warn cargo run --quiet -- ensaiar
 ```
 
-As ferramentas Node/Playwright são exclusivas de desenvolvimento. `npm test` cria um banco
+As ferramentas Node/Playwright são exclusivas de desenvolvimento. `npm test` permanece como
+atalho de `npm run test:e2e`. A suíte cria um banco
 isolado, prepara a demonstração, inicia servidor temporário em loopback e limpa esses dados ao
 terminar. Não usa o banco operacional. As capturas ficam em `output/playwright/`, fora do Git.
 O script registra erros JavaScript e recusa recursos de outras origens durante os fluxos.
@@ -477,7 +479,8 @@ Rust 1.98.1, perfil debug. O ensaio final obteve p95 aproximado de 23 ms para ve
 
 ### Integração contínua
 
-`.github/workflows/ci.yml` reproduz os checks de Rust, texto, SQLx e navegadores, preservando
+`.github/workflows/ci.yml` separa o job Rust (texto e SQLx incluídos) do job JavaScript E2E.
+O segundo recebe o binário compilado pelo primeiro e executa os três navegadores, preservando
 capturas como artefato. O workflow está configurado para push e pull request; a execução remota
 no GitHub depende de publicar os commits. A validação desta entrega é local.
 
@@ -485,7 +488,7 @@ no GitHub depende de publicar os commits. A validação desta entrega é local.
 
 O teste Rust `ajuda_disponivel_com_secoes_e_links_contextuais` verifica a rota, as dez seções,
 os controles acessíveis e os links de ajuda em páginas completas e no erro 404.
-`tests/ajuda.mjs`, executado pelo roteiro existente em Chromium, Firefox e WebKit, verifica
+`tests/javascript/e2e/ajuda.mjs`, executado pelo roteiro existente em Chromium, Firefox e WebKit, verifica
 expansão/recolhimento de todas as cartas, Enter/Espaço, isolamento do estado, links com fragmento,
 índice, retorno do navegador, recarga, conteúdo sem JavaScript e ausência de transbordamento
 em 390 px. Também confere a classe de abertura, altura recolhida, `inert` e movimento reduzido.
