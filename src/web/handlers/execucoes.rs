@@ -9,7 +9,19 @@ use axum::{
     http::{HeaderMap, StatusCode},
     response::{IntoResponse, Response},
 };
+use axum::{
+    Router,
+    routing::{get, post},
+};
 use maud::{Markup, Render};
+
+/// Rotas HTTP deste recurso para composição no roteador principal.
+pub fn rotas() -> Router<EstadoApp> {
+    Router::new()
+        .route("/execucoes/{id}", get(resultado))
+        .route("/execucoes/{id}/duplicar", get(duplicar))
+        .route("/execucoes/{id}/reproduzir", post(reproduzir))
+}
 
 pub async fn resultado(
     State(e): State<EstadoApp>,

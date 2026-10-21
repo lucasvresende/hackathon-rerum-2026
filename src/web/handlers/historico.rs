@@ -1,8 +1,14 @@
 use crate::aplicacao::historico::{self, FiltroHistorico};
 use crate::web::{erro::ErroWeb, estado::EstadoApp};
 use axum::extract::{Query, State};
+use axum::{Router, routing::get};
 use maud::{Markup, Render};
 use std::collections::BTreeMap;
+
+/// Rotas HTTP deste recurso para composição no roteador principal.
+pub fn rotas() -> Router<EstadoApp> {
+    Router::new().route("/historico", get(historico))
+}
 
 pub async fn historico(
     State(e): State<EstadoApp>,

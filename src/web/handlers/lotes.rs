@@ -10,7 +10,16 @@ use axum::{
     http::{HeaderMap, StatusCode},
     response::{IntoResponse, Response},
 };
+use axum::{Router, routing::get};
 use maud::{Markup, Render};
+
+/// Rotas HTTP deste recurso para composição no roteador principal.
+pub fn rotas() -> Router<EstadoApp> {
+    Router::new()
+        .route("/lotes", get(listar).post(salvar))
+        .route("/lotes/novo", get(novo))
+        .route("/lotes/{id}/editar", get(editar))
+}
 
 pub async fn listar(State(e): State<EstadoApp>) -> Result<Markup, ErroWeb> {
     let lotes = cadastros::lotes(&e.pool).await?;

@@ -4,26 +4,25 @@ use axum::{Router, extract::DefaultBodyLimit};
 use tower_http::{services::ServeDir, trace::TraceLayer};
 // Compatibilidade com consumidores anteriores à separação dos adaptadores HTTP.
 pub use super::erro::ErroWeb;
+use super::handlers::{
+    ajuda, alimentos, cadastros, cenarios, comparacao, conhecimento, execucoes, historico, inicio,
+    lotes, modelos_preenchimento,
+};
 pub use super::resposta::redirecionar;
 pub use super::seguranca::autorizado;
-mod alimentos;
-mod cadastros;
-mod cenarios;
-mod conhecimento;
-mod execucoes;
-mod historico;
-mod inicio;
-mod lotes;
 
 pub fn app(estado: EstadoApp) -> Router {
     let app = Router::new()
         .merge(inicio::rotas())
+        .merge(ajuda::rotas())
         .merge(lotes::rotas())
         .merge(alimentos::rotas())
         .merge(cadastros::rotas())
+        .merge(modelos_preenchimento::rotas())
         .merge(cenarios::rotas())
         .merge(execucoes::rotas())
         .merge(historico::rotas())
+        .merge(comparacao::rotas())
         .merge(conhecimento::rotas())
         .nest_service("/static", ServeDir::new("static"))
         .fallback(super::handlers::inicio::nao_encontrado)

@@ -1,4 +1,4 @@
-//! Adaptadores HTTP agrupados pelos recursos das rotas.
+//! Handlers e roteadores HTTP reunidos por recurso.
 pub mod ajuda;
 pub mod alimentos;
 pub mod cadastros;

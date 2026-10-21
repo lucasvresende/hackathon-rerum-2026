@@ -174,8 +174,9 @@ Os comandos completos de testes estão em
 - `src/aplicacao/`: orquestração, processo de cálculo e exemplos sintéticos; serviços de
   cadastros, modelos de preenchimento, cenários, histórico e comparação econômica.
 - `src/persistencia/`: banco, cargas, revisões, histórico e recuperação.
-- `src/web/rotas/`: grupos de rotas por recurso, compostos com `Router::merge`.
-- `src/web/handlers/`: adaptação HTTP por recurso; `entradas/` decodifica formulários.
+- `src/web/rotas/`: roteador principal, composição e middlewares compartilhados.
+- `src/web/handlers/`: cada recurso reúne handlers e sua função pública `rotas()`,
+  composta no roteador principal com `Router::merge`; `entradas/` decodifica formulários.
   `estado.rs`, `erro.rs`, `resposta.rs` e `seguranca.rs` concentram estado, falhas,
   redirecionamentos htmx/HTTP e proteção de escrita. `apresentacao.rs` monta respostas
   de formulário completas ou parciais para os handlers que compartilham esses fluxos.
@@ -244,7 +245,9 @@ Links como `/ajuda#resultados` abrem automaticamente a carta relacionada ao pare
 
 O monólito separa domínio, aplicação, persistência e web. Tipos carregam a base das quantidades,
 conhecimento dos dados e versões. Componentes Maud implementam `Render`; a decisão fica no servidor.
-A requisição percorre `rotas → handlers → entradas/aplicacao/persistencia → templates`.
+O roteador principal compõe os roteadores exportados pelos módulos em `handlers/`.
+Cada módulo registra suas URLs junto aos handlers correspondentes, incluindo ajuda, comparação
+e modelos de preenchimento. A requisição segue para `entradas/aplicacao/persistencia → templates`.
 Handlers decodificam HTTP, validam a proteção de escrita e escolhem a resposta. `entradas/`
 converte o rascunho em dados tipados e preserva valores para correção de erros. A aplicação
 associa procedência aos cadastros, prepara substituições de modelos, escolhe exemplos explícitos,

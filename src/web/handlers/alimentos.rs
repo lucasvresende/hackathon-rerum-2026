@@ -9,8 +9,17 @@ use axum::{
     http::{HeaderMap, StatusCode},
     response::{IntoResponse, Response},
 };
+use axum::{Router, routing::get};
 use maud::{Markup, Render};
 use std::collections::BTreeMap;
+
+/// Rotas HTTP deste recurso para composição no roteador principal.
+pub fn rotas() -> Router<EstadoApp> {
+    Router::new()
+        .route("/alimentos", get(listar).post(salvar))
+        .route("/alimentos/novo", get(novo))
+        .route("/alimentos/{id}/revisar", get(revisar))
+}
 
 pub async fn listar(
     State(e): State<EstadoApp>,

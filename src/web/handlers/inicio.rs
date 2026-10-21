@@ -2,7 +2,15 @@ use crate::persistencia::{cadastros, conhecimento as base, historico};
 use crate::web::{erro::ErroWeb, estado::EstadoApp};
 use axum::extract::State;
 use axum::http::StatusCode;
+use axum::{Router, routing::get};
 use maud::{Markup, Render};
+
+/// Rotas HTTP deste recurso para composição no roteador principal.
+pub fn rotas() -> Router<EstadoApp> {
+    Router::new()
+        .route("/", get(inicio))
+        .route("/saude", get(saude))
+}
 
 pub async fn inicio(State(e): State<EstadoApp>) -> Result<Markup, ErroWeb> {
     let lotes = cadastros::lotes(&e.pool).await?;
@@ -26,4 +34,8 @@ pub async fn nao_encontrado() -> (StatusCode, Markup) {
         )
         .render(),
     )
+}
+
+async fn saude() -> &'static str {
+    "FeedYourCow: disponível"
 }

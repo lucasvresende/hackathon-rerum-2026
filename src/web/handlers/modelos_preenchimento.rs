@@ -4,6 +4,7 @@ use axum::{
     http::{HeaderMap, StatusCode},
     response::{IntoResponse, Response},
 };
+use axum::{Router, routing::post};
 
 use crate::aplicacao::modelos_preenchimento::{self, AcaoModelo};
 use crate::dominio::templates::TipoCadastro;
@@ -14,6 +15,11 @@ use crate::web::{
     estado::EstadoApp,
     seguranca::autorizado,
 };
+
+/// Rotas HTTP deste recurso para composição no roteador principal.
+pub fn rotas() -> Router<EstadoApp> {
+    Router::new().route("/cadastros/{tipo}/modelo", post(carregar))
+}
 
 /// Traduz a ação HTTP e aplica ao rascunho as substituições preparadas pela aplicação.
 pub async fn carregar(
