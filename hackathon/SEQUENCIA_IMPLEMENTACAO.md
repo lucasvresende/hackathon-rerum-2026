@@ -15,4 +15,5 @@
 12. Testes automatizados, proteção de escrita, backup/restauração e ensaio de desempenho
 13. Configuração do GitHub Actions e documentação de operação e cobertura
 14. Iterações com novas implementações refinando os requisitos
-15. Requisitos de interface objetiva para uso diário, sem slogans ou apresentação comercial
+15. Requisitos de interface objetiva para uso diário, sem slogans ou apresentação
+    comercial http://127.0.0.1:3000/historico
