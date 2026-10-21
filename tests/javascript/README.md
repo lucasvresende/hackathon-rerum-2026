@@ -7,8 +7,8 @@ Os testes JavaScript de integração ficam em `tests/javascript/e2e/`:
 - `exemplos.mjs`: primeiro cálculo preenchido, remoção e restauração explícita de exemplos,
   identificação sintética, tela móvel e execução com e sem JavaScript nos três navegadores.
 - `templates.mjs`: preenchimento com exemplos, cadastros e componentes dos formulários.
-  Confere campos antes ocultados pelo modo simplificado em lotes, alimentos e cenários,
-  inclusive após carregar modelos e validar campos; não há alternância de visualização.
+  Confere campos de lotes e alimentos e as configurações avançadas de cenários,
+  inclusive após carregar modelos e validar campos.
 - `dicas.mjs`: dicas no cenário, catálogo/cadastro e parecer; IDs únicos, rótulos, ausência
   de envio ao abrir dicas, reativação após htmx, tela móvel, impressão e uso sem JavaScript.
 - `inicio.mjs`: três estatísticas e cinco dicas da Visão geral; hover, teclado, Escape,
@@ -105,3 +105,16 @@ A suíte `exemplos` verifica primeiro cálculo com cinco ingredientes preenchido
 sintética, remoção e restauração explícita, filtro por categoria, layout móvel e uso sem JavaScript.
 As capturas `*-exemplos-*` e `*-exemplo-*` complementam a inspeção dos cadastros e do parecer.
 Os três navegadores passaram na suíte completa de 21/10/2026, incluindo a verificação de exemplos.
+
+## Criação simplificada de dietas
+
+A suíte `cenario-simplificado` cobre defaults, ausência de escolha implícita, seleção progressiva,
+remoção e nova seleção com preservação do rascunho, preenchimento incompleto e alternativa
+sem JavaScript em Chromium, Firefox e WebKit. Os testes existentes abrem as configurações
+avançadas quando precisam alterar suas premissas. O dropdown mantém a ordem do catálogo;
+a seleção não move opções enquanto o usuário navega. O estado dos expansíveis é enviado como
+texto `true`/`false`, preservando a abertura após atualizar cadastros ou ingredientes.
+
+```sh
+FEEDYOURCOW_SUITES=cenario-simplificado npm run test:e2e
+```

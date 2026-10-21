@@ -1,3 +1,4 @@
+import { abrirConfiguracoesCenario } from './apoio.mjs';
 import assert from 'node:assert/strict';
 import { executarCaso, observarDocumento, esperarPost, conferirPost, conferirFragmento,
   preencherLote, semEnvio } from './apoio.mjs';
@@ -6,6 +7,7 @@ export async function testarGuias(browser, url, artefatos, navegador) {
   await executarCaso(browser, url, artefatos, navegador, 'atualizacao-automatica',
     async (page, contexto) => {
       await page.goto(`${url}/cenarios/novo?dieta=B`);
+    await abrirConfiguracoesCenario(page);
       await page.locator('#nome').fill('Rascunho entre guias');
       await page.locator('#sobras').fill('7');
       const quantidade = page.locator('input[name^="q-"]').first();

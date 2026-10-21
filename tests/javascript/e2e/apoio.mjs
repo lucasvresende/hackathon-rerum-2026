@@ -118,3 +118,11 @@ export async function preencherLote(page, nome, peso = '400') {
   for (const [id, valor] of Object.entries({ nome, peso, animais: '12', producao: '10',
     gordura: '4', dias_lactacao: '150' })) await page.locator(`#${id}`).fill(valor);
 }
+
+export async function abrirConfiguracoesCenario(page) {
+  const botao = page.locator('#configuracoes-avancadas > .expand-heading .expand-toggle');
+  if (await botao.count() && await botao.getAttribute('aria-expanded') === 'false') {
+    await botao.click();
+  }
+  await page.locator('#configuracoes-avancadas-conteudo').waitFor({ state: 'visible' });
+}

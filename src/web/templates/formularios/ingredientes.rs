@@ -17,19 +17,19 @@ impl Render for Ingredientes<'_, '_> {
                 "Selecione uma composição por alimento. Formulação: até 10; verificação: até 20. "
                 "Preços em R$/kg MN; limites em kg MS/animal/dia."
             }
-            details #selecao-ingredientes open[self.0.valor("seletor_aberto") == "on"] {
-                input type="hidden" name="seletor_aberto" value="on";
+            details #selecao-ingredientes open[self.0.valor("seletor_aberto") == "on"]
+            hx-post="/cenarios/atualizar" hx-trigger="change target:'input[type=checkbox]'"
+            hx-target="#formulario" hx-swap="outerHTML" hx-include="#formulario"
+            hx-validate="false" {
                 summary { "Selecionar ingredientes" }
+                input type="hidden" name="seletor_aberto" value="on";
                 p.muted { "Marque os ingredientes para editar suas condições abaixo." }
                 @for a in self.0.alimentos {
                     @let id = &a.composicao_id;
                     label.check {
                         input type="checkbox" name=(format!("usar-{id}"))
                         id=(format!("usar-{id}"))
-                        checked[self.0.valor(&format!("usar-{id}")) == "on"]
-                        hx-post="/cenarios/atualizar" hx-trigger="change"
-                        hx-target="#formulario" hx-swap="outerHTML" hx-include="#formulario"
-                        hx-validate="false";
+                        checked[self.0.valor(&format!("usar-{id}")) == "on"];
                         (&a.nome) " · " (&a.natureza)
                     }
                 }

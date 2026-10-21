@@ -1,3 +1,4 @@
+import { abrirConfiguracoesCenario } from './apoio.mjs';
 import assert from 'node:assert/strict';
 import { executarCaso, observarDocumento, esperarPost, conferirPost } from './apoio.mjs';
 
@@ -7,6 +8,7 @@ export async function testarFalhas(browser, url, artefatos, navegador) {
     const nome = `htmx-falha-${falha.status || 'rede'}`;
     await executarCaso(browser, url, artefatos, navegador, nome, async page => {
       await page.goto(`${url}/cenarios/novo?dieta=B`);
+    await abrirConfiguracoesCenario(page);
       await page.locator('#nome').fill(`Preservar ${nome}`);
       await page.locator('#sobras').fill('7');
       const quantidade = page.locator('input[name^="q-"]').first();

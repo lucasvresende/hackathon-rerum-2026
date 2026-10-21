@@ -24,8 +24,10 @@ export async function testarCondicionais(browser, url, artefatos, navegador) {
   await executarCaso(browser, url, artefatos, navegador, 'condicional-ingredientes', async page => {
     await page.goto(`${url}/cenarios/novo?dieta=B`);
     const ingrediente = page.locator('.ingredient').first();
-    const usar = ingrediente.locator('input[name^="usar-"]');
-    await usar.check();
+    const id = await ingrediente.getAttribute('data-composicao');
+    const usar = page.locator(`#usar-${id}`);
+    await page.locator('#selecao-ingredientes summary').click();
+    await ingrediente.locator('.expand-toggle').click();
     const unidade = ingrediente.locator('select[name^="unidade-preco-"]');
     const embalagem = ingrediente.locator('input[name^="embalagem-"]');
     const quantidade = ingrediente.locator('input[name^="q-"]');
@@ -46,14 +48,9 @@ export async function testarCondicionais(browser, url, artefatos, navegador) {
     await ms.fill('0');
     assert.equal(await ms.evaluate(e => e.validity.customError), true);
     await usar.uncheck();
-    assert.equal(await ms.evaluate(e => e.validity.customError), false);
-    for (const prefixo of ['q', 'ms', 'preco', 'perda', 'origem', 'embalagem']) {
-      assert.equal(await ingrediente.locator(`input[name^="${prefixo}-"]`)
-        .evaluate(e => e.required), false, prefixo);
-    }
-    await usar.check();
-    await ingrediente.locator('.expand-content').waitFor({ state: 'visible' });
-    assert.equal(await ms.evaluate(e => e.required), true);
+    await ingrediente.waitFor({ state: 'detached' });
+    assert.equal(await page.locator(`[name="ms-${id}"]`).getAttribute('type'), 'hidden');
+
   });
 
   await executarCaso(browser, url, artefatos, navegador, 'condicional-laudos', async page => {

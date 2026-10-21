@@ -23,7 +23,7 @@ impl Expansivel<'_> {
             hx-live:class="{ 'expand-open': data.aberta, 'expand-ready': data.pronta }"
             hx-on:load="await nextFrame(); await nextFrame(); data.pronta = true" {
                 input type="hidden" name=(format!("expansao-{}", self.id))
-                    value=(self.aberto) hx-live:value="data.aberta";
+                    value=(self.aberto) hx-live:value="data.aberta ? 'true' : 'false'";
                 div class=(if dica.is_some() { "expand-heading concept-label" }
                     else { "expand-heading" }) {
                     button.expand-toggle type="button" hidden hx-live:hidden="false"

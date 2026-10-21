@@ -1,3 +1,5 @@
+import { abrirConfiguracoesCenario } from './apoio.mjs';
+import { testarCenarioSimplificado } from './cenario-simplificado.mjs';
 import { testarExemplos } from './exemplos.mjs';
 import { testarDicas } from './dicas.mjs';
 import { testarInicio } from './inicio.mjs';
@@ -15,7 +17,7 @@ import { spawn, spawnSync } from 'node:child_process';
 import { chromium, firefox, webkit } from 'playwright';
 
 const nomesSuites = ['htmx', 'condicionais', 'falhas', 'guias', 'inicio', 'dicas',
-  'fluxos', 'exemplos'];
+  'fluxos', 'exemplos', 'cenario-simplificado'];
 const suites = new Set(process.env.FEEDYOURCOW_SUITES?.split(',') || nomesSuites);
 for (const suite of suites) assert.ok(nomesSuites.includes(suite), `Suíte desconhecida: ${suite}`);
 
@@ -82,6 +84,9 @@ try {
         await nova.waitForLoadState();
         page = nova;
       }
+      if (suites.has('cenario-simplificado')) {
+        await testarCenarioSimplificado(browser, url, artefatos, nome);
+      }
       if (suites.has('dicas')) await testarDicas(browser, url, artefatos, nome);
       if (suites.has('inicio')) await testarInicio(browser, url, artefatos, nome);
       if (suites.has('htmx')) await testarHtmx(browser, url, artefatos, nome);
@@ -139,6 +144,7 @@ try {
       await page.getByRole('button', { name: 'Salvar revisão' }).click();
       await page.waitForURL(/cadastros\/salvo/);
       await page.goto(`${url}/cenarios/novo?dieta=B`);
+    await abrirConfiguracoesCenario(page);
       const lote = await page.locator('#lote option')
         .filter({ hasText: `Lote ${nome}` }).getAttribute('value');
       await page.locator('#lote').selectOption(lote);
@@ -159,14 +165,17 @@ try {
       assert.match(await page.locator('main').innerText(), /R\$ 11,79/);
       await page.screenshot({ path: join(artefatos, `${nome}-resultado.png`), fullPage: true });
       await novaGuia(page.getByRole('link', { name: 'Duplicar e simular' }));
+      await abrirConfiguracoesCenario(page);
       await page.locator('#nome').fill(`Simulação ${nome}`);
       await page.locator('#sobras').fill('10');
       await page.getByRole('button', { name: 'Calcular e salvar cenário' }).click();
       await page.waitForURL(/\/execucoes\/[a-f0-9-]+$/);
       assert.match(await page.locator('main').innerText(), /R\$ 13,10/);
       await novaGuia(page.getByRole('link', { name: 'Duplicar e simular' }));
+      await abrirConfiguracoesCenario(page);
       await page.locator('#nome').fill(`Preço e MS ${nome}`);
-      const ms = page.locator('input[name^="ms-"]').first();
+      await page.locator('.ingredient .expand-toggle').first().click();
+      const ms = page.locator('.ingredient input[name^="ms-"]').first();
       const preco = page.locator('input[name^="preco-"]').first();
       await ms.fill(String(Number(await ms.inputValue()) / 2));
       await preco.fill(String(Number(await preco.inputValue()) * 1.1));

@@ -1,3 +1,4 @@
+import { abrirConfiguracoesCenario } from './apoio.mjs';
 import assert from 'node:assert/strict';
 import { join } from 'node:path';
 
@@ -63,6 +64,7 @@ export async function testarTemplates(page, url, artefatos, navegador) {
     await cadastro.waitForURL(/cadastros\/salvo/);
   } finally { await cadastro.close(); }
   await page.goto(`${url}/cenarios/novo?dieta=B`);
+    await abrirConfiguracoesCenario(page);
   await conferirCamposVisiveis(page, ['preco_leite']);
   await page.locator('#nome').fill('Rascunho preservado');
   const valor = await page.locator('input[name^="q-"]').first().inputValue();
@@ -87,6 +89,7 @@ export async function testarTemplates(page, url, artefatos, navegador) {
   await page.emulateMedia({ media: 'screen', reducedMotion: 'no-preference' });
   const secao = page.locator('.ingredient .expansivel').first();
   const botao = secao.locator('.expand-toggle');
+  await botao.click();
   await page.waitForFunction(() =>
     document.querySelector('.ingredient .expansivel').classList.contains('expand-ready'));
   assert.notEqual(await secao.locator('.expand-content').evaluate(

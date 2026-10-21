@@ -1,3 +1,4 @@
+import { abrirConfiguracoesCenario } from './apoio.mjs';
 import assert from 'node:assert/strict';
 import { executarCaso, observarDocumento, esperarPost, conferirPost, conferirFragmento,
   semEnvio, preencherLote } from './apoio.mjs';
@@ -44,6 +45,7 @@ export async function testarHtmx(browser, url, artefatos, navegador) {
 
   await executarCaso(browser, url, artefatos, navegador, 'htmx-erros-e-foco', async page => {
     await page.goto(`${url}/cenarios/novo?dieta=B`);
+    await abrirConfiguracoesCenario(page);
     await page.locator('#nome').fill('Rascunho com erro no servidor');
     const lote = await page.locator('#lote').inputValue();
     const csrf = await page.locator('[name=csrf]').inputValue();
@@ -63,14 +65,14 @@ export async function testarHtmx(browser, url, artefatos, navegador) {
     assert.equal(await page.locator('#nome').inputValue(), 'Rascunho com erro no servidor');
     assert.equal(await page.locator('input[name^="q-"]').first().inputValue(), quantidade);
     await page.locator('#lote').selectOption(lote);
-    const ingrediente = page.locator('.ingredient').filter({ has: page.locator(
-      'input[name^="usar-"]:checked') }).first();
+    const ingrediente = page.locator('.ingredient').first();
     const q = ingrediente.locator('input[name^="q-"]');
     await page.locator('#modo').selectOption('formular');
     assert.equal(await q.evaluate(e => e.required), false);
     await page.locator('#modo').selectOption('verificar');
     assert.equal(await q.evaluate(e => e.required), true);
     const botao = ingrediente.locator('.expand-toggle');
+    await botao.click();
     await botao.click();
     await ingrediente.locator('.expand-content').waitFor({ state: 'hidden' });
     assert.equal(await botao.getAttribute('aria-expanded'), 'false');

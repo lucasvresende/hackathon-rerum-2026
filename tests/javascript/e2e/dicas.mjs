@@ -1,3 +1,4 @@
+import { abrirConfiguracoesCenario } from './apoio.mjs';
 import assert from 'node:assert/strict';
 import { join } from 'node:path';
 import { executarCaso, esperarPost } from './apoio.mjs';
@@ -30,6 +31,8 @@ async function abrirDica(page, id) {
 export async function testarDicas(browser, url, artefatos, nome) {
   await executarCaso(browser, url, artefatos, nome, 'dicas-formularios', async page => {
     await page.goto(`${url}/cenarios/novo?dieta=B`);
+    await abrirConfiguracoesCenario(page);
+    await page.locator('.ingredient .expand-toggle').first().click();
     let envios = 0;
     page.on('request', r => { if (r.method() === 'POST') envios++; });
     await conferirIds(page);
