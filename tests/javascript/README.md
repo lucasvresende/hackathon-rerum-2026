@@ -5,6 +5,8 @@ Os testes JavaScript de integração ficam em `tests/javascript/e2e/`:
 
 - `navegadores.mjs`: prepara banco e servidor temporários e executa os três navegadores.
 - `templates.mjs`: referências editáveis, cadastros e componentes dos formulários.
+  Confere campos antes ocultados pelo modo simplificado em lotes, alimentos e cenários,
+  inclusive após carregar modelos e validar campos; não há alternância de visualização.
 - `dicas.mjs`: dicas no cenário, catálogo/cadastro e parecer; IDs únicos, rótulos, ausência
   de envio ao abrir dicas, reativação após htmx, tela móvel, impressão e uso sem JavaScript.
 - `inicio.mjs`: três estatísticas e cinco dicas da Visão geral; hover, teclado, Escape,
@@ -90,3 +92,9 @@ As capturas de erro de campo em desktop e formulário móvel foram inspecionadas
 Os 46 testes Rust, build, clippy, rustfmt, limite de linhas e 28 consultas SQLx também passaram;
 o ensaio de desempenho atingiu as metas. O YAML do CI foi parseado e os jobs conferidos,
 mas a execução remota depende da publicação dos commits.
+
+Após a retirada do preenchimento simplificado, a suíte completa passou novamente em
+Chromium, Firefox e WebKit em 21/10/2026, incluindo visibilidade dos campos, templates,
+erros, trocas por htmx e uso sem JavaScript. As capturas móvel de alimento e desktop de lote
+com erro foram inspecionadas. Build, 53 testes Rust, clippy, rustfmt, qualidade textual e
+verificação das 28 consultas SQLx também passaram.

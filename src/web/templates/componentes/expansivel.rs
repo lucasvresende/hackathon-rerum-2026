@@ -49,21 +49,3 @@ impl Render for Expansivel<'_> {
         self.renderizar(None)
     }
 }
-
-pub struct Visualizacao;
-impl Render for Visualizacao {
-    fn render(&self) -> Markup {
-        html! {
-            div.actions.no-print {
-                button.button.secondary type="button" hidden hx-live:hidden="false"
-                aria-pressed="false" hx-live:aria-pressed="!data.simples"
-                hx-on:click="data.simples = !data.simples"
-                hx-live:text="data.simples ? 'Mostrar campos complementares' :
-                        'Usar preenchimento simplificado'" { "Mostrar campos
-                        complementares" }
-                input type="hidden" name="visualizacao" value="completo"
-                hx-live:value="data.simples ? 'simples' : 'completo'";
-            }
-        }
-    }
-}

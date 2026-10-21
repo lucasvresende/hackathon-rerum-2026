@@ -1,6 +1,5 @@
 //! Estrutura comum dos cadastros; campos específicos ficam em seus módulos de formulário.
 use super::super::componentes::expansivel::Expansivel;
-use super::super::componentes::expansivel::Visualizacao;
 use super::super::componentes::modelos_preenchimento::SeletorModelo;
 use std::collections::BTreeMap;
 
@@ -40,15 +39,13 @@ impl Render for Cadastro<'_> {
         html! {
             form #formulario.card method="post" action=(rota)
             hx-post=(rota) hx-target="#formulario" hx-swap="outerHTML"
-            data-simples=(self.valor("visualizacao") != "completo")
-            hx-live:class="{ 'simplificado': data.simples }" {
+            {
                 input type="hidden" name="csrf" value=(self.token);
                 input type="hidden" name="id" value=(self.valor("id"));
                 input type="hidden" name="anterior"
                 value=(self.valor("anterior"));
                 (ResumoErros(self.erros))
                 p.muted { "Campos obrigatórios: *" }
-                (Visualizacao)
                 (SeletorModelo {
                     tipo: self.tipo.nome(), modelos: self.modelos, campos: self.campos,
                 })
@@ -117,9 +114,7 @@ impl Render for Cadastro<'_> {
                     }
                     @for (nome, rotulo, dica, obrigatorio)
                         in super::campos_cadastro::numericos(lote) {
-                        div class=[(lote && ["idade_meses", "ordem_parto",
-                        "dispersao_peso",
-                        "condicao_corporal"].contains(&nome)).then_some("complementar")] {
+                        div {
                             (Campo { erro: self.erro(nome), nome, rotulo, valor:
                                 self.valor(nome), tipo: "number",
                                 dica, obrigatorio })
@@ -179,8 +174,7 @@ impl Render for Cadastro<'_> {
                         ("evidencia", "Evidência de autorização",
                         "Documento e condições de uso"),
                         ] {
-                            div class=[(["fornecedor", "lote_fisico", "data"]
-                            .contains(&nome)).then_some("complementar")] {
+                            div {
                                 (Campo { erro: self.erro(nome), nome, rotulo, valor:
                                     self.valor(nome), tipo: "text", dica,
                                     obrigatorio: ["fonte_id", "metodo",

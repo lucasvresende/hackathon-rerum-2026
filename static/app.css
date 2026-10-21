@@ -210,7 +210,6 @@ input:user-invalid, select:user-invalid { border-color: var(--erro); }
     transition-delay: 0s; }
 .expand-inner { min-height: 0; overflow: hidden; }
 .expand-body { padding-top: 14px; }
-.simplificado .complementar { display: none; }
 .templates { border-bottom: 1px solid var(--borda); padding-bottom: 22px; margin-bottom: 22px; }
 .templates button { margin-top: 12px; }
 .template-preview { margin-top: 20px; }
@@ -222,7 +221,6 @@ input:user-invalid, select:user-invalid { border-color: var(--erro); }
 @media print {
     .expansivel > .expand-content { grid-template-rows: 1fr; opacity: 1; visibility: visible;
         transition: none; }
-    .simplificado .complementar { display: block; }
 }
 
 .brand { display: flex; align-items: center; gap: 8px; font-size: 20px; }

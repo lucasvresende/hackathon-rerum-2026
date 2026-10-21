@@ -59,6 +59,8 @@ O servidor aceita apenas loopback; o MVP não inclui autenticação ou acesso co
 5. Consulte balanços, restrições, fornecimento, custo, fontes e explicações do resultado.
 6. Use o histórico para reproduzir, duplicar, simular, comparar e imprimir cenários.
 
+Os formulários apresentam todos os campos, sem modo de preenchimento simplificado.
+As seções expansíveis continuam disponíveis para organizar grupos de informações.
 Os modelos de preenchimento permitem consultar uma prévia e carregar valores para edição.
 Lacunas e condições desconhecidas precisam ser revisadas; aplicar um modelo não confirma
 autorização de ingredientes nem adequação ao perfil. A procedência acompanha o cadastro salvo.

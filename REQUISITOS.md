@@ -344,9 +344,9 @@ Modelos serão carregados por SQL versionado e consultados no SQLite, sem intern
 Valores ausentes permanecerão desconhecidos; condições fisiológicas e de segurança não serão
 pré-confirmadas. Médias publicadas não serão apresentadas como laudos ou medições da fazenda.
 
-O modo simplificado deverá usar o mesmo contrato do completo, preservar dados e revelar campos
-inválidos ou necessários. Asteriscos, mensagens acima dos controles e validação do navegador
-complementarão a validação obrigatória no servidor. Expansões respeitarão teclado, foco,
+Os formulários deverão apresentar todos os campos, sem alternância de modo de preenchimento.
+Asteriscos, mensagens acima dos controles e validação do navegador complementarão a validação
+obrigatória no servidor. Expansões respeitarão teclado, foco,
 movimento reduzido, impressão e alternativa sem JavaScript. Recursos visuais serão locais.
 
 **Aceite:** carregar silagem, editar PB e salvar deverá preservar o original e registrar a
@@ -1017,7 +1017,7 @@ com as tolerâncias de RN-24. Na interface, os totais monetários serão apresen
 
 - **CT-31 — Templates:** conferir fontes e conversões, carga atômica/idempotente, modelos
   imutáveis, prévia, substituição confirmada, edição por campo e preservação após backup.
-  Validar criação/revisão, modo simplificado, atualização entre guias e ausência de JavaScript
+  Validar criação/revisão, visibilidade dos campos, atualização entre guias e ausência de JavaScript
   em Chromium, Firefox e WebKit. Cobertura: RF-19; RN-02/03/23; RNF-02/03/10/12.
 
 - **CT-32 — Contratos JavaScript e htmx:** validar método, URL, cabeçalhos, CSRF e campos;

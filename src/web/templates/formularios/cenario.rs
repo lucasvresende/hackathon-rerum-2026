@@ -1,5 +1,4 @@
 use super::super::componentes::expansivel::Expansivel;
-use super::super::componentes::expansivel::Visualizacao;
 use std::collections::BTreeMap;
 
 use super::super::componentes::campo::{MensagemErro, Rotulo};
@@ -37,8 +36,7 @@ impl Render for FormularioCenario<'_> {
             form #formulario method="post" action="/cenarios"
             hx-post="/cenarios"
             hx-target="#formulario" hx-swap="outerHTML"
-            data-simples=(self.valor("visualizacao") != "completo")
-            hx-live:class="{ 'simplificado': data.simples }" {
+            {
                 input type="hidden" name="csrf" value=(self.token);
                 input type="hidden" name="original_id"
                 value=(self.valor("original_id"));
@@ -54,7 +52,6 @@ impl Render for FormularioCenario<'_> {
                     a href="/cenarios/novo?dieta=B" { "Demonstração B" }
                 }
                 p.muted { "Campos obrigatórios: *" }
-                (Visualizacao)
                 section.card {
                     h2 { "1. Dados do cenário" }
                     div.form-grid {
@@ -122,7 +119,7 @@ impl Render for FormularioCenario<'_> {
                         "Opcional; permite margem sobre alimentação",
                         false),
                         ] {
-                            div class=[(nome == "preco_leite").then_some("complementar")] {
+                            div {
                                 (Campo { erro: self.erro(nome), nome, rotulo,
                                     valor: self.valor(nome), tipo, dica, obrigatorio })
                             }

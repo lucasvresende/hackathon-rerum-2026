@@ -1,5 +1,9 @@
 # Plano de implementação das melhorias de interface
 
+> Atualização de 21/10/2026: o modo simplificado foi retirado. Os formulários exibem todos
+> os campos; templates editáveis e seções expansíveis permanecem. As menções abaixo
+> registram o planejamento anterior e não definem o comportamento vigente.
+
 Data: 20/10/2026. Estado: substituído pelo [plano revisado](PLANO_MELHORIAS_V2.md).
 
 Base: [sugestões](NOTAS_MELHORIAS.md), [requisitos](../REQUISITOS.md) e código atual.

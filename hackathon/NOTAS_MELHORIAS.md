@@ -1,3 +1,7 @@
+> Atualização de 21/10/2026: o modo simplificado foi retirado. Os formulários exibem todos
+> os campos; templates editáveis e seções expansíveis permanecem. As menções abaixo
+> registram o planejamento anterior e não definem o comportamento vigente.
+
 - No cadastro de um novo lote ou edição de lote existente, sempre abrir em uma nova guia no browser
   sem outras opções, ou um pop up exclusivamente com o cadastro de lote e sem outras opções.
 - No cadastro de um novo lote, dar exemplos de valores padrão razoáveis.

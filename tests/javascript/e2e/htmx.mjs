@@ -31,7 +31,6 @@ export async function testarHtmx(browser, url, artefatos, navegador) {
     await conferirFragmento(page, 2);
     assert.equal(await page.locator('#ms').inputValue(), '32.5');
     assert.equal(await page.locator('#ndt').inputValue(), '');
-    await page.getByRole('button', { name: 'Mostrar campos complementares' }).click();
     assert.equal(await page.locator('#fornecedor').isVisible(), true);
     assert.equal(await page.locator('label').evaluateAll(labels =>
       labels.every(l => l.querySelectorAll('.required').length <= 1)), true);
@@ -60,6 +59,7 @@ export async function testarHtmx(browser, url, artefatos, navegador) {
     await conferirPost(resposta, '/cenarios', csrf, { lote: 'lote-obsoleto' });
     await conferirFragmento(page, 1);
     await page.waitForFunction(() => document.activeElement?.id === 'erros-formulario');
+    assert.equal(await page.locator('#preco_leite').isVisible(), true);
     assert.equal(await page.locator('#nome').inputValue(), 'Rascunho com erro no servidor');
     assert.equal(await page.locator('input[name^="q-"]').first().inputValue(), quantidade);
     await page.locator('#lote').selectOption(lote);

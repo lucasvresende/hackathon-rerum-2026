@@ -1,5 +1,9 @@
 # Plano revisado de melhorias e sugestões com fontes
 
+> Atualização de 21/10/2026: o modo simplificado foi retirado. Os formulários exibem todos
+> os campos; templates editáveis e seções expansíveis permanecem. As menções abaixo
+> registram o planejamento anterior e não definem o comportamento vigente.
+
 Data: 20/10/2026. Estado: implementado e validado localmente.
 Este documento substitui o [plano anterior](PLANO_MELHORIAS.md) para a retomada do trabalho.
 

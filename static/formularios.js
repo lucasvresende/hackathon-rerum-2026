@@ -1,8 +1,6 @@
 'use strict';
 // A API nativa bloqueia envios; o servidor repete a validação antes de persistir.
 function abrirSecoes(controle) {
-  const form = controle.closest('form');
-  if (form?.classList.contains('simplificado')) htmx.live.q(form).data.simples = false;
   for (let secao = controle.closest('.expansivel'); secao;
     secao = secao.parentElement.closest('.expansivel')) {
     htmx.live.q(secao).data.aberta = true;
