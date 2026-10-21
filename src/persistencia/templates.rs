@@ -1,3 +1,4 @@
+//! Leitura e validação persistente dos modelos de preenchimento.
 use sqlx::SqliteConnection;
 
 use crate::Resultado;

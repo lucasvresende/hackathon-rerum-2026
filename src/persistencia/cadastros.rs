@@ -1,3 +1,4 @@
+//! Leitura e gravação transacional dos cadastros e suas revisões.
 use sqlx::SqlitePool;
 use uuid::Uuid;
 

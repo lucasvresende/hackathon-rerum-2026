@@ -1,3 +1,4 @@
+//! Formulário de cadastro e revisão de alimentos.
 use super::DadosCadastro;
 use crate::dominio::templates::TipoCadastro;
 use maud::{Markup, Render};

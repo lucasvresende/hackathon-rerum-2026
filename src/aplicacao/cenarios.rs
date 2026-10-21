@@ -1,4 +1,4 @@
-//! Preparação e execução de cenários, sem decodificação de formulários.
+//! Preparação, duplicação e execução dos cenários informados pelo operador.
 use super::{demonstracao, execucao};
 use crate::persistencia::{cadastros, conhecimento, historico};
 use crate::{

@@ -1,3 +1,4 @@
+//! Validação de consistência dos lotes, alimentos e cenários.
 use serde::{Deserialize, Serialize};
 
 use super::unidades::preco_f64;

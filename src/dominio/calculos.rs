@@ -1,3 +1,4 @@
+//! Fórmulas do perfil para requisitos, consumo, composição, custo e totais da dieta.
 use super::unidades::{MassaMn, MassaMs, preco_f64};
 use super::{BaseQuantidade, Cenario, Conhecimento, Item};
 
@@ -42,6 +43,7 @@ pub fn interpolar(pontos: &[(f64, f64)], eixo: f64) -> Option<f64> {
     })
 }
 
+/// Soma manutenção e produção usando interpolação ou extrapolação dos coeficientes carregados.
 pub fn requisitos(base: &Conhecimento, peso: f64, leite: f64, gordura: f64) -> Option<[f64; 4]> {
     let mut valores = [0.0; 4];
     for (i, valor) in valores.iter_mut().enumerate() {
@@ -61,6 +63,7 @@ pub fn requisitos(base: &Conhecimento, peso: f64, leite: f64, gordura: f64) -> O
     Some(valores)
 }
 
+/// Interpola primeiro o peso em cada faixa de LCG4 e depois interpola a LCG4.
 pub fn consumo_referencia(base: &Conhecimento, peso: f64, lcg: f64) -> Option<f64> {
     let mut linhas = Vec::new();
     for producao in [5.0, 10.0, 15.0, 20.0, 25.0, 30.0] {
@@ -91,6 +94,7 @@ pub fn custo_item(item: &Item, consumo_ms: f64, sobra: f64) -> Option<f64> {
     )
 }
 
+/// Agrega nutrientes em MS consumida; um teor ausente torna indisponível o total correspondente.
 pub fn totais(cenario: &Cenario) -> ([Option<f64>; 7], f64, Option<f64>) {
     let mut total = [Some(0.0); 7];
     let mut consumo = 0.0;

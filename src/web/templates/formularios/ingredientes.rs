@@ -1,3 +1,4 @@
+//! Seletor e quantidades dos ingredientes de um cenário.
 use super::super::componentes::campo::Campo;
 use super::super::componentes::expansivel::Expansivel;
 use super::cenario::FormularioCenario;

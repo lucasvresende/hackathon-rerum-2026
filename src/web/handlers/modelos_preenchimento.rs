@@ -1,3 +1,4 @@
+//! Handler HTTP para modelos preenchimento, mantendo a renderização desta responsabilidade isolada.
 use axum::{
     Form,
     extract::{Path, Query, State},

@@ -1,3 +1,4 @@
+//! Modelos de preenchimento, valores de referência e sua procedência no domínio.
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Serialize, Deserialize)]

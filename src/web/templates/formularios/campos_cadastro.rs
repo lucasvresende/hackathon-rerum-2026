@@ -1,3 +1,4 @@
+//! Definições compartilhadas dos campos de cadastro.
 type CampoNumerico = (&'static str, &'static str, &'static str, bool);
 
 pub fn numericos(lote: bool) -> Vec<CampoNumerico> {

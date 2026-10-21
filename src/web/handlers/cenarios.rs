@@ -1,3 +1,4 @@
+//! Handler HTTP para cenarios, mantendo a renderização desta responsabilidade isolada.
 use crate::aplicacao::cenarios::{self as servico, DietaDemonstracao, FalhaCenario};
 use crate::persistencia::cadastros;
 use crate::web::entradas::Campos;

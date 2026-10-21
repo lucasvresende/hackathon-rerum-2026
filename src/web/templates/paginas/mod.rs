@@ -1,3 +1,4 @@
+//! Composição Maud das páginas completas apresentadas pela aplicação.
 pub mod ajuda;
 pub mod alimentos;
 pub mod cadastro;

@@ -1,3 +1,4 @@
+//! Ações de interface para ativar ou remover exemplos.
 use maud::{Markup, Render, html};
 
 pub struct Remover<'a> {

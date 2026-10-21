@@ -1,3 +1,4 @@
+//! Handler HTTP para cadastros, mantendo a renderização desta responsabilidade isolada.
 use crate::web::entradas::{Campos, texto};
 use crate::web::estado::EstadoApp;
 use crate::web::templates::paginas::cadastro_salvo::CadastroSalvo;

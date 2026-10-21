@@ -1,3 +1,4 @@
+//! Execução de verificações locais do núcleo fora do servidor web.
 use std::time::Instant;
 use uuid::Uuid;
 

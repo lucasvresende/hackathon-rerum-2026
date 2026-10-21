@@ -1,3 +1,4 @@
+//! Handler HTTP para historico, mantendo a renderização desta responsabilidade isolada.
 use crate::aplicacao::historico::{self, FiltroHistorico};
 use crate::web::{erro::ErroWeb, estado::EstadoApp};
 use axum::extract::{Query, State};

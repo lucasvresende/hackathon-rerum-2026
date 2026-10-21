@@ -1,4 +1,4 @@
-//! Composição das rotas por recurso; middlewares são aplicados uma única vez.
+//! Composição das rotas por recurso e aplicação dos middlewares globais.
 pub use super::estado::EstadoApp;
 use axum::{Router, extract::DefaultBodyLimit};
 use tower_http::{services::ServeDir, trace::TraceLayer};

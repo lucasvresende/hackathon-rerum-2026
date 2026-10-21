@@ -1,3 +1,4 @@
+//! Cabeçalho reutilizável das páginas da interface.
 use maud::{Markup, Render, html};
 
 pub struct Cabecalho<'a> {

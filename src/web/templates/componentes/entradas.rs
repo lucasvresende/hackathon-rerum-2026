@@ -1,3 +1,4 @@
+//! Exibição das entradas preservadas em uma execução.
 use crate::dominio::Conhecido;
 use crate::persistencia::historico::Execucao;
 use maud::{Markup, Render, html};

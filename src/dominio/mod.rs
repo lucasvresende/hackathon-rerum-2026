@@ -1,3 +1,4 @@
+//! Regras de domínio, modelos, validações e motor de inferência e otimização.
 mod avaliacoes;
 pub mod calculos;
 pub mod contaminantes;

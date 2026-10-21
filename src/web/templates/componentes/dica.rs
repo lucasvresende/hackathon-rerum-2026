@@ -1,3 +1,4 @@
+//! Componente de apresentação para dica, mantendo a renderização desta responsabilidade isolada.
 use maud::{Markup, Render, html};
 
 /// Explicação curta acionada por botão nativo; o popover funciona por clique sem JavaScript.

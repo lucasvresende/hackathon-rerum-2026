@@ -1,3 +1,4 @@
+//! Restrições lineares para contaminantes aplicadas ao modelo de formulação.
 use super::{Cenario, Conhecido, Conhecimento};
 use microlp::{ComparisonOp, Problem, Variable};
 

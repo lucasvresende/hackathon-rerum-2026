@@ -1,4 +1,4 @@
-//! Referências de preenchimento e procedência, independentes de HTTP e apresentação.
+//! Seleção de modelos de referência e montagem de valores com procedência.
 use sqlx::SqlitePool;
 
 use crate::Resultado;

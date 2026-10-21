@@ -1,3 +1,4 @@
+//! Componentes Maud reutilizáveis, textos de ajuda e conceitos da interface.
 pub mod ajuda;
 mod ajuda_conteudos;
 pub mod cabecalho;

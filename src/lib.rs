@@ -1,4 +1,5 @@
 #![forbid(unsafe_code)]
+//! Biblioteca principal: expõe os módulos e tipos compartilhados da aplicação.
 
 pub mod aplicacao;
 pub mod dominio;

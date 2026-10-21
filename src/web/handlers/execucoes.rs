@@ -1,3 +1,4 @@
+//! Handler HTTP para execucoes, mantendo a renderização desta responsabilidade isolada.
 use crate::aplicacao::cenarios as servico;
 use crate::persistencia::historico;
 use crate::web::entradas::Campos;

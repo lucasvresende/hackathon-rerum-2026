@@ -1,3 +1,4 @@
+//! Formulário de apresentação para cenario, mantendo a renderização desta responsabilidade isolada.
 use super::super::componentes::expansivel::Expansivel;
 use std::collections::BTreeMap;
 

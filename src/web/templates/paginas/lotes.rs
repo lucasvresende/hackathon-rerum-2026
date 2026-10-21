@@ -1,3 +1,4 @@
+//! Página de apresentação para lotes, mantendo a renderização desta responsabilidade isolada.
 use super::super::componentes::cabecalho::Cabecalho;
 use super::super::layouts::Principal;
 use maud::{Markup, Render, html};

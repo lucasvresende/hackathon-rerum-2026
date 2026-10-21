@@ -1,3 +1,4 @@
+//! Execução do motor e persistência do cenário e do parecer resultante.
 use std::process::Stdio;
 use std::time::{Duration, Instant};
 
@@ -89,6 +90,7 @@ pub async fn calcular_no_executavel(
     }
 }
 
+/// Executa o motor no processo isolado quando configurado e persiste o parecer e as entradas.
 pub async fn executar(
     pool: &SqlitePool,
     cenario: &Cenario,

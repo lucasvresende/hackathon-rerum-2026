@@ -1,3 +1,4 @@
+//! Página de apresentação para historico, mantendo a renderização desta responsabilidade isolada.
 use super::super::componentes::cabecalho::Cabecalho;
 use super::super::layouts::Principal;
 use crate::dominio::unidades::dinheiro;

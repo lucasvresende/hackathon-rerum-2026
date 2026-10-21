@@ -1,3 +1,4 @@
+//! Textos de ajuda para os conceitos resumidos na página inicial.
 use super::dica::Dica;
 
 pub const LOTES: Dica = Dica {

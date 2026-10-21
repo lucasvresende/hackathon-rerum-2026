@@ -1,3 +1,4 @@
+//! Conteúdo textual da ajuda organizada por assunto.
 pub const ALIMENTOS: &[&str] = &[
     "O sistema inclui quinze alimentos e seis lotes de exemplo. Você pode selecioná-los, \
      editar ou usar Criar cópia. Em Restaurar exemplos, escolha criar outra cópia ou restaurar o \

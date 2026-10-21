@@ -1,3 +1,4 @@
+//! Handler HTTP para comparacao, mantendo a renderização desta responsabilidade isolada.
 use crate::web::{erro::ErroWeb, estado::EstadoApp};
 use axum::extract::{Query, State};
 use axum::{Router, routing::get};

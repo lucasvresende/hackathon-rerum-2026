@@ -1,3 +1,4 @@
+//! Estado compartilhado e dependências injetadas nos handlers HTTP.
 use sqlx::SqlitePool;
 use std::sync::Arc;
 

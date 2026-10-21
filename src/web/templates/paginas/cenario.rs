@@ -1,3 +1,4 @@
+//! Página de apresentação para cenario, mantendo a renderização desta responsabilidade isolada.
 use super::super::componentes::cabecalho::Cabecalho;
 use super::super::layouts::Cadastro;
 use maud::{Markup, Render, html};

@@ -1,3 +1,4 @@
+//! Textos de ajuda para cadastro e composição de alimentos.
 use super::dica::Dica;
 
 pub const COMPOSICAO: Dica = Dica {

@@ -1,3 +1,4 @@
+//! Carga, identificação e leitura da base de regras e referências do perfil.
 pub use super::validacao::validar;
 use sha2::{Digest, Sha256};
 use sqlx::SqlitePool;

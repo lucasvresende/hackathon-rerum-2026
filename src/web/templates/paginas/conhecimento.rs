@@ -1,3 +1,4 @@
+//! Página que apresenta perfil, fontes e regras carregadas.
 use super::super::componentes::cabecalho::Cabecalho;
 use super::super::componentes::expansivel::Expansivel;
 use super::super::layouts::Principal;

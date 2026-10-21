@@ -1,3 +1,4 @@
+//! Handler HTTP para conhecimento, mantendo a renderização desta responsabilidade isolada.
 use crate::persistencia::conhecimento as base;
 use crate::web::{erro::ErroWeb, estado::EstadoApp};
 use axum::extract::State;

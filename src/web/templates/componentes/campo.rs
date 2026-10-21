@@ -1,3 +1,4 @@
+//! Componente de apresentação para campo, mantendo a renderização desta responsabilidade isolada.
 use maud::{Markup, Render, html};
 
 pub struct Campo<'a> {

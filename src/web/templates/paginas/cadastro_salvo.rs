@@ -1,3 +1,4 @@
+//! Página de confirmação após salvar um cadastro.
 use super::super::componentes::cabecalho::Cabecalho;
 use super::super::layouts::Cadastro;
 use maud::{Markup, Render, html};

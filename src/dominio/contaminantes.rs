@@ -1,3 +1,4 @@
+//! Normalização de laudos e avaliação dos limites aplicáveis a contaminantes.
 use super::{Cenario, Comparacao, Conhecimento, Estado, Laudo, Parecer};
 
 /// Mantém o analito e a matriz; converte somente unidades e bases de umidade compatíveis.
@@ -25,6 +26,7 @@ pub fn base_ms(laudo: &Laudo) -> Option<f64> {
     }
 }
 
+/// Compara laudos compatíveis aos limites vigentes e registra pendências separadamente.
 pub fn avaliar(c: &Cenario, base: &Conhecimento, p: &mut Parecer) {
     let norma = base.normas.iter().find(|n| n.id == "UE-AFB1");
     if !c.referencia_ue || !norma.is_some_and(|n| n.vigente(&c.data_aplicacao)) {

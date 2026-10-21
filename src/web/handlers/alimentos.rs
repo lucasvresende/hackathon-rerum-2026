@@ -1,3 +1,4 @@
+//! Handler HTTP para alimentos, mantendo a renderização desta responsabilidade isolada.
 use crate::aplicacao::cadastros::{self as servico, FalhaCadastro};
 use crate::dominio::templates::TipoCadastro;
 use crate::web::entradas::Campos;

@@ -1,3 +1,4 @@
+//! Avaliações do parecer para nutrientes, barreiras e restrições do cenário.
 use super::calculos::{NUTRIENTES, consumo_item};
 use super::unidades::TOLERANCIA;
 use super::*;

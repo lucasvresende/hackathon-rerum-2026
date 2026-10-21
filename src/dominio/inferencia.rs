@@ -1,3 +1,4 @@
+//! Agenda de inferência que valida entradas, calcula indicadores e conclui o parecer.
 use std::collections::BTreeSet;
 use std::time::Instant;
 
@@ -109,6 +110,7 @@ pub(crate) fn verificar_continua(c: &Cenario, base: &Conhecimento) -> Parecer {
     p
 }
 
+/// Calcula consumo, nutrientes, custos e fornecimento a partir das entradas validadas.
 fn calcular(c: &Cenario, base: &Conhecimento, p: &mut Parecer) {
     let (mut totais, consumo, fdnf) = calculos::totais(c);
     if c.itens
@@ -185,6 +187,7 @@ fn calcular(c: &Cenario, base: &Conhecimento, p: &mut Parecer) {
     }
 }
 
+/// Resume as dimensões sem apagar estados pendentes e determina se a dieta prática é válida.
 fn concluir(p: &mut Parecer) {
     if p.condicao == "EM_AVALIACAO" {
         p.condicao = if p.dimensao("Ingredientes") != "ATENDE" {

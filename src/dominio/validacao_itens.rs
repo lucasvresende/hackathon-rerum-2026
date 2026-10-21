@@ -1,3 +1,4 @@
+//! Validação de ingredientes, quantidades, preços, disponibilidade e limites do cenário.
 use super::validacao::{Problema, problema, validar_alimento};
 use super::{Cenario, unidades::preco_f64};
 use std::collections::BTreeSet;

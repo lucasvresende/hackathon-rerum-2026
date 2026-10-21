@@ -1,3 +1,4 @@
+//! Criação idempotente de cadastros e cenários sintéticos de demonstração.
 use chrono::Utc;
 use sqlx::SqlitePool;
 use uuid::Uuid;

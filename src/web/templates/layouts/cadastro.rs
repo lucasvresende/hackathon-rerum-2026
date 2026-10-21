@@ -1,3 +1,4 @@
+//! Layout HTML para cadastro, mantendo a renderização desta responsabilidade isolada.
 use super::documento::Documento;
 use maud::{Markup, Render, html};
 

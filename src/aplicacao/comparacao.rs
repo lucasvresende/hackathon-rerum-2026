@@ -1,4 +1,4 @@
-//! Equivalência e diferenças econômicas entre snapshots de execuções.
+//! Comparação de cenários salvos e diferenças econômicas entre execuções.
 use crate::{
     Resultado,
     dominio::unidades::proximos,

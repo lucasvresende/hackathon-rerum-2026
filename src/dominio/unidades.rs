@@ -1,3 +1,4 @@
+//! Conversões de massa e preço, formatação monetária e comparação numérica tolerante.
 use rust_decimal::Decimal;
 use rust_decimal::prelude::ToPrimitive;
 use serde::{Deserialize, Serialize};

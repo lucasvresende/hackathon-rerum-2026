@@ -1,3 +1,4 @@
+//! Página de apresentação para alimentos, mantendo a renderização desta responsabilidade isolada.
 use super::super::componentes::expansivel::Expansivel;
 use super::super::componentes::{cabecalho::Cabecalho, conceitos_alimentos as conceitos};
 use super::super::layouts::Principal;

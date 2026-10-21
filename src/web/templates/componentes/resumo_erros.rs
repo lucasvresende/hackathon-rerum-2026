@@ -1,3 +1,4 @@
+//! Exibição resumida dos problemas de validação.
 use crate::dominio::validacao::Problema;
 use maud::{Markup, Render, html};
 

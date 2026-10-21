@@ -1,3 +1,4 @@
+//! Gravação imutável e consulta das entradas e resultados das execuções.
 use chrono::Utc;
 use serde::{Deserialize, Serialize};
 use sqlx::SqlitePool;

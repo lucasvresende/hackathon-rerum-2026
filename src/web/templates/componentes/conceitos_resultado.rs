@@ -1,3 +1,4 @@
+//! Textos de ajuda para estados e valores do parecer.
 use super::dica::Dica;
 
 pub const ESTADOS: Dica = Dica {

@@ -1,3 +1,4 @@
+//! Formulação de menor custo, resolução dos subproblemas e revalidação das soluções.
 use std::time::{Duration, Instant};
 
 use microlp::{ComparisonOp, OptimizationDirection, Problem, SolutionStatus, SolveOutcome};
@@ -6,6 +7,10 @@ use super::calculos::custo_item;
 use super::unidades::{TOLERANCIA, proximos};
 use super::*;
 
+/// Resolve os cinco subproblemas de fibra e só aceita soluções revalidadas pelo motor contínuo.
+///
+/// O custo mínimo global só é declarado quando todos os subproblemas terminam com uma
+/// solução ótima ou inviabilidade comprovada; interrupções permanecem inconclusivas.
 pub fn formular(c: &Cenario, base: &Conhecimento) -> Parecer {
     let inicio = Instant::now();
     let mut sonda = c.clone();

@@ -1,3 +1,4 @@
+//! Handler HTTP para inicio, mantendo a renderização desta responsabilidade isolada.
 use crate::persistencia::{cadastros, conhecimento as base, historico};
 use crate::web::{erro::ErroWeb, estado::EstadoApp};
 use axum::extract::State;

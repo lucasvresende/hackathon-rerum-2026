@@ -1,3 +1,4 @@
+//! Enquadramento do lote e verificação de elegibilidade dos ingredientes.
 use super::{Cenario, Conhecido, Conhecimento, Estado, EstadoProdutivo, Parecer};
 
 pub fn avaliar(c: &Cenario, base: &Conhecimento, p: &mut Parecer) -> bool {

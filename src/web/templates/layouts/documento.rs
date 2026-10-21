@@ -1,3 +1,4 @@
+//! Layout HTML para documento, mantendo a renderização desta responsabilidade isolada.
 use maud::{DOCTYPE, Markup, Render, html};
 
 pub(super) struct Documento<'a> {

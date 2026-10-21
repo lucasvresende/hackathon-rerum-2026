@@ -1,4 +1,4 @@
-//! Catálogo sintético: aplicação independente dos adaptadores HTTP.
+//! Ativação, restauração e remoção lógica dos exemplos da aplicação.
 use super::modelos_preenchimento;
 use crate::persistencia::{cadastros, exemplos};
 use crate::{

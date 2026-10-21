@@ -1,3 +1,4 @@
+//! Handler HTTP para exemplos, mantendo a renderização desta responsabilidade isolada.
 use crate::{
     aplicacao::exemplos,
     web::{

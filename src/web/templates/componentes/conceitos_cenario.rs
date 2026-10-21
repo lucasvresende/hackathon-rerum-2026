@@ -1,3 +1,4 @@
+//! Textos de ajuda para os campos dos cenários.
 use super::dica::Dica;
 
 pub const HORIZONTE: Dica = Dica {

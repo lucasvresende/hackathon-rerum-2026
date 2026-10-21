@@ -1,4 +1,5 @@
 #![forbid(unsafe_code)]
+//! Ponto de entrada: inicializa tracing, prepara o banco e despacha comandos locais ou o servidor.
 
 use std::path::PathBuf;
 

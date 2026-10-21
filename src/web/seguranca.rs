@@ -1,3 +1,4 @@
+//! Proteções HTTP, validação CSRF e política de cabeçalhos da aplicação.
 use super::estado::EstadoApp;
 use std::collections::BTreeMap;
 

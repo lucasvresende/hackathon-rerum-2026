@@ -1,3 +1,4 @@
+//! Leitura e serialização de campos dos formulários de lote e alimento.
 use uuid::Uuid;
 
 use super::*;

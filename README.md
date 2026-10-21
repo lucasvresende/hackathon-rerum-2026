@@ -194,6 +194,10 @@ um timeout produz resultado inconclusivo. A alegação de ótimo depende da reso
 os subproblemas. Quantidades arredondadas para fornecimento passam por nova validação.
 Preços usam representação decimal; grandezas físicas usam `f64` e as tolerâncias dos requisitos.
 
+Os arquivos Rust começam com docstrings de módulo que descrevem sua responsabilidade. Rotinas
+com regras de cálculo, inferência, otimização, conversão de entradas e recuperação documentam
+seus comportamentos e limites diretamente junto às funções.
+
 Para recarga automática, habilite o recurso `desenvolvimento`:
 
 ```sh

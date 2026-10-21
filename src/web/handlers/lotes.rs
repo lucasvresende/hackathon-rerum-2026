@@ -1,3 +1,4 @@
+//! Handler HTTP para lotes, mantendo a renderização desta responsabilidade isolada.
 use crate::aplicacao::cadastros::{self as servico, FalhaCadastro};
 use crate::dominio::templates::TipoCadastro;
 use crate::persistencia::cadastros;

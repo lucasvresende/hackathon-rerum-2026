@@ -1,3 +1,4 @@
+//! Consulta e filtragem de execuções preservadas no histórico.
 use crate::{
     Resultado,
     persistencia::historico::{self, Execucao},

@@ -1,4 +1,4 @@
-//! Revisões de cadastros e associação à referência usada pelo operador.
+//! Casos de uso de consulta e gravação de revisões de lotes e alimentos.
 use super::modelos_preenchimento;
 use crate::persistencia::cadastros;
 use crate::{

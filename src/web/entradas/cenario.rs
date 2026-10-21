@@ -1,8 +1,10 @@
+//! Conversão, validação e serialização das entradas de cenários.
 use super::*;
 use crate::dominio::{
     Alimento, BaseQuantidade, Cenario, CotacaoOriginal, Item, Lote, MedicaoConsumo,
 };
 
+/// Constrói o cenário dos campos submetidos, acumulando erros para preservar entradas corrigíveis.
 pub fn ler_cenario(
     c: &Campos,
     lotes: &[Lote],

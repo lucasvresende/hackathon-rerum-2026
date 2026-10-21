@@ -1,3 +1,4 @@
+//! Componente de conteúdo expansível acessível.
 use maud::{Markup, Render, html};
 
 /// Conteúdo fica aberto sem JavaScript. Com hx-live, o estado e a acessibilidade são

@@ -1,3 +1,4 @@
+//! Formulário de apresentação para lote, mantendo a renderização desta responsabilidade isolada.
 use super::DadosCadastro;
 use crate::dominio::templates::TipoCadastro;
 use maud::{Markup, Render};

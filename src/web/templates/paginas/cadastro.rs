@@ -1,3 +1,4 @@
+//! Página de apresentação para cadastro, mantendo a renderização desta responsabilidade isolada.
 use super::super::componentes::cabecalho::Cabecalho;
 use super::super::layouts::Cadastro;
 use crate::dominio::templates::TipoCadastro;

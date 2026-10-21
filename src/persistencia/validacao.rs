@@ -1,3 +1,4 @@
+//! Verificação da completude e consistência da base de conhecimento carregada.
 use crate::Resultado;
 use crate::dominio::Conhecimento;
 

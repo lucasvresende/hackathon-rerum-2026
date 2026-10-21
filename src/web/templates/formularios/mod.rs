@@ -1,3 +1,4 @@
+//! Formulários Maud e campos compartilhados para cadastros e cenários.
 mod cadastro;
 pub use cadastro::DadosCadastro;
 pub mod alimento;

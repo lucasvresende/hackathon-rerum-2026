@@ -1,3 +1,4 @@
+//! Geração e restauração de backups verificados do banco e dos arquivos de referência.
 use std::path::Path;
 
 use sqlx::SqlitePool;
@@ -57,6 +58,9 @@ pub async fn backup(pool: &SqlitePool, destino: &Path) -> Resultado<()> {
     Ok(())
 }
 
+/// Confere hashes e integridade referencial antes de copiar o banco para um destino novo.
+///
+/// O destino existente é recusado para evitar sobrescrever dados por engano.
 pub async fn restaurar(origem: &Path, destino: &Path) -> Resultado<()> {
     if destino.exists() {
         return Err("Destino já existe; restauração não sobrescreve dados.".into());

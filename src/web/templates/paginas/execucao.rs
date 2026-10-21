@@ -1,3 +1,4 @@
+//! Página de apresentação para execucao, mantendo a renderização desta responsabilidade isolada.
 use super::super::{componentes::resultado::ResultadoExecucao, layouts::Principal};
 use crate::persistencia::historico::Execucao as DadosExecucao;
 use maud::{Markup, Render};

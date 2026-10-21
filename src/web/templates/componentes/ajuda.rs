@@ -1,3 +1,4 @@
+//! Componente de apresentação para ajuda, mantendo a renderização desta responsabilidade isolada.
 use maud::{Markup, Render, html};
 
 use super::cabecalho::Cabecalho;

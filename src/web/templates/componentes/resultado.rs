@@ -1,3 +1,4 @@
+//! Renderização do parecer e dos resultados de uma execução.
 use maud::{Markup, Render, html};
 
 use super::{cabecalho::Cabecalho, conceitos_resultado as conceitos};

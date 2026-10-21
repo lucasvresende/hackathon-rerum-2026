@@ -1,3 +1,4 @@
+//! Página de apresentação para inicio, mantendo a renderização desta responsabilidade isolada.
 use super::super::{componentes, layouts::Principal};
 use crate::dominio::{Alimento, Conhecimento, Lote};
 use crate::persistencia::historico::Execucao;

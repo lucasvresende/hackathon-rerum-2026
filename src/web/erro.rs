@@ -1,3 +1,4 @@
+//! Conversão de falhas da aplicação em respostas HTTP.
 use super::templates::paginas::erro::{Erro, TipoErro};
 use axum::http::StatusCode;
 use axum::response::{IntoResponse, Response};

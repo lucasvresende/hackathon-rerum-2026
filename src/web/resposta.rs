@@ -1,3 +1,4 @@
+//! Respostas HTTP auxiliares, incluindo redirecionamento compatível com htmx.
 use axum::http::HeaderMap;
 use axum::response::{IntoResponse, Response};
 

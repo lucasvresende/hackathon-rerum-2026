@@ -1,3 +1,4 @@
+//! Página de apresentação para erro, mantendo a renderização desta responsabilidade isolada.
 use super::super::{componentes::cabecalho::Cabecalho, layouts::Principal};
 use maud::{Markup, Render, html};
 

@@ -1,3 +1,4 @@
+//! Handler HTTP para ajuda, mantendo a renderização desta responsabilidade isolada.
 use crate::web::estado::EstadoApp;
 use axum::{Router, routing::get};
 use maud::{Markup, Render};

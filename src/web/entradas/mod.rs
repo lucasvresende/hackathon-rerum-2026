@@ -1,3 +1,4 @@
+//! Conversão dos campos HTTP em modelos de domínio e utilitários de leitura dos formulários.
 mod cadastros;
 mod cenario;
 

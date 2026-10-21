@@ -1,3 +1,4 @@
+//! Interface para selecionar modelos e revisar procedência.
 use maud::{Markup, Render, html};
 
 use crate::dominio::templates::{ModeloPreenchimento, ProcedenciaModelo};

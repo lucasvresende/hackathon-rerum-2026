@@ -1,3 +1,4 @@
+//! Casos de uso que coordenam domínio e persistência sem depender da camada HTTP.
 pub mod cadastros;
 pub mod cenarios;
 pub mod comparacao;
