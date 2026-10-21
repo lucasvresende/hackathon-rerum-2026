@@ -17,13 +17,38 @@ const CARTAS: &[Carta] = &[
         id: "inicio",
         titulo: "Visão geral e primeiros passos",
         passos: &[
-            "Cadastros abrem em nova guia, sem menu. Templates podem ser carregados e editados. \
-            Na visão geral, confira os totais cadastrados e abra as execuções recentes.",
-            "Comece cadastrando um lote e conferindo as composições dos alimentos. Depois use \
-            Verificar dieta para avaliar quantidades conhecidas ou Formular dieta para buscar \
-            quantidades de menor custo.",
-            "Os exemplos de demonstração são sintéticos. Confira os dados antes de criar um \
-            cenário de uso. O botão Ajuda nesta página abre a seção relacionada à tarefa.",
+            "A Visão geral é o ponto de partida para trabalhar com as dietas. Os números no \
+            topo resumem os cadastros e os cálculos salvos. Passe o mouse sobre o ponto de \
+            interrogação ou toque nele para entender cada conceito. Pelo teclado, use Tab \
+            para chegar ao indicador e Escape para fechar a explicação.",
+            "Lote é um grupo de animais que será avaliado com os mesmos dados, como peso \
+            médio e produção de leite. Separe grupos com características diferentes. \
+            Lotes cadastrados conta os grupos atuais, sem duplicar suas revisões. \
+            Animais cadastrados soma os animais desses lotes: 20 vacas em um lote e 30 \
+            em outro resultam em 2 lotes e 50 animais.",
+            "Composição é o registro do que um alimento contém, incluindo matéria seca e \
+            nutrientes. Duas análises de silagem podem ter valores diferentes e contar como \
+            duas composições do mesmo alimento. Ao montar a dieta, escolha a análise que \
+            corresponde ao alimento disponível. Preço e estoque serão informados no cenário.",
+            "Cenário reúne tudo o que será usado em um cálculo: lote, alimentos, quantidades, \
+            preços, disponibilidade, datas e hipóteses. Por exemplo, você pode duplicar um \
+            cenário e mudar o preço do milho para comparar custos, preservando o original.",
+            "Execução é o cálculo salvo de um cenário, com suas entradas e seu resultado. \
+            Ela pode apontar atendimento, violações, pendências ou bloqueios; estar no \
+            histórico não significa que a dieta foi aprovada. Execuções recentes conta até \
+            os 100 últimos cálculos. A tabela Últimos cenários mostra os cinco mais recentes; \
+            use Ver histórico para consultar os demais e abrir os pareceres.",
+            "Perfil ativo é o conjunto de referências e regras que orienta a avaliação. \
+            Ele define a população atendida e os nutrientes e limites considerados. \
+            O identificador informa qual versão está em uso. O perfil atual se destina a \
+            vacas adultas em lactação e confinamento, dentro dos limites apresentados em \
+            Perfil e fontes. Atender ao núcleo avaliado não garante uma dieta completa: \
+            confira as limitações e as dimensões que ficaram sem avaliação.",
+            "Para começar, cadastre um lote e confira as composições dos alimentos. \
+            Verificar dieta avalia quantidades que você informa; Formular dieta busca \
+            quantidades de menor custo dentro das condições do cenário. Cadastros abrem \
+            em nova guia e permitem carregar modelos editáveis. Se usar a demonstração, \
+            lembre que seus dados são sintéticos e precisam ser substituídos para uso real.",
         ],
         destino: "/",
         acao: "Abrir visão geral",

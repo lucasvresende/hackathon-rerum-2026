@@ -793,6 +793,13 @@ com rótulos, unidades visíveis, mensagens por campo e navegação por teclado.
 Não depender somente de cor para indicar estado. Resultados parciais deverão ser compreensíveis.
 Substituições de HTML deverão preservar foco e contexto de uso.
 
+Na Visão geral, indicadores de interrogação junto a perfil, cenários e às quatro estatísticas
+explicarão seus conceitos. Deverão abrir por hover, foco, clique ou toque, fechar com Escape ou
+clique fora e permanecer dentro da tela. A ativação por clique funcionará sem JavaScript.
+A carta de ajuda inicial detalhará os conceitos com exemplos, incluindo a contagem de animais,
+a distinção entre cenário e execução e o limite de 100 execuções no resumo (cinco na tabela).
+Nesta etapa, os indicadores serão aplicados somente à Visão geral.
+
 ### RNF-04 — Banco e consultas
 
 Usar SQLite e SQLx com sistema próprio de migrações. Consultas ficarão em arquivos SQL separados

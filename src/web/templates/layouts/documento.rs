@@ -22,6 +22,7 @@ impl Render for Documento<'_> {
                     script src="/static/vendor/htmx.min.js" {}
                     script src="/static/vendor/hx-live.min.js" {}
                     script src="/static/app.js" defer {}
+                    script src="/static/dicas.js" defer {}
                     script src="/static/formularios.js" defer {}
                 }
                 body class=[isolada.then_some("pagina-cadastro")] {

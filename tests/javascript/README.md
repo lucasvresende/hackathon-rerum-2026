@@ -5,6 +5,8 @@ Os testes JavaScript de integração ficam em `tests/javascript/e2e/`:
 
 - `navegadores.mjs`: prepara banco e servidor temporários e executa os três navegadores.
 - `templates.mjs`: referências editáveis, cadastros e componentes dos formulários.
+- `inicio.mjs`: seis dicas da Visão geral; hover, teclado, Escape, clique fora, toque,
+  limites da tela, impressão e funcionamento por clique sem JavaScript nos três navegadores.
 - `ajuda.mjs`: navegação contextual, teclado, acessibilidade, impressão e modo sem JavaScript.
 
 ```sh
@@ -49,8 +51,8 @@ Para comprovar ausência de POST inválido, o observador é instalado antes do c
 uma janela negativa de 400 ms; não há pausas fixas para esperar respostas ou trocas de DOM.
 Os cenários de rede usam `route.fulfill`/`route.abort`; os demais usam respostas reais.
 
-Para diagnóstico, `FEEDYOURCOW_SUITES` aceita `htmx`, `condicionais`, `falhas`, `guias` e `fluxos`,
-separados por vírgula. O padrão executa todos. Exemplo:
+Para diagnóstico, `FEEDYOURCOW_SUITES` aceita `htmx`, `condicionais`, `falhas`, `guias`,
+`inicio` e `fluxos`, separados por vírgula. O padrão executa todos. Exemplo:
 
 ```sh
 FEEDYOURCOW_NAVEGADORES=chromium FEEDYOURCOW_SUITES=falhas npm run test:e2e

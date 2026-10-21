@@ -1,6 +1,8 @@
 pub mod ajuda;
 pub mod cabecalho;
 pub mod campo;
+pub mod conceitos_inicio;
+pub mod dica;
 pub mod entradas;
 pub mod estrutura;
 pub mod expansivel;

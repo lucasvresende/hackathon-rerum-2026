@@ -1,3 +1,4 @@
+import { testarInicio } from './inicio.mjs';
 import { testarHtmx } from './htmx.mjs';
 import { testarCondicionais } from './condicionais.mjs';
 import { testarFalhas } from './falhas.mjs';
@@ -11,7 +12,7 @@ import { resolve, join } from 'node:path';
 import { spawn, spawnSync } from 'node:child_process';
 import { chromium, firefox, webkit } from 'playwright';
 
-const nomesSuites = ['htmx', 'condicionais', 'falhas', 'guias', 'fluxos'];
+const nomesSuites = ['htmx', 'condicionais', 'falhas', 'guias', 'inicio', 'fluxos'];
 const suites = new Set(process.env.FEEDYOURCOW_SUITES?.split(',') || nomesSuites);
 for (const suite of suites) assert.ok(nomesSuites.includes(suite), `Suíte desconhecida: ${suite}`);
 
@@ -75,6 +76,7 @@ try {
         await nova.waitForLoadState();
         page = nova;
       }
+      if (suites.has('inicio')) await testarInicio(browser, url, artefatos, nome);
       if (suites.has('htmx')) await testarHtmx(browser, url, artefatos, nome);
       if (suites.has('condicionais')) await testarCondicionais(browser, url, artefatos, nome);
       if (suites.has('falhas')) await testarFalhas(browser, url, artefatos, nome);
