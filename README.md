@@ -81,7 +81,9 @@ Cadastros abrem em nova guia; ao retornar, o cenário atualiza as opções e pre
 Acesse **Ajuda** no menu para consultar as instruções. **Ajuda nesta página** abre a seção
 correspondente em uma nova guia, mantendo a tarefa atual aberta.
 Os indicadores **?** explicam conceitos na Visão geral, no cenário, no catálogo/cadastro de
-alimentos e nos resultados. Passe o mouse, use o foco do teclado ou toque/clique para ler;
+alimentos e nos resultados. Cada dimensão do parecer tem uma explicação própria sobre o que
+verifica e como interpretar seu estado, incluindo a diferença entre avaliação inconclusiva e
+não realizada. Passe o mouse, use o foco do teclado ou toque/clique para ler;
 Escape ou clique fora fecha a dica. As cartas correspondentes da Ajuda trazem mais detalhes
 e exemplos de unidades, consumo, dados e interpretação do parecer.
 Em **Perfil nutricional**, consulte os coeficientes, normas e fontes de referência utilizados.

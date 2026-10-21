@@ -83,7 +83,9 @@ export async function testarDicas(browser, url, artefatos, nome) {
     await page.waitForURL(/\/execucoes\/[a-f0-9-]+$/);
     await conferirIds(page);
     const parecer = page.url();
-    for (const id of ['dica-estados', 'dica-nucleo', 'dica-balanco', 'dica-fornecimento',
+    for (const id of ['dica-estados', 'dica-dados', 'dica-elegibilidade', 'dica-nucleo',
+      'dica-barreiras', 'dica-ingredientes', 'dica-contaminantes',
+      'dica-inclusao-estoque', 'dica-fibra-fisica', 'dica-balanco', 'dica-fornecimento',
       'dica-otimo']) {
       const { botao } = await abrirDica(page, id);
       await botao.press('Escape');

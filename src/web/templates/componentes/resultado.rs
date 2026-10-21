@@ -72,7 +72,18 @@ impl Render for ResultadoExecucao<'_> {
                         else if estado == "NAO_ATENDE" { "bad" } else { "neutral" })) {
                             div.concept-label {
                                 small { (nome) }
-                                @if nome == "Núcleo químico" { (conceitos::NUCLEO) }
+                                @if nome == "Dados" { (conceitos::DADOS) }
+                                @else if nome == "Elegibilidade" { (conceitos::ELEGIBILIDADE) }
+                                @else if nome == "Núcleo químico" { (conceitos::NUCLEO) }
+                                @else if nome == "Barreiras ruminais" { (conceitos::BARREIRAS) }
+                                @else if nome == "Ingredientes" { (conceitos::INGREDIENTES) }
+                                @else if nome == "Contaminantes" { (conceitos::CONTAMINANTES) }
+                                @else if nome == "Inclusão e estoque" {
+                                    (conceitos::INCLUSAO_ESTOQUE)
+                                }
+                                @else if nome == "Fibra física e micronutrientes" {
+                                    (conceitos::FIBRA_FISICA)
+                                }
                             }
                             strong { (estado.replace('_', " ")) }
                         }
