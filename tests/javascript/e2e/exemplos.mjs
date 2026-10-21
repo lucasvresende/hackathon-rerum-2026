@@ -21,8 +21,9 @@ export async function testarExemplos(browser, url, artefatos, navegador) {
       await linha.locator('summary').click();
       await linha.locator('[name=confirmar]').check();
       await linha.getByRole('button', { name: 'Confirmar remoção' }).click();
-      await page.waitForURL(`${url}/lotes`);
-      assert.equal(await page.locator('tr').filter({ hasText: 'Jersey — exemplo' }).count(), 0);
+      await page.locator('tr').filter({ hasText: 'Jersey — exemplo' }).waitFor({
+        state: 'detached',
+      });
       await page.goto(`${url}/exemplos`);
       const card = page.locator('article').filter({ hasText: 'Jersey — exemplo' });
       await card.locator('[name=modo]').selectOption('revisar');

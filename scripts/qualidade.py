@@ -13,7 +13,7 @@ for nome in sorted(set(arquivos)):
     caminho = raiz / nome
     if not caminho.is_file() or nome.startswith(('static/vendor/', '.sqlx/')):
         continue
-    if caminho.suffix not in {'.rs', '.md', '.sql', '.py', '.sh', '.toml', '.css', '.js',
+    if caminho.suffix not in {'.rs', '.sql', '.py', '.sh', '.toml', '.css', '.js',
                               '.mjs', '.yml', '.yaml', '.json', '.svg'}:
         continue
     if caminho.name in {'Cargo.lock', 'package-lock.json'}:

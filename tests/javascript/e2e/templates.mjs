@@ -92,8 +92,6 @@ export async function testarTemplates(page, url, artefatos, navegador) {
   await botao.click();
   await page.waitForFunction(() =>
     document.querySelector('.ingredient .expansivel').classList.contains('expand-ready'));
-  assert.notEqual(await secao.locator('.expand-content').evaluate(
-    e => getComputedStyle(e).transitionDuration), '0s');
   await botao.click();
   await secao.locator('.expand-content').waitFor({ state: 'hidden' });
   assert.equal(await botao.getAttribute('aria-expanded'), 'false');

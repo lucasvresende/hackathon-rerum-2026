@@ -225,7 +225,8 @@ Os testes Rust cobrem cálculos, regras, otimização, persistência, contratos 
 `tests/exemplos.rs` verifica catálogo completo, receitas ponderadas, primeiro cálculo, inicialização
 atômica, preservação de alterações/exclusões, restauração explícita e backup. As fixtures A/B são
 selecionadas por identidade, independentemente do catálogo incluído no primeiro uso.
-`qualidade.py` exige até 100 caracteres por linha e avisa sobre módulos acima de 300 linhas.
+`qualidade.py` exige até 100 caracteres por linha nos arquivos de código e configuração, exceto
+Markdown, e avisa sobre módulos acima de 300 linhas.
 `verificar_sqlx.py` recria o banco de compilação e compara as consultas com o cache `.sqlx/`.
 `ensaiar` usa banco isolado, cinco aquecimentos e 100 execuções por operação: a meta de p95
 é até 1 segundo para verificar 20 ingredientes e 5 segundos para formular com 10 ingredientes.
