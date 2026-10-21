@@ -6,3 +6,5 @@ mod campos_cadastro;
 pub mod cenario;
 mod ingredientes;
 pub mod lote;
+
+mod configuracoes_cenario;

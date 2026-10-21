@@ -17,29 +17,63 @@ impl Render for Ingredientes<'_, '_> {
                 "Selecione uma composição por alimento. Formulação: até 10; verificação: até 20. "
                 "Preços em R$/kg MN; limites em kg MS/animal/dia."
             }
+            details #selecao-ingredientes open[self.0.valor("seletor_aberto") == "on"] {
+                input type="hidden" name="seletor_aberto" value="on";
+                summary { "Selecionar ingredientes" }
+                p.muted { "Marque os ingredientes para editar suas condições abaixo." }
+                @for a in self.0.alimentos {
+                    @let id = &a.composicao_id;
+                    label.check {
+                        input type="checkbox" name=(format!("usar-{id}"))
+                        id=(format!("usar-{id}"))
+                        checked[self.0.valor(&format!("usar-{id}")) == "on"]
+                        hx-post="/cenarios/atualizar" hx-trigger="change"
+                        hx-target="#formulario" hx-swap="outerHTML" hx-include="#formulario"
+                        hx-validate="false";
+                        (&a.nome) " · " (&a.natureza)
+                    }
+                }
+                button.button.secondary type="submit" formnovalidate
+                formaction="/cenarios/atualizar" hx-post="/cenarios/atualizar"
+                hx-target="#formulario" hx-swap="outerHTML" data-sem-validacao {
+                    "Atualizar ingredientes selecionados"
+                }
+            }
             @for a in self.0.alimentos {
                 @let id = &a.composicao_id;
-                article.ingredient {
-                    div.ingredient-selection {
-                        label.check {
-                            input type="checkbox"
-                            name=(format!("usar-{id}")) id=(format!("usar-{id}"))
-                            aria-invalid=[self.0.erro(&format!("usar-{id}")).map(|_| "true")]
-                            checked[self.0.valor(&format!("usar-{id}")) == "on"];
-                            strong { (&a.nome) }
-                            span.pill { (&a.natureza) }
+                @if self.0.valor(&format!("usar-{id}")) != "on" {
+                    // Mantém o rascunho ao desmarcar e marcar novamente, sem exibir controles.
+                    @for prefixo in ["q", "preco", "unidade-preco", "embalagem", "ms",
+                        "perda", "estoque", "min", "max", "resolucao", "origem", "livre"] {
+                        @let nome = format!("{prefixo}-{id}");
+                        @if self.0.campos.contains_key(&nome) {
+                            input type="hidden" name=(&nome) value=(self.0.valor(&nome));
                         }
-                        span.muted { "MS " (format!("{:.1}%", a.ms *
-                            100.0))
-                            " · " (&id[..id.len().min(12)]) }
+                    }
+                } @else {
+                article.ingredient data-composicao=(id) {
+                    h3 { (&a.nome) }
+                    div.form-grid {
+                        @for (prefixo, rotulo) in [("q", "Quantidade na base escolhida"),
+                            ("preco", "Preço na unidade comercial"),
+                            ("estoque", "Estoque bruto (kg MN)")] {
+                            @let nome = format!("{prefixo}-{id}");
+                            (Campo { erro: self.0.erro(&nome), nome: &nome, rotulo,
+                                valor: self.0.valor(&nome), tipo: "number",
+                                dica: if prefixo == "estoque" { "Vazio significa desconhecido" }
+                                    else if prefixo == "q" { "Ignorada ao formular" }
+                                    else { "Padrão: R$/kg MN; informe sua cotação" },
+                                obrigatorio: prefixo == "preco" || (prefixo == "q"
+                                    && self.0.valor("modo") != "formular") })
+                        }
                     }
                     (Expansivel {
                         id: &format!("ingrediente-{id}"),
                         aberto: match self.0.valor(&format!("expansao-ingrediente-{id}")) {
                             "true" => true, "false" => false,
-                            _ => self.0.valor(&format!("usar-{id}")) == "on",
+                            _ => false,
                         },
-                        titulo: html! { "Quantidades, preço e disponibilidade" },
+                        titulo: html! { "Configurações avançadas do ingrediente" },
                         conteudo: html! {
                             div.form-grid {
                                 div.field {
@@ -63,10 +97,6 @@ impl Render for Ingredientes<'_, '_> {
                                     }
                                 }
                                 @for (prefixo, rotulo, dica) in [
-                                ("q", "Quantidade na base escolhida",
-                                "Ignorada ao formular"),
-                                ("preco", "Preço na unidade comercial",
-                                "Cotação decimal; zero precisa de justificativa"),
                                 ("embalagem", "Massa da embalagem (kg MN)",
                                 "Obrigatória para preço por embalagem"),
                                 ("ms", "MS neste cenário (%)",
@@ -74,8 +104,6 @@ impl Render for Ingredientes<'_, '_> {
                                 ("perda",
                                 "Perda anterior ao fornecimento (%)",
                                 "Entre 0 e 100% exclusive"),
-                                ("estoque", "Estoque bruto (kg MN)",
-                                "Vazio significa desconhecido"),
                                 ("min", "Inclusão mínima (kg MS)",
                                 "Positivo torna a inclusão obrigatória"),
                                 ("max", "Inclusão máxima (kg MS)",
@@ -115,6 +143,7 @@ impl Render for Ingredientes<'_, '_> {
                             }
                         },
                     })
+                }
                 }
             }
         } }

@@ -133,7 +133,7 @@ function configurarCondicionais() {
   const consumo = form.querySelector('#consumo_alvo');
   if (consumo) consumo.required = false;
   form.querySelectorAll('.ingredient').forEach(ingrediente => {
-    const usar = ingrediente.querySelector('input[name^="usar-"]');
+    const usar = form.querySelector(`#usar-${ingrediente.dataset.composicao}`);
     const unidade = ingrediente.querySelector('select[name^="unidade-preco-"]');
     ingrediente.querySelectorAll('input:not([type=checkbox])').forEach(c => {
       const prefixo = c.name.split('-')[0];
@@ -154,8 +154,10 @@ function configurarCondicionais() {
 }
 document.addEventListener('change', evento => {
   configurarCondicionais();
-  if (evento.target.matches('input[name^="usar-"]') && evento.target.checked) {
-    const secao = evento.target.closest('.ingredient').querySelector('.expansivel');
-    htmx.live.q(secao).data.aberta = true;
-  }
+
 });
+
+document.addEventListener('toggle', evento => {
+  if (evento.target.id !== 'selecao-ingredientes') return;
+  evento.target.querySelector('[name="seletor_aberto"]').value = evento.target.open ? 'on' : '';
+}, true);

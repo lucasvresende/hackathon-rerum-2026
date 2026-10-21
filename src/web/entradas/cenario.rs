@@ -204,9 +204,39 @@ pub fn campos_cenario(c: &Cenario) -> Campos {
     campos
 }
 
+/// Valores iniciais explícitos; não preenche dados locais nem escolhe cadastros.
+pub fn padroes_cenario() -> Campos {
+    let hoje = chrono::Utc::now()
+        .with_timezone(&chrono_tz::America::Sao_Paulo)
+        .format("%Y-%m-%d")
+        .to_string();
+    Campos::from([
+        ("horizonte".into(), "1".into()),
+        ("data_avaliacao".into(), hoje.clone()),
+        ("data_aplicacao".into(), hoje),
+        ("modo".into(), "verificar".into()),
+        ("base".into(), "CONSUMO_MS".into()),
+        ("base_comparacao".into(), "Consumo de MS fixo".into()),
+        ("sobras".into(), "0".into()),
+        (
+            "origem_consumo".into(),
+            "Estimativa do perfil; não observado".into(),
+        ),
+        (
+            "origem_sobras".into(),
+            "Hipótese: sobras e perdas zero; não medidas".into(),
+        ),
+    ])
+}
+
 /// Inclui opções novas sem sobrescrever o rascunho enviado pelo navegador.
 pub fn completar_cenario(campos: &mut Campos, alimentos: &[crate::dominio::Alimento]) {
     for a in alimentos {
+        for prefixo in ["perda", "min", "resolucao"] {
+            campos
+                .entry(format!("{prefixo}-{}", a.composicao_id))
+                .or_insert("0".into());
+        }
         campos
             .entry(format!("ms-{}", a.composicao_id))
             .or_insert_with(|| (a.ms * 100.0).to_string());

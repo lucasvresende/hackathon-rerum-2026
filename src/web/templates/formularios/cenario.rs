@@ -1,5 +1,4 @@
 //! Formulário de apresentação para cenario, mantendo a renderização desta responsabilidade isolada.
-use super::super::componentes::expansivel::Expansivel;
 use std::collections::BTreeMap;
 
 use super::super::componentes::campo::{MensagemErro, Rotulo};
@@ -101,107 +100,18 @@ impl Render for FormularioCenario<'_> {
                                 }
                             }
                         }
-                        @for (nome, rotulo, tipo, dica, obrigatorio) in [
-                        ("horizonte", "Horizonte (dias)", "number",
-                        "Inteiro positivo", true),
-                        ("data_avaliacao", "Data de avaliação", "date",
-                        "Calendário Brasil", true),
-                        ("data_aplicacao",
-                        "Data de aplicação das regras", "date",
-                        "Define a vigência normativa", true),
-                        ("consumo_alvo",
-                        "Consumo-alvo (kg MS/animal/dia)", "number",
-                        "Opcional. Vazio: estimativa tabelada/extrapolada",
-                        false),
-                        ("sobras",
-                        "Sobras planejadas (% da MS ofertada)", "number",
-                        "Zero também deve ser uma hipótese declarada", true),
-                        ("preco_leite", "Preço do leite (R$/kg)", "text",
-                        "Opcional; permite margem sobre alimentação",
-                        false),
-                        ] {
-                            div {
-                                (Campo { erro: self.erro(nome), nome, rotulo,
-                                    valor: self.valor(nome), tipo, dica, obrigatorio })
-                            }
-                        }
-                        div.field {
-                            (Rotulo { nome: "base", texto: "Quantidade informada por ingrediente",
-                                obrigatorio: false })
-                            select #base name="base" {
-                                @for (v, texto) in [("CONSUMO_MS",
-                                "Consumo em kg MS/animal/dia"),
-                                ("CONSUMO_MN",
-                                "Consumo em kg MN/animal/dia"),
-                                ("OFERTA_MN",
-                                "Oferta em kg MN/animal/dia")] {
-                                    option value=(v)
-                                    selected[self.valor("base") == v] {
-                                        (texto) }
-                                }
-                            }
-                        }
+                        (Campo { erro: self.erro("horizonte"), nome: "horizonte",
+                            rotulo: "Horizonte (dias)", valor: self.valor("horizonte"),
+                            tipo: "number", dica: "Inteiro positivo", obrigatorio: true })
                     }
-                    div.form-grid {
-                        @for (nome, rotulo, dica) in [
-                        ("origem_consumo", "Origem do consumo",
-                        "Estimado, informado ou observado"),
-                        ("origem_sobras", "Origem das sobras e perdas",
-                        "Medição ou hipótese explícita"),
-                        ] {
-                            (Campo { erro: self.erro(nome), nome, rotulo, valor:
-                                self.valor(nome), tipo: "text", dica,
-                                obrigatorio: true })
-                        }
+                    p.muted {
+                        "Padrão: consumo estimado, quantidades em kg MS/animal/dia e "
+                        "hipótese de sobras e perdas zero. Revise conforme sua realidade."
                     }
-                    (Expansivel { id: "medicao", aberto:
-                        false, titulo:
-                        html! { "Consumo observado por pesagem do lote (opcional)" },
-                        conteudo:
-                        html! {
-                            p.muted {
-                                "Mesmos animais e período; informe MS de oferta e sobras. \
-                            Isso não determina a composição ingerida quando há seleção de
-                            partículas." }
-                            div.form-grid {
-                                @for (nome, rotulo) in [("oferta_observada",
-                                "MS ofertada ao lote (kg)"),
-                                ("sobras_observadas",
-                                "MS das sobras do lote (kg)"),
-                                ("periodo_observado",
-                                "Período da medição (dias)")] {
-                                    (Campo { erro: self.erro(nome), nome, rotulo,
-                                        valor:
-                                        self.valor(nome), tipo: "number",
-                                        dica:
-                                        "Deixe consumo-alvo vazio ao usar medição",
-                                        obrigatorio: false })
-                                }
-                            }
-                        }, })
-                    label.check { input type="checkbox" name="ue"
-                        checked[self.valor("ue")
-                        == "on"];
-                        "Ativar referência UE adicional para contaminantes (não é legislação \
-                                        brasileira)"
-                    }
+                    (super::configuracoes_cenario::ConfiguracoesCenario(self))
                 }
                 (super::ingredientes::Ingredientes(self))
                 section.card {
-                    h2 { "3. Base da comparação" }
-                    div.field {
-                        (Rotulo { nome: "base_comparacao", texto: "Base da simulação de MS",
-                            obrigatorio: false })
-                        select #base_comparacao name="base_comparacao" {
-                            @for v in ["Consumo de MS fixo",
-                            "Quantidade de MN fixa"] {
-                                option selected[self.valor("base_comparacao")
-                                == v] { (v) }
-                            }
-                        }
-                        small {
-                            "Ao alterar MS, esta escolha governa a conversão." }
-                    }
                     div.alert {
                         "O resultado avalia o perfil implementado. Fibra física, vitaminas e \
                                 demais dimensões sem dados continuam identificadas como não

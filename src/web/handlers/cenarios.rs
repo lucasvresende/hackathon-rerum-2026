@@ -38,7 +38,7 @@ pub async fn novo(
     let mut campos = dieta
         .and_then(|dieta| servico::exemplo(&opcoes, dieta))
         .map(|c| formularios::campos_cenario(&c))
-        .unwrap_or_default();
+        .unwrap_or_else(formularios::padroes_cenario);
     if q.get("exemplo").is_some_and(|v| v == "inicial") {
         let c = crate::aplicacao::exemplos::cenario_inicial(&e.pool).await?;
         campos = formularios::campos_cenario(&c);

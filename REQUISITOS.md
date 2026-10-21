@@ -391,7 +391,12 @@ Essas hipóteses alimentarão o cenário sintético sem serem apresentadas como 
 ou comprovações sobre animais e produtos reais. Campos ausentes permanecerão desconhecidos.
 Copiar ou editar não removerá automaticamente a identificação sintética nem a procedência.
 
-Os formulários deverão apresentar todos os campos, sem alternância de modo de preenchimento.
+Os formulários deverão disponibilizar todos os campos. Na criação de cenários, configurações
+avançadas poderão iniciar recolhidas, e somente ingredientes selecionados exibirão editores.
+Novos cenários terão horizonte de um dia, datas atuais no Brasil, base em kg MS, consumo
+estimado e hipóteses explícitas de sobras/perdas zero. Nome, lote, seleção, preços e estoque
+não serão inventados. A seleção terá atualização htmx e botão equivalente sem JavaScript;
+desmarcar preservará o rascunho sem incluir o ingrediente no cálculo.
 Asteriscos, mensagens acima dos controles e validação do navegador complementarão a validação
 obrigatória no servidor. Expansões respeitarão teclado, foco, movimento reduzido, impressão e
 alternativa sem JavaScript. Recursos visuais serão locais.

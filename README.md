@@ -280,3 +280,21 @@ as capturas. O build do pacote de produção é executado localmente.
 
 O desenvolvimento teve auxílio de IA, com verificação por compilador e testes.
 O cálculo operacional é determinístico e não utiliza modelos de linguagem.
+
+### Preenchimento de novas dietas
+
+Novas dietas começam com horizonte de um dia, datas civis atuais de São Paulo, consumo
+estimado, quantidades em kg MS/animal/dia e hipóteses explícitas de sobras/perdas zero.
+Nome, lote, ingredientes, cotação e disponibilidade exigem escolha ou informação do operador.
+As opções de datas, consumo, sobras, bases, preço do leite e referência UE ficam em
+“Configurações avançadas”. Os valores das demonstrações e cópias são preservados.
+
+Em “Selecionar ingredientes”, marque as composições desejadas. O htmx atualiza o formulário
+sem exigir que os demais campos estejam completos; somente os selecionados exibem editores.
+Desmarcar preserva o rascunho para uma nova seleção, mas exclui o ingrediente do cálculo.
+Sem JavaScript, use “Atualizar ingredientes selecionados”. As configurações avançadas ficam
+expostas nessa alternativa. Preços, estoque e disponibilidade ilimitada não são presumidos.
+As opções comerciais, MS, perdas, inclusão e resolução ficam no expansível de cada ingrediente.
+
+A seleção usa o evento `change` do [htmx 4](https://four.htmx.org/reference/attributes/hx-trigger)
+e a rota existente de atualização, com validação e persistência somente ao calcular.
