@@ -24,6 +24,13 @@ impl Render for Inicio<'_> {
                 target="_blank" rel="noopener" title="Abre em nova guia" {
                     "Formular dieta" }
             }
+            section.card {
+                h2 { "Primeira simulação" }
+                p { "Lotes e alimentos de exemplo já estão cadastrados. "
+                    "Execute o cenário completo e altere valores para comparar resultados." }
+                a.button.secondary href="/cenarios/novo?exemplo=inicial" target="_blank"
+                rel="noopener" { "Abrir cenário de exemplo" }
+            }
             section.stats.overview-stats aria-label="Resumo da aplicação" {
                 @for (numero, dica) in [
                 (self.lotes.len().to_string(), &conceitos::LOTES),

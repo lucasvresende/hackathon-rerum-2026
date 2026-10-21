@@ -62,7 +62,7 @@ const CARTAS: &[Carta] = &[
             "Preencha os estados fisiológicos e de manejo. Informe explicitamente se as vacas \
             são adultas, gestantes, em crescimento, com peso estável e confinadas. Desconhecido \
             não significa não. Separe animais com características diferentes em outros lotes.",
-            "Opcionalmente, consulte a prévia de um template, carregue e edite os valores. \
+            "Use um lote de exemplo já cadastrado ou Preencher com exemplo; edite os valores. \
             Use Salvar revisão. Para corrigir um lote, volte à lista e escolha Revisar. \
             A alteração gera nova revisão; as entradas das execuções antigas ficam preservadas.",
         ],

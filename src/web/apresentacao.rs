@@ -41,7 +41,15 @@ pub async fn cenario(
     erros: &[crate::dominio::validacao::Problema],
     parcial: bool,
 ) -> Result<Markup, ErroWeb> {
-    let cenarios::OpcoesCenario { lotes, alimentos } = cenarios::opcoes(&e.pool).await?;
+    let cenarios::OpcoesCenario {
+        lotes,
+        mut alimentos,
+    } = cenarios::opcoes(&e.pool).await?;
+    alimentos.sort_by_key(|a| {
+        campos
+            .get(&format!("usar-{}", a.composicao_id))
+            .is_none_or(|v| v != "on")
+    });
     let formulario = FormularioCenario {
         campos,
         lotes: &lotes,

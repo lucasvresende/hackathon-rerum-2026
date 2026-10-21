@@ -4,7 +4,9 @@ Os arquivos Rust continuam em `tests/*.rs`, com descoberta automática pelo Carg
 Os testes JavaScript de integração ficam em `tests/javascript/e2e/`:
 
 - `navegadores.mjs`: prepara banco e servidor temporários e executa os três navegadores.
-- `templates.mjs`: referências editáveis, cadastros e componentes dos formulários.
+- `exemplos.mjs`: primeiro cálculo preenchido, remoção e restauração explícita de exemplos,
+  identificação sintética, tela móvel e execução com e sem JavaScript nos três navegadores.
+- `templates.mjs`: preenchimento com exemplos, cadastros e componentes dos formulários.
   Confere campos antes ocultados pelo modo simplificado em lotes, alimentos e cenários,
   inclusive após carregar modelos e validar campos; não há alternância de visualização.
 - `dicas.mjs`: dicas no cenário, catálogo/cadastro e parecer; IDs únicos, rótulos, ausência
@@ -22,8 +24,8 @@ npx playwright install --with-deps chromium firefox webkit
 npm run test:e2e
 ```
 
-`npm test` é um atalho compatível. Não compile novamente enquanto a suíte estiver em execução:
-o motor de formulação usa o executável do servidor para iniciar o processo filho.
+`npm test` é um atalho compatível. A suíte copia o binário para seu diretório temporário antes
+de iniciar o servidor; o motor filho usa essa cópia estável mesmo que o Cargo recompile o original.
 O job JavaScript do CI recebe o binário produzido pelo job Rust.
 
 A suíte usa Playwright e `node:assert/strict`, sem dependências adicionais.
@@ -58,7 +60,7 @@ uma janela negativa de 400 ms; não há pausas fixas para esperar respostas ou t
 Os cenários de rede usam `route.fulfill`/`route.abort`; os demais usam respostas reais.
 
 Para diagnóstico, `FEEDYOURCOW_SUITES` aceita `htmx`, `condicionais`, `falhas`, `guias`,
-`inicio`, `dicas` e `fluxos`, separados por vírgula. O padrão executa todos. Exemplo:
+`inicio`, `dicas`, `fluxos` e `exemplos`, separados por vírgula. O padrão executa todos. Exemplo:
 
 ```sh
 FEEDYOURCOW_NAVEGADORES=chromium FEEDYOURCOW_SUITES=falhas npm run test:e2e
@@ -98,3 +100,10 @@ Chromium, Firefox e WebKit em 21/10/2026, incluindo visibilidade dos campos, tem
 erros, trocas por htmx e uso sem JavaScript. As capturas móvel de alimento e desktop de lote
 com erro foram inspecionadas. Build, 53 testes Rust, clippy, rustfmt, qualidade textual e
 verificação das 28 consultas SQLx também passaram.
+
+## Cadastros de exemplo
+
+A suíte `exemplos` verifica primeiro cálculo com cinco ingredientes preenchidos, identificação
+sintética, remoção e restauração explícita, filtro por categoria, layout móvel e uso sem JavaScript.
+As capturas `*-exemplos-*` e `*-exemplo-*` complementam a inspeção dos cadastros e do parecer.
+Os três navegadores passaram na suíte completa e na verificação final de exemplos em 21/10/2026.

@@ -44,6 +44,7 @@ impl Render for Cadastro<'_> {
                 input type="hidden" name="id" value=(self.valor("id"));
                 input type="hidden" name="anterior"
                 value=(self.valor("anterior"));
+                input type="hidden" name="origem_copia" value=(self.valor("origem_copia"));
                 (ResumoErros(self.erros))
                 p.muted { "Campos obrigatórios: *" }
                 (SeletorModelo {
@@ -122,7 +123,8 @@ impl Render for Cadastro<'_> {
                     }
                 }
                 h2 { "Condições declaradas" }
-                p.muted { "Desconhecido é diferente de não. Confirme somente o que foi avaliado." }
+                p.muted { "Desconhecido é diferente de não. "
+                    "Nos exemplos, estas condições são hipóteses sintéticas." }
                 div.form-grid {
                     @for (nome, rotulo) in super::campos_cadastro::estados(lote) {
                         div.field { label for=(nome) { (rotulo) }

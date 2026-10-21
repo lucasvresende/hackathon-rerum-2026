@@ -99,7 +99,8 @@ pub async fn preparar(pool: &SqlitePool) -> Resultado<()> {
     .await?;
     if crate::persistencia::cadastros::lotes(pool)
         .await?
-        .is_empty()
+        .iter()
+        .all(|l| l.nome != "Lote demonstração")
     {
         let mut lote = lote();
         crate::persistencia::cadastros::salvar_lote(pool, &mut lote, true).await?;
@@ -112,8 +113,16 @@ pub async fn cenarios_salvos(pool: &SqlitePool) -> Resultado<()> {
     if !historico::listar(pool).await?.is_empty() {
         return Ok(());
     }
-    let lote = cadastros::lotes(pool).await?.remove(0);
-    let alimentos = cadastros::alimentos(pool).await?;
+    let lote = cadastros::lotes(pool)
+        .await?
+        .into_iter()
+        .find(|l| l.nome == "Lote demonstração")
+        .ok_or("Lote demonstração ausente")?;
+    let alimentos: Vec<_> = cadastros::alimentos(pool)
+        .await?
+        .into_iter()
+        .filter(|a| ["silagem", "milho", "soja", "mineral"].contains(&a.id.as_str()))
+        .collect();
     let base = conhecimento::ler(pool).await?;
     let mut cenarios = vec![
         cenario(lote.clone(), alimentos.clone(), true),

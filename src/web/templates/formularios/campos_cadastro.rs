@@ -101,7 +101,7 @@ pub fn estados(lote: bool) -> Vec<(&'static str, &'static str)> {
             ("excecao_animal", "Exceção legal documentada"),
             ("nnp_adicionado", "NNP intencionalmente adicionado"),
             ("medicamento", "Contém medicamento"),
-            ("autorizado", "Autorização comprovada"),
+            ("autorizado", "Autorização / hipótese do exemplo"),
         ]
     }
 }

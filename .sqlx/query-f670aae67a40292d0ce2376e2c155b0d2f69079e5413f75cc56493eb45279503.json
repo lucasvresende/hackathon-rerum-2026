@@ -1,0 +1,26 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT cenario FROM inicializacao_exemplos WHERE id = 1;\n",
+  "describe": {
+    "columns": [
+      {
+        "name": "cenario",
+        "ordinal": 0,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "inicializacao_exemplos",
+            "name": "cenario"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "f670aae67a40292d0ce2376e2c155b0d2f69079e5413f75cc56493eb45279503"
+}

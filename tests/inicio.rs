@@ -7,7 +7,7 @@ use http_body_util::BodyExt;
 use tower::ServiceExt;
 
 #[tokio::test]
-async fn visao_geral_explica_conceitos_mesmo_sem_cadastros() {
+async fn visao_geral_explica_conceitos_com_catalogo_inicial() {
     let diretorio = tempfile::tempdir().unwrap();
     let pool = banco::preparar(&diretorio.path().join("app.sqlite3"))
         .await
@@ -24,7 +24,8 @@ async fn visao_geral_explica_conceitos_mesmo_sem_cadastros() {
         let html = std::str::from_utf8(&bytes).unwrap();
         if rota == "/" {
             assert!(html.contains("Nenhum cenário calculado."));
-            assert_eq!(html.matches("<strong>0</strong>").count(), 3);
+            assert_eq!(html.matches("<strong>6</strong>").count(), 2);
+            assert!(html.contains("<strong>15</strong>"));
             for id in ["lotes", "animais", "composicoes", "cenarios", "perfil"] {
                 assert!(html.contains(&format!("popovertarget=\"dica-{id}\"")));
                 assert!(html.contains(&format!("aria-describedby=\"dica-{id}\"")));

@@ -38,6 +38,19 @@ pub async fn novo(
         .and_then(|dieta| servico::exemplo(&opcoes, dieta))
         .map(|c| formularios::campos_cenario(&c))
         .unwrap_or_default();
+    if q.get("exemplo").is_some_and(|v| v == "inicial") {
+        let c = crate::aplicacao::exemplos::cenario_inicial(&e.pool).await?;
+        campos = formularios::campos_cenario(&c);
+        // Limite demonstrativo do suplemento precisa acompanhar o formulário.
+        for i in &c.itens {
+            if let Some(maximo) = i.maximo_ms {
+                campos.insert(
+                    format!("max-{}", i.alimento.composicao_id),
+                    maximo.to_string(),
+                );
+            }
+        }
+    }
     if q.get("modo").is_some_and(|v| v == "formular") {
         campos.insert("modo".into(), "formular".into());
     }

@@ -81,8 +81,18 @@ async fn pareceres_explicam_estados_e_otimo_sem_modificar_calculos() {
         .await
         .unwrap();
     demonstracao::preparar(&pool).await.unwrap();
-    let lote = cadastros::lotes(&pool).await.unwrap().remove(0);
-    let alimentos = cadastros::alimentos(&pool).await.unwrap();
+    let lote = cadastros::lotes(&pool)
+        .await
+        .unwrap()
+        .into_iter()
+        .find(|l| l.nome == "Lote demonstração")
+        .unwrap();
+    let alimentos = cadastros::alimentos(&pool)
+        .await
+        .unwrap()
+        .into_iter()
+        .filter(|a| !a.id.starts_with("ex-"))
+        .collect::<Vec<_>>();
     let base = conhecimento::ler(&pool).await.unwrap();
     let mut cenario = demonstracao::cenario(lote, alimentos, false);
     let app = app(EstadoApp::novo(

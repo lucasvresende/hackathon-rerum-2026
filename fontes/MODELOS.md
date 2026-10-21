@@ -1,4 +1,20 @@
-# Fontes dos templates editáveis
+# Fontes dos cadastros de exemplo e referências históricas
+
+## Catálogo inicial v1
+
+A carga `dados_referencia/005_exemplos.sql` contém os seis lotes e quinze alimentos sintéticos
+especificados no anexo A de `REQUISITOS.md`, com fontes, hipóteses e receitas na procedência.
+Lotes representam um animal em condições assumidas compatíveis com o perfil do motor. Alimentos
+incluem todos os nutrientes do núcleo; misturas são ponderadas pela contribuição de matéria seca.
+Os originais são imutáveis e os cadastros de uso são editáveis, copiáveis e removíveis.
+Hipóteses sintéticas não equivalem a medições ou comprovações de produtos reais.
+
+## Referências parciais históricas
+
+Os quatro modelos abaixo permanecem preservados para procedência e reprodução de execuções antigas.
+O seletor atual apresenta o catálogo sintético completo; estas referências não são seus presets.
+As restrições descritas a seguir se aplicam à carga histórica, não às hipóteses do novo catálogo.
+
 
 Pesquisa consultada em 20/10/2026; a carga `dados_referencia/004_modelos.sql` preserva valores,
 unidades, número de observações, contexto e hashes. Aprovação nesta conversa: carregar valores
@@ -28,7 +44,7 @@ examinadas e excluídas como padrões para vacas adultas: população ou grandez
 Gordura, dias em lactação, número de animais e condições fisiológicas permanecem informados.
 
 Dados sintéticos A/B continuam separados em `002_demonstracao.sql`.
-O aplicativo não consulta a internet para aplicar templates ou executar cálculos.
+O aplicativo não consulta a internet para preencher exemplos ou executar cálculos.
 
 [s]: https://www.feedipedia.org/node/12871
 [m]: https://www.feedipedia.org/node/11664

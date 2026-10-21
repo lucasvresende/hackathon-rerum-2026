@@ -6,6 +6,7 @@ pub mod cenarios;
 pub mod comparacao;
 pub mod conhecimento;
 pub mod execucoes;
+pub mod exemplos;
 pub mod historico;
 pub mod inicio;
 pub mod lotes;

@@ -250,3 +250,10 @@ tbody tr:hover, tbody tr:focus-within { background-color: var(--linha-destaque);
 .section-concept { margin-bottom: 15px; }
 .food-card .concept-label > .text-link { margin-top: 0; }
 .food-card > .concept-label:last-child { margin-top: 18px; }
+
+.cadastro-actions { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+td .cadastro-actions { min-width: 110px; }
+.food-card > .cadastro-actions { margin-top: 18px; }
+.cadastro-actions details { width: 100%; }
+.cadastro-actions details form { padding-top: 12px; }
+.cadastro-actions summary { cursor: pointer; }

@@ -16,7 +16,7 @@ async fn carga_versionada_converte_unidades_e_rejeita_ativacao_parcial() {
     let modelos = templates::ler(&mut pool.acquire().await.unwrap())
         .await
         .unwrap();
-    assert_eq!(modelos.len(), 4);
+    assert_eq!(modelos.len(), 25);
     let silagem = modelos.iter().find(|m| m.id == "silagem-milho-v1").unwrap();
     let ca = silagem.valores.iter().find(|v| v.campo == "ca").unwrap();
     assert_eq!(ca.valor, "0.19");
@@ -39,7 +39,7 @@ async fn carga_versionada_converte_unidades_e_rejeita_ativacao_parcial() {
             .await
             .unwrap()
             .len(),
-        4
+        25
     );
     let sem_fonte = invalida
         .replace("teste-invalido", "teste-sem-fonte")
@@ -83,7 +83,7 @@ async fn template_editado_preserva_original_e_procedencia_no_backup() {
     let bytes = resposta.into_body().collect().await.unwrap().to_bytes();
     let html = std::str::from_utf8(&bytes).unwrap();
     assert!(html.contains("Confirme a substituição"));
-    assert!(cadastros::alimentos(&pool).await.unwrap().is_empty());
+    assert_eq!(cadastros::alimentos(&pool).await.unwrap().len(), 15);
     let resposta = app
         .clone()
         .oneshot(post(
@@ -107,7 +107,12 @@ async fn template_editado_preserva_original_e_procedencia_no_backup() {
     );
     let resposta = app.oneshot(post("/alimentos", salvar)).await.unwrap();
     assert!(resposta.headers().contains_key("hx-redirect"));
-    let alimento = cadastros::alimentos(&pool).await.unwrap().remove(0);
+    let alimento = cadastros::alimentos(&pool)
+        .await
+        .unwrap()
+        .into_iter()
+        .find(|a| !a.id.starts_with("ex-"))
+        .unwrap();
     assert_eq!(alimento.nutrientes[0], None);
     let base = conhecimento::ler(&pool).await.unwrap();
     let mut c = feed_your_cow::aplicacao::demonstracao::cenario(
@@ -156,9 +161,14 @@ async fn template_editado_preserva_original_e_procedencia_no_backup() {
             .await
             .unwrap()
             .len(),
-        4
+        25
     );
-    let a = cadastros::alimentos(&restaurado).await.unwrap().remove(0);
+    let a = cadastros::alimentos(&restaurado)
+        .await
+        .unwrap()
+        .into_iter()
+        .find(|a| !a.id.starts_with("ex-"))
+        .unwrap();
     assert_eq!(
         a.procedencia
             .unwrap()

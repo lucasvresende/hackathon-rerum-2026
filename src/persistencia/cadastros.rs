@@ -14,6 +14,17 @@ pub async fn lotes(pool: &SqlitePool) -> Resultado<Vec<Lote>> {
 }
 
 pub async fn salvar_lote(pool: &SqlitePool, lote: &mut Lote, novo: bool) -> Resultado<()> {
+    let mut tx = pool.begin().await?;
+    salvar_lote_conexao(&mut tx, lote, novo).await?;
+    tx.commit().await?;
+    Ok(())
+}
+
+pub async fn salvar_lote_conexao(
+    conexao: &mut sqlx::SqliteConnection,
+    lote: &mut Lote,
+    novo: bool,
+) -> Resultado<()> {
     let erros = crate::dominio::validacao::validar_lote(lote);
     if !erros.is_empty() {
         return Err(format!("Lote inválido: {erros:?}").into());
@@ -22,14 +33,13 @@ pub async fn salvar_lote(pool: &SqlitePool, lote: &mut Lote, novo: bool) -> Resu
     let conteudo = serde_json::to_string(lote)?;
     let animais = lote.animais as i64;
     let dias = lote.dias_lactacao as i64;
-    let mut tx = pool.begin().await?;
     if novo {
         sqlx::query_file!("queries/lotes/inserir.sql", lote.id, lote.nome)
-            .execute(&mut *tx)
+            .execute(&mut *conexao)
             .await?;
     } else {
         sqlx::query_file!("queries/lotes/atualizar.sql", lote.nome, lote.id)
-            .execute(&mut *tx)
+            .execute(&mut *conexao)
             .await?;
     }
     sqlx::query_file!(
@@ -44,9 +54,8 @@ pub async fn salvar_lote(pool: &SqlitePool, lote: &mut Lote, novo: bool) -> Resu
         dias,
         conteudo
     )
-    .execute(&mut *tx)
+    .execute(&mut *conexao)
     .await?;
-    tx.commit().await?;
     Ok(())
 }
 
@@ -60,6 +69,16 @@ pub async fn alimentos(pool: &SqlitePool) -> Resultado<Vec<Alimento>> {
 }
 
 pub async fn salvar_alimento(pool: &SqlitePool, a: &mut Alimento) -> Resultado<()> {
+    let mut tx = pool.begin().await?;
+    salvar_alimento_conexao(&mut tx, a).await?;
+    tx.commit().await?;
+    Ok(())
+}
+
+pub async fn salvar_alimento_conexao(
+    conexao: &mut sqlx::SqliteConnection,
+    a: &mut Alimento,
+) -> Resultado<()> {
     let erros = crate::dominio::validacao::validar_alimento(a);
     if !erros.is_empty() {
         return Err(format!("Composição inválida: {erros:?}").into());
@@ -68,9 +87,8 @@ pub async fn salvar_alimento(pool: &SqlitePool, a: &mut Alimento) -> Resultado<(
     let conteudo = serde_json::to_string(a)?;
     let classe = format!("{:?}", a.classe);
     let [ndt, pb, ca, p, fdn, amido, ee] = a.nutrientes;
-    let mut tx = pool.begin().await?;
     sqlx::query_file!("queries/alimentos/inserir.sql", a.id, a.nome, classe)
-        .execute(&mut *tx)
+        .execute(&mut *conexao)
         .await?;
     sqlx::query_file!(
         "queries/alimentos/inserir_composicao.sql",
@@ -89,7 +107,7 @@ pub async fn salvar_alimento(pool: &SqlitePool, a: &mut Alimento) -> Resultado<(
         a.natureza,
         conteudo
     )
-    .execute(&mut *tx)
+    .execute(&mut *conexao)
     .await?;
     let produto_id = Uuid::new_v4().to_string();
     sqlx::query_file!(
@@ -101,8 +119,7 @@ pub async fn salvar_alimento(pool: &SqlitePool, a: &mut Alimento) -> Resultado<(
         a.evidencia,
         conteudo
     )
-    .execute(&mut *tx)
+    .execute(&mut *conexao)
     .await?;
-    tx.commit().await?;
     Ok(())
 }

@@ -67,8 +67,8 @@ async fn carga_parcial_limpa_lacunas_e_nao_confirma_estados_nem_grava() {
     .unwrap();
     assert!(!incompativel.previa);
     assert_eq!(incompativel.erros[0].campo, "modelo");
-    assert!(cadastros::lotes(&pool).await.unwrap().is_empty());
-    assert!(cadastros::alimentos(&pool).await.unwrap().is_empty());
+    assert_eq!(cadastros::lotes(&pool).await.unwrap().len(), 6);
+    assert_eq!(cadastros::alimentos(&pool).await.unwrap().len(), 15);
 }
 
 #[tokio::test]

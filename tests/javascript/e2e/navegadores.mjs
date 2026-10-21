@@ -1,3 +1,4 @@
+import { testarExemplos } from './exemplos.mjs';
 import { testarDicas } from './dicas.mjs';
 import { testarInicio } from './inicio.mjs';
 import { testarHtmx } from './htmx.mjs';
@@ -7,18 +8,22 @@ import { testarGuias } from './guias.mjs';
 import { testarTemplates } from './templates.mjs';
 import assert from 'node:assert/strict';
 import { testarAjuda, conferirLinkAjuda } from './ajuda.mjs';
-import { mkdtempSync, mkdirSync, rmSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, rmSync, copyFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { resolve, join } from 'node:path';
 import { spawn, spawnSync } from 'node:child_process';
 import { chromium, firefox, webkit } from 'playwright';
 
-const nomesSuites = ['htmx', 'condicionais', 'falhas', 'guias', 'inicio', 'dicas', 'fluxos'];
+const nomesSuites = ['htmx', 'condicionais', 'falhas', 'guias', 'inicio', 'dicas',
+  'fluxos', 'exemplos'];
 const suites = new Set(process.env.FEEDYOURCOW_SUITES?.split(',') || nomesSuites);
 for (const suite of suites) assert.ok(nomesSuites.includes(suite), `Suíte desconhecida: ${suite}`);
 
 const diretorio = mkdtempSync(join(tmpdir(), 'feedyourcow-browser-'));
-const binario = resolve(process.env.FEEDYOURCOW_BINARIO || 'target/debug/feed-your-cow');
+const origemBinario = resolve(process.env.FEEDYOURCOW_BINARIO || 'target/debug/feed-your-cow');
+// Congela o executável: o solver filho não deve depender de um arquivo substituído pelo Cargo.
+const binario = join(diretorio, 'feed-your-cow');
+copyFileSync(origemBinario, binario);
 const url = process.env.FEEDYOURCOW_URL || 'http://127.0.0.1:3107';
 const ambiente = { ...process.env, FEEDYOURCOW_BANCO: join(diretorio, 'app.sqlite3'),
   FEEDYOURCOW_ENDERECO: new URL(url).host };
@@ -83,6 +88,7 @@ try {
       if (suites.has('condicionais')) await testarCondicionais(browser, url, artefatos, nome);
       if (suites.has('falhas')) await testarFalhas(browser, url, artefatos, nome);
       if (suites.has('guias')) await testarGuias(browser, url, artefatos, nome);
+      if (suites.has('exemplos')) await testarExemplos(browser, url, artefatos, nome);
       if (!suites.has('fluxos')) continue;
       await testarTemplates(page, url, artefatos, nome);
       await testarAjuda(page, url, artefatos, nome);

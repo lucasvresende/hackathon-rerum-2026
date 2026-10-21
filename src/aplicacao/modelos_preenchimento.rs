@@ -42,7 +42,7 @@ pub async fn preparar(
     let Some(modelo) = modelo else {
         carga.erros.push(problema(
             "modelo",
-            "Escolha um template para consultar a prévia.",
+            "Escolha um exemplo para consultar a prévia.",
         ));
         return Ok(carga);
     };
@@ -156,10 +156,10 @@ async fn procedencia(
     }
     let modelo = listar(pool)
         .await
-        .map_err(|_| problema("modelo", "Não foi possível consultar os templates."))?
+        .map_err(|_| problema("modelo", "Não foi possível consultar os exemplos."))?
         .into_iter()
         .find(|m| m.id == id && m.tipo == tipo.nome())
-        .ok_or_else(|| problema("modelo", "Template inexistente ou incompatível."))?;
+        .ok_or_else(|| problema("modelo", "Exemplo inexistente ou incompatível."))?;
     let mut campos: Vec<_> = modelo
         .valores
         .iter()

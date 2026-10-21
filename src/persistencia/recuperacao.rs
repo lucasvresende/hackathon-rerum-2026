@@ -32,6 +32,10 @@ pub async fn backup(pool: &SqlitePool, destino: &Path) -> Resultado<()> {
         destino.join("modelos.sql"),
         include_str!("../../dados_referencia/004_modelos.sql"),
     )?;
+    std::fs::write(
+        destino.join("exemplos.sql"),
+        include_str!("../../dados_referencia/005_exemplos.sql"),
+    )?;
     let mut manifesto = std::collections::BTreeMap::new();
     for nome in [
         "aplicacao.sqlite3",
@@ -40,6 +44,7 @@ pub async fn backup(pool: &SqlitePool, destino: &Path) -> Resultado<()> {
         "conhecimento.sql",
         "modelos.md",
         "modelos.sql",
+        "exemplos.sql",
     ] {
         let bytes = std::fs::read(destino.join(nome))?;
         use sha2::{Digest, Sha256};
@@ -70,7 +75,7 @@ pub async fn restaurar(origem: &Path, destino: &Path) -> Resultado<()> {
             return Err(format!("Backup corrompido: {nome}").into());
         }
     }
-    for nome in ["modelos.md", "modelos.sql"] {
+    for nome in ["modelos.md", "modelos.sql", "exemplos.sql"] {
         if let Some(esperado) = manifesto.get(nome) {
             use sha2::{Digest, Sha256};
             let hash = format!("{:x}", Sha256::digest(std::fs::read(origem.join(nome))?));
@@ -105,7 +110,7 @@ pub async fn restaurar(origem: &Path, destino: &Path) -> Resultado<()> {
     ] {
         std::fs::copy(origem.join(nome), destino.join(nome))?;
     }
-    for nome in ["modelos.md", "modelos.sql"] {
+    for nome in ["modelos.md", "modelos.sql", "exemplos.sql"] {
         if manifesto.contains_key(nome) {
             std::fs::copy(origem.join(nome), destino.join(nome))?;
         }

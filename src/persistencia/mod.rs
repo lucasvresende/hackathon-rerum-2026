@@ -5,3 +5,5 @@ pub mod historico;
 pub mod recuperacao;
 pub mod templates;
 mod validacao;
+
+pub mod exemplos;

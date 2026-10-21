@@ -14,15 +14,17 @@ impl Render for SeletorModelo<'_> {
         let aplicado = texto(self.campos, "modelo_aplicado");
         html! {
             section.templates {
-                h2 { "Template de preenchimento (opcional)" }
+                h2 { "Preencher com exemplo" }
                 p.muted { "Carregue uma referência e edite os valores antes de salvar. "
-                    "O template original permanece igual; confirme os dados reais do cadastro." }
+                    "O original permanece igual. "
+                    "Condições sintéticas são hipóteses para simulação." }
                 input type="hidden" name="modelo_aplicado" value=(aplicado);
                 div.field {
-                    label for="modelo" { "Template disponível" }
+                    label for="modelo" { "Exemplo disponível" }
                     select #modelo name="modelo" {
                         option value="" { "Selecione para consultar a prévia" }
-                        @for m in self.modelos.iter().filter(|m| m.tipo == self.tipo) {
+                        @for m in self.modelos.iter()
+                        .filter(|m| m.tipo == self.tipo && m.id.starts_with("ex-")) {
                             option value=(&m.id) selected[texto(self.campos,
                             "modelo") == m.id] {
                                 (&m.nome)
@@ -34,11 +36,11 @@ impl Render for SeletorModelo<'_> {
                 hx-target="#formulario" hx-swap="outerHTML"
                 formnovalidate data-sem-validacao name="acao_modelo"
                 value="previa" {
-                    "Ver prévia do template"
+                    "Ver prévia do exemplo"
                 }
                 @if !aplicado.is_empty() {
                     p.alert role="status" {
-                        "Template carregado: " (aplicado)
+                        "Exemplo aplicado: " (aplicado)
                         ". Edite os valores abaixo; alterações ficam registradas por campo."
                     }
                 }
@@ -64,14 +66,14 @@ impl Render for SeletorModelo<'_> {
                             label.check for="confirmar_modelo" {
                                 input #confirmar_modelo type="checkbox"
                                 name="confirmar_modelo";
-                                "Confirmo substituir os campos do template e revisar os valores."
+                                "Confirmo substituir os campos do exemplo e revisar os valores."
                             }
                             button.button type="submit" formaction=(format!("{rota}?acao=aplicar"))
                             hx-post=(format!("{rota}?acao=aplicar"))
                             hx-target="#formulario" hx-swap="outerHTML"
                             formnovalidate data-sem-validacao name="acao_modelo"
                             value="aplicar" {
-                                "Carregar template para editar"
+                                "Preencher com exemplo"
                             }
                         }
                     }
@@ -86,7 +88,7 @@ impl Render for Procedencia<'_> {
     fn render(&self) -> Markup {
         html! {
             div.template-history {
-                h3 { "Template de origem: " (&self.0.modelo.nome) }
+                h3 { "Exemplo de origem: " (&self.0.modelo.nome) }
                 p { (&self.0.modelo.contexto) " " (&self.0.modelo.lacunas) }
                 p { "Fonte: " (&self.0.modelo.fonte_titulo)
                     " · versão " (&self.0.modelo.versao) }

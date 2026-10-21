@@ -6,3 +6,5 @@ pub mod ensaio;
 pub mod execucao;
 pub mod historico;
 pub mod modelos_preenchimento;
+
+pub mod exemplos;

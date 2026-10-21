@@ -47,7 +47,12 @@ async fn erros_indicam_campos_e_post_invalido_nao_grava() {
     for nome in ["origem", "pb", "rotulo_max_ms"] {
         assert!(campos.iter().any(|c| c == nome), "{nome}: {campos:?}");
     }
-    let mut lote = cadastros::lotes(&pool).await.unwrap().remove(0);
+    let mut lote = cadastros::lotes(&pool)
+        .await
+        .unwrap()
+        .into_iter()
+        .find(|l| l.nome == "Lote demonstração")
+        .unwrap();
     lote.peso = 700.01;
     assert!(
         validar_lote(&lote).is_empty(),

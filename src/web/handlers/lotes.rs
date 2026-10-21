@@ -19,11 +19,16 @@ pub fn rotas() -> Router<EstadoApp> {
         .route("/lotes", get(listar).post(salvar))
         .route("/lotes/novo", get(novo))
         .route("/lotes/{id}/editar", get(editar))
+        .route("/lotes/{id}/copiar", get(copiar))
 }
 
 pub async fn listar(State(e): State<EstadoApp>) -> Result<Markup, ErroWeb> {
     let lotes = cadastros::lotes(&e.pool).await?;
-    Ok(crate::web::templates::paginas::lotes::Lotes { lotes: &lotes }.render())
+    Ok(crate::web::templates::paginas::lotes::Lotes {
+        lotes: &lotes,
+        token: &e.csrf,
+    }
+    .render())
 }
 
 pub async fn novo(State(e): State<EstadoApp>) -> Result<Markup, ErroWeb> {
@@ -42,6 +47,15 @@ pub async fn editar(State(e): State<EstadoApp>, Path(id): Path<String>) -> Resul
     .await
 }
 
+pub async fn copiar(State(e): State<EstadoApp>, Path(id): Path<String>) -> Result<Markup, ErroWeb> {
+    let registro = servico::obter_lote(&e.pool, &id).await?;
+    let mut campos = formularios::campos_lote(&registro);
+    campos.insert("id".into(), String::new());
+    campos.insert("origem_copia".into(), id);
+    campos.insert("nome".into(), format!("{} — cópia", registro.nome));
+    apresentacao::cadastro(TipoCadastro::Lote, &campos, &[], &e, false).await
+}
+
 pub async fn salvar(
     State(e): State<EstadoApp>,
     headers: HeaderMap,
@@ -57,6 +71,7 @@ pub async fn salvar(
                 &mut lote,
                 formularios::texto(&c, "id").is_empty(),
                 formularios::texto(&c, "modelo_aplicado"),
+                formularios::texto(&c, "origem_copia"),
             )
             .await
             {

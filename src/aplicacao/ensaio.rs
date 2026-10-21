@@ -11,8 +11,16 @@ pub async fn executar() -> Resultado<()> {
     std::fs::create_dir(&diretorio)?;
     let pool = banco::preparar(&diretorio.join("ensaio.sqlite3")).await?;
     demonstracao::preparar(&pool).await?;
-    let lote = cadastros::lotes(&pool).await?.remove(0);
-    let ingredientes = cadastros::alimentos(&pool).await?;
+    let lote = cadastros::lotes(&pool)
+        .await?
+        .into_iter()
+        .find(|l| l.nome == "Lote demonstração")
+        .ok_or("Lote demonstração ausente")?;
+    let ingredientes = cadastros::alimentos(&pool)
+        .await?
+        .into_iter()
+        .filter(|a| ["silagem", "milho", "soja", "mineral"].contains(&a.id.as_str()))
+        .collect();
     let base = conhecimento::ler(&pool).await?;
     let original = demonstracao::cenario(lote, ingredientes, false);
     let mut medidas = std::collections::BTreeMap::new();

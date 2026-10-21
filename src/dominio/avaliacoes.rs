@@ -112,7 +112,7 @@ pub(crate) fn restricoes(c: &Cenario, p: &mut Parecer) {
             });
         }
         if item.alimento.classe == Classe::Suplemento && x > TOLERANCIA {
-            if let Some(teto) = item.alimento.rotulo_max_ms {
+            if let Some(teto) = item.teto_suplemento() {
                 p.comparar(Comparacao {
                     regra: "FOR-01",
                     dimensao: "Inclusão e estoque",
@@ -121,7 +121,15 @@ pub(crate) fn restricoes(c: &Cenario, p: &mut Parecer) {
                     maximo: true,
                     sanitario: false,
                     unidade: "kg MS/animal/dia",
-                    texto: &format!("{}: teto do rótulo.", item.alimento.nome),
+                    texto: &format!(
+                        "{}: {}.",
+                        item.alimento.nome,
+                        if item.alimento.rotulo_max_ms.is_some() {
+                            "teto do rótulo"
+                        } else {
+                            "hipótese explícita de teto no cenário sintético"
+                        }
+                    ),
                 });
             } else {
                 p.registrar(

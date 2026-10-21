@@ -14,6 +14,7 @@ pub use super::seguranca::autorizado;
 pub fn app(estado: EstadoApp) -> Router {
     let app = Router::new()
         .merge(inicio::rotas())
+        .merge(super::handlers::exemplos::rotas())
         .merge(ajuda::rotas())
         .merge(lotes::rotas())
         .merge(alimentos::rotas())

@@ -49,6 +49,10 @@ pub async fn carregar(
     if carga.previa {
         campos.insert("previa_modelo".into(), "on".into());
     }
+    if carga.aplicado.is_some() {
+        // Remove inclusive metadados e laudos anteriores; preserva só identidade e proteção.
+        campos.retain(|k, _| ["csrf", "id", "anterior", "modelo"].contains(&k.as_str()));
+    }
     campos.extend(carga.substituicoes);
     if let Some(id) = carga.aplicado {
         campos.insert("modelo_aplicado".into(), id);

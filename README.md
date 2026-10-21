@@ -29,9 +29,10 @@ cargo run -- servir
 ```
 
 Abra [http://127.0.0.1:3000](http://127.0.0.1:3000) e encerre com Ctrl+C.
-`preparar` aplica migrações e carrega o conhecimento e os modelos de preenchimento.
-Para experimentar, substitua `preparar` por `demonstrar`: o comando também cria lotes,
-quatro composições sintéticas e cenários de exemplo, incluindo pendência e bloqueio.
+`preparar` aplica migrações e carrega o conhecimento, seis lotes de um animal e quinze alimentos
+sintéticos, incluindo duas misturas. Na Visão geral, use **Abrir cenário de exemplo** para calcular
+sem cadastrar ou preencher dados previamente. Os exemplos seguem o anexo A de `REQUISITOS.md`.
+`demonstrar` acrescenta as fixtures históricas A/B, pendência e bloqueio para regressão e inspeção.
 Esses dados não representam análises ou cotações reais.
 
 A compilação usa metadados SQLx versionados em `.sqlx/`, sem exigir um banco operacional.
@@ -61,9 +62,15 @@ O servidor aceita apenas loopback; o MVP não inclui autenticação ou acesso co
 
 Os formulários apresentam todos os campos, sem modo de preenchimento simplificado.
 As seções expansíveis continuam disponíveis para organizar grupos de informações.
-Os modelos de preenchimento permitem consultar uma prévia e carregar valores para edição.
-Lacunas e condições desconhecidas precisam ser revisadas; aplicar um modelo não confirma
-autorização de ingredientes nem adequação ao perfil. A procedência acompanha o cadastro salvo.
+Use **Preencher com exemplo** em um formulário ou **Criar cópia** em um cadastro existente.
+Exemplos permitem edição e remoção como os demais registros. **Restaurar exemplos** oferece cópia
+independente ou restauração do registro inicial com nova revisão, mediante confirmação explícita.
+O original versionado e o histórico são preservados. Reiniciar ou repetir `preparar` não desfaz
+alterações nem recria exclusões; a inicialização dos registros e seu marcador são atômicos.
+Valores nutricionais, preços e condições sintéticas são hipóteses de demonstração. A procedência
+acompanha o cadastro e o parecer; a ausência de laudo continua desconhecida. Para suplementos
+sintéticos, o máximo de inclusão explícito do cenário pode ser um teto demonstrativo, identificado
+no parecer; não representa rótulo comercial. Produtos reais continuam exigindo limite de rótulo.
 Cadastros abrem em nova guia; ao retornar, o cenário atualiza as opções e preserva os campos.
 “Atualizar cadastros” oferece a atualização manual.
 
@@ -207,6 +214,9 @@ RUST_LOG=warn cargo run --quiet -- ensaiar
 ```
 
 Os testes Rust cobrem cálculos, regras, otimização, persistência, contratos HTTP e recuperação.
+`tests/exemplos.rs` verifica catálogo completo, receitas ponderadas, primeiro cálculo, inicialização
+atômica, preservação de alterações/exclusões, restauração explícita e backup. As fixtures A/B são
+selecionadas por identidade, independentemente do catálogo incluído no primeiro uso.
 `qualidade.py` exige até 100 caracteres por linha e avisa sobre módulos acima de 300 linhas.
 `verificar_sqlx.py` recria o banco de compilação e compara as consultas com o cache `.sqlx/`.
 `ensaiar` usa banco isolado, cinco aquecimentos e 100 execuções por operação: a meta de p95

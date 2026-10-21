@@ -6,15 +6,15 @@ export async function testarHtmx(browser, url, artefatos, navegador) {
   await executarCaso(browser, url, artefatos, navegador, 'htmx-modelos', async page => {
     await page.goto(`${url}/alimentos/novo`);
     await page.locator('#nome').fill('Rascunho de composição');
-    await page.locator('#modelo').selectOption('silagem-milho-v1');
+    await page.locator('#modelo').selectOption('ex-a01');
     const csrf = await page.locator('[name=csrf]').inputValue();
     await observarDocumento(page);
     const previa = esperarPost(page, '/cadastros/alimento/modelo');
-    await page.getByRole('button', { name: 'Ver prévia do template' }).click();
+    await page.getByRole('button', { name: 'Ver prévia do exemplo' }).click();
     const r = await previa;
     assert.equal(r.status(), 200);
     await conferirPost(r, '/cadastros/alimento/modelo', csrf,
-      { modelo: 'silagem-milho-v1', nome: 'Rascunho de composição' });
+      { modelo: 'ex-a01', nome: 'Rascunho de composição' });
     assert.doesNotMatch(await r.text(), /<!DOCTYPE|<html/i);
     await conferirFragmento(page, 1);
     assert.equal(await page.locator('#nome').inputValue(), 'Rascunho de composição');
@@ -23,14 +23,14 @@ export async function testarHtmx(browser, url, artefatos, navegador) {
       document.activeElement), true, 'A prévia recebe foco depois da troca');
     await page.locator('#confirmar_modelo').check();
     const aplicar = esperarPost(page, '/cadastros/alimento/modelo');
-    await page.getByRole('button', { name: 'Carregar template para editar' }).click();
+    await page.getByRole('button', { name: 'Preencher com exemplo' }).click();
     const resposta = await aplicar;
     assert.equal(new URL(resposta.url()).searchParams.get('acao'), 'aplicar');
     await conferirPost(resposta, '/cadastros/alimento/modelo', csrf,
-      { confirmar_modelo: 'on', modelo: 'silagem-milho-v1' });
+      { confirmar_modelo: 'on', modelo: 'ex-a01' });
     await conferirFragmento(page, 2);
     assert.equal(await page.locator('#ms').inputValue(), '32.5');
-    assert.equal(await page.locator('#ndt').inputValue(), '');
+    assert.equal(Number(await page.locator('#ndt').inputValue()), 65);
     assert.equal(await page.locator('#fornecedor').isVisible(), true);
     assert.equal(await page.locator('label').evaluateAll(labels =>
       labels.every(l => l.querySelectorAll('.required').length <= 1)), true);

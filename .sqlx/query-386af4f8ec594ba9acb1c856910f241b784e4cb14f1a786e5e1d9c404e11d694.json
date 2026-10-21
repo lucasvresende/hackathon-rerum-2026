@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO inicializacao_exemplos(id, cenario) VALUES (1, ?);\n",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": []
+  },
+  "hash": "386af4f8ec594ba9acb1c856910f241b784e4cb14f1a786e5e1d9c404e11d694"
+}

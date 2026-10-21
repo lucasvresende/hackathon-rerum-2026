@@ -268,3 +268,16 @@ pub struct LimiteContaminante {
     pub umidade: f64,
     pub unidade: String,
 }
+
+impl Item {
+    /// Exemplos sintéticos admitem teto explícito do cenário, sem inventar rótulo comercial.
+    pub fn teto_suplemento(&self) -> Option<f64> {
+        self.alimento.rotulo_max_ms.or_else(|| {
+            if self.alimento.natureza == "SINTETICA" {
+                self.maximo_ms
+            } else {
+                None
+            }
+        })
+    }
+}

@@ -39,7 +39,7 @@ pub struct CampoPreenchido {
     pub alterado: bool,
 }
 
-/// Lista fechada: modelos não podem confirmar estados de segurança nem fornecer código.
+/// Lista fechada de campos; condições assumidas exigem natureza sintética na validação.
 pub fn unidade_campo(tipo: &str, campo: &str) -> Option<&'static str> {
     match (tipo, campo) {
         ("lote", "peso") => Some("kg"),
@@ -52,6 +52,18 @@ pub fn unidade_campo(tipo: &str, campo: &str) -> Option<&'static str> {
         ) => Some("texto"),
         ("alimento", "ms") => Some("% MN"),
         ("alimento", "ndt" | "pb" | "ca" | "p" | "fdn" | "amido" | "ee") => Some("% MS"),
+        (
+            "lote",
+            "nome" | "animais" | "idade_meses" | "estado_produtivo" | "destinacao"
+            | "dias_lactacao" | "adulta" | "gestante" | "crescimento" | "peso_estavel"
+            | "confinada" | "correcao_ambiente" | "correcao_atividade" | "agua" | "ordem_parto"
+            | "dispersao_peso" | "condicao_corporal" | "observacoes",
+        )
+        | (
+            "alimento",
+            "data" | "origem_animal" | "excecao_animal" | "nnp_adicionado" | "medicamento"
+            | "autorizado" | "evidencia" | "fornecedor" | "lote_fisico" | "rotulo_max_ms",
+        ) => Some("texto"),
         _ => None,
     }
 }

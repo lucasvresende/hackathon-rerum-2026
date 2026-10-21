@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "UPDATE alimentos SET ativo = 0 WHERE id = ?;\n",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": []
+  },
+  "hash": "61d1c103db5c22d3c3a2810c37b918fcbabdf53bb186b0989c366e6318ed73b4"
+}

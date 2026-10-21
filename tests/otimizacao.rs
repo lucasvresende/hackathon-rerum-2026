@@ -11,8 +11,18 @@ async fn exemplo() -> (Cenario, Conhecimento) {
         .unwrap();
     demonstracao::preparar(&pool).await.unwrap();
     let mut c = demonstracao::cenario(
-        cadastros::lotes(&pool).await.unwrap().remove(0),
-        cadastros::alimentos(&pool).await.unwrap(),
+        cadastros::lotes(&pool)
+            .await
+            .unwrap()
+            .into_iter()
+            .find(|l| l.nome == "Lote demonstração")
+            .unwrap(),
+        cadastros::alimentos(&pool)
+            .await
+            .unwrap()
+            .into_iter()
+            .filter(|a| !a.id.starts_with("ex-"))
+            .collect::<Vec<_>>(),
         false,
     );
     c.formular = true;

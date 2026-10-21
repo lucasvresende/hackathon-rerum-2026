@@ -674,6 +674,9 @@ somente em cenário separado. Sem dados de sobras, não afirmar ingestão observ
 Respeitar mínimo/máximo por ingrediente na base declarada, convertendo para a unidade do modelo.
 Em MN bruta, necessidade no horizonte não poderá superar estoque disponível.
 Para suplemento concentrado, limite de rótulo ausente não será substituído por inclusão de 100%.
+Em cenário com composição SINTETICA, admitir o máximo de inclusão informado explicitamente como
+hipótese de teto demonstrativo, identificado no parecer; nunca como rótulo comercial. Sem esse
+máximo nem rótulo, a pendência permanece. Essa hipótese não se aplica a produtos de natureza real.
 Exigir mínimo <= máximo; para frações da MS, exigir 0 <= mínimo <= máximo <= 1.
 
 Para alimento comum sem restrição específica, o intervalo matemático poderá ser de zero ao
@@ -1346,3 +1349,23 @@ As hipóteses adicionais estão em A.1 a A.4 e não serão atribuídas às publi
 [a-silagem]: https://www.feedipedia.org/node/12871
 [a-polpa]: https://www.feedipedia.org/node/680
 [a-missouri]: http://agebb.missouri.edu/dairy/byprod/energygain.php
+
+### A.6. Cenário inicial completo
+
+Usar o lote ex-l03, horizonte de sete dias e quantidades em kg MS/animal/dia. As datas de avaliação
+e aplicação serão preenchidas com a data civil atual em America/Sao_Paulo ao abrir o exemplo.
+A composição original será preservada; o formulário não recriará cadastros removidos.
+
+| Alimento | Quantidade (kg MS) | Preço sintético (R$/kg MN) | Máximo (kg MS) |
+| --- | ---: | ---: | ---: |
+| ex-a01 | 11,0 | 0,25 | Não informado |
+| ex-a06 | 0,8 | 1,30 | Não informado |
+| ex-a07 | 3,0 | 2,20 | Não informado |
+| ex-a10 | 2,0 | 1,10 | Não informado |
+| ex-a12 | 0,3 | 4,00 | 0,3, hipótese demonstrativa |
+
+Registrar hipóteses de perdas e sobras zero, disponibilidade sem limite, inclusão mínima zero e
+resolução de fornecimento zero. Usar consumo estimado pela Tabela B e preço do leite ausente.
+Preços são hipóteses de demonstração de 21/10/2026, sem alegação de cotação de mercado.
+O cenário deverá atender ao núcleo químico e às barreiras ruminais; contaminantes e dimensões
+sem dados continuarão com seus estados próprios. Não haverá declaração global de dieta segura.

@@ -47,14 +47,42 @@ pub async fn validar(conexao: &mut SqliteConnection) -> Resultado<()> {
         }
         for v in &modelo.valores {
             if unidade_campo(&modelo.tipo, &v.campo) != Some(v.unidade.as_str())
-                || !["MEDIA_TABELADA", "ESTIMATIVA_TABELADA", "METADADO"]
-                    .contains(&v.natureza.as_str())
+                || ![
+                    "MEDIA_TABELADA",
+                    "ESTIMATIVA_TABELADA",
+                    "METADADO",
+                    "SINTETICA",
+                ]
+                .contains(&v.natureza.as_str())
             {
                 return Err(format!("Campo, unidade ou natureza inválida: {}", v.campo).into());
             }
+            let condicao = [
+                "autorizado",
+                "origem_animal",
+                "excecao_animal",
+                "nnp_adicionado",
+                "medicamento",
+                "adulta",
+                "gestante",
+                "crescimento",
+                "peso_estavel",
+                "confinada",
+                "correcao_ambiente",
+                "correcao_atividade",
+                "agua",
+            ]
+            .contains(&v.campo.as_str());
+            if condicao
+                && (v.natureza != "SINTETICA"
+                    || !["SIM", "NAO", "DESCONHECIDO"].contains(&v.valor.as_str()))
+            {
+                return Err("Condição assumida exige exemplo sintético e estado explícito.".into());
+            }
             if (v.campo == "classe"
                 && !["FORRAGEM", "CONCENTRADO", "SUPLEMENTO"].contains(&v.valor.as_str()))
-                || (v.campo == "natureza" && v.valor != "MEDIA_TABELADA")
+                || (v.campo == "natureza"
+                    && !["MEDIA_TABELADA", "SINTETICA"].contains(&v.valor.as_str()))
                 || (v.campo == "fonte_id" && v.valor != modelo.fonte_id)
             {
                 return Err("Metadado incompatível no template.".into());

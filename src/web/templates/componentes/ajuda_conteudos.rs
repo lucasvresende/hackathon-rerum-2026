@@ -1,4 +1,8 @@
 pub const ALIMENTOS: &[&str] = &[
+    "O sistema inclui quinze alimentos e seis lotes de exemplo. Você pode selecioná-los, \
+     editar ou usar Criar cópia. Em Restaurar exemplos, escolha criar outra cópia ou restaurar o \
+     registro inicial com nova revisão. Reiniciar não recria exclusões nem desfaz suas alterações. \
+     Condições e valores sintéticos são hipóteses, não medições ou comprovações de produtos reais.",
     "Pense no alimento como o produto e na composição como seus dados nutricionais. \
             Duas análises de silagem podem ter teores diferentes de água e nutrientes. \
             Revise a versão adequada ao seu produto; criar uma revisão não significa que \
@@ -19,7 +23,7 @@ pub const ALIMENTOS: &[&str] = &[
     "A matéria seca (MS) é expressa em % da matéria natural (MN); NDT, PB, Ca, P, \
             FDN, amido e EE são expressos em % da MS. Não preencha um nutriente desconhecido \
             como zero. Registre origem animal, NNP, autorização e limite de rótulo do suplemento.",
-    "Escolha um template, veja a prévia, confirme e carregue a referência publicada. \
+    "Use Preencher com exemplo, veja a prévia, confirme e edite os valores sintéticos. \
             Edite antes de salvar; a referência original e as alterações são preservadas. \
             Salve a revisão para novos cenários. Análises anteriores continuam disponíveis; \
             preço e estoque locais são informados no cenário, sem alterar a composição científica.",

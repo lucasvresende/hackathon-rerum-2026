@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "UPDATE lotes SET ativo = 1 WHERE id = ?;\n",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": []
+  },
+  "hash": "482bac8e80feb7733852527c669cd9eee4ea958384b3ff6c1b3f4855574ffa0a"
+}

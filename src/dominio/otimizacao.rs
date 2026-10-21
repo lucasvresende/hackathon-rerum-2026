@@ -52,7 +52,7 @@ pub fn formular(c: &Cenario, base: &Conhecimento) -> Parecer {
             }
             let mut teto = item.maximo_ms.unwrap_or(alvo).min(alvo);
             if item.alimento.classe == Classe::Suplemento {
-                if let Some(rotulo) = item.alimento.rotulo_max_ms {
+                if let Some(rotulo) = item.teto_suplemento() {
                     teto = teto.min(rotulo);
                 } else {
                     invalido = true;

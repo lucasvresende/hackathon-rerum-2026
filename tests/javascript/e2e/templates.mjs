@@ -15,15 +15,15 @@ export async function testarTemplates(page, url, artefatos, navegador) {
   await page.goto(`${url}/alimentos/novo`);
   await conferirCamposVisiveis(page, ['fornecedor', 'lote_fisico', 'data']);
   assert.equal(await page.locator('.sidebar').count(), 0);
-  await page.locator('#modelo').selectOption('silagem-milho-v1');
-  await page.getByRole('button', { name: 'Ver prévia do template' }).click();
+  await page.locator('#modelo').selectOption('ex-a01');
+  await page.getByRole('button', { name: 'Ver prévia do exemplo' }).click();
   await page.locator('.template-preview').waitFor();
   assert.equal(await page.locator('#ms').inputValue(), '');
   await page.locator('#confirmar_modelo').check();
-  await page.getByRole('button', { name: 'Carregar template para editar' }).click();
+  await page.getByRole('button', { name: 'Preencher com exemplo' }).click();
   await page.waitForFunction(() => document.getElementById('ms').value === '32.5');
-  assert.equal(await page.locator('#ndt').inputValue(), '');
-  assert.equal(await page.locator('#autorizado').inputValue(), 'DESCONHECIDO');
+  assert.equal(Number(await page.locator('#ndt').inputValue()), 65);
+  assert.equal(await page.locator('#autorizado').inputValue(), 'SIM');
   await conferirCamposVisiveis(page, ['fornecedor', 'lote_fisico', 'data']);
   await page.locator('#pb').fill('8');
   await page.locator('#fornecedor').fill(`Teste ${navegador}`);
@@ -32,7 +32,7 @@ export async function testarTemplates(page, url, artefatos, navegador) {
   await page.waitForURL(/cadastros\/salvo/);
   await page.goto(`${url}/alimentos`);
   // O fornecedor fica em procedência; a inspeção de persistência é feita nos testes Rust.
-  assert.ok(await page.getByRole('heading', { name: 'Silagem de milho (30–35% MS)' }).count());
+  assert.ok(await page.getByRole('heading', { name: 'Silagem de milho' }).count());
   await page.goto(`${url}/lotes`);
   const [cadastro] = await Promise.all([page.context().waitForEvent('page'),
     page.getByRole('link', { name: '+ Cadastrar lote', exact: true }).click()]);
@@ -41,11 +41,11 @@ export async function testarTemplates(page, url, artefatos, navegador) {
     await conferirCamposVisiveis(cadastro, ['idade_meses', 'ordem_parto',
       'dispersao_peso', 'condicao_corporal']);
     assert.equal(await cadastro.locator('.sidebar').count(), 0);
-    await cadastro.locator('#modelo').selectOption('jersey-estudo-v1');
-    await cadastro.getByRole('button', { name: 'Ver prévia do template' }).click();
+    await cadastro.locator('#modelo').selectOption('ex-l02');
+    await cadastro.getByRole('button', { name: 'Ver prévia do exemplo' }).click();
     await cadastro.locator('#confirmar_modelo').check();
-    await cadastro.getByRole('button', { name: 'Carregar template para editar' }).click();
-    await cadastro.waitForFunction(() => document.getElementById('peso').value === '389');
+    await cadastro.getByRole('button', { name: 'Preencher com exemplo' }).click();
+    await cadastro.waitForFunction(() => document.getElementById('peso').value === '420');
     await cadastro.locator('#peso').fill('450');
     await cadastro.locator('#animais').fill('1.5');
     await cadastro.locator('#nome').fill(`Template editado ${navegador}`);
@@ -114,11 +114,11 @@ export async function testarTemplates(page, url, artefatos, navegador) {
     const p = await semJs.newPage();
     await p.goto(`${url}/alimentos/novo`);
     await conferirCamposVisiveis(p, ['fornecedor', 'lote_fisico', 'data']);
-    await p.locator('#modelo').selectOption('soja-farelo-v1');
-    await p.getByRole('button', { name: 'Ver prévia do template' }).click();
+    await p.locator('#modelo').selectOption('ex-a07');
+    await p.getByRole('button', { name: 'Ver prévia do exemplo' }).click();
     await p.locator('#confirmar_modelo').check();
-    await p.getByRole('button', { name: 'Carregar template para editar' }).click();
-    assert.equal(await p.locator('#ms').inputValue(), '88.46');
+    await p.getByRole('button', { name: 'Preencher com exemplo' }).click();
+    assert.equal(await p.locator('#ms').inputValue(), '88.5');
     await p.locator('#pb').fill('49');
     assert.equal(await p.locator('#pb').inputValue(), '49');
     assert.ok(await p.locator('.expand-content:visible').count());

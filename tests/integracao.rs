@@ -16,11 +16,25 @@ async fn ambiente() -> (tempfile::TempDir, sqlx::SqlitePool) {
     (d, p)
 }
 
+async fn lote_demo(pool: &sqlx::SqlitePool) -> feed_your_cow::dominio::Lote {
+    cadastros::lotes(pool)
+        .await
+        .unwrap()
+        .into_iter()
+        .find(|l| l.nome == "Lote demonstração")
+        .unwrap()
+}
+
 #[tokio::test]
 async fn ct21_ct22_preserva_revisao_e_reproduz_execucao() {
     let (_d, pool) = ambiente().await;
-    let mut lote = cadastros::lotes(&pool).await.unwrap().remove(0);
-    let alimentos = cadastros::alimentos(&pool).await.unwrap();
+    let mut lote = lote_demo(&pool).await;
+    let alimentos = cadastros::alimentos(&pool)
+        .await
+        .unwrap()
+        .into_iter()
+        .filter(|a| !a.id.starts_with("ex-"))
+        .collect::<Vec<_>>();
     let c = demonstracao::cenario(lote.clone(), alimentos.clone(), false);
     let base = conhecimento::ler(&pool).await.unwrap();
     let resultado = verificar(&c, &base);
@@ -43,7 +57,16 @@ async fn ct21_ct22_preserva_revisao_e_reproduz_execucao() {
         serde_json::to_string(&novo.verificacoes).unwrap(),
         serde_json::to_string(&e.parecer.verificacoes).unwrap()
     );
-    assert_eq!(cadastros::alimentos(&pool).await.unwrap().len(), 5);
+    assert_eq!(
+        cadastros::alimentos(&pool)
+            .await
+            .unwrap()
+            .into_iter()
+            .filter(|a| !a.id.starts_with("ex-"))
+            .collect::<Vec<_>>()
+            .len(),
+        5
+    );
 }
 
 #[tokio::test]
@@ -74,8 +97,13 @@ async fn ct23_carga_idempotente_colisao_fonte_ausente_e_unidade() {
 async fn ct24_falha_no_trace_reverte_execucao_inteira() {
     let (_d, pool) = ambiente().await;
     let c = demonstracao::cenario(
-        cadastros::lotes(&pool).await.unwrap().remove(0),
-        cadastros::alimentos(&pool).await.unwrap(),
+        lote_demo(&pool).await,
+        cadastros::alimentos(&pool)
+            .await
+            .unwrap()
+            .into_iter()
+            .filter(|a| !a.id.starts_with("ex-"))
+            .collect::<Vec<_>>(),
         false,
     );
     let base = conhecimento::ler(&pool).await.unwrap();
@@ -98,8 +126,13 @@ async fn ct24_falha_no_trace_reverte_execucao_inteira() {
 async fn ct25_backup_restaura_e_nao_sobrescreve() {
     let (d, pool) = ambiente().await;
     let c = demonstracao::cenario(
-        cadastros::lotes(&pool).await.unwrap().remove(0),
-        cadastros::alimentos(&pool).await.unwrap(),
+        lote_demo(&pool).await,
+        cadastros::alimentos(&pool)
+            .await
+            .unwrap()
+            .into_iter()
+            .filter(|a| !a.id.starts_with("ex-"))
+            .collect::<Vec<_>>(),
         false,
     );
     let base = conhecimento::ler(&pool).await.unwrap();
@@ -170,7 +203,7 @@ async fn ct27_protege_escrita_e_escapa_texto() {
         .await
         .unwrap();
     assert_eq!(resposta.status(), StatusCode::FORBIDDEN);
-    let mut lote = cadastros::lotes(&pool).await.unwrap().remove(0);
+    let mut lote = lote_demo(&pool).await;
     lote.nome = "<script>alert(1)</script>".into();
     cadastros::salvar_lote(&pool, &mut lote, false)
         .await

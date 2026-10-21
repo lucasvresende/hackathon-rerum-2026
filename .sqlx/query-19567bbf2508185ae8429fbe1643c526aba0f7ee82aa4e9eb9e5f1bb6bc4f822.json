@@ -1,0 +1,50 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT e.id, e.tipo, e.conteudo FROM exemplos e ORDER BY e.id;\n",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "exemplos",
+            "name": "id"
+          }
+        }
+      },
+      {
+        "name": "tipo",
+        "ordinal": 1,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "exemplos",
+            "name": "tipo"
+          }
+        }
+      },
+      {
+        "name": "conteudo",
+        "ordinal": 2,
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "exemplos",
+            "name": "conteudo"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": [
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "19567bbf2508185ae8429fbe1643c526aba0f7ee82aa4e9eb9e5f1bb6bc4f822"
+}

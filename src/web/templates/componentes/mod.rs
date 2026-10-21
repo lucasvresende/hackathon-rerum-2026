@@ -14,3 +14,5 @@ pub mod inicio;
 pub mod modelos_preenchimento;
 pub mod resultado;
 pub mod resumo_erros;
+
+pub mod exemplos;
