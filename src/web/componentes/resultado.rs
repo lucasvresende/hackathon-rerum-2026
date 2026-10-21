@@ -28,7 +28,8 @@ impl Render for ResultadoExecucao<'_> {
             (cabecalho(&c.nome, &format!("{} · {} · Execução {}",
                 c.lote.nome, data, e.id), "resultados"))
             div.actions.no-print {
-                a.button href=(format!("/execucoes/{}/duplicar", e.id)) { "Duplicar e simular" }
+                a.button href=(format!("/execucoes/{}/duplicar", e.id))
+                    target="_blank" rel="noopener" title="Abre em nova guia" { "Duplicar e simular" }
                 button.button.secondary type="button" data-imprimir { "Imprimir parecer" }
                 form method="post" action=(format!("/execucoes/{}/reproduzir", e.id)) {
                     input type="hidden" name="csrf" value=(self.token);

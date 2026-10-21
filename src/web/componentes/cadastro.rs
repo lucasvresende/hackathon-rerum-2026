@@ -268,7 +268,7 @@ impl Render for Cadastro<'_> {
                         textarea #observacoes name="observacoes" { (self.valor("observacoes")) }
                     }
                 }
-                div.form-actions { a.button.secondary href=(rota) { "Voltar" }
+                div.form-actions { a.button.secondary href="/cadastros/salvo?tipo=cancelado" { "Cancelar" }
                     button.button type="submit" { "Salvar revisão" }
                 }
             }

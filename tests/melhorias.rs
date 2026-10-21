@@ -78,3 +78,58 @@ async fn erros_indicam_campos_e_post_invalido_nao_grava() {
     assert!(html.contains("aria-invalid=\"true\""));
     assert_eq!(cadastros::lotes(&pool).await.unwrap().len(), quantidade);
 }
+
+#[tokio::test]
+async fn formularios_isolados_e_atualizacao_preservam_entradas() {
+    let d = tempfile::tempdir().unwrap();
+    let pool = banco::preparar(&d.path().join("app.sqlite3"))
+        .await
+        .unwrap();
+    demonstracao::preparar(&pool).await.unwrap();
+    let estado = EstadoApp::novo(pool.clone(), "http://127.0.0.1:3000".into());
+    let app = app(estado.clone());
+    for rota in [
+        "/lotes/novo",
+        "/alimentos/novo",
+        "/cenarios/novo",
+        "/cadastros/salvo",
+    ] {
+        let resposta = app
+            .clone()
+            .oneshot(Request::builder().uri(rota).body(Body::empty()).unwrap())
+            .await
+            .unwrap();
+        assert_eq!(resposta.status(), 200);
+        let bytes = resposta.into_body().collect().await.unwrap().to_bytes();
+        let html = std::str::from_utf8(&bytes).unwrap();
+        assert!(!html.contains("aside class=\"sidebar\""));
+        assert!(html.contains("pagina-cadastro"));
+        if rota == "/cenarios/novo" {
+            assert!(
+                !html.contains("checked"),
+                "Demonstração não é selecionada implicitamente"
+            );
+        }
+    }
+    let resposta = app
+        .oneshot(
+            Request::builder()
+                .uri("/cenarios/atualizar")
+                .method("POST")
+                .header("content-type", "application/x-www-form-urlencoded")
+                .header("hx-request", "true")
+                .body(Body::from(format!(
+                    "csrf={}&nome=Preservado&sobras=7",
+                    estado.csrf
+                )))
+                .unwrap(),
+        )
+        .await
+        .unwrap();
+    assert_eq!(resposta.status(), 200);
+    let bytes = resposta.into_body().collect().await.unwrap().to_bytes();
+    let html = std::str::from_utf8(&bytes).unwrap();
+    assert!(html.contains("value=\"Preservado\""));
+    assert!(html.contains("value=\"7\""));
+    assert!(!html.contains("<!DOCTYPE"));
+}

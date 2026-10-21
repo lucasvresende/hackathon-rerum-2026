@@ -29,11 +29,7 @@ fn formulario(
     }
     Pagina {
         titulo: "Cadastro",
-        ativo: if tipo == "lote" {
-            "/lotes"
-        } else {
-            "/alimentos"
-        },
+        ativo: "cadastro",
         conteudo: html! {
             (cabecalho(if tipo == "lote" { "Cadastro de lote" }
                 else { "Composição do alimento" },
@@ -106,7 +102,7 @@ pub async fn salvar_lote(
         Ok(mut lote) => {
             let novo = formularios::texto(&c, "id").is_empty();
             match banco::salvar_lote(&e.pool, &mut lote, novo).await {
-                Ok(()) => return Ok(redirecionar("/lotes", &headers)),
+                Ok(()) => return Ok(redirecionar("/cadastros/salvo?tipo=lote", &headers)),
                 Err(erro) => {
                     tracing::error!(%erro, "Erro ao salvar lote");
                     vec![crate::dominio::validacao::problema(
@@ -131,7 +127,7 @@ pub async fn salvar_alimento(
     }
     let erros = match formularios::ler_alimento(&c) {
         Ok(mut a) => match banco::salvar_alimento(&e.pool, &mut a).await {
-            Ok(()) => return Ok(redirecionar("/alimentos", &headers)),
+            Ok(()) => return Ok(redirecionar("/cadastros/salvo?tipo=alimento", &headers)),
             Err(erro) => {
                 tracing::error!(%erro, "Erro ao salvar composição");
                 vec![crate::dominio::validacao::problema(

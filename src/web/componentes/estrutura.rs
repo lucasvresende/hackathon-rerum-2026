@@ -8,6 +8,7 @@ pub struct Pagina<'a> {
 
 impl Render for Pagina<'_> {
     fn render(&self) -> Markup {
+        let isolada = self.ativo == "cadastro";
         html! {
             (DOCTYPE)
             html lang="pt-BR" {
@@ -22,8 +23,9 @@ impl Render for Pagina<'_> {
                     script src="/static/app.js" defer {}
                     script src="/static/formularios.js" defer {}
                 }
-                body {
+                body class=[isolada.then_some("pagina-cadastro")] {
                     a.skip href="#principal" { "Pular para o conteúdo" }
+                    @if !isolada {
                     aside.sidebar aria-label="Menu principal" {
                         a.brand href="/" { "FeedYourCow" }
                         nav {
@@ -38,7 +40,11 @@ impl Render for Pagina<'_> {
                             ] {
                                 a class=(if self.ativo == url { "nav-link active" }
                                     else { "nav-link" }) href=(url)
-                                    aria-current=[(self.ativo == url).then_some("page")] {
+                                    aria-current=[(self.ativo == url).then_some("page")]
+                                    target=[(url == "/cenarios/novo").then_some("_blank")]
+                                    rel=[(url == "/cenarios/novo").then_some("noopener")]
+                                    title=[(url == "/cenarios/novo")
+                                        .then_some("Abre em nova guia")] {
                                     span aria-hidden="true" { (icone) } (texto)
                                 }
                             }
@@ -47,6 +53,7 @@ impl Render for Pagina<'_> {
                             span.local-dot {} "Uso local"
                             small { "Versão " (env!("CARGO_PKG_VERSION")) }
                         }
+                    }
                     }
                     div.workspace {
                         main #principal tabindex="-1" {

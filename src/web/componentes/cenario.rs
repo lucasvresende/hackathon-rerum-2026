@@ -36,6 +36,13 @@ impl Render for FormularioCenario<'_> {
                 input type="hidden" name="csrf" value=(self.token);
                 input type="hidden" name="original_id" value=(self.valor("original_id"));
                 (erros(self.erros))
+                div.actions {
+                    button #atualizar-cadastros.button.secondary type="submit" formnovalidate
+                        formaction="/cenarios/atualizar" hx-post="/cenarios/atualizar"
+                        data-sem-validacao { "Atualizar cadastros" }
+                    a href="/cenarios/novo?dieta=A" { "Demonstração A" }
+                    a href="/cenarios/novo?dieta=B" { "Demonstração B" }
+                }
                 p.muted { "Campos obrigatórios: *" }
                 section.card {
                     h2 { "1. Dados do cenário" }
@@ -47,15 +54,19 @@ impl Render for FormularioCenario<'_> {
                         div.field { (super::campo::rotulo("lote", "Lote e revisão atual", true))
                             (super::campo::mensagem("lote", self.erro("lote")))
                             select #lote name="lote" required {
+                                option value="" selected[self.valor("lote").is_empty()] {
+                                    "Selecione o lote"
+                                }
                                 @for lote in self.lotes {
-                                    option value=(&lote.id) selected[self.valor("lote") ==
+                                    option value=(&lote.id) data-peso=(lote.peso) selected[self.valor("lote") ==
                                     lote.id] {
                                         (&lote.nome) " · " (lote.animais) " animais · "
                                         (lote.peso) " kg"
                                     }
                                 }
                             }
-                            small { a href="/lotes/novo" { "+ Cadastrar outro lote" } }
+                            small { a href="/lotes/novo" target="_blank"
+                        rel="noopener" title="Abre em nova guia" { "+ Cadastrar outro lote" } }
                         }
                         div.field { label for="modo" { "Tipo de cálculo" }
                             select #modo name="modo" {
@@ -131,7 +142,8 @@ impl Render for FormularioCenario<'_> {
                 }
                 section.card {
                     div.section-title { h2 { "2. Ingredientes e disponibilidade" }
-                        a href="/alimentos" { "Consultar catálogo ↗" }
+                        a href="/alimentos/novo" target="_blank" rel="noopener"
+                            title="Abre em nova guia" { "Cadastrar alimento ↗" }
                     }
                     p.muted {
                     "Selecione uma composição por alimento. Formulação: até 10; verificação: \
@@ -221,7 +233,7 @@ impl Render for FormularioCenario<'_> {
                     "O resultado avalia o perfil implementado. Fibra física, vitaminas e \
                         demais dimensões sem dados continuam identificadas como não avaliadas." }
                     div.form-actions {
-                        a.button.secondary href="/" { "Voltar" }
+                        a.button.secondary href="/cadastros/salvo?tipo=cancelado" { "Cancelar" }
                         button.button type="submit" {
                             "Calcular e salvar cenário →"
                         }

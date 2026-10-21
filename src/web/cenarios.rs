@@ -34,7 +34,7 @@ async fn formulario(
     }
     Ok(Pagina {
         titulo: "Novo cenário",
-        ativo: "/cenarios/novo",
+        ativo: "cadastro",
         conteudo: html! {
             (titulo())
             @if lotes.is_empty() { div.alert { "Cadastre um lote antes de calcular." } }
@@ -50,10 +50,14 @@ pub async fn novo(
 ) -> Result<Markup, ErroWeb> {
     let lotes = cadastros::lotes(&e.pool).await?;
     let alimentos = cadastros::alimentos(&e.pool).await?;
-    let mut campos = if let Some(lote) = lotes.first() {
+    let mut campos = if let Some(lote) = lotes
+        .first()
+        .filter(|_| q.get("dieta").is_some_and(|v| v == "A" || v == "B"))
+    {
         let mut selecionados = std::collections::BTreeSet::new();
         let alimentos = alimentos
-            .into_iter()
+            .iter()
+            .cloned()
             .filter(|a| {
                 ["silagem", "milho", "soja", "mineral"].contains(&a.id.as_str())
                     && a.natureza == "SINTETICA"
@@ -71,6 +75,7 @@ pub async fn novo(
     if q.get("modo").is_some_and(|v| v == "formular") {
         campos.insert("modo".into(), "formular".into());
     }
+    completar_campos(&mut campos, &alimentos);
     formulario(&e, &campos, &[], false).await
 }
 
@@ -150,4 +155,30 @@ pub async fn reproduzir(
     cenario.original_id = Some(anterior.cenario_id);
     let novo = execucao::executar(&e.pool, &cenario, &anterior.conhecimento).await?;
     Ok(redirecionar(&format!("/execucoes/{novo}"), &headers))
+}
+
+/// Acrescenta opções novas sem sobrescrever o preenchimento de um cenário em elaboração.
+fn completar_campos(campos: &mut Campos, alimentos: &[crate::dominio::Alimento]) {
+    for a in alimentos {
+        campos
+            .entry(format!("ms-{}", a.composicao_id))
+            .or_insert_with(|| (a.ms * 100.0).to_string());
+        campos
+            .entry(format!("unidade-preco-{}", a.composicao_id))
+            .or_insert("kg".into());
+    }
+}
+
+pub async fn atualizar(
+    State(e): State<EstadoApp>,
+    headers: HeaderMap,
+    Form(mut c): Form<Campos>,
+) -> Result<Response, ErroWeb> {
+    if !autorizado(&e, &headers, &c) {
+        return Ok(StatusCode::FORBIDDEN.into_response());
+    }
+    completar_campos(&mut c, &cadastros::alimentos(&e.pool).await?);
+    Ok(formulario(&e, &c, &[], headers.contains_key("hx-request"))
+        .await?
+        .into_response())
 }

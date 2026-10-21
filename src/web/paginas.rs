@@ -35,7 +35,8 @@ pub async fn lotes(State(e): State<EstadoApp>) -> Result<Markup, ErroWeb> {
         ativo: "/lotes",
         conteudo: html! {
             (cabecalho("Lotes", "", "lotes"))
-            div.actions { a.button href="/lotes/novo" { "+ Cadastrar lote" } }
+            div.actions { a.button href="/lotes/novo" target="_blank"
+                        rel="noopener" title="Abre em nova guia" { "+ Cadastrar lote" } }
             section.card.table-wrap {
                 @if lotes.is_empty() { p.empty {
                 "Nenhum lote cadastrado." } }
@@ -45,7 +46,8 @@ pub async fn lotes(State(e): State<EstadoApp>) -> Result<Markup, ErroWeb> {
                         tbody { @for l in lotes { tr { td { strong { (&l.nome) } }
                             td { (l.animais) } td { (l.peso) } td { (l.producao) } td {
                             (l.dias_lactacao) }
-                            td { a href=(format!("/lotes/{}/editar", l.id)) { "Revisar ↗" } }
+                            td { a href=(format!("/lotes/{}/editar", l.id))
+                                target="_blank" rel="noopener" title="Abre em nova guia" { "Revisar ↗" } }
                         } } }
                     }
                 }
@@ -66,7 +68,8 @@ pub async fn alimentos(
         ativo: "/alimentos",
         conteudo: html! {
             (cabecalho("Catálogo de alimentos", "", "alimentos"))
-            div.actions { a.button href="/alimentos/novo" { "+ Cadastrar composição" }
+            div.actions { a.button href="/alimentos/novo" target="_blank"
+                        rel="noopener" title="Abre em nova guia" { "+ Cadastrar composição" }
                 form.search method="get" action="/alimentos" {
                     label.sr-only for="busca" { "Pesquisar alimento" }
                     input #busca name="busca" value=(&busca) placeholder="Pesquisar alimento…";
@@ -93,7 +96,8 @@ pub async fn alimentos(
                             p { (&a.evidencia) }
                             p.code { "Versão " (&a.composicao_id) }
                         }
-                        a.text-link href=(format!("/alimentos/{}/revisar", a.composicao_id)) {
+                        a.text-link href=(format!("/alimentos/{}/revisar", a.composicao_id))
+                            target="_blank" rel="noopener" title="Abre em nova guia" {
                             "Criar revisão ou nova análise ↗"
                         }
                     }

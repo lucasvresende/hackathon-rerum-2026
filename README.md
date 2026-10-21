@@ -471,3 +471,9 @@ antes do envio; o servidor continua validando POSTs, inclusive sem JavaScript. A
 ficam acima do controle, ligadas por `aria-describedby`, com resumo e links para correção.
 Inteiros usam passo 1; condições fora do perfil não se confundem com valores malformados.
 `tests/melhorias.rs` cobre renderização acessível, associação de erros e rejeição sem gravação.
+
+Criação e revisão de lotes, alimentos e cenários abrem em nova guia sem menu principal.
+Salvar um cadastro mostra confirmação; cancelar não grava. Ao retornar ao cenário original,
+as opções são atualizadas após a sinalização entre guias, mantendo os valores do formulário.
+O botão “Atualizar cadastros” oferece o mesmo fluxo manual, inclusive sem JavaScript.
+Novo cenário exige seleção explícita; as dietas sintéticas A/B têm links de demonstração próprios.

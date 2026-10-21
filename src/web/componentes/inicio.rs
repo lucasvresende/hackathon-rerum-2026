@@ -18,8 +18,10 @@ impl Render for Inicio<'_> {
         html! {
             (cabecalho("Visão geral", "", "inicio"))
             div.actions {
-                a.button href="/cenarios/novo" { "Verificar dieta" }
-                a.button.secondary href="/cenarios/novo?modo=formular" { "Formular dieta" }
+                a.button href="/cenarios/novo" target="_blank"
+                        rel="noopener" title="Abre em nova guia" { "Verificar dieta" }
+                a.button.secondary href="/cenarios/novo?modo=formular"
+                        target="_blank" rel="noopener" title="Abre em nova guia" { "Formular dieta" }
             }
             section.stats aria-label="Resumo da aplicação" {
                 @for (numero, nome) in [

@@ -60,10 +60,29 @@ document.addEventListener('change', evento => erroCampo(evento.target));
 document.addEventListener('htmx:after:swap', configurarCampos);
 configurarCampos();
 document.addEventListener('submit', evento => {
-  if (evento.target.id !== 'formulario') return;
+  if (evento.target.id !== 'formulario' || evento.submitter?.hasAttribute('data-sem-validacao')) {
+    return;
+  }
   evento.target.querySelectorAll('input, select, textarea').forEach(erroCampo);
   if (!evento.target.reportValidity()) {
     evento.preventDefault();
     evento.stopImmediatePropagation();
   }
 }, true);
+
+// As guias compartilham somente uma sinalização; os dados continuam sendo lidos do servidor.
+if (document.querySelector('[data-cadastro-salvo]')) {
+  try { localStorage.setItem('cadastros-atualizados', String(Date.now())); } catch { /* opcional */ }
+}
+let atualizarPendente = false;
+window.addEventListener('storage', evento => {
+  if (evento.key !== 'cadastros-atualizados') return;
+  atualizarPendente = true;
+  if (document.hasFocus()) atualizarCadastros();
+});
+function atualizarCadastros() {
+  if (!atualizarPendente) return;
+  const botao = document.getElementById('atualizar-cadastros');
+  if (botao) { atualizarPendente = false; botao.click(); }
+}
+window.addEventListener('focus', atualizarCadastros);

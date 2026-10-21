@@ -43,6 +43,8 @@ pub fn app(estado: EstadoApp) -> Router {
         )
         .route("/alimentos/novo", get(cadastros::novo_alimento))
         .route("/alimentos/{id}/revisar", get(cadastros::revisar_alimento))
+        .route("/cadastros/salvo", get(super::cadastro_salvo::pagina))
+        .route("/cenarios/atualizar", post(cenarios::atualizar))
         .route("/cenarios/novo", get(cenarios::novo))
         .route("/cenarios", post(cenarios::executar))
         .route("/historico", get(paginas::historico))

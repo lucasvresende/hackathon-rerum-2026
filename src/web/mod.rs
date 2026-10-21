@@ -1,3 +1,4 @@
+pub mod cadastro_salvo;
 pub mod cadastros;
 pub mod cenarios;
 pub mod comparacao;
