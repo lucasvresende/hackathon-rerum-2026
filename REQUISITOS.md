@@ -841,6 +841,10 @@ Não perder dados válidos do formulário após erro recuperável.
 
 Cobrir fórmulas e regras com testes unitários; persistência/cargas/fluxos com testes de integração;
 e fluxos de interface com Playwright em Chromium, WebKit e Firefox.
+Os testes Rust ficarão em `tests/*.rs`; os contratos JavaScript/htmx e fluxos de navegador
+ficarão em `tests/javascript/e2e/`, com comando próprio e job de CI separado.
+Verificar as requisições reais do htmx, além do resultado visual, incluindo cabeçalhos,
+CSRF, campos, substituição de fragmentos, redirecionamento e preservação após falhas.
 Executar inspeção visual de formulário, erro, resultado, histórico e impressão.
 Novas funcionalidades deverão chegar com testes; os CT da seção 9 serão a base mínima.
 
@@ -1000,6 +1004,13 @@ com as tolerâncias de RN-24. Na interface, os totais monetários serão apresen
   imutáveis, prévia, substituição confirmada, edição por campo e preservação após backup.
   Validar criação/revisão, modo simplificado, atualização entre guias e ausência de JavaScript
   em Chromium, Firefox e WebKit. Cobertura: RF-19; RN-02/03/23; RNF-02/03/10/12.
+
+- **CT-32 — Contratos JavaScript e htmx:** validar método, URL, cabeçalhos, CSRF e campos;
+  bloquear POST inválido; trocar somente o fragmento e reativar comportamentos/foco;
+  seguir `HX-Redirect`; atualizar cadastros entre guias sem acionamento manual;
+  preservar o rascunho e permitir nova tentativa após 403, 500 e falha de rede.
+  Cobrir condições de consumo, ingredientes, embalagens e laudos nos três navegadores.
+  Cobertura: RF-06, RF-07, RF-19; RNF-02, RNF-03, RNF-07, RNF-09, RNF-10.
 
 ## 10. Condições para considerar o MVP concluído
 

@@ -192,7 +192,8 @@ Os comandos completos de testes estão em
 - `dados_referencia/`, `fontes/`, `hackathon/`: cargas, fontes e anexo numérico preservado.
 - `static/`: CSS plano, JavaScript de apresentação e bibliotecas locais.
 - `tests/*.rs`: testes Rust, descobertos automaticamente pelo Cargo.
-- `tests/javascript/e2e/`: roteiros Playwright; veja [testes JavaScript](tests/javascript/README.md).
+- `tests/javascript/e2e/`: roteiros Playwright; veja a
+  [documentação dos testes JavaScript](tests/javascript/README.md).
 - `scripts/`: verificações, build local de produção, inicialização e teste da distribuição.
 - `dist/`: pacotes de produção gerados, excluídos do Git.
 
@@ -488,7 +489,7 @@ no GitHub depende de publicar os commits. A validação desta entrega é local.
 
 O teste Rust `ajuda_disponivel_com_secoes_e_links_contextuais` verifica a rota, as dez seções,
 os controles acessíveis e os links de ajuda em páginas completas e no erro 404.
-`tests/javascript/e2e/ajuda.mjs`, executado pelo roteiro existente em Chromium, Firefox e WebKit, verifica
+`tests/javascript/e2e/ajuda.mjs`, executado em Chromium, Firefox e WebKit, verifica
 expansão/recolhimento de todas as cartas, Enter/Espaço, isolamento do estado, links com fragmento,
 índice, retorno do navegador, recarga, conteúdo sem JavaScript e ausência de transbordamento
 em 390 px. Também confere a classe de abertura, altura recolhida, `inert` e movimento reduzido.
@@ -589,3 +590,28 @@ Os fluxos completos de Chromium, Firefox e WebKit passaram, com inspeção visua
 em desktop e mobile. O ensaio isolado de 100 execuções após aquecimento atingiu as metas,
 com p95 de 12,6 ms na verificação (20 ingredientes) e 19,5 ms na formulação (10 ingredientes),
 no ambiente local em debug. A execução remota do CI depende da publicação dos commits.
+
+
+### Contratos JavaScript e htmx (CT-32)
+
+Os testes de navegador foram movidos para `tests/javascript/e2e/`; Rust permanece em `tests/*.rs`.
+`npm run test:e2e` é o comando explícito, e `npm test` mantém compatibilidade.
+O CI tem jobs separados para Rust e JavaScript; o segundo reutiliza o binário do primeiro.
+
+Os dez novos casos verificam requisições/fragmentos, reativação após swap, foco, redirecionamento,
+condições dos campos, atualização automática entre guias e recuperação de falhas.
+A [documentação dos testes JavaScript](tests/javascript/README.md) descreve os contratos,
+as simulações de falha, os observadores e os filtros para diagnóstico.
+Os casos existentes continuam cobrindo o fluxo completo, uso sem JavaScript e atualização manual.
+
+O caso de 403 reproduziu a remoção do formulário por uma resposta vazia. `app.js` agora cancela
+a troca do formulário em respostas HTTP de erro, preservando o rascunho e permitindo nova tentativa.
+A interrupção de rede também é exercitada sem substituir o JavaScript ou o htmx da aplicação.
+
+O caso de laudos recolhidos também reproduziu no WebKit a tentativa de focar um controle `inert`.
+A validação mantém o bloqueio nativo do envio, apresenta a mensagem inline e aguarda a abertura
+via hx-live antes de focar o primeiro inválido. O teste verifica abertura, foco e ausência de POST.
+
+A sinalização entre guias usa BroadcastChannel e localStorage com deduplicação, pois o teste
+WebKit não recebeu o evento storage apesar de enxergar o novo valor. Somente o identificador
+de atualização é compartilhado; os cadastros continuam sendo consultados no servidor.

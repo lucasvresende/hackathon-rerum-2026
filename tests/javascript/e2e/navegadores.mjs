@@ -1,3 +1,7 @@
+import { testarHtmx } from './htmx.mjs';
+import { testarCondicionais } from './condicionais.mjs';
+import { testarFalhas } from './falhas.mjs';
+import { testarGuias } from './guias.mjs';
 import { testarTemplates } from './templates.mjs';
 import assert from 'node:assert/strict';
 import { testarAjuda, conferirLinkAjuda } from './ajuda.mjs';
@@ -6,6 +10,10 @@ import { tmpdir } from 'node:os';
 import { resolve, join } from 'node:path';
 import { spawn, spawnSync } from 'node:child_process';
 import { chromium, firefox, webkit } from 'playwright';
+
+const nomesSuites = ['htmx', 'condicionais', 'falhas', 'guias', 'fluxos'];
+const suites = new Set(process.env.FEEDYOURCOW_SUITES?.split(',') || nomesSuites);
+for (const suite of suites) assert.ok(nomesSuites.includes(suite), `Suíte desconhecida: ${suite}`);
 
 const diretorio = mkdtempSync(join(tmpdir(), 'feedyourcow-browser-'));
 const binario = resolve(process.env.FEEDYOURCOW_BINARIO || 'target/debug/feed-your-cow');
@@ -67,6 +75,11 @@ try {
         await nova.waitForLoadState();
         page = nova;
       }
+      if (suites.has('htmx')) await testarHtmx(browser, url, artefatos, nome);
+      if (suites.has('condicionais')) await testarCondicionais(browser, url, artefatos, nome);
+      if (suites.has('falhas')) await testarFalhas(browser, url, artefatos, nome);
+      if (suites.has('guias')) await testarGuias(browser, url, artefatos, nome);
+      if (!suites.has('fluxos')) continue;
       await testarTemplates(page, url, artefatos, nome);
       await testarAjuda(page, url, artefatos, nome);
       await page.goto(url);

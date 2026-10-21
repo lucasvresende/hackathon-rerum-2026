@@ -68,9 +68,20 @@ function configurarCampos() {
     }
   });
 }
+let focoInvalidoPendente = false;
 document.addEventListener('invalid', evento => {
+  // O navegador não pode focar um controle ainda inert/recolhido durante a atualização hx-live.
+  // As mensagens próprias continuam visíveis; o primeiro inválido recebe foco após a abertura.
+  evento.preventDefault();
   abrirSecoes(evento.target);
   erroCampo(evento.target);
+  if (focoInvalidoPendente) return;
+  focoInvalidoPendente = true;
+  const controle = evento.target;
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    focoInvalidoPendente = false;
+    if (controle.isConnected) controle.focus();
+  }));
 }, true);
 document.addEventListener('input', evento => erroCampo(evento.target));
 document.addEventListener('change', evento => erroCampo(evento.target));
@@ -89,16 +100,27 @@ document.addEventListener('submit', evento => {
 }, true);
 
 // As guias compartilham somente uma sinalização; os dados continuam sendo lidos do servidor.
-if (document.querySelector('[data-cadastro-salvo]')) {
-  try { localStorage.setItem('cadastros-atualizados', String(Date.now())); }
-  catch { /* sinalização opcional; atualização manual continua disponível */ }
-}
 let atualizarPendente = false;
-window.addEventListener('storage', evento => {
-  if (evento.key !== 'cadastros-atualizados') return;
+let ultimoSinalCadastro = null;
+let canalCadastros;
+try { canalCadastros = new BroadcastChannel('cadastros-atualizados'); }
+catch { /* localStorage e atualização manual continuam disponíveis */ }
+function receberAtualizacao(sinal) {
+  if (typeof sinal !== 'string' || sinal === ultimoSinalCadastro) return;
+  ultimoSinalCadastro = sinal;
   atualizarPendente = true;
   if (document.hasFocus()) atualizarCadastros();
+}
+window.addEventListener('storage', evento => {
+  if (evento.key === 'cadastros-atualizados') receberAtualizacao(evento.newValue);
 });
+canalCadastros?.addEventListener('message', evento => receberAtualizacao(evento.data));
+if (document.querySelector('[data-cadastro-salvo]')) {
+  const sinal = String(Date.now());
+  try { localStorage.setItem('cadastros-atualizados', sinal); }
+  catch { /* sinalização opcional; atualização manual continua disponível */ }
+  canalCadastros?.postMessage(sinal);
+}
 function atualizarCadastros() {
   if (!atualizarPendente) return;
   const botao = document.getElementById('atualizar-cadastros');

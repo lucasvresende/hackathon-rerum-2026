@@ -15,3 +15,16 @@ são preservados aqui e na página “Perfil e fontes”. Não tratar a licença
 
 [origem]: https://github.com/joypixels/emojione/blob/v2.2.7/LICENSE.md
 [licenca]: https://creativecommons.org/licenses/by/4.0/
+
+Nos formulários, `app.js` cancela `htmx:before:swap` para respostas HTTP de erro (status >=400).
+Isso preserva o rascunho em falhas de autorização ou do servidor, permitindo nova tentativa.
+Os contratos correspondentes estão em `tests/javascript/e2e/falhas.mjs`.
+
+A validação cancela o foco/popup nativo do evento `invalid`, mantém a mensagem inline em português
+e abre as seções necessárias antes de focar o primeiro campo inválido, após dois frames.
+Isso evita a tentativa de focar um controle ainda `inert`, reproduzida no WebKit pelo teste
+`condicional-laudos`; a restrição nativa continua impedindo o envio do formulário inválido.
+
+A sinalização entre guias usa `BroadcastChannel` e `localStorage`, transportando somente um
+identificador de atualização. Entregas repetidas do mesmo sinal são ignoradas, evitando POST
+repetido. A atualização manual continua disponível quando a sinalização não estiver acessível.

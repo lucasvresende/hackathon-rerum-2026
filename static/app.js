@@ -14,3 +14,9 @@ window.addEventListener('hashchange', () => {
   htmx.live.q(carta).data.aberta = true;
   carta.scrollIntoView({ block: 'start' });
 });
+// Erros operacionais não substituem o rascunho; o htmx 4 permite cancelar antes da troca.
+document.addEventListener('htmx:before:swap', evento => {
+  const contexto = evento.detail.ctx;
+  if (contexto.response?.status >= 400
+    && contexto.sourceElement?.closest('form#formulario')) evento.preventDefault();
+});
