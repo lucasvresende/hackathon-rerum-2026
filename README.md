@@ -298,3 +298,7 @@ As opções comerciais, MS, perdas, inclusão e resolução ficam no expansível
 
 A seleção usa o evento `change` do [htmx 4](https://four.htmx.org/reference/attributes/hx-trigger)
 e a rota existente de atualização, com validação e persistência somente ao calcular.
+
+O seletor de ingredientes usa o mesmo componente expansível dos demais dropdowns, com
+transições de abertura/fechamento, teclado, estado preservado após htmx e respeito à preferência
+de movimento reduzido. Sem JavaScript e na impressão, seu conteúdo fica disponível.

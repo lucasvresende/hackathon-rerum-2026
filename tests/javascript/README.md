@@ -127,3 +127,9 @@ Validação da branch de simplificação em 21/10/2026: suíte completa aprovada
 Firefox e WebKit; o teste de seleção também foi repetido com sua espera final ajustada.
 Build, testes Rust, clippy sem warnings, rustfmt, qualidade textual e `git diff --check`
 aprovados. Capturas móveis de Chromium e WebKit inspecionadas visualmente.
+
+A suíte `cenario-simplificado` também verifica as transições compartilhadas do seletor,
+Enter/Espaço, `aria-expanded`, movimento reduzido, impressão e acesso sem JavaScript.
+
+Transições do seletor validadas em 21/10/2026: `cenario-simplificado` e `condicionais`
+aprovadas nos três navegadores; testes Rust do cenário, clippy e formatação aprovados.

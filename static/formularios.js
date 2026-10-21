@@ -154,10 +154,4 @@ function configurarCondicionais() {
 }
 document.addEventListener('change', evento => {
   configurarCondicionais();
-
 });
-
-document.addEventListener('toggle', evento => {
-  if (evento.target.id !== 'selecao-ingredientes') return;
-  evento.target.querySelector('[name="seletor_aberto"]').value = evento.target.open ? 'on' : '';
-}, true);

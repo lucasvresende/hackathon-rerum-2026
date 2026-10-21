@@ -18,7 +18,26 @@ export async function testarCenarioSimplificado(browser, url, artefatos, navegad
           .waitFor({ state: 'hidden' });
       }
       await page.locator('#nome').fill('Rascunho do teste');
-      await page.locator('#selecao-ingredientes summary').click();
+      const painel = page.locator('#selecao-ingredientes-conteudo');
+      if (javaScriptEnabled) {
+        const botao = page.locator('#selecao-ingredientes .expand-toggle');
+        await painel.waitFor({ state: 'hidden' });
+        assert.equal(await botao.getAttribute('aria-expanded'), 'false');
+        await botao.focus();
+        await botao.press('Enter');
+        await painel.waitFor({ state: 'visible' });
+        assert.notEqual(await painel.evaluate(e => getComputedStyle(e).transitionDuration), '0s');
+        await botao.press('Space');
+        await painel.waitFor({ state: 'hidden' });
+        await page.emulateMedia({ reducedMotion: 'reduce' });
+        assert.equal(await painel.evaluate(e => getComputedStyle(e).transitionDuration), '0s');
+        await page.emulateMedia({ media: 'print' });
+        await painel.waitFor({ state: 'visible' });
+        await page.emulateMedia({ media: 'screen', reducedMotion: 'no-preference' });
+        await botao.click();
+      } else {
+        await painel.waitFor({ state: 'visible' });
+      }
       const id = (await page.locator('#selecao-ingredientes input[type=checkbox]')
         .first().getAttribute('name')).slice(5);
       const seletor = page.locator(`#usar-${id}`);

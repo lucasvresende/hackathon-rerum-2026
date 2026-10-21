@@ -26,7 +26,7 @@ export async function testarCondicionais(browser, url, artefatos, navegador) {
     const ingrediente = page.locator('.ingredient').first();
     const id = await ingrediente.getAttribute('data-composicao');
     const usar = page.locator(`#usar-${id}`);
-    await page.locator('#selecao-ingredientes summary').click();
+    await page.locator('#selecao-ingredientes .expand-toggle').click();
     await ingrediente.locator('.expand-toggle').click();
     const unidade = ingrediente.locator('select[name^="unidade-preco-"]');
     const embalagem = ingrediente.locator('input[name^="embalagem-"]');
