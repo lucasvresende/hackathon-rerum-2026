@@ -174,7 +174,11 @@ Os comandos completos de testes estão em
 - `src/aplicacao/`: orquestração, processo de cálculo e exemplos sintéticos.
 - `src/persistencia/`: banco, cargas, revisões, histórico e recuperação.
 - `src/web/`: rotas, proteção de escrita, formulários e componentes Maud.
-- `migrations/`, `queries/`, `.sqlx/`: esquema SQLx, consultas e metadados de compilação.
+- `migrations/`, `.sqlx/`: esquema SQLx e metadados de compilação.
+- `queries/`: consultas agrupadas por recurso: `lotes/`, `alimentos/`, `cenarios/`,
+  `execucoes/`, `modelos_preenchimento/`, `conhecimento/` e operações de `banco/`.
+  Cada consulta continua em arquivo próprio, validado pelas macros SQLx; as pastas não
+  alteram o SQL, o esquema ou as cargas versionadas de `dados_referencia/`.
 - `dados_referencia/`, `fontes/`, `hackathon/`: cargas, fontes e anexo numérico preservado.
 - `static/`: CSS plano, JavaScript de apresentação e bibliotecas locais.
 - `tests/`: casos de aceitação e integração.

@@ -4,38 +4,40 @@ use crate::Resultado;
 use crate::dominio::templates::{ModeloPreenchimento, ValorModelo, unidade_campo};
 
 pub async fn ler(conexao: &mut SqliteConnection) -> Resultado<Vec<ModeloPreenchimento>> {
-    let valores = sqlx::query_file!("queries/valores_modelo.sql")
+    let valores = sqlx::query_file!("queries/modelos_preenchimento/listar_valores.sql")
         .fetch_all(&mut *conexao)
         .await?;
-    Ok(sqlx::query_file!("queries/modelos.sql")
-        .fetch_all(&mut *conexao)
-        .await?
-        .into_iter()
-        .map(|m| ModeloPreenchimento {
-            valores: valores
-                .iter()
-                .filter(|v| v.modelo_id == m.id)
-                .map(|v| ValorModelo {
-                    campo: v.campo.clone(),
-                    valor: v.valor.clone(),
-                    unidade: v.unidade.clone(),
-                    valor_original: v.valor_original.clone(),
-                    unidade_original: v.unidade_original.clone(),
-                    natureza: v.natureza.clone(),
-                    fonte_id: v.fonte_id.clone(),
-                })
-                .collect(),
-            id: m.id,
-            nome: m.nome,
-            versao: m.versao,
-            tipo: m.tipo,
-            contexto: m.contexto,
-            lacunas: m.lacunas,
-            fonte_id: m.fonte_id,
-            fonte_titulo: m.fonte_titulo,
-            fonte_url: m.fonte_url,
-        })
-        .collect())
+    Ok(
+        sqlx::query_file!("queries/modelos_preenchimento/listar.sql")
+            .fetch_all(&mut *conexao)
+            .await?
+            .into_iter()
+            .map(|m| ModeloPreenchimento {
+                valores: valores
+                    .iter()
+                    .filter(|v| v.modelo_id == m.id)
+                    .map(|v| ValorModelo {
+                        campo: v.campo.clone(),
+                        valor: v.valor.clone(),
+                        unidade: v.unidade.clone(),
+                        valor_original: v.valor_original.clone(),
+                        unidade_original: v.unidade_original.clone(),
+                        natureza: v.natureza.clone(),
+                        fonte_id: v.fonte_id.clone(),
+                    })
+                    .collect(),
+                id: m.id,
+                nome: m.nome,
+                versao: m.versao,
+                tipo: m.tipo,
+                contexto: m.contexto,
+                lacunas: m.lacunas,
+                fonte_id: m.fonte_id,
+                fonte_titulo: m.fonte_titulo,
+                fonte_url: m.fonte_url,
+            })
+            .collect(),
+    )
 }
 
 pub async fn validar(conexao: &mut SqliteConnection) -> Resultado<()> {

@@ -32,7 +32,7 @@ pub async fn salvar(
     let duracao = p.duracao_ms as i64;
     let mut tx = pool.begin().await?;
     sqlx::query_file!(
-        "queries/inserir_cenario.sql",
+        "queries/cenarios/inserir.sql",
         cenario_id,
         c.nome,
         c.lote.revisao_id,
@@ -46,7 +46,7 @@ pub async fn salvar(
     .await?;
     for item in &c.itens {
         sqlx::query_file!(
-            "queries/inserir_item.sql",
+            "queries/cenarios/inserir_item.sql",
             cenario_id,
             item.alimento.composicao_id,
             item.quantidade,
@@ -60,7 +60,7 @@ pub async fn salvar(
         .await?;
     }
     sqlx::query_file!(
-        "queries/inserir_execucao.sql",
+        "queries/execucoes/inserir.sql",
         id,
         cenario_id,
         criada_em,
@@ -79,7 +79,7 @@ pub async fn salvar(
         let estado = format!("{:?}", v.estado);
         let dependencias = serde_json::to_string(&v.dependencias)?;
         sqlx::query_file!(
-            "queries/inserir_verificacao.sql",
+            "queries/execucoes/inserir_verificacao.sql",
             id,
             ordem,
             v.regra,
@@ -100,7 +100,7 @@ pub async fn salvar(
 }
 
 pub async fn listar(pool: &SqlitePool) -> Resultado<Vec<Execucao>> {
-    sqlx::query_file!("queries/historico.sql")
+    sqlx::query_file!("queries/execucoes/listar.sql")
         .fetch_all(pool)
         .await?
         .into_iter()
@@ -118,7 +118,7 @@ pub async fn listar(pool: &SqlitePool) -> Resultado<Vec<Execucao>> {
 }
 
 pub async fn obter(pool: &SqlitePool, id: &str) -> Resultado<Execucao> {
-    let r = sqlx::query_file!("queries/execucao.sql", id)
+    let r = sqlx::query_file!("queries/execucoes/obter.sql", id)
         .fetch_one(pool)
         .await?;
     Ok(Execucao {
@@ -139,7 +139,7 @@ pub async fn filtrar(
     deslocamento: i64,
 ) -> Resultado<Vec<Execucao>> {
     sqlx::query_file!(
-        "queries/historico_filtrado.sql",
+        "queries/execucoes/listar_filtradas.sql",
         lote,
         inicio,
         fim,

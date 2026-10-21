@@ -9,7 +9,7 @@ pub async fn backup(pool: &SqlitePool, destino: &Path) -> Resultado<()> {
     std::fs::create_dir(destino)?;
     let caminho = destino.join("aplicacao.sqlite3");
     let nome = caminho.to_str().ok_or("Caminho inválido")?;
-    sqlx::query_file!("queries/backup.sql", nome)
+    sqlx::query_file!("queries/banco/backup.sql", nome)
         .execute(pool)
         .await?;
     std::fs::write(
@@ -83,13 +83,13 @@ pub async fn restaurar(origem: &Path, destino: &Path) -> Resultado<()> {
     let banco = destino.join("aplicacao.sqlite3");
     std::fs::copy(origem.join("aplicacao.sqlite3"), &banco)?;
     let pool = super::banco::abrir(&banco, false).await?;
-    let integridade = sqlx::query_file!("queries/integridade.sql")
+    let integridade = sqlx::query_file!("queries/banco/integridade.sql")
         .fetch_all(&pool)
         .await?;
     if integridade.len() != 1 || integridade[0].integrity_check.as_deref() != Some("ok") {
         return Err("Integridade SQLite inválida.".into());
     }
-    if !sqlx::query_file!("queries/vinculos.sql")
+    if !sqlx::query_file!("queries/banco/vinculos.sql")
         .fetch_all(&pool)
         .await?
         .is_empty()

@@ -5,7 +5,7 @@ use crate::Resultado;
 use crate::dominio::{Alimento, Lote};
 
 pub async fn lotes(pool: &SqlitePool) -> Resultado<Vec<Lote>> {
-    sqlx::query_file!("queries/listar_lotes.sql")
+    sqlx::query_file!("queries/lotes/listar.sql")
         .fetch_all(pool)
         .await?
         .into_iter()
@@ -24,16 +24,16 @@ pub async fn salvar_lote(pool: &SqlitePool, lote: &mut Lote, novo: bool) -> Resu
     let dias = lote.dias_lactacao as i64;
     let mut tx = pool.begin().await?;
     if novo {
-        sqlx::query_file!("queries/inserir_lote.sql", lote.id, lote.nome)
+        sqlx::query_file!("queries/lotes/inserir.sql", lote.id, lote.nome)
             .execute(&mut *tx)
             .await?;
     } else {
-        sqlx::query_file!("queries/atualizar_lote.sql", lote.nome, lote.id)
+        sqlx::query_file!("queries/lotes/atualizar.sql", lote.nome, lote.id)
             .execute(&mut *tx)
             .await?;
     }
     sqlx::query_file!(
-        "queries/inserir_revisao.sql",
+        "queries/lotes/inserir_revisao.sql",
         lote.revisao_id,
         lote.id,
         lote.id,
@@ -51,7 +51,7 @@ pub async fn salvar_lote(pool: &SqlitePool, lote: &mut Lote, novo: bool) -> Resu
 }
 
 pub async fn alimentos(pool: &SqlitePool) -> Resultado<Vec<Alimento>> {
-    sqlx::query_file!("queries/listar_composicoes.sql")
+    sqlx::query_file!("queries/alimentos/listar_composicoes.sql")
         .fetch_all(pool)
         .await?
         .into_iter()
@@ -69,11 +69,11 @@ pub async fn salvar_alimento(pool: &SqlitePool, a: &mut Alimento) -> Resultado<(
     let classe = format!("{:?}", a.classe);
     let [ndt, pb, ca, p, fdn, amido, ee] = a.nutrientes;
     let mut tx = pool.begin().await?;
-    sqlx::query_file!("queries/inserir_alimento.sql", a.id, a.nome, classe)
+    sqlx::query_file!("queries/alimentos/inserir.sql", a.id, a.nome, classe)
         .execute(&mut *tx)
         .await?;
     sqlx::query_file!(
-        "queries/inserir_composicao.sql",
+        "queries/alimentos/inserir_composicao.sql",
         a.composicao_id,
         a.id,
         a.fonte_id,
@@ -93,7 +93,7 @@ pub async fn salvar_alimento(pool: &SqlitePool, a: &mut Alimento) -> Resultado<(
     .await?;
     let produto_id = Uuid::new_v4().to_string();
     sqlx::query_file!(
-        "queries/inserir_produto.sql",
+        "queries/alimentos/inserir_produto.sql",
         produto_id,
         a.composicao_id,
         a.fornecedor,

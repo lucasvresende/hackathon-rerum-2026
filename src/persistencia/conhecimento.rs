@@ -18,7 +18,7 @@ pub async fn carregar(pool: &SqlitePool, sql: &str) -> Resultado<()> {
         .ok_or("Carga sem identificador de versão.")?;
     let resumo = hash(sql);
     let mut tx = pool.begin().await?;
-    if let Some(anterior) = sqlx::query_file!("queries/carga.sql", versao)
+    if let Some(anterior) = sqlx::query_file!("queries/conhecimento/carga.sql", versao)
         .fetch_optional(&mut *tx)
         .await?
     {
@@ -31,7 +31,7 @@ pub async fn carregar(pool: &SqlitePool, sql: &str) -> Resultado<()> {
     sqlx::raw_sql(sqlx::AssertSqlSafe(sql.to_owned()))
         .execute(&mut *tx)
         .await?;
-    let contagem = sqlx::query_file!("queries/verificar_base.sql")
+    let contagem = sqlx::query_file!("queries/conhecimento/verificar_base.sql")
         .fetch_one(&mut *tx)
         .await?;
     if contagem.perfis != 1 || contagem.fontes == 0 {
@@ -40,9 +40,14 @@ pub async fn carregar(pool: &SqlitePool, sql: &str) -> Resultado<()> {
     let base = ler_conexao(&mut tx).await?;
     validar(&base)?;
     super::templates::validar(&mut tx).await?;
-    sqlx::query_file!("queries/inserir_carga.sql", versao, resumo, sql)
-        .execute(&mut *tx)
-        .await?;
+    sqlx::query_file!(
+        "queries/conhecimento/inserir_carga.sql",
+        versao,
+        resumo,
+        sql
+    )
+    .execute(&mut *tx)
+    .await?;
     tx.commit().await?;
     Ok(())
 }
@@ -53,10 +58,10 @@ pub async fn ler(pool: &SqlitePool) -> Resultado<Conhecimento> {
 }
 
 async fn ler_conexao(conexao: &mut sqlx::SqliteConnection) -> Resultado<Conhecimento> {
-    let perfil = sqlx::query_file!("queries/perfil.sql")
+    let perfil = sqlx::query_file!("queries/conhecimento/perfil.sql")
         .fetch_one(&mut *conexao)
         .await?;
-    let coeficientes = sqlx::query_file!("queries/coeficientes.sql", perfil.id)
+    let coeficientes = sqlx::query_file!("queries/conhecimento/coeficientes.sql", perfil.id)
         .fetch_all(&mut *conexao)
         .await?
         .into_iter()
@@ -68,7 +73,7 @@ async fn ler_conexao(conexao: &mut sqlx::SqliteConnection) -> Resultado<Conhecim
             unidade: r.unidade,
         })
         .collect();
-    let fontes = sqlx::query_file!("queries/fontes.sql")
+    let fontes = sqlx::query_file!("queries/conhecimento/fontes.sql")
         .fetch_all(&mut *conexao)
         .await?
         .into_iter()
@@ -82,7 +87,7 @@ async fn ler_conexao(conexao: &mut sqlx::SqliteConnection) -> Resultado<Conhecim
             hash: r.hash,
         })
         .collect();
-    let normas = sqlx::query_file!("queries/normas.sql")
+    let normas = sqlx::query_file!("queries/conhecimento/normas.sql")
         .fetch_all(&mut *conexao)
         .await?
         .into_iter()
@@ -101,19 +106,20 @@ async fn ler_conexao(conexao: &mut sqlx::SqliteConnection) -> Resultado<Conhecim
             acao: r.acao,
         })
         .collect();
-    let limites_contaminantes = sqlx::query_file!("queries/limites_contaminantes.sql", perfil.id)
-        .fetch_all(&mut *conexao)
-        .await?
-        .into_iter()
-        .map(|r| LimiteContaminante {
-            norma_id: r.norma_id,
-            analito: r.analito,
-            matriz: r.matriz,
-            limite: r.limite,
-            umidade: r.umidade,
-            unidade: r.unidade,
-        })
-        .collect();
+    let limites_contaminantes =
+        sqlx::query_file!("queries/conhecimento/limites_contaminantes.sql", perfil.id)
+            .fetch_all(&mut *conexao)
+            .await?
+            .into_iter()
+            .map(|r| LimiteContaminante {
+                norma_id: r.norma_id,
+                analito: r.analito,
+                matriz: r.matriz,
+                limite: r.limite,
+                umidade: r.umidade,
+                unidade: r.unidade,
+            })
+            .collect();
     let conhecimento = Conhecimento {
         perfil_id: perfil.id,
         versao: perfil.versao,
