@@ -17,7 +17,9 @@ navegável e páginas numeradas.
 - [Literatura e motor do Tema 2](TEMA_2_DIETAS_LITERATURA_E_MOTOR.pdf): 31 páginas com o
   conteúdo de `hackathon/TEMA_2_DIETAS_LITERATURA_E_MOTOR.md`. Preserva a pesquisa e proposta
   documental original de 20/10/2026; o contrato implementado está na documentação completa.
-- [Roteiro da demonstração](ROTEIRO_DEMO.md).
+- [Valores para preenchimento manual](INPUTS_DEMONSTRACAO.md): cadastros de lote e alimentos,
+  dieta base e 16 casos com entradas, resultados esperados e o que demonstrar na apresentação.
+  Inclui verificação, formulação, custos, estoque, pesagem, perfil, histórico e impressão.
 
 Os Markdown originais continuam sendo as fontes editáveis. Os links entre documentos incluídos
 no PDF principal levam às respectivas seções; referências externas conservam seus endereços.
@@ -29,7 +31,8 @@ e inspeção visual das páginas renderizadas, incluindo tabelas, fórmulas e bl
 ## Diagramas vetoriais
 
 Os seis blocos Mermaid foram renderizados em SVG e incorporados aos três PDFs como gráficos
-vetoriais. As cópias ficam em `diagramas/`: quatro da documentação, uma do processo e uma do relatório do Tema 2.
+vetoriais. As cópias ficam em `diagramas/`: quatro da documentação, uma do processo e uma do
+relatório do Tema 2.
 Os fluxos horizontais receberam disposição vertical para leitura em A4; nós, textos e conexões
 foram preservados. Os blocos Mermaid originais permanecem nos Markdown de origem.
 
