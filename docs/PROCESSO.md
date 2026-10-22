@@ -9,11 +9,11 @@ entregue.
 
 Foram avaliados três caminhos para um sistema especialista no contexto da pecuária leiteira:
 
-| Tema | Pergunta central | Principal dificuldade para um MVP confiável |
-| --- | --- | --- |
-| Triagem | Que sinais exigem atenção? | Evidência clínica e encaminhamento. |
-| Dietas | Atende limites? Há menor custo? | Composição, segurança e otimização. |
-| Economia | Como variam custos e receitas? | Custos, tempo e causalidade. |
+| Tema     | Pergunta central                | Principal dificuldade para um MVP confiável |
+| -------- | ------------------------------- | ------------------------------------------- |
+| Triagem  | Que sinais exigem atenção?      | Evidência clínica e encaminhamento.         |
+| Dietas   | Atende limites? Há menor custo? | Composição, segurança e otimização.         |
+| Economia | Como variam custos e receitas?  | Custos, tempo e causalidade.                |
 
 A escolha recaiu em **verificação e formulação de dietas** porque o problema permite regras
 explícitas, entradas auditáveis, exemplos numéricos e testes de regressão. A comparação econômica

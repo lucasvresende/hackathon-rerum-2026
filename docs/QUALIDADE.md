@@ -6,13 +6,13 @@ representativa; **não** substitui a execução bem-sucedida dos testes na revis
 
 ## Camadas de teste
 
-| Camada | O que verifica | Comando principal |
-| --- | --- | --- |
-| Rust | Domínio, SQLx, HTTP, histórico, cópias e contratos. | `cargo test --locked` |
-| Python | Estrutura e scripts auxiliares. | `unittest` em `scripts/` |
-| Navegador | Interface real, htmx, erros, impressão e layouts. | `npm run test:e2e` |
-| Release | Arquivo, preparo, motor e HTTP. | `scripts/testar_producao.py` |
-| Desempenho | Tempo do motor. | `cargo run -- ensaiar` |
+| Camada     | O que verifica                                      | Comando principal            |
+| ---------- | --------------------------------------------------- | ---------------------------- |
+| Rust       | Domínio, SQLx, HTTP, histórico, cópias e contratos. | `cargo test --locked`        |
+| Python     | Estrutura e scripts auxiliares.                     | `unittest` em `scripts/`     |
+| Navegador  | Interface real, htmx, erros, impressão e layouts.   | `npm run test:e2e`           |
+| Release    | Arquivo, preparo, motor e HTTP.                     | `scripts/testar_producao.py` |
+| Desempenho | Tempo do motor.                                     | `cargo run -- ensaiar`       |
 
 Os testes Rust em `tests/*.rs` usam banco temporário quando necessário. Os testes de navegador
 criam banco e servidor temporários; `tests/javascript/e2e/navegadores.mjs` copia o executável
@@ -21,17 +21,17 @@ antes de iniciar o servidor para estabilizar o processo filho do motor. Capturas
 
 ## Matriz de rastreabilidade
 
-| Requisitos | Implementação | Evidência representativa |
-| --- | --- | --- |
-| RF-01–05 | `persistencia/`, `web/cadastros/` | `inicio.rs`, `exemplos.rs` |
-| RF-06–09 | `web/cenarios/`, `dominio/motor/` | `cenarios.rs`, `nucleo.rs` |
-| RF-10–11 | `dominio/motor/formulacao/` | `otimizacao.rs`, `motor.rs` |
-| RF-12–15 | `aplicacao/execucoes/` | `comparacao.rs`, `reutilizacao.rs` |
-| RF-16–19 | `persistencia/`, `dados_referencia/` | `exemplos.rs`, `entrega.rs` |
-| RN-01–10 | `dominio/cenario/`, `dominio/motor/` | `nucleo.rs`, `cenarios.rs`, `motor.rs` |
-| RN-11–16 | `dominio/motor/` | `integracao.rs`, `diagnostico_dietas.rs` |
-| RN-17–24 | `dominio/motor/`, `dominio/parecer/` | `otimizacao.rs`, `reutilizacao.rs` |
-| RNF-01–14 | `web/`, `scripts/`, `.github/workflows/ci.yml` | Rust, Python, Playwright e pacote |
+| Requisitos | Implementação                                  | Evidência representativa                 |
+| ---------- | ---------------------------------------------- | ---------------------------------------- |
+| RF-01–05   | `persistencia/`, `web/cadastros/`              | `inicio.rs`, `exemplos.rs`               |
+| RF-06–09   | `web/cenarios/`, `dominio/motor/`              | `cenarios.rs`, `nucleo.rs`               |
+| RF-10–11   | `dominio/motor/formulacao/`                    | `otimizacao.rs`, `motor.rs`              |
+| RF-12–15   | `aplicacao/execucoes/`                         | `comparacao.rs`, `reutilizacao.rs`       |
+| RF-16–19   | `persistencia/`, `dados_referencia/`           | `exemplos.rs`, `entrega.rs`              |
+| RN-01–10   | `dominio/cenario/`, `dominio/motor/`           | `nucleo.rs`, `cenarios.rs`, `motor.rs`   |
+| RN-11–16   | `dominio/motor/`                               | `integracao.rs`, `diagnostico_dietas.rs` |
+| RN-17–24   | `dominio/motor/`, `dominio/parecer/`           | `otimizacao.rs`, `reutilizacao.rs`       |
+| RNF-01–14  | `web/`, `scripts/`, `.github/workflows/ci.yml` | Rust, Python, Playwright e pacote        |
 
 Os nomes de testes Rust da última coluna pertencem a `tests/`. A suíte de navegador cobre,
 entre outras áreas, `inicio`, `exemplos`, `cenario-simplificado`, `formulacao`,

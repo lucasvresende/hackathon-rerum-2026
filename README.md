@@ -1,4 +1,4 @@
-# FeedYourCow
+# 🐄 FeedYourCow!
 
 Aplicação web local para verificar dietas informadas e formular dietas de menor custo para vacas
 adultas em lactação. O resultado mostra o que foi calculado, quais restrições foram atendidas,
@@ -55,16 +55,16 @@ O [guia de operação](docs/OPERACAO.md) detalha configuração, atualização, 
 
 ## Documentação
 
-| Pergunta | Leia |
-| --- | --- |
-| Como preencher e interpretar uma dieta? | [Uso e telas](docs/USO.md) |
-| Como instalar, desenvolver e distribuir? | [Operação](docs/OPERACAO.md) |
-| Qual é o contrato funcional? | [Requisitos](docs/REQUISITOS.md) |
-| Como o motor calcula e decide? | [Motor de inferência](docs/MOTOR.md) |
-| Como o código e o banco estão organizados? | [Arquitetura](docs/ARQUITETURA.md) |
-| Como verificar a entrega e o CI? | [Qualidade e rastreabilidade](docs/QUALIDADE.md) |
-| Quais fontes e hipóteses sustentam o perfil? | [Fontes e limites](docs/FONTES.md) |
-| Como a aplicação foi concebida e revisada? | [Processo de desenvolvimento](docs/PROCESSO.md) |
+| Pergunta                                     | Leia                                             |
+| -------------------------------------------- | ------------------------------------------------ |
+| Como preencher e interpretar uma dieta?      | [Uso e telas](docs/USO.md)                       |
+| Como instalar, desenvolver e distribuir?     | [Operação](docs/OPERACAO.md)                     |
+| Qual é o contrato funcional?                 | [Requisitos](docs/REQUISITOS.md)                 |
+| Como o motor calcula e decide?               | [Motor de inferência](docs/MOTOR.md)             |
+| Como o código e o banco estão organizados?   | [Arquitetura](docs/ARQUITETURA.md)               |
+| Como verificar a entrega e o CI?             | [Qualidade e rastreabilidade](docs/QUALIDADE.md) |
+| Quais fontes e hipóteses sustentam o perfil? | [Fontes e limites](docs/FONTES.md)               |
+| Como a aplicação foi concebida e revisada?   | [Processo de desenvolvimento](docs/PROCESSO.md)  |
 
 O [índice de `docs/`](docs/README.md) oferece um percurso de leitura. Os comandos e os estados
 citados aqui correspondem ao código desta revisão; os testes e o CI verificam o comportamento.

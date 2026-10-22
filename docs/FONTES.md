@@ -7,14 +7,14 @@ servem para auditoria e atualização; o cálculo não faz download durante o us
 
 ## Base nutricional do perfil
 
-| ID | Referência | Uso e limite |
-| --- | --- | --- |
-| `C01` | [Embrapa 2020][embrapa20] | Mantença, leite e consumo no perfil. |
-| Contexto | [NASEM 2021][nasem] | Modelo integral não implementado. |
-| Contexto | [NRC 2001][nrc] | História dos sistemas de exigências. |
-| Contexto | [BR-LEITE 2024][brleite] | Alternativa não ativada como perfil. |
-| `C16` | Fibra e amido em `001_conhecimento.sql` | Cinco linhas de FDN. |
-| `MVP` | Política em `001_conhecimento.sql` | FDN ≥30%, amido ≤25%, EE ≤6%. |
+| ID       | Referência                              | Uso e limite                         |
+| -------- | --------------------------------------- | ------------------------------------ |
+| `C01`    | [Embrapa 2020][embrapa20]               | Mantença, leite e consumo no perfil. |
+| Contexto | [NASEM 2021][nasem]                     | Modelo integral não implementado.    |
+| Contexto | [NRC 2001][nrc]                         | História dos sistemas de exigências. |
+| Contexto | [BR-LEITE 2024][brleite]                | Alternativa não ativada como perfil. |
+| `C16`    | Fibra e amido em `001_conhecimento.sql` | Cinco linhas de FDN.                 |
+| `MVP`    | Política em `001_conhecimento.sql`      | FDN ≥30%, amido ≤25%, EE ≤6%.        |
 
 [embrapa20]: https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/1123902
 [nasem]: https://doi.org/10.17226/25806
@@ -87,16 +87,16 @@ instalada. Para navegar pela documentação desta revisão, use esta página e [
 
 A implementação se apoia nas documentações oficiais das versões declaradas no projeto:
 
-| Recurso | Documentação e uso |
-| --- | --- |
-| [Rust](https://doc.rust-lang.org/book/) | Linguagem. |
-| [Tokio](https://docs.rs/tokio/latest/tokio/) | Runtime assíncrono. |
-| [Axum 0.8](https://docs.rs/axum/0.8.9/axum/) | Rotas e respostas HTTP. |
-| [Maud 0.27](https://docs.rs/maud/0.27.0/maud/) | Templates `Render` e `Markup`. |
-| [SQLx 0.9](https://docs.rs/sqlx/0.9.0/sqlx/) | Macros `query_file!`, SQLite e migrações. |
-| [microlp 0.6](https://docs.rs/microlp/0.6.0/microlp/) | Formulação linear. |
-| [htmx 4 e hx-live](https://four.htmx.org/docs) | Atualização de fragmentos e reatividade. |
-| [Playwright](https://playwright.dev/docs/intro) | Testes de navegador e capturas. |
+| Recurso                                               | Documentação e uso                        |
+| ----------------------------------------------------- | ----------------------------------------- |
+| [Rust](https://doc.rust-lang.org/book/)               | Linguagem.                                |
+| [Tokio](https://docs.rs/tokio/latest/tokio/)          | Runtime assíncrono.                       |
+| [Axum 0.8](https://docs.rs/axum/0.8.9/axum/)          | Rotas e respostas HTTP.                   |
+| [Maud 0.27](https://docs.rs/maud/0.27.0/maud/)        | Templates `Render` e `Markup`.            |
+| [SQLx 0.9](https://docs.rs/sqlx/0.9.0/sqlx/)          | Macros `query_file!`, SQLite e migrações. |
+| [microlp 0.6](https://docs.rs/microlp/0.6.0/microlp/) | Formulação linear.                        |
+| [htmx 4 e hx-live](https://four.htmx.org/docs)        | Atualização de fragmentos e reatividade.  |
+| [Playwright](https://playwright.dev/docs/intro)       | Testes de navegador e capturas.           |
 
 As cópias de `htmx.min.js` e `hx-live.min.js` em `static/vendor/` vieram do pacote
 `htmx.org@4.0.0` e são distribuídas localmente, sob a licença preservada em

@@ -70,27 +70,27 @@ estoque negativo ou preço sem origem devem ser rejeitados com indicação de ca
 
 ## Requisitos funcionais
 
-| ID | Comportamento e critério observável |
-| --- | --- |
+| ID    | Comportamento e critério observável                                              |
+| ----- | -------------------------------------------------------------------------------- |
 | RF-01 | `preparar` aplica migrações, perfil e exemplos sem duplicar ou desfazer edições. |
-| RF-02 | Cadastrar, revisar, copiar e desativar lotes sem alterar execuções antigas. |
-| RF-03 | Cadastrar e revisar alimentos, composições, fontes e condições de produto. |
-| RF-04 | Informar custos, unidade comercial, perdas, estoque e inclusão por cenário. |
-| RF-05 | Consultar perfil, coeficientes, normas, fontes e versões usados. |
-| RF-06 | Construir cenários editáveis e escolher verificar ou formular. |
-| RF-07 | Validar dados e enquadrar lote, ingredientes e perfil antes da conclusão. |
+| RF-02 | Cadastrar, revisar, copiar e desativar lotes sem alterar execuções antigas.      |
+| RF-03 | Cadastrar e revisar alimentos, composições, fontes e condições de produto.       |
+| RF-04 | Informar custos, unidade comercial, perdas, estoque e inclusão por cenário.      |
+| RF-05 | Consultar perfil, coeficientes, normas, fontes e versões usados.                 |
+| RF-06 | Construir cenários editáveis e escolher verificar ou formular.                   |
+| RF-07 | Validar dados e enquadrar lote, ingredientes e perfil antes da conclusão.        |
 | RF-08 | Obter consumo-alvo informado/medido ou referência calculada, com origem visível. |
-| RF-09 | Verificar dieta informada sem alterar suas quantidades. |
-| RF-10 | Formular candidata de menor custo e indicar o estado de cada subproblema. |
-| RF-11 | Mostrar oferta e consumo por animal/lote e revalidar resolução de pesagem. |
-| RF-12 | Comparar custos somente entre execuções da mesma revisão do mesmo lote. |
-| RF-13 | Exibir parecer por dimensão, regra, valor, limite, fonte e dependências. |
-| RF-14 | Preservar execução imutável e permitir consulta e impressão do histórico. |
-| RF-15 | Duplicar ou reutilizar candidata em nova simulação sem substituir o original. |
-| RF-16 | Aplicar cargas versionadas de conhecimento com integridade e hash. |
-| RF-17 | Fazer backup consistente e restaurar em destino novo após verificações. |
-| RF-18 | Entregar pacote nativo com recursos, cargas e instruções de operação. |
-| RF-19 | Oferecer catálogo sintético inicial e restauração explícita de exemplos. |
+| RF-09 | Verificar dieta informada sem alterar suas quantidades.                          |
+| RF-10 | Formular candidata de menor custo e indicar o estado de cada subproblema.        |
+| RF-11 | Mostrar oferta e consumo por animal/lote e revalidar resolução de pesagem.       |
+| RF-12 | Comparar custos somente entre execuções da mesma revisão do mesmo lote.          |
+| RF-13 | Exibir parecer por dimensão, regra, valor, limite, fonte e dependências.         |
+| RF-14 | Preservar execução imutável e permitir consulta e impressão do histórico.        |
+| RF-15 | Duplicar ou reutilizar candidata em nova simulação sem substituir o original.    |
+| RF-16 | Aplicar cargas versionadas de conhecimento com integridade e hash.               |
+| RF-17 | Fazer backup consistente e restaurar em destino novo após verificações.          |
+| RF-18 | Entregar pacote nativo com recursos, cargas e instruções de operação.            |
+| RF-19 | Oferecer catálogo sintético inicial e restauração explícita de exemplos.         |
 
 A consulta ao histórico não oferece reexecução com versões originais. **Duplicar e simular** usa o
 conhecimento ativo em uma nova execução. A impressão curta de fornecimento deve indicar recusa
@@ -165,12 +165,12 @@ Há seis lotes de um animal (`ex-l01` a `ex-l06`): Holandesa, Jersey, Girolando 
 mestiça F1 Holandês/Gir, Gir Leiteiro e Pardo-Suíça leiteira. Todos são exemplos, com condições
 fisiológicas assumidas explicitamente.
 
-| IDs | Alimentos |
-| --- | --- |
-| `ex-a01`–`ex-a05` | Silagens, feno de tifton, capim-elefante e cana sem ureia. |
+| IDs               | Alimentos                                                              |
+| ----------------- | ---------------------------------------------------------------------- |
+| `ex-a01`–`ex-a05` | Silagens, feno de tifton, capim-elefante e cana sem ureia.             |
 | `ex-a06`–`ex-a10` | Milho, farelo de soja, farelo de trigo, polpa cítrica e casca de soja. |
-| `ex-a11`–`ex-a13` | Caroço de algodão, mistura mineral e calcário calcítico. |
-| `ex-a14`–`ex-a15` | Mistura milho/soja e mistura com casca de soja. |
+| `ex-a11`–`ex-a13` | Caroço de algodão, mistura mineral e calcário calcítico.               |
+| `ex-a14`–`ex-a15` | Mistura milho/soja e mistura com casca de soja.                        |
 
 As misturas são composições próprias: proporções em massa natural e nutrientes ponderados pela
 matéria seca dos componentes. Atualizar um componente não modifica automaticamente a composição

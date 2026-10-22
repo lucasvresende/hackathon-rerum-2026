@@ -22,7 +22,7 @@ flowchart LR
 
 ![Visão geral com atalhos e cenário inicial](imagens/visao-geral.png)
 
-*Captura de teste com banco já usado. Os contadores da instalação nova serão diferentes.*
+_Captura de teste com banco já usado. Os contadores da instalação nova serão diferentes._
 
 ## Primeira simulação
 
@@ -66,7 +66,7 @@ cadastrar outro alimento em nova guia e usar **Atualizar cadastros** para incorp
 
 ![Formulário móvel com seleção e campos dos ingredientes](imagens/nova-dieta.png)
 
-*Captura de teste de uma dieta ainda em edição; preços e estoques vazios precisam ser definidos.*
+_Captura de teste de uma dieta ainda em edição; preços e estoques vazios precisam ser definidos._
 
 ### Quantidades e preços
 

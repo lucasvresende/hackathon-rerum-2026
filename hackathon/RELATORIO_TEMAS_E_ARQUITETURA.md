@@ -12,11 +12,11 @@ não constituem uma base de conhecimento já homologada por especialistas.
 Os três temas permitem a mesma arquitetura: coleta estruturada, fatos normalizados, regras
 versionadas, motor de inferência e parecer acompanhado das evidências que o produziram.
 
-| Tema | Recorte sugerido | Principal dificuldade |
-| --- | --- | --- |
-| T1 · Anamnese | Triagem de vacas em lactação | Validação clínica e sinais inespecíficos |
-| T2 · Dietas | Formular e verificar dietas de poucos ingredientes | Unidades e modelo nutricional |
-| T3 · Economia | Diagnóstico de custos e cenários | Qualidade dos registros e rateios |
+| Tema          | Recorte sugerido                                   | Principal dificuldade                    |
+| ------------- | -------------------------------------------------- | ---------------------------------------- |
+| T1 · Anamnese | Triagem de vacas em lactação                       | Validação clínica e sinais inespecíficos |
+| T2 · Dietas   | Formular e verificar dietas de poucos ingredientes | Unidades e modelo nutricional            |
+| T3 · Economia | Diagnóstico de custos e cenários                   | Qualidade dos registros e rateios        |
 
 **Sugestão inicial: T3**, se a prioridade for concluir um sistema consistente dentro do prazo.
 Permite resultados esperados calculáveis e regras de interpretação fáceis de demonstrar. Isso não
@@ -41,13 +41,13 @@ Requisitos que devem orientar qualquer escolha:
 
 1. Aplicação para usuário final, baseada em conhecimento explícito e motor de inferência.
 2. Agente de IA utilizado na análise e no desenvolvimento. A decisão operacional deve sair das
-  regras e do motor determinístico e auditável; a LLM não pode ocupar o papel de especialista.
+   regras e do motor determinístico e auditável; a LLM não pode ocupar o papel de especialista.
 3. Código e ferramentas abertos, com a solução final funcionando integralmente em localhost.
 4. Demonstração funcional, documentação do processo, arquitetura e regras de produção, além de
-  apresentação organizada do trabalho.
+   apresentação organizada do trabalho.
 5. Equipes de um a três participantes. A apresentação informa inscrição e presença como condições.
 6. Avaliação pelo potencial de resolver o problema; complexidade e assertividade são critérios
-  adicionais. O material também valoriza a organização do grupo e o aprendizado.
+   adicionais. O material também valoriza a organização do grupo e o aprendizado.
 
 O cronograma informado é: início em **20/10 às 9h**, entrega até **22/10 às 20h** e demonstração em
 **23/10 às 9h**. O relatório compara os três temas para seleção; o regulamento pede escolher um.
@@ -126,19 +126,19 @@ relevantes.
 ### 3.3. O que analisar e pesquisar antes de codificar
 
 1. **Prioridade antes da hipótese.** Definir com veterinário quais sinais interrompem o questionário
-  e demandam atendimento imediato. Incapacidade de permanecer em pé é um exemplo importante de
-  apresentação clínica no material sobre paresia puerperal; não identifica sozinha sua causa. [MSD:
-  seção sobre paresia puerperal][A3], artigo *Parturient Paresis in Cows*.
+   e demandam atendimento imediato. Incapacidade de permanecer em pé é um exemplo importante de
+   apresentação clínica no material sobre paresia puerperal; não identifica sozinha sua causa. [MSD:
+   seção sobre paresia puerperal][A3], artigo _Parturient Paresis in Cows_.
 2. **Diagnósticos diferenciais.** Mapear causas alternativas para anorexia e redução de leite,
-  evitando transformar sinais compartilhados em uma única doença.
+   evitando transformar sinais compartilhados em uma única doença.
 3. **Forma clínica e subclínica.** A Embrapa distingue a forma subclínica, sem alterações visíveis,
-  cuja identificação depende de exames do leite. Ausência de alteração visível não permite declarar
-  o animal livre de mastite. [Embrapa][A4].
+   cuja identificação depende de exames do leite. Ausência de alteração visível não permite declarar
+   o animal livre de mastite. [Embrapa][A4].
 4. **Faixas e critérios.** Qualquer corte de temperatura ou exame precisa de fonte, unidade, método,
-  população de aplicação e revisão especializada. Não adotar números encontrados fora de contexto.
+   população de aplicação e revisão especializada. Não adotar números encontrados fora de contexto.
 5. **Coexistência de problemas.** Permitir mais de uma suspeita e mais de um alerta por atendimento.
 6. **Confiabilidade da informação.** Perguntar o que o usuário consegue observar; oferecer opções
-  claras quando ele não souber avaliar um sinal.
+   claras quando ele não souber avaliar um sinal.
 
 ### 3.4. Exemplos de regras de produção
 
@@ -371,17 +371,17 @@ Comparações com benchmarks exigem sistemas produtivos e critérios contábeis 
 
 Caso sintético mensal, sem outras receitas, com todos os custos atribuídos à atividade leiteira:
 
-| Entrada ou resultado | Valor |
-| --- | ---: |
-| Leite vendido | 30.000 L |
-| Preço recebido | R$ 2,50/L |
-| Receita | R$ 75.000 |
-| COE | R$ 60.000 |
-| COT | R$ 70.000 |
-| CT | R$ 76.000 |
-| Margem bruta | R$ 15.000 |
-| Margem líquida | R$ 5.000 |
-| Resultado econômico | −R$ 1.000 |
+| Entrada ou resultado |     Valor |
+| -------------------- | --------: |
+| Leite vendido        |  30.000 L |
+| Preço recebido       | R$ 2,50/L |
+| Receita              | R$ 75.000 |
+| COE                  | R$ 60.000 |
+| COT                  | R$ 70.000 |
+| CT                   | R$ 76.000 |
+| Margem bruta         | R$ 15.000 |
+| Margem líquida       |  R$ 5.000 |
+| Resultado econômico  | −R$ 1.000 |
 
 O parecer deve acionar **ECO-03**: existe margem líquida, mas a remuneração de capital não é coberta
 integralmente. O preço de cobertura de CT é aproximadamente R$ 2,5333/L, com essas premissas.
@@ -561,7 +561,7 @@ Arredondar para exibição sem destruir a precisão dos cálculos intermediário
   mudanças da pasta com `build.rs`, evitando deixar novas migrações fora da recompilação. [T6].
 - O modo offline das macros usa metadados em `.sqlx`, preparados com `cargo sqlx prepare` contra um
   banco com migrações aplicadas. Versionar os metadados e verificar com `cargo sqlx prepare
-  --check`. Compilação offline não elimina o banco usado em execução. [T7].
+--check`. Compilação offline não elimina o banco usado em execução. [T7].
 - Verificar integridade referencial em cada conexão SQLite. O SQLite recomenda não presumir o estado
   padrão de `foreign_keys`; conferir também a configuração aplicada pelo driver. [T8].
 - WAL pode favorecer leitura e escrita concorrentes em banco local, mas não elimina contenção entre
@@ -572,13 +572,13 @@ Arredondar para exibição sem destruir a precisão dos cálculos intermediário
 ### 7.1. Sequência compatível com o cronograma
 
 1. **20/10:** escolher tema e recorte, definir entradas/saídas e preparar casos com resultado
-  esperado. Revisar as primeiras regras antes de construir muitas telas.
+   esperado. Revisar as primeiras regras antes de construir muitas telas.
 2. **21/10:** concluir um fluxo vertical: formulário → banco → inferência → explicação. Cobrir o
-  motor, as regras e os cálculos com testes; depois ampliar apenas o necessário.
+   motor, as regras e os cálculos com testes; depois ampliar apenas o necessário.
 3. **22/10:** exercitar casos incompletos e conflitos, conferir documentação e ensaiar a execução
-  sem internet. Preparar código, documentação e apresentação antes do limite de 20h.
+   sem internet. Preparar código, documentação e apresentação antes do limite de 20h.
 4. **23/10:** demonstrar caso normal, caso de atenção e caso incompleto, incluindo alteração de
-  entrada e inspeção do traço de regras, a partir da aplicação em localhost.
+   entrada e inspeção do traço de regras, a partir da aplicação em localhost.
 
 ### 7.2. Critérios comuns de aceite
 
@@ -622,34 +622,33 @@ representem automaticamente condições atuais ou todos os sistemas de produçã
 
 ### 9.1. Sanidade e anamnese
 
-- **[A1] Embrapa, 2012.** *Diagnóstico de casos clínicos de mastite*, Comunicado Técnico 67.
+- **[A1] Embrapa, 2012.** _Diagnóstico de casos clínicos de mastite_, Comunicado Técnico 67.
   Consultados o registro e o comunicado: sinais do úbere, leite e estado geral. [Registro e acesso
   ao PDF][A1].
-- **[A2] MSD Veterinary Manual.** *Hyperketonemia in Cattle*: sinais inespecíficos, contexto de
+- **[A2] MSD Veterinary Manual.** _Hyperketonemia in Cattle_: sinais inespecíficos, contexto de
   lactação, diagnóstico e papel dos testes. [Artigo consultado][A2].
-- **[A3] MSD Veterinary Manual.** Seção *Parturient Paresis in Ruminants*, com acesso a *Parturient
-  Paresis in Cows*, artigo também consultado: sinais e diagnósticos diferenciais. [Seção e acesso ao
+- **[A3] MSD Veterinary Manual.** Seção _Parturient Paresis in Ruminants_, com acesso a _Parturient
+  Paresis in Cows_, artigo também consultado: sinais e diagnósticos diferenciais. [Seção e acesso ao
   artigo][A3].
-- **[A4] Embrapa, 2010.** *Conhecendo melhor a mastite clínica*: distinção entre manifestações
+- **[A4] Embrapa, 2010.** _Conhecendo melhor a mastite clínica_: distinção entre manifestações
   clínicas e subclínicas, observação e severidade. Consultado como apoio conceitual, sem adotar seus
   números de prevalência ou protocolos terapêuticos na proposta. [Registro e acesso à
   publicação][A4].
 
 ### 9.2. Nutrição
 
-- **[N1] Embrapa Rondônia, 2020.** *Manual prático de formulação de ração para vacas leiteiras*, 2ª
+- **[N1] Embrapa Rondônia, 2020.** _Manual prático de formulação de ração para vacas leiteiras_, 2ª
   edição, Documentos 167. Consultadas seções de nutrientes, tabelas, bases de cálculo e métodos de
   formulação. [Registro e acesso ao manual][N1].
-- **[N2] National Academies, 2021.** *Nutrient Requirements of Dairy Cattle: Eighth Revised
-  Edition*. Consultada a página institucional do projeto e sua descrição de escopo. As equações do
+- **[N2] National Academies, 2021.** _Nutrient Requirements of Dairy Cattle: Eighth Revised
+  Edition_. Consultada a página institucional do projeto e sua descrição de escopo. As equações do
   modelo não foram implementadas nem validadas neste trabalho. [Projeto e publicação][N2].
 
 ### 9.3. Economia
 
-- **[E1] Verneque e colaboradores, Embrapa/UFJF, 2007.** *Custos e resultados econômicos da
-  atividade leiteira no estado de Minas Gerais, Brasil*. Consultados registro e texto, especialmente
-  Material e Métodos. Referência histórica para COE/COT/CT e margens; observar as ressalvas da seção
-  5. [Registro e acesso ao trabalho][E1].
+- **[E1] Verneque e colaboradores, Embrapa/UFJF, 2007.** _Custos e resultados econômicos da
+  atividade leiteira no estado de Minas Gerais, Brasil_. Consultados registro e texto, especialmente
+  Material e Métodos. Referência histórica para COE/COT/CT e margens; observar as ressalvas da seção 5. [Registro e acesso ao trabalho][E1].
 - **[E2] Cepea/Esalq-USP.** Metodologia do indicador de leite: unidade, preço líquido, ponderação e
   mês de captação. Não foram adotadas cotações como premissas dos exemplos. [Metodologia][E2].
 
@@ -680,8 +679,7 @@ escolha do tema, uma base revisada com casos de teste. O cache de pesquisa `.fir
 ignorado pelo Git; as referências necessárias para rastrear o relatório estão nesta seção.
 
 [A1]: https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/930366
-[A2]:
-https://www.msdvetmanual.com/metabolic-disorders/hyperketonemia-in-cattle/hyperketonemia-in-cattle
+[A2]: https://www.msdvetmanual.com/metabolic-disorders/hyperketonemia-in-cattle/hyperketonemia-in-cattle
 [A3]: https://www.msdvetmanual.com/metabolic-disorders/parturient-paresis-in-ruminants
 [A4]: https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/886649
 [N1]: https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/1123902

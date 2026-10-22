@@ -17,7 +17,7 @@ Recomenda-se um motor com três camadas:
 1. **Árvore de elegibilidade e coleta:** caracteriza lote, dados, ingredientes e modelo aplicável.
 2. **Cálculo e avaliação de restrições:** calcula a oferta nutricional e acumula todas as violações.
 3. **Formulação e explicação:** procura combinações compatíveis, compara custos e explica o
-  resultado.
+   resultado.
 
 Uma árvore que termina na primeira deficiência perderia outros problemas da mesma dieta. Por isso,
 depois da seleção inicial, o processamento se abre em verificações independentes e volta a se reunir
@@ -262,12 +262,12 @@ ureia**. Revoga 839/2012. Não é limite legal brasileiro. [N10].
 
 **União Europeia, Diretiva 2002/32/CE, texto consolidado consultado:** [N11].
 
-| Analito | Matriz | Limite na base com 12% de umidade |
-| --- | --- | ---: |
-| AFB1 | Matérias-primas | 20 µg/kg |
-| AFB1 | Alimento composto para gado leiteiro/bezerros | 5 µg/kg |
-| Gossipol livre | Alimento completo para bovinos, exceto bezerros | 500 mg/kg |
-| HCN | Alimento completo | 50 mg/kg |
+| Analito        | Matriz                                          | Limite na base com 12% de umidade |
+| -------------- | ----------------------------------------------- | --------------------------------: |
+| AFB1           | Matérias-primas                                 |                          20 µg/kg |
+| AFB1           | Alimento composto para gado leiteiro/bezerros   |                           5 µg/kg |
+| Gossipol livre | Alimento completo para bovinos, exceto bezerros |                         500 mg/kg |
+| HCN            | Alimento completo                               |                          50 mg/kg |
 
 Os limites são específicos da matriz e do analito. Gossipol total não é gossipol livre. O perfil de
 ingrediente deve ser verificado além da mistura final; diluir ingrediente irregular não equivale a
@@ -447,24 +447,24 @@ não precisa usar a coluna de EM. Os coeficientes abaixo são **requisitos diet�
 não massas de minerais absorvidos de um sistema moderno.
 
 | PV, kg | NDT, kg/dia | PB, kg/dia | Ca, kg/dia | P, kg/dia |
-| ---: | ---: | ---: | ---: | ---: |
-| 400 | 3.13 | 0.318 | 0.0160 | 0.0110 |
-| 450 | 3.42 | 0.341 | 0.0180 | 0.0130 |
-| 500 | 3.70 | 0.364 | 0.0200 | 0.0140 |
-| 550 | 3.97 | 0.386 | 0.0220 | 0.0160 |
-| 600 | 4.24 | 0.406 | 0.0240 | 0.0170 |
-| 650 | 4.51 | 0.428 | 0.0260 | 0.0190 |
-| 700 | 4.76 | 0.449 | 0.0280 | 0.0200 |
+| -----: | ----------: | ---------: | ---------: | --------: |
+|    400 |        3.13 |      0.318 |     0.0160 |    0.0110 |
+|    450 |        3.42 |      0.341 |     0.0180 |    0.0130 |
+|    500 |        3.70 |      0.364 |     0.0200 |    0.0140 |
+|    550 |        3.97 |      0.386 |     0.0220 |    0.0160 |
+|    600 |        4.24 |      0.406 |     0.0240 |    0.0170 |
+|    650 |        4.51 |      0.428 |     0.0260 |    0.0190 |
+|    700 |        4.76 |      0.449 |     0.0280 |    0.0200 |
 
 Requisito adicional **por kg de leite produzido**, de acordo com gordura:
 
 | G, % | NDT, kg/kg leite | PB, kg/kg leite | Ca, kg/kg leite | P, kg/kg leite |
-| ---: | ---: | ---: | ---: | ---: |
-| 3.0 | 0.280 | 0.078 | 0.00273 | 0.0017 |
-| 3.5 | 0.301 | 0.084 | 0.00297 | 0.0018 |
-| 4.0 | 0.322 | 0.090 | 0.00321 | 0.0020 |
-| 4.5 | 0.343 | 0.096 | 0.00345 | 0.0021 |
-| 5.0 | 0.364 | 0.101 | 0.00369 | 0.0023 |
+| ---: | ---------------: | --------------: | --------------: | -------------: |
+|  3.0 |            0.280 |           0.078 |         0.00273 |         0.0017 |
+|  3.5 |            0.301 |           0.084 |         0.00297 |         0.0018 |
+|  4.0 |            0.322 |           0.090 |         0.00321 |         0.0020 |
+|  4.5 |            0.343 |           0.096 |         0.00345 |         0.0021 |
+|  5.0 |            0.364 |           0.101 |         0.00369 |         0.0023 |
 
 ### 6.7. F06 — Requisito diário por nutriente
 
@@ -483,13 +483,13 @@ expressão como requisito total do animal.
 Tabela 4 de [C01], em **% do PV**, para vacas na fase intermediária de lactação:
 
 | LCG4, kg/dia | PV 400 kg | PV 500 kg | PV 600 kg |
-| ---: | ---: | ---: | ---: |
-| 5 | 2.0 | 1.9 | 1.8 |
-| 10 | 2.7 | 2.5 | 2.2 |
-| 15 | 3.2 | 2.9 | 2.5 |
-| 20 | 3.6 | 3.3 | 2.7 |
-| 25 | 4.0 | 3.5 | 3.0 |
-| 30 | 4.3 | 4.0 | 3.2 |
+| -----------: | --------: | --------: | --------: |
+|            5 |       2.0 |       1.9 |       1.8 |
+|           10 |       2.7 |       2.5 |       2.2 |
+|           15 |       3.2 |       2.9 |       2.5 |
+|           20 |       3.6 |       3.3 |       2.7 |
+|           25 |       4.0 |       3.5 |       3.0 |
+|           30 |       4.3 |       4.0 |       3.2 |
 
 **Cobertura tabulada:** a referência de consumo é fornecida para **400–600 kg**. No intervalo
 operacional de 300–800 kg, fora dessa faixa, o sistema extrapola linearmente por PV usando os
@@ -548,12 +548,12 @@ sua razão; o ramo de fibra já estará violado. Não calcular amido como `100 -
 A tabela técnica adaptada de NASEM no MSD fornece estas combinações de referência: [C16].
 
 | FDN de forragem, % MS | FDN total mínima, % MS | Amido máximo, % MS |
-| ---: | ---: | ---: |
-| 19 | 25 | 30 |
-| 18 | 27 | 28 |
-| 17 | 29 | 26 |
-| 16 | 31 | 24 |
-| 15 | 33 | 22 |
+| --------------------: | ---------------------: | -----------------: |
+|                    19 |                     25 |                 30 |
+|                    18 |                     27 |                 28 |
+|                    17 |                     29 |                 26 |
+|                    16 |                     31 |                 24 |
+|                    15 |                     33 |                 22 |
 
 **Seleção determinística proposta:** usar a maior linha de FDN de forragem que não ultrapasse o
 valor observado. Assim, 18,7% seleciona a linha 18; valores a partir de 19 selecionam a linha 19.
@@ -846,15 +846,15 @@ Para **cada ingrediente**, antes da análise econômica:
 
 1. Identidade, lote, base e finalidade conhecidos? Se não, pendência.
 2. É próprio para alimentação animal e possui condição de uso verificável? Se não, pendência ou
-  bloqueio conforme a evidência.
+   bloqueio conforme a evidência.
 3. Proibição brasileira aplicável? Conferir espécie, finalidade, data e exceções; se confirmada,
-  bloquear, mesmo que a composição seja nutricionalmente atraente.
+   bloquear, mesmo que a composição seja nutricionalmente atraente.
 4. Está fora do catálogo automático por política do MVP? Retirar da formulação automática, sem
-  descrevê-lo automaticamente como ilegal.
+   descrevê-lo automaticamente como ilegal.
 5. Condições e dose do rótulo são respeitadas? Aplicar o limite na unidade e base corretas.
 6. NNP presente? Formulação automática bloqueada; avaliação contextual segue F11 e [N10].
 7. Laudos de contaminantes exigidos pelo perfil estão disponíveis? Caso contrário, a dimensão
-  sanitária fica inconclusiva. Ativar limites estrangeiros somente com identificação explícita.
+   sanitária fica inconclusiva. Ativar limites estrangeiros somente com identificação explícita.
 
 ### 8.4. Subárvore nutricional, com avaliação acumulativa
 
@@ -931,19 +931,19 @@ P   = 0.0110 + 10 * 0.0020 = 0.03100 kg/dia = 31.00 g/dia
 
 Composições **sintéticas**, apenas para conferir a aritmética; não constituem catálogo de alimentos:
 
-| Ingrediente | MS, % MN | NDT, % MS | PB, % MS | FDN, % MS | Amido, % MS | EE, % MS |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| Silagem | 35 | 62 | 8 | 50 | 22 | 3 |
-| Milho | 88 | 86 | 9 | 10 | 70 | 4 |
-| Farelo de soja | 90 | 80 | 46 | 14 | 3 | 2 |
-| Mistura mineral | 95 | 0 | 0 | 0 | 0 | 0 |
+| Ingrediente     | MS, % MN | NDT, % MS | PB, % MS | FDN, % MS | Amido, % MS | EE, % MS |
+| --------------- | -------: | --------: | -------: | --------: | ----------: | -------: |
+| Silagem         |       35 |        62 |        8 |        50 |          22 |        3 |
+| Milho           |       88 |        86 |        9 |        10 |          70 |        4 |
+| Farelo de soja  |       90 |        80 |       46 |        14 |           3 |        2 |
+| Mistura mineral |       95 |         0 |        0 |         0 |           0 |        0 |
 
-| Ingrediente | Ca, % MS | P, % MS | Preço sintético, R$/kg MN |
-| --- | ---: | ---: | ---: |
-| Silagem | 0.30 | 0.22 | 0.25 |
-| Milho | 0.03 | 0.30 | 1.30 |
-| Farelo de soja | 0.30 | 0.65 | 2.20 |
-| Mistura mineral | 20.00 | 8.00 | 4.00 |
+| Ingrediente     | Ca, % MS | P, % MS | Preço sintético, R$/kg MN |
+| --------------- | -------: | ------: | ------------------------: |
+| Silagem         |     0.30 |    0.22 |                      0.25 |
+| Milho           |     0.03 |    0.30 |                      1.30 |
+| Farelo de soja  |     0.30 |    0.65 |                      2.20 |
+| Mistura mineral |    20.00 |    8.00 |                      4.00 |
 
 Dieta A, em kg MS/dia: silagem 7,2; milho 1,8; soja 1,6; mineral 0,2. Total = 10,8. Seu amido é
 `(7,2 × 0,22 + 1,8 × 0,70 + 1,6 × 0,03)/10,8 × 100` = **26,7778% MS**. Ela viola o teto
@@ -1023,7 +1023,7 @@ PV abaixo de 300 ou acima de 800 kg não pertence ao perfil.
 9. Testar mudança de MS com matéria natural fixa e, separadamente, MS fixa.
 10. Comparar otimização com enumeração completa de um caso pequeno e conhecido.
 11. Distinguir inviabilidade, grade sem resultado e interrupção; não relaxar limites
-  silenciosamente.
+    silenciosamente.
 12. Revalidar quantidades arredondadas, estoque, sobras e limites de rótulo.
 13. Corrigir uma resposta e reconstruir todas as conclusões derivadas.
 14. Reexecutar caso com a base antiga e obter o mesmo resultado e caminho decisório.
@@ -1305,7 +1305,7 @@ nutritional-requirements-of-dairy-cattle">Texto e tabelas</a>.
 Mertens, D. R., 1997. **Creating a system for meeting the fiber requirements of dairy cows**.
 Fundamento conceitual de peNDF. Metadados e resumo consultados; texto integral não recuperado.
 
-[DOI](https://doi.org/10.3168/jds.S0022-0302(97)76075-2).
+[DOI](<https://doi.org/10.3168/jds.S0022-0302(97)76075-2>).
 
 ### L02
 
