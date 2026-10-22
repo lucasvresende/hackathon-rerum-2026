@@ -4,7 +4,7 @@
 
 Este documento propõe a base de conhecimento, a árvore de decisões e os cálculos de um MVP para
 formular e verificar dietas de bovinos leiteiros. Não implementa o sistema e não depende de uma
-consulta prévia a especialistas para que a equipe desenvolva a prova de conceito.
+consulta prévia a especialistas: registra a proposta da prova de conceito.
 
 O texto complementa o [relatório geral](RELATORIO_TEMAS_E_ARQUITETURA.md). Os identificadores entre
 colchetes apontam para as fontes organizadas no final. Fórmulas, condições de aplicação, escolhas de

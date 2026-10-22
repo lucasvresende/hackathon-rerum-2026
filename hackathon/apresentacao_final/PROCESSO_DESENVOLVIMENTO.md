@@ -8,7 +8,7 @@ inferência, construída com apoio de um agente de IA e executada integralmente 
 Este relatório documenta o processo de concepção, organização e evolução da aplicação. Ele
 complementa a documentação técnica, que detalha requisitos, arquitetura e regras de produção,
 e o relatório de literatura do Tema 2. Serve de base para explicar, na apresentação e na
-demonstração, como o grupo se organizou com a IA e o que aprendeu durante a implementação.
+demonstração, como o autor trabalhou com a IA e o que aprendeu durante a implementação.
 
 ## 1.1. Fontes e recorte
 
@@ -25,17 +25,14 @@ A sequência descreve a intenção do trabalho; o Git registra mudanças efetiva
 não são tratadas como prova automática de que cada execução seguiu todas as regras. Foram
 consultados também os arquivos alterados em marcos selecionados para confirmar seu alcance.
 
-## 1.2. Agente e papel da equipe
+## 1.2. Autor e papel do Codex
 
-O roteiro registra o uso do **OpenAI Codex, com GPT-6.1 Sol**, variando o nível de esforço
-conforme a complexidade da tarefa. O agente apoiou análise de temas, pesquisa, planejamento,
-implementação, testes e documentação. As instruções do projeto reservam decisões relevantes
-à consulta ao programador.
-
-A equipe definiu o problema, o escopo e as diretrizes e revisou o resultado por meio do código,
-do compilador, dos testes e da interface. O histórico comprova os artefatos e suas revisões;
-não foi usado para atribuir a uma pessoa ou à IA cada linha de código ou reconstruir prompts
-que não estão registrados nas fontes consultadas.
+Lucas Vieira Resende conduziu individualmente a definição do problema, do escopo e das diretrizes,
+além das decisões e revisões do projeto. O **OpenAI Codex, com GPT-6.1 Sol**, apoiou análise de
+temas, pesquisa, planejamento, implementação, testes e documentação, com nível de esforço ajustado
+à tarefa. O resultado foi revisado com o código, o compilador, os testes e a interface. O histórico
+comprova os artefatos e suas revisões; não foi usado para atribuir a cada parte do código a pessoa
+ou o agente, nem para reconstruir prompts que não estão registrados nas fontes consultadas.
 
 # 2. Concepção: do tema ao contrato de software
 
@@ -88,7 +85,7 @@ O arquivo foi preparado no início do projeto e atualizado ao longo do desenvolv
 | Diretriz | Aplicação ao processo |
 | --- | --- |
 | Ler os requisitos antes de implementar. | Manter o código ligado ao contrato do produto. |
-| Consultar o programador em decisões relevantes. | Submeter escolhas de escopo à equipe. |
+| Consultar o programador em decisões relevantes. | Submeter escolhas de escopo ao desenvolvedor. |
 | Fazer commits contínuos e descritivos. | Manter as mudanças rastreáveis e revisáveis. |
 | Atualizar a documentação junto às mudanças. | Preservar a coerência entre uso e implementação. |
 | Consultar recursos do stack e documentação recente. | Evitar soluções desnecessárias. |
@@ -140,7 +137,6 @@ das camadas de domínio, aplicação, persistência e interface. A base inicial 
 SQL, migração, verificação, formulação, proteção de escrita e testes de núcleo. As iterações
 seguintes reforçaram a validação, a preservação histórica e o fornecimento explicável.
 
-
 A interface adotou Maud, htmx e hx-live distribuídos localmente. O refinamento inicial buscou
 reduzir textos e organizar as telas, acrescentando ajuda contextual e feedback de validação.
 Ao mesmo tempo, foram introduzidos os testes de navegador, os verificadores de qualidade e o CI.
@@ -154,7 +150,6 @@ fora do ambiente de desenvolvimento.
 Em 21/10, a evolução combinou reorganização do código, ampliação de testes e refinamento da
 interface. Consultas SQL, templates, serviços e rotas foram separados por responsabilidade.
 A experiência inicial recebeu exemplos prontos, ajuda e seleção progressiva de ingredientes.
-
 
 Também foram aprimorados os nomes e ícones, a ajuda contextual e a leitura dos pareceres.
 A reorganização dos testes separou cenários de domínio dos fluxos de interface, incluindo
@@ -170,7 +165,6 @@ para recomendar uma dieta arredondada à resolução de pesagem.
 Em 22/10, o trabalho reforçou a avaliação de dietas, o histórico e a reutilização, reorganizou
 os módulos e consolidou os guias. Inspeções dos fluxos produziram correções acompanhadas de
 testes. A etapa final preparou roteiro de demonstração e PDFs para entrega.
-
 
 Além da revisão dos guias, a etapa final corrigiu datas inválidas em cadastros, continuidade
 após cancelamento, perda de filtros no histórico e seleção de referências entre páginas.
