@@ -37,7 +37,9 @@ O aplicativo não precisa de Node, Python ou solver externo para funcionar.
 
 ### Configuração
 
-Exporte as variáveis no ambiente antes de executar os comandos:
+Configurar variáveis de ambiente é opcional. Quando uma variável não estiver exportada para
+o processo, o aplicativo usa o padrão indicado abaixo. Exporte apenas as variáveis que quiser
+alterar:
 
 | Variável               | Padrão                    | Finalidade                    |
 | ---------------------- | ------------------------- | ----------------------------- |
