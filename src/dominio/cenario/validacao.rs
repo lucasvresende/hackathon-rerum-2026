@@ -51,6 +51,13 @@ pub fn validar_lote(lote: &Lote) -> Vec<Problema> {
     erros
 }
 
+/// Datas civis aceitas nos cadastros e cenários, sem normalização silenciosa.
+pub fn data_civil_valida(data: &str) -> bool {
+    data.len() == 10
+        && chrono::NaiveDate::parse_from_str(data, "%Y-%m-%d")
+            .is_ok_and(|d| d.format("%Y-%m-%d").to_string() == data)
+}
+
 pub fn validar_alimento(a: &Alimento) -> Vec<Problema> {
     let mut erros = Vec::new();
     if a.nome.trim().is_empty() || a.evidencia.len() > 4000 {
@@ -81,6 +88,12 @@ pub fn validar_alimento(a: &Alimento) -> Vec<Problema> {
     .contains(&a.natureza.as_str())
     {
         erros.push(problema("natureza", "Selecione a natureza da composição."));
+    }
+    if !a.data.is_empty() && !data_civil_valida(&a.data) {
+        erros.push(problema(
+            "data",
+            "Informe uma data civil válida no formato AAAA-MM-DD.",
+        ));
     }
     if !a.ms.is_finite() || a.ms <= 0.0 || a.ms > 1.0 {
         erros.push(problema("ms", "MS deve estar entre 0 (exclusive) e 100%."));

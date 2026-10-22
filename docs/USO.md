@@ -129,3 +129,10 @@ condição de uso. A impressão pode ser salva como PDF pelo navegador.
 
 A **Ajuda** e os indicadores `?` explicam campos e estados. Os formulários de cadastro e atalhos
 de nova dieta podem abrir em nova guia para preservar a tarefa em andamento.
+
+### Datas e cancelamento de cadastros
+
+A data da composição é opcional. Quando preenchida, deve ser uma data civil válida
+(`AAAA-MM-DD`). Revisões antigas com datas inválidas mostram o valor original e exigem
+correção ou confirmação explícita de remoção. Execuções históricas permanecem intactas.
+Cancelar preserva o tipo: cadastrar novamente após cancelar lote abre outro lote.

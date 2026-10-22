@@ -13,7 +13,7 @@ pub fn rotas() -> Router<EstadoApp> {
 
 pub async fn pagina(Query(campos): Query<Campos>) -> Markup {
     CadastroSalvo {
-        cancelado: texto(&campos, "tipo") == "cancelado",
+        cancelado: texto(&campos, "cancelado") == "sim" || texto(&campos, "tipo") == "cancelado",
         lote: texto(&campos, "tipo") == "lote",
     }
     .render()

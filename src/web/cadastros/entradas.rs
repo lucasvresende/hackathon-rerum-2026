@@ -61,6 +61,15 @@ pub fn campos_lote(lote: &Lote) -> Campos {
 
 pub fn ler_alimento(c: &Campos) -> Result<Alimento, Vec<Problema>> {
     let mut erros = Vec::new();
+    if texto(c, "data").is_empty()
+        && !texto(c, "data_antiga").is_empty()
+        && texto(c, "remover_data") != "on"
+    {
+        erros.push(problema(
+            "data",
+            "Corrija a data antiga ou confirme sua remoção.",
+        ));
+    }
     let mut nutrientes = [None; 7];
     for (i, nome) in ["ndt", "pb", "ca", "p", "fdn", "amido", "ee"]
         .iter()

@@ -36,6 +36,13 @@ impl Render for Cadastro<'_> {
     fn render(&self) -> Markup {
         let lote = self.tipo == TipoCadastro::Lote;
         let rota = if lote { "/lotes" } else { "/alimentos" };
+        let data = self.valor("data");
+        let data_antiga = if !data.is_empty() && !crate::dominio::validacao::data_civil_valida(data)
+        {
+            data
+        } else {
+            self.valor("data_antiga")
+        };
         html! {
             form #formulario.card method="post" action=(rota)
             hx-post=(rota) hx-target="#formulario" hx-swap="outerHTML"
@@ -142,6 +149,17 @@ impl Render for Cadastro<'_> {
                 }
                 @if !lote {
                     h2 { "Procedência da composição" }
+                    @if !data_antiga.is_empty() {
+                        p.alert role="alert" {
+                            "Data original inválida: " (data_antiga)
+                            ". Corrija a data ou confirme sua remoção antes de salvar." }
+                        input type="hidden" name="data_antiga" value=(data_antiga);
+                        label.check {
+                            input type="checkbox" name="remover_data"
+                                checked[self.valor("remover_data") == "on"];
+                            "Remover a data original inválida"
+                        }
+                    }
                     div.form-grid {
                         div.field { (Rotulo {
                             nome: "natureza",
@@ -178,7 +196,11 @@ impl Render for Cadastro<'_> {
                         ] {
                             div {
                                 (Campo { erro: self.erro(nome), nome, rotulo, valor:
-                                    self.valor(nome), tipo: "text", dica,
+                                    if nome == "data" && !data_antiga.is_empty()
+                                        && data == data_antiga {
+                                        ""
+                                    } else { self.valor(nome) },
+                                    tipo: if nome == "data" { "date" } else { "text" }, dica,
                                     obrigatorio: ["fonte_id", "metodo",
                                     "origem"].contains(&nome) })
                             }
@@ -228,7 +250,8 @@ impl Render for Cadastro<'_> {
                     }
                 }
                 div.form-actions { a.button.secondary
-                    href="/cadastros/salvo?tipo=cancelado" { "Cancelar" }
+                    href=(format!("/cadastros/salvo?tipo={}&cancelado=sim",
+                        self.tipo.nome())) { "Cancelar" }
                     button.button type="submit" { "Salvar revisão" }
                 }
             }
