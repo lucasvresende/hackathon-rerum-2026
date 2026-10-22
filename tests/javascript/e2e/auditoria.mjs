@@ -114,6 +114,9 @@ export async function testarAuditoria(browser, url, artefatos, navegador) {
           `${navegador}-auditoria-referencia-${javaScriptEnabled}.png`) });
         await page.locator('#filtro-lote').fill(`${prefixo} lote zero`);
         await page.getByRole('button', { name: 'Filtrar histórico' }).click();
+        await page.waitForURL(urlAtual => urlAtual.pathname === '/historico'
+          && urlAtual.searchParams.get('lote') === `${prefixo} lote zero`
+          && urlAtual.searchParams.get('pagina') === null);
         assert.equal(new URL(page.url()).searchParams.get('pagina'), null);
         await page.locator('#b').selectOption(execucoes[1]);
         await page.getByRole('button', { name: 'Comparar premissas e custos' }).click();

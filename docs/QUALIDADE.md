@@ -146,3 +146,7 @@ Referências da correção: [fragmentação CSS][fragmentacao] e [impressão no 
 
 [fragmentacao]: https://www.w3.org/TR/css-break-3/#break-within
 [impressao]: https://playwright.dev/docs/api/class-page#page-pdf
+
+Após enviar um filtro do histórico, a suíte espera a navegação terminar e confirma os parâmetros
+da URL antes de seguir. Isso evita uma condição de corrida em WebKit, que pode atualizar a página
+de forma assíncrona depois do clique.
