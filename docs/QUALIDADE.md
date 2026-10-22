@@ -6,13 +6,13 @@ representativa; **não** substitui a execução bem-sucedida dos testes na revis
 
 ## Camadas de teste
 
-| Camada     | O que verifica                                      | Comando principal            |
-| ---------- | --------------------------------------------------- | ---------------------------- |
-| Rust       | Domínio, SQLx, HTTP, histórico, cópias e contratos. | `cargo test --locked`        |
-| Python     | Estrutura e scripts auxiliares.                     | `unittest` em `scripts/`     |
-| Navegador  | Interface real, htmx, erros, impressão e layouts.   | `npm run test:e2e`           |
-| Release    | Arquivo, preparo, motor e HTTP.                     | `scripts/testar_producao.py` |
-| Desempenho | Tempo do motor.                                     | `cargo run -- ensaiar`       |
+| Camada | O que verifica | Comando principal |
+| --- | --- | --- |
+| Rust | Domínio, SQLx, HTTP, histórico, cópias e contratos. | `cargo test --locked` |
+| Python | Estrutura e scripts auxiliares. | `unittest` em `scripts/` |
+| Navegador | Interface real, htmx, erros, impressão e layouts. | `npm run test:e2e` |
+| Release | Arquivo, preparo, motor e HTTP. | `scripts/testar_producao.py` |
+| Desempenho | Tempo do motor. | `cargo run -- ensaiar` |
 
 Os testes Rust em `tests/*.rs` usam banco temporário quando necessário. Os testes de navegador
 criam banco e servidor temporários; `tests/javascript/e2e/navegadores.mjs` copia o executável
@@ -21,17 +21,17 @@ antes de iniciar o servidor para estabilizar o processo filho do motor. Capturas
 
 ## Matriz de rastreabilidade
 
-| Requisitos | Implementação                                  | Evidência representativa                 |
-| ---------- | ---------------------------------------------- | ---------------------------------------- |
-| RF-01–05   | `persistencia/`, `web/cadastros/`              | `inicio.rs`, `exemplos.rs`               |
-| RF-06–09   | `web/cenarios/`, `dominio/motor/`              | `cenarios.rs`, `nucleo.rs`               |
-| RF-10–11   | `dominio/motor/formulacao/`                    | `otimizacao.rs`, `motor.rs`              |
-| RF-12–15   | `aplicacao/execucoes/`                         | `comparacao.rs`, `reutilizacao.rs`       |
-| RF-16–19   | `persistencia/`, `dados_referencia/`           | `exemplos.rs`, `entrega.rs`              |
-| RN-01–10   | `dominio/cenario/`, `dominio/motor/`           | `nucleo.rs`, `cenarios.rs`, `motor.rs`   |
-| RN-11–16   | `dominio/motor/`                               | `integracao.rs`, `diagnostico_dietas.rs` |
-| RN-17–24   | `dominio/motor/`, `dominio/parecer/`           | `otimizacao.rs`, `reutilizacao.rs`       |
-| RNF-01–14  | `web/`, `scripts/`, `.github/workflows/ci.yml` | Rust, Python, Playwright e pacote        |
+| Requisitos | Implementação | Evidência representativa |
+| --- | --- | --- |
+| RF-01–05 | `persistencia/`, `web/cadastros/` | `inicio.rs`, `exemplos.rs` |
+| RF-06–09 | `web/cenarios/`, `dominio/motor/` | `cenarios.rs`, `nucleo.rs` |
+| RF-10–11 | `dominio/motor/formulacao/` | `otimizacao.rs`, `motor.rs` |
+| RF-12–15 | `aplicacao/execucoes/` | `comparacao.rs`, `reutilizacao.rs` |
+| RF-16–19 | `persistencia/`, `dados_referencia/` | `exemplos.rs`, `entrega.rs` |
+| RN-01–10 | `dominio/cenario/`, `dominio/motor/` | `nucleo.rs`, `cenarios.rs`, `motor.rs` |
+| RN-11–16 | `dominio/motor/` | `integracao.rs`, `diagnostico_dietas.rs` |
+| RN-17–24 | `dominio/motor/`, `dominio/parecer/` | `otimizacao.rs`, `reutilizacao.rs` |
+| RNF-01–14 | `web/`, `scripts/`, CI | Rust, Python, Playwright e pacote |
 
 Os nomes de testes Rust da última coluna pertencem a `tests/`. A suíte de navegador cobre,
 entre outras áreas, `inicio`, `exemplos`, `cenario-simplificado`, `formulacao`,
@@ -106,8 +106,14 @@ do pacote gerado para a plataforma de destino.
 
 ## Estado desta revisão documental
 
-Os arquivos foram confrontados com o código, as migrações, as cargas, os testes e o workflow.
-A tabela acima mostra cobertura existente; não afirma que todos os critérios de aceitação
-passaram em toda plataforma. Registre aqui, no fechamento da revisão, os comandos realmente
-executados e seus resultados. Um resultado de navegador obtido em outra revisão não comprova
-o estado atual.
+Em 22/10/2026, os guias foram confrontados com código, migrações, cargas, testes e workflow.
+Passaram `cargo test --locked`, Clippy com `-D warnings`, `cargo fmt --check`, os verificadores
+de qualidade, estrutura, SQLx e documentação, e os cinco testes Python. `ensaiar` mediu p95 de
+29,516 ms na verificação e 37,621 ms na formulação, abaixo das metas do perfil nesta máquina.
+
+A suíte E2E completa passou no Chromium. Após corrigir no observador dos testes o tratamento de
+ícones cancelados no fechamento de guias, a suíte completa também passou no Firefox e WebKit.
+O caso de reutilização foi repetido isoladamente nos dois navegadores afetados. O pacote Linux
+x86-64 gerado por `scripts/build_producao.sh` passou em `scripts/testar_producao.py`, incluindo
+preparação, histórico, backup, motor e HTTP. Isso verifica o estado local desta revisão; o
+resultado do GitHub Actions no commit final deve ser conferido à parte.

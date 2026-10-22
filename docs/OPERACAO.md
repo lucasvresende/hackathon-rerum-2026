@@ -49,11 +49,11 @@ servidor e `bacon testar` acompanha os testes. As tarefas do Bacon estão em `ba
 
 ## Configuração
 
-| Variável               | Padrão                    | Função                          |
-| ---------------------- | ------------------------- | ------------------------------- |
-| `FEEDYOURCOW_BANCO`    | `dados/aplicacao.sqlite3` | Arquivo SQLite local.           |
-| `FEEDYOURCOW_ENDERECO` | `127.0.0.1:3000`          | Endereço e porta do HTTP local. |
-| `RUST_LOG`             | `info`                    | Filtro de tracing.              |
+| Variável | Padrão | Função |
+| --- | --- | --- |
+| `FEEDYOURCOW_BANCO` | `dados/aplicacao.sqlite3` | Arquivo SQLite local. |
+| `FEEDYOURCOW_ENDERECO` | `127.0.0.1:3000` | Endereço e porta do HTTP local. |
+| `RUST_LOG` | `info` | Filtro de tracing. |
 
 O aplicativo não lê `.env` automaticamente. É possível exportar apenas as variáveis desejadas.
 No Bash, para carregar o exemplo de configuração no terminal atual:
@@ -76,15 +76,15 @@ export FEEDYOURCOW_BANCO="$HOME/feedyourcow-dados/aplicacao.sqlite3"
 
 No checkout, use `cargo run -- <comando>`. No pacote, use `./iniciar.sh <comando>`.
 
-| Comando                               | Efeito                                                            |
-| ------------------------------------- | ----------------------------------------------------------------- |
-| `preparar`                            | Migra banco e carrega conhecimento e exemplos pendentes.          |
-| `demonstrar`                          | Prepara e adiciona fixtures de demonstração e execuções de teste. |
-| `servir`                              | Inicia a interface local.                                         |
-| `carregar <arquivo.sql>`              | Valida e aplica uma carga local versionada.                       |
-| `backup <diretorio-novo>`             | Cria cópia consistente e manifesto SHA-256.                       |
-| `restaurar <backup> <diretorio-novo>` | Verifica e restaura em destino novo.                              |
-| `ensaiar`                             | Mede a execução do motor com casos controlados.                   |
+| Comando | Efeito |
+| --- | --- |
+| `preparar` | Migra banco e carrega conhecimento e exemplos pendentes. |
+| `demonstrar` | Prepara e adiciona dados de demonstração. |
+| `servir` | Inicia a interface local. |
+| `carregar <arquivo.sql>` | Valida e aplica uma carga local versionada. |
+| `backup <diretorio-novo>` | Cria cópia consistente e manifesto SHA-256. |
+| `restaurar <backup> <diretorio-novo>` | Verifica e restaura em destino novo. |
+| `ensaiar` | Mede a execução do motor com casos controlados. |
 
 A carga SQL não deve sobrescrever silenciosamente uma versão distribuída. Para evoluir o
 conhecimento, crie uma carga com nova versão e execute testes antes de ativá-la.

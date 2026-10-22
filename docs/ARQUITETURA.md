@@ -18,23 +18,23 @@ flowchart LR
 
 ## Organização do repositório
 
-| Caminho              | Responsabilidade                                            |
-| -------------------- | ----------------------------------------------------------- |
-| `src/dominio/`       | Tipos, unidades, regras, parecer e motor.                   |
-| `src/dominio/motor/` | Verificação, formulação, segurança e cálculos.              |
-| `src/aplicacao/`     | Cadastros, cenários, execuções, histórico e demonstração.   |
-| `src/persistencia/`  | Banco, cargas, consultas, histórico e recuperação.          |
-| `src/web/<recurso>/` | Rotas, handlers, entradas e templates Maud por função.      |
-| `src/web/comum/`     | Segurança, estado, layouts e componentes compartilhados.    |
-| `src/web/templates/` | Reexportações de módulos de templates.                      |
-| `queries/`           | Consultas SQL separadas usadas pelas macros SQLx.           |
-| `migrations/`        | Evolução do esquema SQLite.                                 |
-| `dados_referencia/`  | Perfil, normas, modelos e exemplos versionados.             |
-| `.sqlx/`             | Metadados offline das consultas validadas em compilação.    |
-| `static/`            | CSS único, JavaScript, SVG e bibliotecas vendorizadas.      |
-| `tests/`             | Integração Rust e cenários Playwright em `javascript/e2e/`. |
-| `scripts/`           | Verificações, empacotamento e teste da distribuição.        |
-| `docs/`              | Guias, especificação, referências e capturas ilustrativas.  |
+| Caminho | Responsabilidade |
+| --- | --- |
+| `src/dominio/` | Tipos, unidades, regras, parecer e motor. |
+| `src/dominio/motor/` | Verificação, formulação, segurança e cálculos. |
+| `src/aplicacao/` | Cadastros, cenários, execuções, histórico e demonstração. |
+| `src/persistencia/` | Banco, cargas, consultas, histórico e recuperação. |
+| `src/web/<recurso>/` | Rotas, handlers, entradas e templates Maud por função. |
+| `src/web/comum/` | Segurança, estado, layouts e componentes compartilhados. |
+| `src/web/templates/` | Reexportações de módulos de templates. |
+| `queries/` | Consultas SQL separadas usadas pelas macros SQLx. |
+| `migrations/` | Evolução do esquema SQLite. |
+| `dados_referencia/` | Perfil, normas, modelos e exemplos versionados. |
+| `.sqlx/` | Metadados offline das consultas validadas em compilação. |
+| `static/` | CSS único, JavaScript, SVG e bibliotecas vendorizadas. |
+| `tests/` | Integração Rust e cenários Playwright em `javascript/e2e/`. |
+| `scripts/` | Verificações, empacotamento e teste da distribuição. |
+| `docs/` | Guias, especificação, referências e capturas ilustrativas. |
 
 `src/web/rotas.rs` compõe os roteadores. Os handlers convertem entradas e chamam serviços; os
 templates recebem dados já preparados. `src/aplicacao/execucoes/execucao.rs` decide se formulação
@@ -46,20 +46,20 @@ verificação ou formulação. O [motor](MOTOR.md) detalha a sequência e as res
 As versões efetivas estão em `Cargo.lock` e `package-lock.json`; `Cargo.toml` e `package.json`
 mostram as faixas declaradas. Os principais papéis são:
 
-| Recurso                       | Uso no projeto                                                     |
-| ----------------------------- | ------------------------------------------------------------------ |
-| Rust 2024, Tokio              | Servidor e tarefas assíncronas.                                    |
-| Axum 0.8, tower-http, tracing | Rotas, serviços HTTP, limites e logs.                              |
-| Maud 0.27                     | HTML renderizado no servidor com componentes Rust.                 |
-| htmx 4.0, hx-live             | Requisições incrementais e comportamento reativo local.            |
-| SQLite, SQLx 0.9              | Banco, migrações e consultas verificadas por macros.               |
-| microlp 0.6                   | Cinco programas lineares da formulação contínua.                   |
-| chrono, chrono-tz             | Datas civis e fuso `America/Sao_Paulo`.                            |
-| rust_decimal                  | Valores monetários sem conversão intermediária para texto binário. |
-| serde, serde_json             | Cenário e parecer serializados, inclusive no processo filho.       |
-| sha2, uuid                    | Integridade das cargas/backups e identificadores.                  |
-| tower-livereload              | Recarga opcional durante desenvolvimento.                          |
-| Playwright 1.64.1             | Testes reais de navegador, instalado só para desenvolvimento.      |
+| Recurso | Uso no projeto |
+| --- | --- |
+| Rust 2024, Tokio | Servidor e tarefas assíncronas. |
+| Axum 0.8, tower-http, tracing | Rotas, serviços HTTP, limites e logs. |
+| Maud 0.27 | HTML renderizado no servidor com componentes Rust. |
+| htmx 4.0, hx-live | Requisições incrementais e comportamento reativo local. |
+| SQLite, SQLx 0.9 | Banco, migrações e consultas verificadas por macros. |
+| microlp 0.6 | Cinco programas lineares da formulação contínua. |
+| chrono, chrono-tz | Datas civis e fuso `America/Sao_Paulo`. |
+| rust_decimal | Valores monetários em decimal. |
+| serde, serde_json | Cenário e parecer serializados, inclusive no processo filho. |
+| sha2, uuid | Integridade das cargas/backups e identificadores. |
+| tower-livereload | Recarga opcional durante desenvolvimento. |
+| Playwright 1.64.1 | Testes reais de navegador, instalado só para desenvolvimento. |
 
 A opção `[lints.rust] unsafe_code = "forbid"` e `#![forbid(unsafe_code)]` vedam blocos `unsafe`
 no código da aplicação. `microlp` é embutido: o pacote não depende de solver externo. Os

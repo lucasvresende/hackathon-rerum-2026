@@ -90,12 +90,12 @@ A FDN de forragem é dividida pela MS total da dieta para selecionar a **maior l
 foi alcançado**. O limite mínimo absoluto é 15% da MS. Os números carregados são:
 
 | FDN de forragem mínima | FDN total mínima da linha | Amido máximo da linha |
-| ---------------------: | ------------------------: | --------------------: |
-|                    19% |                       25% |                   30% |
-|                    18% |                       27% |                   28% |
-|                    17% |                       29% |                   26% |
-|                    16% |                       31% |                   24% |
-|                    15% |                       33% |                   22% |
+| ---: | ---: | ---: |
+| 19% | 25% | 30% |
+| 18% | 27% | 28% |
+| 17% | 29% | 26% |
+| 16% | 31% | 24% |
+| 15% | 33% | 22% |
 
 Sobre a linha selecionada, a política operacional do MVP impõe **FDN total ≥ 30%**, **amido ≤
 25%** e **EE ≤ 6%**. O limite efetivo é o mais restritivo entre linha e política. Essas
@@ -134,12 +134,12 @@ candidata revalidada pode ser selecionada. O desempate considera custo, número 
 e ordem canônica. O processo filho recebe uma cópia serializada do cenário e do conhecimento; o
 serviço o encerra ao atingir o prazo. Uma interrupção não é prova de inviabilidade.
 
-| Estado da busca      | Condição                                                                     |
-| -------------------- | ---------------------------------------------------------------------------- |
-| `OTIMO_NO_MODELO`    | Candidata válida e os cinco problemas concluídos com ótimo ou inviabilidade. |
-| `VIAVEL_SEM_OTIMO`   | Candidata válida, mas falta prova global de custo mínimo.                    |
-| `INVIAVEL_NO_MODELO` | Os cinco problemas têm inviabilidade comprovada.                             |
-| `INCONCLUSIVA`       | Sem candidata e sem prova completa; inclui prazo, erro ou dado pendente.     |
+| Estado da busca | Condição |
+| --- | --- |
+| `OTIMO_NO_MODELO` | Candidata válida; os cinco problemas têm conclusão comprovada. |
+| `VIAVEL_SEM_OTIMO` | Candidata válida, mas falta prova global de custo mínimo. |
+| `INVIAVEL_NO_MODELO` | Os cinco problemas têm inviabilidade comprovada. |
+| `INCONCLUSIVA` | Sem candidata e sem prova completa; inclui prazo, erro ou dado pendente. |
 
 A certificação se refere ao problema **contínuo** definido pelo perfil e pelo cenário, não a
 uma dieta integral, a uma recomendação clínica ou ao problema discreto de pesagem.
