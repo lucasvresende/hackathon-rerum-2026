@@ -60,6 +60,18 @@ export async function testarResultadoOperacional(browser, url, artefatos, navega
     assert.match(comparacao, /16,6300/);
     assert.match(comparacao, /R\$ 17,35/);
     assert.doesNotMatch(comparacao, /16\.868500000000004/);
+    await page.emulateMedia({ media: 'print' });
+    const quebras = await page.locator('.comparacao-relatorio').evaluate(e => ({
+      relatorio: getComputedStyle(e).breakInside,
+      linhas: [...e.querySelectorAll('tr')].every(l => getComputedStyle(l).breakInside === 'avoid'),
+    }));
+    assert.equal(quebras.relatorio, 'auto', 'Comparação longa deve fluir entre páginas');
+    assert.equal(quebras.linhas, true, 'Linhas curtas devem permanecer juntas na impressão');
+    if (navegador === 'chromium') {
+      await page.pdf({ path: join(artefatos, 'chromium-comparacao-paginada.pdf'),
+        format: 'A4', printBackground: true });
+    }
+    await page.emulateMedia({ media: 'screen' });
     await page.goto(`${url}/cenarios/novo?exemplo=inicial&modo=formular`);
     await abrirConfiguracoesCenario(page);
     await page.locator('#consumo_alvo').fill('1');

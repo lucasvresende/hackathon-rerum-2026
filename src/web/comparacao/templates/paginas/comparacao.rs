@@ -35,7 +35,7 @@ impl Render for Comparacao<'_> {
         Principal { titulo: "Comparar cenários",
         ativo: "/historico", conteudo: html! {
         (Cabecalho { titulo: "Comparação de cenários", texto: "", ajuda: "comparacao" })
-        section.card.table-wrap {
+        section.card.table-wrap.comparacao-relatorio {
             table { thead { tr { th { "Premissa" } th { (&a.cenario.nome) } th {
             (&b.cenario.nome) } } }
                 tbody {

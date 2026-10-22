@@ -2,6 +2,7 @@
 use super::super::componentes::{campo::MensagemErro, expansivel::Expansivel};
 use super::cenario::FormularioCenario;
 use crate::dominio::Classe;
+use crate::web::formatacao::numero;
 use maud::{Markup, Render, html};
 
 pub struct SelecaoIngredientes<'a, 'b>(pub &'a FormularioCenario<'b>);
@@ -62,9 +63,21 @@ impl Render for SelecaoIngredientes<'_, '_> {
                                     input type="checkbox" name=(format!("usar-{id}"))
                                         id=(format!("usar-{id}"))
                                         checked[f.valor(&format!("usar-{id}")) == "on"];
-                                    (&a.nome) " · "
-                                    (if a.natureza == "SINTETICA" { "Exemplo sintético" }
-                                        else { &a.natureza })
+                                    span.composicao-opcao {
+                                        span { (&a.nome) " · "
+                                            (if a.natureza == "SINTETICA" { "Exemplo sintético" }
+                                                else { &a.natureza }) }
+                                        small {
+                                            "MS " (numero(a.ms * 100.0, 2)) "% MN · PB "
+                                            (a.nutrientes[1].map(|v| {
+                                                format!("{}% MS", numero(v * 100.0, 2))
+                                            }).unwrap_or("Desconhecida".into()))
+                                            " · Data da análise: "
+                                            (if a.data.is_empty() { "Não informada" }
+                                                else { &a.data })
+                                        }
+                                        small { "Composição: " (id) }
+                                    }
                                 }
                             }
                         }

@@ -53,7 +53,9 @@ não à ficha da composição.
 
 Modelos de preenchimento podem ajudar a iniciar o cadastro, mas exigem revisão e não confirmam
 estados de segurança. **Criar cópia** faz um cadastro independente; **Salvar revisão** preserva a
-versão anterior. Excluir um exemplo retira a opção ativa sem apagar execuções históricas.
+versão anterior. Na seleção de ingredientes, cada opção identifica sua composição, MS, PB e data
+da análise; data ausente permanece “Não informada”. Confira esses dados ao escolher entre análises
+do mesmo alimento. Excluir um exemplo retira a opção ativa sem apagar execuções históricas.
 **Restaurar exemplos** exige confirmação e pode criar cópia ou nova revisão do registro inicial.
 Repetir `preparar` não desfaz alterações nem restaura exclusões.
 
@@ -156,3 +158,6 @@ comparação de premissas. Qualquer diferença aparece com motivo específico; o
 conhecimento mostra os valores antigos e novos. A diferença de custo continua disponível
 para inspeção, acompanhada do aviso de não equivalência. Outro lote ou revisão permanece
 bloqueado. A comparação usa apenas dados históricos, sem executar novamente o motor.
+
+Na impressão da comparação, o relatório pode continuar nas páginas seguintes sem separar o título
+da primeira tabela. Cabeçalhos e linhas curtas são mantidos juntos quando houver espaço.

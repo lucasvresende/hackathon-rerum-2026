@@ -296,3 +296,14 @@ td .cadastro-actions { min-width: 110px; }
 
 /* O conteúdo preservado pode conter identificadores longos e JSON de cargas antigas. */
 pre.code { white-space: pre-wrap; }
+
+/* Identifica análises preservadas antes de escolher a composição do cenário. */
+.composicao-opcao { display: grid; gap: 3px; min-width: 0; overflow-wrap: anywhere; }
+.selecao-classe .check { align-items: flex-start; margin-bottom: 12px; }
+.selecao-classe .check input { flex-shrink: 0; }
+@media print {
+    /* O relatório longo deve começar junto ao título e fluir entre páginas. */
+    .comparacao-relatorio { break-inside: auto; }
+    .comparacao-relatorio tr { break-inside: avoid; }
+    .comparacao-relatorio h2, .page-title-row { break-after: avoid; }
+}

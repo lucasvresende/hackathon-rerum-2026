@@ -134,3 +134,15 @@ Referências de implementação consultadas: [datas civis do chrono][chrono],
 [chrono]: https://docs.rs/chrono/latest/chrono/struct.NaiveDate.html#method.parse_from_str
 [serde]: https://docs.rs/serde_json/latest/serde_json/fn.to_value.html
 [query]: https://docs.rs/axum/0.8.9/axum/extract/struct.Query.html
+
+A suíte `revisoes-impressao` cria e revisa uma cópia de alimento, verifica identificadores e
+nomes acessíveis distintos, data ausente, PB alterada, seleção correta e largura móvel, com e sem
+JavaScript. `resultado-operacional` confere a fragmentação do relatório e gera
+`output/playwright/chromium-comparacao-paginada.pdf`. A primeira página foi extraída e inspecionada
+visualmente no Chromium para confirmar título e premissas juntos; o teste automatizado verifica
+as regras de fragmentação e a geração, sem analisar o texto do PDF.
+
+Referências da correção: [fragmentação CSS][fragmentacao] e [impressão no Playwright][impressao].
+
+[fragmentacao]: https://www.w3.org/TR/css-break-3/#break-within
+[impressao]: https://playwright.dev/docs/api/class-page#page-pdf

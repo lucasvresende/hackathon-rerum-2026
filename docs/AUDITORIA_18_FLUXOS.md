@@ -5,7 +5,7 @@
 Foram confirmados dois problemas de interface: revisões indistinguíveis na seleção de
 ingredientes (P2) e primeira página quase vazia no PDF da comparação (P3). Não foi identificado
 erro aritmético nos cenários conferidos. A suíte completa de navegador passou no Chromium,
-assim como 20 testes Rust direcionados. Os dois achados permanecem sem correção nesta auditoria.
+assim como 20 testes Rust direcionados. Os achados estavam sem correção ao concluir a inspeção.
 
 A [auditoria anterior](AUDITORIA_FLUXOS.md) registra seis problemas já corrigidos. Esses
 problemas antigos não foram contados novamente.
@@ -184,3 +184,24 @@ ou correção dos achados foi realizada.
 
 [revisoes]: imagens/auditoria-18-fluxos-2026-10-22/revisoes-indistinguiveis.png
 [pdf]: imagens/auditoria-18-fluxos-2026-10-22/comparacao-p1.png
+
+## Correções após a inspeção
+
+Os dois achados foram corrigidos em 22/10/2026:
+
+- A seleção mostra identificação completa da composição, MS, PB e data da análise em cada opção.
+  A informação também integra o nome acessível do checkbox. Revisões com a mesma data e valores
+  continuam distinguíveis pelo identificador; data ausente não recebe valor presumido.
+- O contêiner da comparação permite fragmentação na impressão, mantendo linhas curtas juntas.
+  O PDF A4 conferido inicia título e tabela de premissas na primeira página.
+
+As suítes Chromium `revisoes-impressao` e `resultado-operacional` passaram. A suíte Rust completa,
+Clippy com todas as features, rustfmt e verificações SQLx e estruturais passaram. Não houve
+migração ou alteração do motor. As capturas seguintes registram a correção:
+
+![Revisões identificadas antes da seleção][revisoes-corrigidas]
+
+![Primeira página com título e premissas][pdf-corrigido]
+
+[revisoes-corrigidas]: imagens/auditoria-18-fluxos-2026-10-22/revisoes-corrigidas.png
+[pdf-corrigido]: imagens/auditoria-18-fluxos-2026-10-22/comparacao-p1-corrigida.png
