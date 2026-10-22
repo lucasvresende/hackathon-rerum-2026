@@ -6,10 +6,14 @@ export async function executarCaso(browser, url, artefatos, navegador, nome, tes
   const contexto = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
   contexto.setDefaultTimeout(10000);
   const erros = [], respostasRuins = [], falhasRede = [], consoleErros = [];
+  const recursosCarregados = new Set();
   contexto.on('page', p => {
     p.on('pageerror', erro => erros.push(erro.message));
     p.on('console', msg => { if (msg.type() === 'error') consoleErros.push(msg.text()); });
-    p.on('response', r => { if (r.status() >= 400) respostasRuins.push(r); });
+    p.on('response', r => {
+      if (r.status() >= 400) respostasRuins.push(r);
+      else if (r.ok()) recursosCarregados.add(r.url());
+    });
     p.on('requestfailed', r => {
       // Firefox pode cancelar a busca tardia do favicon ao navegar para a página seguinte.
       const faviconCancelado = navegador === 'firefox' && r.method() === 'GET'
@@ -34,9 +38,19 @@ export async function executarCaso(browser, url, artefatos, navegador, nome, tes
       assert.equal(new URL(r.url()).pathname, falha.caminho);
       assert.equal(r.status(), falha.status);
     }
-    assert.equal(falhasRede.length, falha?.rede ? 1 : 0,
-      falhasRede.map(r => `${r.method()} ${r.url()}: ${r.failure()?.errorText}`).join('\n'));
-    for (const r of falhasRede) assert.equal(new URL(r.url()).pathname, falha.caminho);
+    // Firefox e WebKit cancelam ícones pendentes ao fechar guias. Exige-se resposta
+    // bem-sucedida do mesmo recurso no contexto; uma falha de carregamento segue visível.
+    const falhasEfetivas = falhasRede.filter(r => {
+      const cancelamento = (navegador === 'webkit'
+        && r.failure()?.errorText === 'Load request cancelled')
+        || (navegador === 'firefox' && r.failure()?.errorText === 'NS_BINDING_ABORTED');
+      return !(cancelamento && r.method() === 'GET'
+        && /^\/static\/icones\/[^/]+\.svg$/.test(new URL(r.url()).pathname)
+        && recursosCarregados.has(r.url()));
+    });
+    assert.equal(falhasEfetivas.length, falha?.rede ? 1 : 0,
+      falhasEfetivas.map(r => `${r.method()} ${r.url()}: ${r.failure()?.errorText}`).join('\n'));
+    for (const r of falhasEfetivas) assert.equal(new URL(r.url()).pathname, falha.caminho);
     for (const texto of consoleErros) {
       assert.ok(falha, `Erro de console inesperado: ${texto}`);
       // Chromium/WebKit registram HTTP >=400; htmx também registra o fetch abortado.

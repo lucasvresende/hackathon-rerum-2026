@@ -52,6 +52,7 @@ cargo test --locked
 cargo clippy --locked --all-targets --all-features -- -D warnings
 cargo fmt --check
 python3 scripts/qualidade.py
+python3 scripts/verificar_documentacao.py
 python3 -B -m unittest discover -s scripts -p 'test_*.py'
 python3 scripts/verificar_estrutura.py
 python3 scripts/verificar_sqlx.py
@@ -83,6 +84,8 @@ linha os arquivos de código/configuração que inspeciona e avisa quando módul
 passam de 300 linhas. Markdown é revisado separadamente. `scripts/verificar_estrutura.py`
 impede mais de dez arquivos `.rs` imediatos por diretório de `src/`.
 `scripts/verificar_sqlx.py` compara as macros com `.sqlx/` usando as migrações em banco novo.
+`scripts/verificar_documentacao.py` valida links locais e linhas de até 100 caracteres no README
+e nos arquivos Markdown de `docs/`.
 
 `ensaiar` executa aquecimento e medições repetidas do motor. As metas do perfil são p95 até
 **1 segundo** para verificar 20 ingredientes e **5 segundos** para formular com 10. A meta é
