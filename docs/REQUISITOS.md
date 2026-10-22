@@ -56,7 +56,8 @@ contaminação. Não inventar fabricantes, laudos ou autorizações para complet
 
 Registrar nome, revisão do lote, perfil, datas de avaliação e aplicação de regras, horizonte
 positivo em dias, modo verificar/formular, base das quantidades, ingredientes selecionados,
-preço e origem da cotação, estoque bruto ou hipótese explícita de disponibilidade sem limite,
+preço e, opcionalmente, origem e data da cotação, estoque bruto ou hipótese explícita de
+disponibilidade sem limite,
 perdas, sobras, limites de inclusão e resolução de oferta. Preço pode ser informado por kg MN,
 tonelada MN ou embalagem com massa. Consumo-alvo ou medição de oferta e sobras é opcional;
 quando ausente, usar a referência do perfil. Preço do leite e referência adicional UE para
@@ -66,7 +67,8 @@ As bases internas são kg, dia, animal, kg MS/kg MN, kg nutriente/kg MS e R$/kg 
 consumo, massa por animal e massa por lote não são intercambiáveis. O cenário admite de **1 a 20
 ingredientes na verificação** e de **1 a 10 na formulação**. O limite total de busca é positivo
 e não excede 10 segundos. Entradas não finitas, unidades incoerentes, percentuais fora da faixa,
-estoque negativo ou preço sem origem devem ser rejeitados com indicação de campo.
+estoque negativo ou preço inválido devem ser rejeitados com indicação de campo. Origem e data
+da cotação são opcionais.
 
 ## Requisitos funcionais
 

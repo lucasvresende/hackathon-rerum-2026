@@ -130,11 +130,10 @@ impl Render for Ingredientes<'_, '_> {
                                     @let nome = format!("origem-{id}");
                                     (Campo { erro: self.0.erro(&nome), nome: &nome,
                                         rotulo:
-                                        "Origem e data da cotação",
+                                        "Origem e data da cotação (opcionais)",
                                         valor: self.0.valor(&nome), tipo: "text",
-                                        dica: "Justifique também preços zero",
-                                        obrigatorio: self.0.valor(&format!("usar-{id}")) ==
-                                        "on" })
+                                        dica: "Informe se souber; justifique também preços zero",
+                                        obrigatorio: false })
                                 }
                             },
                         })

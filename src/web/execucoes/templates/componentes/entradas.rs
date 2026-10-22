@@ -94,7 +94,12 @@ impl Render for Entradas<'_> {
                                     }
                                 }
                                 dt { "Origem e data da cotação" } dd {
-                                    (&item.origem_preco) }
+                                    @if item.origem_preco.trim().is_empty() {
+                                        "Não informadas"
+                                    } @else {
+                                        (&item.origem_preco)
+                                    }
+                                }
                                 dt { "Estoque bruto kg MN" }
                                 dd {
                                     (item.estoque.map(|v|v.to_string()).unwrap_or_else(|| {

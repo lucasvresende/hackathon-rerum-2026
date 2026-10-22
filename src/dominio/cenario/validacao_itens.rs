@@ -66,12 +66,6 @@ pub fn validar(c: &Cenario) -> Vec<Problema> {
                 "Informe preço decimal não negativo.",
             ));
         }
-        if item.origem_preco.trim().is_empty() {
-            erros.push(problema(
-                &campo("origem"),
-                "Informe origem e data da cotação.",
-            ));
-        }
         if item.sem_limite && item.estoque.is_some() {
             erros.push(problema(
                 &campo("estoque"),
