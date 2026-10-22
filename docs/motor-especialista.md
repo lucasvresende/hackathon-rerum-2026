@@ -9,9 +9,10 @@
 ## Visão geral da arquitetura de inferência
 
 No código, `dominio::motor::avaliar` é a entrada única dos modos de verificação e formulação.
-`dominio::inferencia` avalia a dieta informada; `dominio::otimizacao` resolve e revalida
-candidatas. `aplicacao::execucao` cuida do processo filho, do prazo e da persistência, sem
-escolher regras de inferência. O pedido serializado do processo é `motor::PedidoMotor`.
+Os módulos de verificação e formulação estão em `src/dominio/motor/`; os caminhos públicos
+anteriores são reexportados para os consumidores existentes. `aplicacao::execucao` cuida do
+processo filho, do prazo e da persistência, sem escolher regras de inferência. O pedido
+serializado do processo é `motor::PedidoMotor`.
 
 O motor é organizado em **três camadas sequenciais**, operando sobre um conjunto de fatos imutáveis
 (congelados no início de cada execução):

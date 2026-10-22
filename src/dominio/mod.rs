@@ -1,21 +1,16 @@
 //! Regras de domínio, modelos, validações e motor de inferência e otimização.
-mod avaliacoes;
-pub mod calculos;
-pub mod contaminantes;
-pub mod elegibilidade;
-mod fornecimento;
-pub mod inferencia;
-mod linear;
+#[path = "cenario/modelos.rs"]
 pub mod modelos;
 pub mod motor;
-pub mod otimizacao;
 pub mod parecer;
 pub mod unidades;
+#[path = "cenario/validacao.rs"]
 pub mod validacao;
 
 pub use modelos::*;
+pub use motor::{calculos, contaminantes, elegibilidade, inferencia, otimizacao};
 pub use parecer::*;
+#[path = "conhecimento/templates.rs"]
 pub mod templates;
+#[path = "cenario/validacao_itens.rs"]
 mod validacao_itens;
-
-mod diagnostico_otimizacao;

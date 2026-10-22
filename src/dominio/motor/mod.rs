@@ -2,7 +2,20 @@
 
 use serde::{Deserialize, Serialize};
 
-use super::{Cenario, Conhecimento, Parecer, inferencia, otimizacao};
+use super::*;
+
+mod avaliacoes;
+pub mod calculos;
+pub mod contaminantes;
+#[path = "formulacao/diagnostico_otimizacao.rs"]
+mod diagnostico_otimizacao;
+pub mod elegibilidade;
+pub mod formulacao;
+mod fornecimento;
+pub mod inferencia;
+#[path = "formulacao/linear.rs"]
+mod linear;
+pub use formulacao as otimizacao;
 
 /// Entradas congeladas enviadas ao processo que executa a formulação.
 #[derive(Serialize, Deserialize)]

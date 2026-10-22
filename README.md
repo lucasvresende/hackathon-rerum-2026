@@ -301,8 +301,8 @@ As versões reproduzíveis estão nos lockfiles. Código `unsafe` próprio é pr
 
 | Diretório               | Responsabilidade                                                   |
 | ----------------------- | ------------------------------------------------------------------ |
-| `src/dominio/`          | Unidades, validações, cálculos e regras do motor.                   |
-| `src/dominio/motor.rs`  | Entrada dos modos verificar e formular e contrato do processo.     |
+| `src/dominio/`          | Unidades, cenários, conhecimento, parecer e motor.                  |
+| `src/dominio/motor/`   | Verificação, avaliação e formulação com entrada única.             |
 | `src/aplicacao/`        | Serviços de cadastros, cenários, execução, histórico e comparação. |
 | `src/persistencia/`     | Banco, cargas, revisões, histórico e recuperação.                  |
 | `src/web/handlers/`     | Rotas por recurso e tratamento HTTP.                               |
