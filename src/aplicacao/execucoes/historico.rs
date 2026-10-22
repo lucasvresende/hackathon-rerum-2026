@@ -43,3 +43,47 @@ pub async fn listar(pool: &SqlitePool, filtro: &FiltroHistorico) -> Resultado<Ve
     )
     .await
 }
+
+impl FiltroHistorico {
+    /// Codifica valores como componentes de query, inclusive UTF-8 e separadores literais.
+    pub fn url(&self, pagina: i64, referencia: &str) -> String {
+        fn codificar(valor: &str) -> String {
+            use std::fmt::Write;
+            let mut saida = String::new();
+            for b in valor.bytes() {
+                if b.is_ascii_alphanumeric() || b"-._~".contains(&b) {
+                    saida.push(b as char);
+                } else {
+                    write!(saida, "%{b:02X}").expect("escrita em String");
+                }
+            }
+            saida
+        }
+        format!(
+            "/historico?pagina={}&lote={}&data={}&referencia={}",
+            pagina,
+            codificar(&self.busca),
+            codificar(&self.data),
+            codificar(referencia)
+        )
+    }
+}
+
+/// Só a ausência da referência é recuperável; falhas de banco continuam sendo erros.
+pub async fn referencia(pool: &SqlitePool, id: &str) -> Resultado<Option<Execucao>> {
+    if id.is_empty() {
+        return Ok(None);
+    }
+    match historico::obter(pool, id).await {
+        Ok(e) => Ok(Some(e)),
+        Err(e)
+            if matches!(
+                e.downcast_ref::<sqlx::Error>(),
+                Some(sqlx::Error::RowNotFound)
+            ) =>
+        {
+            Ok(None)
+        }
+        Err(e) => Err(e),
+    }
+}

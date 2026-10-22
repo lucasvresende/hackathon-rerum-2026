@@ -21,8 +21,12 @@ pub async fn historico(
         q.get("data").cloned().unwrap_or_default(),
     );
     let execucoes = historico::listar(&e.pool, &filtro).await?;
+    let referencia_id = q.get("referencia").map(String::as_str).unwrap_or("");
+    let referencia = historico::referencia(&e.pool, referencia_id).await?;
     Ok(crate::web::templates::paginas::historico::Historico {
         execucoes: &execucoes,
+        referencia: referencia.as_ref(),
+        referencia_id,
         pagina: filtro.pagina,
         busca: &filtro.busca,
         data: &filtro.data,

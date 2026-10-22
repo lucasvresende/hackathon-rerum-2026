@@ -136,3 +136,11 @@ A data da composição é opcional. Quando preenchida, deve ser uma data civil v
 (`AAAA-MM-DD`). Revisões antigas com datas inválidas mostram o valor original e exigem
 correção ou confirmação explícita de remoção. Execuções históricas permanecem intactas.
 Cancelar preserva o tipo: cadastrar novamente após cancelar lote abre outro lote.
+
+### Comparar execuções de páginas diferentes
+
+No histórico, escolha **Fixar como referência** na execução desejada. A referência acompanha
+os filtros e a navegação entre páginas pela URL. Escolha a alternativa na página atual e
+clique em **Comparar premissas e custos**. Alternativas de outro lote ou revisão ficam
+identificadas como incompatíveis. **Remover referência** libera uma nova escolha.
+Uma referência inexistente permite limpar a seleção. O fluxo funciona sem JavaScript.

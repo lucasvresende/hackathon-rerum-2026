@@ -7,6 +7,8 @@ use maud::{Markup, Render, html};
 pub struct Historico<'a> {
     pub execucoes: &'a [crate::persistencia::historico::Execucao],
     pub pagina: i64,
+    pub referencia: Option<&'a crate::persistencia::historico::Execucao>,
+    pub referencia_id: &'a str,
     pub busca: &'a str,
     pub data: &'a str,
 }
@@ -16,12 +18,31 @@ impl Render for Historico<'_> {
         let pagina = self.pagina;
         let busca = self.busca;
         let data = self.data;
+        let filtro = crate::aplicacao::historico::FiltroHistorico::novo(
+            Some(pagina),
+            busca.into(),
+            data.into(),
+        );
+        let referencia = self.referencia;
         Principal {
             titulo: "Histórico e análise",
             ativo: "/historico",
             conteudo: html! {
                 (Cabecalho { titulo: "Histórico e análise", texto: "", ajuda: "historico" })
+                @if let Some(r) = referencia {
+                    section.card aria-label="Referência fixada" {
+                        h2 { "Referência fixada" }
+                        p { (&r.cenario.nome) " · " (&r.cenario.lote.nome)
+                            " · revisão " (&r.cenario.lote.revisao_id) }
+                        a.button.secondary href=(filtro.url(pagina, "")) {
+                            "Remover referência" }
+                    }
+                } @else if !self.referencia_id.is_empty() {
+                    p.alert role="alert" { "Referência não encontrada. "
+                        a href=(filtro.url(pagina, "")) { "Limpar seleção" } }
+                }
                 form.card method="get" action="/historico" {
+                    input type="hidden" name="referencia" value=(self.referencia_id);
                     div.form-grid {
                         div.field { label for="filtro-lote" { "Nome do lote" }
                             input #filtro-lote name="lote" value=(&busca);
@@ -34,11 +55,11 @@ impl Render for Historico<'_> {
                 }
                 div.actions {
                     @if pagina>1 { a.button.secondary
-                        href=(format!("/historico?pagina={}",pagina-1)) {
+                        href=(filtro.url(pagina-1, self.referencia_id)) {
                             "← Página anterior" } }
                     span.muted { "Página " (pagina) " · até 100 resultados por página" }
                     @if execucoes.len()==100 { a.button.secondary
-                        href=(format!("/historico?pagina={}",pagina+1)) { "Próxima página →" } }
+                        href=(filtro.url(pagina+1, self.referencia_id)) { "Próxima página →" } }
                 }
                 form.card method="get" action="/comparar" {
                     h2 { "Comparar duas execuções" }
@@ -49,13 +70,27 @@ impl Render for Historico<'_> {
                         "Cenário alternativo")] {
                             div.field { label for=(nome) { (rotulo) }
                                 select id=(nome) name=(nome) required {
-                                    @for execucao in execucoes {
-                                        option value=(&execucao.id) { (&execucao.cenario.nome)
+                                    @if nome == "a" {
+                                        @if let Some(r) = referencia {
+                                            option value=(&r.id) { (&r.cenario.nome)
+                                                " · referência fixada" }
+                                        }
+                                    }
+                                    @for execucao in execucoes.iter()
+                                        .filter(|_| nome != "a" || referencia.is_none()) {
+                                        @let compativel = referencia.is_none_or(|r|
+                                            r.cenario.lote.id == execucao.cenario.lote.id
+                                            && !r.cenario.lote.revisao_id.is_empty()
+                                            && r.cenario.lote.revisao_id
+                                                == execucao.cenario.lote.revisao_id);
+                                        option value=(&execucao.id) disabled[!compativel] {
+                                            (&execucao.cenario.nome)
                                             " · " (&execucao.cenario.lote.nome)
                                             " · revisão "
                                             (execucao.cenario.lote.revisao_id.chars()
                                                 .take(8).collect::<String>())
-                                            " · " (&execucao.id[..8]) }
+                                            " · " (&execucao.id[..8])
+                                            @if !compativel { " · lote ou revisão incompatível" } }
                                     }
                                 }
                             }
@@ -83,7 +118,11 @@ impl Render for Historico<'_> {
                                             small { " · solução contínua" }
                                         } }
                                     td { a href=(format!("/execucoes/{}", x.id)) {
-                                            "Ver parecer ↗" } }
+                                            "Ver parecer ↗" }
+                                        " "
+                                        a href=(filtro.url(pagina, &x.id)) {
+                                            "Fixar como referência" }
+                                    }
                                 }
                             } }
                     }
