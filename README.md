@@ -399,7 +399,7 @@ as capturas. O build do pacote de produção é executado localmente.
 
 - [Diagnóstico da formulação](diagnosticos/DIAGNOSTICO_FORMULACAO.md): inspeção do fluxo de menor custo
   nos três navegadores, variações de valores, problemas reproduzidos e evidências locais.
-- [Requisitos](docs/REQUISITOS.md) (versão documental 1.5): especificação funcional vigente,
+- [Requisitos](docs/REQUISITOS.md) (versão documental 1.6): especificação funcional vigente,
   escopo, regras, limitações e casos de aceitação CT-01 a CT-35. Os requisitos definem o
   comportamento esperado; a implementação está em `src/` e a cobertura automatizada em `tests/`.
   Os testes são a evidência de conformidade. Mudanças de comportamento, regras, escopo ou aceite
@@ -492,3 +492,20 @@ Os atalhos históricos A/B só aparecem quando seus cadastros estão disponívei
 quantidades diárias. A ficha sem resolução ou com restrições traz a recusa de recomendação.
 **Imprimir parecer** continua incluindo a auditoria completa. No celular, o fornecimento aparece
 por ingrediente, com a pesagem prática antes das aproximações contínuas e unidades por dia.
+
+### Reutilizar uma dieta otimizada
+
+No parecer de uma formulação, **Refazer otimização** conserva as premissas da busca e preenche
+as quantidades da candidata disponível. **Ajustar e verificar solução contínua** abre a dieta
+calculada em kg MS/animal/dia. Quando houver resolução de pesagem e revalidação prática,
+**Ajustar e verificar quantidades práticas** copia a oferta arredondada em kg MN/animal/dia,
+inclusive para corrigir uma dieta incompatível. Sobras e perdas continuam preservadas;
+copiar não significa aprovar. Cada cálculo salva outra execução vinculada à origem.
+Sem solução encontrada ou pesagem definida, o sistema recusa a reutilização correspondente.
+Os testes em `tests/reutilizacao.rs` conferem quantidades, nutrientes, custo, bases e preservação.
+
+A comparação exige a mesma revisão do mesmo lote, identificada nas opções do histórico. Lotes
+ou revisões diferentes recebem orientação para selecionar outras execuções, sem calcular economia.
+Editar um lote exige executar novamente os dois cenários com a revisão atual para compará-los.
+A suíte `reutilizacao` repete no Chromium desktop cópia contínua/prática, edição, custos com
+sobras/perdas, preservação do original e comparação permitida/recusada.

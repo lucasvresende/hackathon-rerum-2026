@@ -42,6 +42,8 @@ impl Render for Historico<'_> {
                 }
                 form.card method="get" action="/comparar" {
                     h2 { "Comparar duas execuções" }
+                    p.muted { "A comparação exige a mesma revisão do lote. "
+                        "Após editar um lote, execute ambos os cenários com a revisão atual." }
                     div.form-grid {
                         @for (nome, rotulo) in [("a", "Cenário de referência"), ("b",
                         "Cenário alternativo")] {
@@ -49,6 +51,10 @@ impl Render for Historico<'_> {
                                 select id=(nome) name=(nome) required {
                                     @for execucao in execucoes {
                                         option value=(&execucao.id) { (&execucao.cenario.nome)
+                                            " · " (&execucao.cenario.lote.nome)
+                                            " · revisão "
+                                            (execucao.cenario.lote.revisao_id.chars()
+                                                .take(8).collect::<String>())
                                             " · " (&execucao.id[..8]) }
                                     }
                                 }

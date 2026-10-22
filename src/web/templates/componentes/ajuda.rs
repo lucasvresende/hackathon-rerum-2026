@@ -147,7 +147,8 @@ const CARTAS: &[Carta] = &[
         titulo: "Comparar premissas e custos de cenários",
         passos: &[
             "Em Histórico e análise, selecione duas execuções e use Comparar premissas e custos. \
-            A primeira é a referência e a segunda é a alternativa.",
+            A primeira é a referência e a segunda é a alternativa. \
+            Ambas devem usar a mesma revisão do mesmo lote; outras combinações são recusadas.",
             "Confira perfil, produção, consumo, sobras, horizonte, base de comparação e \
             premissas por ingrediente antes de interpretar a diferença de custo por animal/dia.",
             "Uma diferença positiva (referência menos alternativa) indica custo menor na \

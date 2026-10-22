@@ -43,7 +43,19 @@ impl Render for ResultadoExecucao<'_> {
             div.actions.no-print {
                 a.button href=(format!("/execucoes/{}/duplicar", e.id))
                 target="_blank" rel="noopener" title="Abre em nova guia" {
-                    "Duplicar e simular" }
+                    (if c.formular { "Refazer otimização" } else { "Duplicar e simular" }) }
+                @if c.formular && !sem_candidata {
+                    a.button.secondary href=(format!(
+                        "/execucoes/{}/duplicar?origem=continua", e.id))
+                    target="_blank" rel="noopener" title="Abre em nova guia" {
+                        "Ajustar e verificar solução contínua" }
+                    @if p.pratico.is_some() && !p.resolucao_pendente(c) {
+                        a.button.secondary href=(format!(
+                            "/execucoes/{}/duplicar?origem=pratica", e.id))
+                        target="_blank" rel="noopener" title="Abre em nova guia" {
+                            "Ajustar e verificar quantidades práticas" }
+                    }
+                }
                 button.button.secondary type="button" data-imprimir { "Imprimir parecer" }
                 button.button.secondary type="button" data-imprimir="ficha" {
                     "Imprimir ficha de fornecimento" }

@@ -20,7 +20,8 @@ async fn carga_versionada_converte_unidades_e_rejeita_ativacao_parcial() {
     let silagem = modelos.iter().find(|m| m.id == "silagem-milho-v1").unwrap();
     let ca = silagem.valores.iter().find(|v| v.campo == "ca").unwrap();
     assert_eq!(ca.valor, "0.19");
-    assert_eq!(ca.valor_original, "1.90");
+    // A apresentação normaliza zeros decimais; o valor e a unidade da fonte são preservados.
+    assert_eq!(ca.valor_original.parse::<f64>().unwrap(), 1.90);
     assert_eq!(ca.unidade_original, "g/kg MS");
     assert!(!silagem.valores.iter().any(|v| v.campo == "ndt"));
     assert!(

@@ -1,6 +1,6 @@
 # Requisitos do FeedYourCow: dietas para bovinos leiteiros
 
-**Tema 2 · Hackathon UFJF/RERUM 2026 · Versão documental 1.5 · 21/10/2026**
+**Tema 2 · Hackathon UFJF/RERUM 2026 · Versão documental 1.6 · 22/10/2026**
 
 Este documento especifica o comportamento do FeedYourCow. A implementação está em `src/`;
 `README.md` reúne operação, arquitetura, decisões e a cobertura dos testes com sua verificação.
@@ -299,7 +299,10 @@ como recomendação válida. O estado da solução contínua poderá continuar v
 
 ### RF-12 — Comparação econômica
 
-Comparar custo de oferta por animal/lote, economia absoluta e, quando calculável, relativa.
+Comparar somente execuções da mesma revisão do mesmo lote, com IDs conhecidos. Lotes ou revisões
+diferentes serão recusados no servidor, sem apresentar economia ou tabela comparativa. O histórico
+identificará lote e revisão nas opções. Dentro desse recorte, comparar custo de oferta por
+animal/lote, economia absoluta e, quando calculável, relativa.
 Com preço do leite, calcular margem sobre alimentação; com produção positiva, custo por kg de leite.
 Identificar os demais custos da fazenda como não incluídos.
 
@@ -319,7 +322,15 @@ percentuais e sua natureza de política do MVP.
 
 Listar e abrir execuções anteriores, suas entradas, resultados e explicações. Uma edição deverá
 criar execução nova, sem sobrescrever a anterior. A consulta ao histórico exibirá o parecer
-preservado, sem oferecer reexecução com versões originais. Para recalcular, usar Duplicar e simular.
+preservado, sem oferecer reexecução com versões originais. Para recalcular, usar Duplicar e simular
+nas verificações ou Refazer otimização nas formulações.
+Uma formulação com candidata permitirá ajustar e verificar a solução contínua ou as quantidades
+práticas revalidadas, com a origem identificada no nome da cópia. Pesagem ainda incompatível
+poderá ser copiada para correção, sem receber aprovação automática. Sem candidata ou resolução
+suficiente, a ação correspondente será recusada também no servidor. A cópia contínua usará
+consumo em MS; a prática usará oferta em MN, preservando sobras, perdas e demais premissas.
+Refazer uma otimização também preencherá a candidata disponível, para permitir trocar o modo
+para verificação sem zerar as quantidades. A associação será por composição, não por posição.
 
 **Aceite:** alterar catálogo ou preços atuais não alterará o resultado histórico nem sua fonte.
 
@@ -459,6 +470,7 @@ exigência do usuário silenciosamente. Uma busca sem solução seguirá os esta
 3. Reexecutar a inferência desde os fatos originais.
 4. Comparar premissas, atendimento e custos; manter ambos os resultados.
 
+Uma comparação será permitida somente para a mesma revisão do lote.
 Uma comparação econômica direta deverá destacar mudanças de produção, consumo, perfil, horizonte
 ou critérios de segurança. Não rotular uma dieta inviável mais barata como alternativa equivalente.
 

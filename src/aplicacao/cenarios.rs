@@ -81,8 +81,6 @@ pub async fn executar_novo(
 
 pub async fn duplicar(pool: &SqlitePool, id: &str) -> Resultado<Cenario> {
     let anterior = historico::obter(pool, id).await?;
-    let mut cenario = anterior.cenario;
-    cenario.original_id = Some(anterior.cenario_id);
-    cenario.nome = format!("{} · simulação", cenario.nome);
-    Ok(cenario)
+    super::reutilizacao::copiar(&anterior, super::reutilizacao::OrigemDieta::Simular)
+        .map_err(Into::into)
 }

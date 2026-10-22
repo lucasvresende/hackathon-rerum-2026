@@ -8,7 +8,8 @@ async fn execucao() -> Execucao {
         .await
         .unwrap();
     let conhecimento = conhecimento::ler(&pool).await.unwrap();
-    let cenario = demonstracao::cenario(demonstracao::lote(), vec![], false);
+    let mut cenario = demonstracao::cenario(demonstracao::lote(), vec![], false);
+    cenario.lote.revisao_id = "revisao-original".into();
     let parecer = verificar(&cenario, &conhecimento);
     Execucao {
         id: "referencia".into(),
@@ -106,4 +107,83 @@ async fn comparacao_expoe_resolucao_inclusao_e_diagnostico_pratico() {
     assert!(html.contains("R$ 17,35"));
     assert!(!html.contains("16.868500000000004"));
     assert!(html.contains("não usar como recomendação"));
+}
+
+#[tokio::test]
+async fn recusa_outro_lote_ou_revisao_sem_calcular_economia() {
+    use feed_your_cow::web::templates::paginas::comparacao::Comparacao as Tela;
+    use maud::Render;
+    let a = execucao().await;
+    for alterar in [
+        |b: &mut Execucao| b.cenario.lote.id.push_str("-outro"),
+        |b: &mut Execucao| b.cenario.lote.revisao_id.push_str("-nova"),
+        |b: &mut Execucao| b.cenario.lote.revisao_id.clear(),
+    ] {
+        let mut b = a.clone();
+        alterar(&mut b);
+        b.parecer.custo = Some(1.0);
+        let c = Comparacao::entre(a.clone(), b);
+        assert!(!c.mesma_revisao);
+        assert!(!c.equivalentes);
+        assert!(c.economia.is_none());
+        let html = Tela { comparacao: &c }.render().into_string();
+        assert!(html.contains("mesma revisão do lote"));
+        assert!(!html.contains("Diferença de custo"));
+        assert!(!html.contains("Ingredientes e premissas"));
+    }
+}
+
+#[tokio::test]
+async fn http_recusa_comparacao_de_revisoes_distintas() {
+    use axum::{body::Body, http::Request};
+    use feed_your_cow::{
+        aplicacao::exemplos,
+        persistencia::{cadastros, historico},
+        web::{estado::EstadoApp, rotas::app},
+    };
+    use http_body_util::BodyExt;
+    use tower::ServiceExt;
+    let dir = tempfile::tempdir().unwrap();
+    let pool = banco::preparar(&dir.path().join("http.sqlite3"))
+        .await
+        .unwrap();
+    let c = exemplos::cenario_inicial(&pool).await.unwrap();
+    let base = conhecimento::ler(&pool).await.unwrap();
+    let p = verificar(&c, &base);
+    let a = historico::salvar(&pool, &c, &p, &base).await.unwrap();
+    let mut outra = c.clone();
+    outra.lote = cadastros::lotes(&pool)
+        .await
+        .unwrap()
+        .into_iter()
+        .find(|l| l.id != c.lote.id)
+        .unwrap();
+    let b = historico::salvar(&pool, &outra, &verificar(&outra, &base), &base)
+        .await
+        .unwrap();
+    let mut revisada = c.clone();
+    revisada.lote.peso += 10.0;
+    cadastros::salvar_lote(&pool, &mut revisada.lote, false)
+        .await
+        .unwrap();
+    let nova = historico::salvar(&pool, &revisada, &verificar(&revisada, &base), &base)
+        .await
+        .unwrap();
+    let app = app(EstadoApp::novo(pool, "http://127.0.0.1:3000".into()));
+    for (alternativa, status) in [(&a, 200), (&b, 422), (&nova, 422)] {
+        let r = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .uri(format!("/comparar?a={a}&b={alternativa}"))
+                    .body(Body::empty())
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(r.status(), status);
+        let body = r.into_body().collect().await.unwrap().to_bytes();
+        let html = std::str::from_utf8(&body).unwrap();
+        assert_eq!(html.contains("Diferença de custo"), status == 200);
+    }
 }

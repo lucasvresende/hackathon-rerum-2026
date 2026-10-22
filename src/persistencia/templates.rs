@@ -21,10 +21,7 @@ pub async fn ler(conexao: &mut SqliteConnection) -> Resultado<Vec<ModeloPreenchi
                         campo: v.campo.clone(),
                         valor: valor_apresentavel(&v.valor, &v.unidade),
                         unidade: v.unidade.clone(),
-                        valor_original: valor_apresentavel(
-                            &v.valor_original,
-                            &v.unidade_original,
-                        ),
+                        valor_original: valor_apresentavel(&v.valor_original, &v.unidade_original),
                         unidade_original: v.unidade_original.clone(),
                         natureza: v.natureza.clone(),
                         fonte_id: v.fonte_id.clone(),
@@ -48,7 +45,7 @@ pub async fn ler(conexao: &mut SqliteConnection) -> Resultado<Vec<ModeloPreenchi
 fn referencia_atual(texto: &str) -> String {
     texto.replace(
         "REQUISITOS.md, anexo A, versão 1.4",
-        "REQUISITOS.md, anexo A, versão 1.5",
+        "REQUISITOS.md, anexo A, versão 1.6",
     )
 }
 

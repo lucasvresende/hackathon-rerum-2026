@@ -30,3 +30,25 @@ impl Render for Erro {
         }}.render()
     }
 }
+
+/// Recusa de uma operação indisponível, com orientação e retorno ao resultado preservado.
+pub struct AvisoOperacao<'a> {
+    pub mensagem: &'a str,
+    pub retorno: &'a str,
+}
+impl Render for AvisoOperacao<'_> {
+    fn render(&self) -> Markup {
+        Principal {
+            titulo: "Revise a operação",
+            ativo: "/historico",
+            conteudo: html! {
+                (Cabecalho { titulo: "Revise a operação", texto: "", ajuda: "resultados" })
+                section.card {
+                    p.alert role="alert" { (self.mensagem) }
+                    a.button href=(self.retorno) { "Voltar ao resultado" }
+                }
+            },
+        }
+        .render()
+    }
+}

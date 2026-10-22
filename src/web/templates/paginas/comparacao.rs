@@ -14,6 +14,25 @@ impl Render for Comparacao<'_> {
         let a = &self.comparacao.referencia;
         let b = &self.comparacao.alternativa;
         let equivalentes = self.comparacao.equivalentes;
+        if !self.comparacao.mesma_revisao {
+            return Principal {
+                titulo: "Comparação indisponível",
+                ativo: "/historico",
+                conteudo: html! {
+                    (Cabecalho { titulo: "Comparação indisponível", texto: "",
+                        ajuda: "comparacao" })
+                    section.card {
+                        p.alert role="alert" { "Selecione cenários da mesma revisão do lote. "
+                            "Lotes diferentes ou revisões diferentes não podem ser comparados." }
+                        p { "Referência: " (&a.cenario.nome) " · " (&a.cenario.lote.nome) }
+                        p { "Alternativa: " (&b.cenario.nome) " · " (&b.cenario.lote.nome) }
+                        a.button href="/historico" { "Escolher outras execuções" }
+                    }
+                },
+            }
+            .render();
+        }
+
         Principal { titulo: "Comparar cenários",
         ativo: "/historico", conteudo: html! {
         (Cabecalho { titulo: "Comparação de cenários", texto: "", ajuda: "comparacao" })

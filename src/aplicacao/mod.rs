@@ -9,3 +9,5 @@ pub mod historico;
 pub mod modelos_preenchimento;
 
 pub mod exemplos;
+
+pub mod reutilizacao;

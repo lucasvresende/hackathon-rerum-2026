@@ -15,12 +15,18 @@ pub struct Economia {
 pub struct Comparacao {
     pub referencia: Execucao,
     pub alternativa: Execucao,
+    pub mesma_revisao: bool,
     pub equivalentes: bool,
     pub economia: Option<Economia>,
 }
 impl Comparacao {
     pub fn entre(a: Execucao, b: Execucao) -> Self {
-        let equivalentes = a.cenario.perfil_id == b.cenario.perfil_id
+        let mesma_revisao = !a.cenario.lote.id.is_empty()
+            && !a.cenario.lote.revisao_id.is_empty()
+            && a.cenario.lote.id == b.cenario.lote.id
+            && a.cenario.lote.revisao_id == b.cenario.lote.revisao_id;
+        let equivalentes = mesma_revisao
+            && a.cenario.perfil_id == b.cenario.perfil_id
             && proximos(a.cenario.lote.producao, b.cenario.lote.producao)
             && proximos(a.parecer.consumo_ms, b.parecer.consumo_ms)
             && a.cenario.horizonte == b.cenario.horizonte
@@ -29,6 +35,7 @@ impl Comparacao {
             .parecer
             .custo_resultado()
             .zip(b.parecer.custo_resultado())
+            .filter(|_| mesma_revisao)
             .map(|(ca, cb)| Economia {
                 absoluta: ca - cb,
                 percentual: (ca > 0.0).then(|| 100.0 * (ca - cb) / ca),
@@ -37,6 +44,7 @@ impl Comparacao {
         Self {
             referencia: a,
             alternativa: b,
+            mesma_revisao,
             equivalentes,
             economia,
         }
