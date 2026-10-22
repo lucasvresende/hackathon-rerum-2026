@@ -396,6 +396,8 @@ as capturas. O build do pacote de produção é executado localmente.
 
 ## Documentação
 
+- [Diagnóstico da formulação](DIAGNOSTICO_FORMULACAO.md): inspeção do fluxo de menor custo
+  nos três navegadores, variações de valores, problemas reproduzidos e evidências locais.
 - [Requisitos](REQUISITOS.md) (versão documental 1.5): especificação funcional vigente,
   escopo, regras, limitações e casos de aceitação CT-01 a CT-35. Os requisitos definem o
   comportamento esperado; a implementação está em `src/` e a cobertura automatizada em `tests/`.
