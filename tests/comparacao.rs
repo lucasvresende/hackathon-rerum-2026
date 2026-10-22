@@ -187,3 +187,72 @@ async fn http_recusa_comparacao_de_revisoes_distintas() {
         assert_eq!(html.contains("Diferença de custo"), status == 200);
     }
 }
+
+#[tokio::test]
+async fn datas_e_conhecimento_completo_retiram_equivalencia_sem_ocultar_custos() {
+    let a = execucao().await;
+    for (alterar, motivo) in [
+        (
+            |b: &mut Execucao| b.cenario.data_avaliacao = "2027-10-22".into(),
+            "Data de avaliação",
+        ),
+        (
+            |b: &mut Execucao| b.cenario.data_aplicacao = "2027-10-22".into(),
+            "Data de aplicação",
+        ),
+        (
+            |b: &mut Execucao| b.conhecimento.versao.push_str("-nova"),
+            "Versões do perfil",
+        ),
+        (
+            |b: &mut Execucao| b.conhecimento.metodo.push_str("-novo"),
+            "Métodos",
+        ),
+        (
+            |b: &mut Execucao| b.conhecimento.versao_app.push_str("-nova"),
+            "Versões da aplicação",
+        ),
+        (
+            |b: &mut Execucao| b.conhecimento.coeficientes[0].valores[0] += 1.0,
+            "Coeficientes",
+        ),
+        (
+            |b: &mut Execucao| b.conhecimento.normas[0].inicio = "2027-01-01".into(),
+            "Normas",
+        ),
+        (
+            |b: &mut Execucao| b.conhecimento.fontes[0].hash.push_str("-novo"),
+            "Fontes",
+        ),
+        (
+            |b: &mut Execucao| b.conhecimento.fontes[0].conteudo.push_str(" alterado"),
+            "Fontes",
+        ),
+        (
+            |b: &mut Execucao| b.conhecimento.fdn_min += 0.01,
+            "Pisos de FDN",
+        ),
+    ] as [(fn(&mut Execucao), &str); 10]
+    {
+        let mut a = a.clone();
+        a.parecer.custo = Some(10.0);
+        let mut b = a.clone();
+        b.parecer.custo = Some(8.0);
+        alterar(&mut b);
+        let c = Comparacao::entre(a, b);
+        assert!(!c.equivalentes);
+        assert!(
+            c.motivos.iter().any(|m| m.contains(motivo)),
+            "{:?}",
+            c.motivos
+        );
+        assert_eq!(c.economia.as_ref().unwrap().absoluta, 2.0);
+        use maud::Render;
+        let html =
+            feed_your_cow::web::templates::paginas::comparacao::Comparacao { comparacao: &c }
+                .render()
+                .into_string();
+        assert!(html.contains(motivo));
+        assert!(html.contains("Diferença de custo"));
+    }
+}

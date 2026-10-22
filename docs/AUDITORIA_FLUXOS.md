@@ -179,3 +179,33 @@ do solver, nem teste exaustivo de todas as combinações de ingredientes e restr
 As evidências exploratórias completas ficaram em `output/playwright/auditoria/`, ignorado pelo
 Git. As cinco capturas referenciadas acima acompanham este relatório no repositório. O banco
 habitual da aplicação não foi modificado. Nenhum dos seis problemas foi corrigido nesta análise.
+
+## Resolução dos achados
+
+Atualização de 22/10/2026: os seis achados acima foram corrigidos. O texto original permanece
+como registro da inspeção anterior às mudanças.
+
+| Achado | Comportamento corrigido | Regressão |
+| --- | --- | --- |
+| 1 | Quantidades, custos, revisões e balanço vêm do parecer salvo. | comparacao_quantidades |
+| 2 | Datas e conhecimento completo geram motivos específicos. | comparacao |
+| 3 | Filtros codificados acompanham anterior/próximo. | historico_referencia |
+| 4 | Referência fixada acompanha filtros e páginas pela URL. | historico_referencia |
+| 5 | Data civil validada; legado exige correção ou remoção explícita. | cadastros_auditoria |
+| 6 | Cancelamento preserva lote/alimento e aceita URL antiga. | cadastros_auditoria |
+
+A suíte Chromium completa passou, incluindo a nova suíte `auditoria`. Ela cadastra lote e
+alimento do zero e por exemplo, verifica e formula dietas, testa datas distintas, cria mais
+de 100 execuções e compara com referência fixada, com e sem JavaScript. Foram revistas
+capturas de desktop; também são geradas evidências de mobile e impressão em
+`output/playwright/`. A suíte Rust, Clippy, rustfmt e os verificadores SQLx, estruturais e
+documentais passaram. Não houve migração nem alteração das execuções históricas.
+
+[Comparação corrigida: consumo, oferta e custo por ingrediente][quantidades].
+[Referência e filtro preservados na segunda página, sem JavaScript][referencia].
+[Comparação em viewport móvel, sem JavaScript][mobile].
+
+[quantidades]: imagens/auditoria-2026-10-22/comparacao-corrigida.png
+[referencia]: imagens/auditoria-2026-10-22/referencia-corrigida.png
+
+[mobile]: imagens/auditoria-2026-10-22/mobile-corrigido.png

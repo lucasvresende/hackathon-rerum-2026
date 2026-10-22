@@ -58,3 +58,6 @@ mod ficha_fornecimento;
 
 #[path = "../../comparacao/templates/componentes/comparacao_balanco.rs"]
 pub mod comparacao_balanco;
+
+#[path = "../../comparacao/templates/componentes/comparacao_conhecimento.rs"]
+pub mod comparacao_conhecimento;

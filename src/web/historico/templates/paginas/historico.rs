@@ -24,6 +24,13 @@ impl Render for Historico<'_> {
             data.into(),
         );
         let referencia = self.referencia;
+        let sem_alternativa = referencia.is_some_and(|r| {
+            !execucoes.iter().any(|e| {
+                !r.cenario.lote.revisao_id.is_empty()
+                    && r.cenario.lote.id == e.cenario.lote.id
+                    && r.cenario.lote.revisao_id == e.cenario.lote.revisao_id
+            })
+        });
         Principal {
             titulo: "Histórico e análise",
             ativo: "/historico",
@@ -96,7 +103,12 @@ impl Render for Historico<'_> {
                             }
                         }
                     }
-                    button.button.secondary { "Comparar premissas e custos" }
+                    @if sem_alternativa {
+                        p role="status" { "Nenhuma alternativa compatível nesta página. "
+                            "Ajuste os filtros ou navegue para outra página." }
+                    }
+                    button.button.secondary disabled[sem_alternativa] {
+                        "Comparar premissas e custos" }
                 }
                 section.card.table-wrap {
                     table { thead { tr { th { "Cenário" } th { "Lote" }

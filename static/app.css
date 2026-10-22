@@ -293,3 +293,6 @@ td .cadastro-actions { min-width: 110px; }
     .impressao-ficha h2 { margin-top: 16px; }
     .impressao-ficha .ficha-operacional td { overflow-wrap: anywhere; }
 }
+
+/* O conteúdo preservado pode conter identificadores longos e JSON de cargas antigas. */
+pre.code { white-space: pre-wrap; }

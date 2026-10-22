@@ -150,3 +150,9 @@ e não das quantidades iniciais de uma otimização. Mostra revisões diferentes
 nutricional e estados por dimensão. Quantidades práticas ficam separadas e mantêm o aviso de
 validação. Sem candidata, pesagem definida ou associação única da composição, mostra
 **Indisponível**. Registros antigos só usam o nome para associação quando ele é único.
+
+Datas de avaliação e aplicação das regras, versões e conhecimento preservado participam da
+comparação de premissas. Qualquer diferença aparece com motivo específico; o detalhamento do
+conhecimento mostra os valores antigos e novos. A diferença de custo continua disponível
+para inspeção, acompanhada do aviso de não equivalência. Outro lote ou revisão permanece
+bloqueado. A comparação usa apenas dados históricos, sem executar novamente o motor.

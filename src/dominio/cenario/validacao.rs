@@ -54,6 +54,7 @@ pub fn validar_lote(lote: &Lote) -> Vec<Problema> {
 /// Datas civis aceitas nos cadastros e cenários, sem normalização silenciosa.
 pub fn data_civil_valida(data: &str) -> bool {
     data.len() == 10
+        && !data.starts_with("0000")
         && chrono::NaiveDate::parse_from_str(data, "%Y-%m-%d")
             .is_ok_and(|d| d.format("%Y-%m-%d").to_string() == data)
 }

@@ -61,3 +61,39 @@ async fn referencia_fora_da_pagina_e_ausencia_sao_tratadas_sem_perder_filtros() 
         }
     }
 }
+
+#[tokio::test]
+async fn alternativa_incompativel_fica_identificada_e_desabilitada() {
+    let d = tempfile::tempdir().unwrap();
+    let pool = banco::preparar(&d.path().join("app.sqlite3"))
+        .await
+        .unwrap();
+    let c = exemplos::cenario_inicial(&pool).await.unwrap();
+    let base = conhecimento::ler(&pool).await.unwrap();
+    let id = historico::salvar(&pool, &c, &verificar(&c, &base), &base)
+        .await
+        .unwrap();
+    let mut outra = c.clone();
+    outra.lote.revisao_id = "outra-revisao".into();
+    // A revisão deve existir para preservar a chave estrangeira do cenário.
+    feed_your_cow::persistencia::cadastros::salvar_lote(&pool, &mut outra.lote, false)
+        .await
+        .unwrap();
+    historico::salvar(&pool, &outra, &verificar(&outra, &base), &base)
+        .await
+        .unwrap();
+    let app = app(EstadoApp::novo(pool, "http://127.0.0.1:3000".into()));
+    let r = app
+        .oneshot(
+            Request::builder()
+                .uri(format!("/historico?referencia={id}"))
+                .body(Body::empty())
+                .unwrap(),
+        )
+        .await
+        .unwrap();
+    let bytes = r.into_body().collect().await.unwrap().to_bytes();
+    let html = std::str::from_utf8(&bytes).unwrap();
+    assert!(html.contains("lote ou revisão incompatível"));
+    assert!(html.contains(" disabled"));
+}

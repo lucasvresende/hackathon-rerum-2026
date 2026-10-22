@@ -1,3 +1,4 @@
+import { testarAuditoria } from './auditoria.mjs';
 import { testarReutilizacao } from './reutilizacao.mjs';
 import { testarVerificacaoDesktop } from './verificacao-desktop.mjs';
 import { abrirConfiguracoesCenario } from './apoio.mjs';
@@ -21,7 +22,7 @@ import { spawn, spawnSync } from 'node:child_process';
 import { chromium, firefox, webkit } from 'playwright';
 
 const nomesSuites = ['reutilizacao', 'verificacao-desktop', 'htmx', 'condicionais',
-  'falhas', 'guias',
+  'falhas', 'guias', 'auditoria',
   'inicio', 'dicas',
   'fluxos', 'exemplos', 'cenario-simplificado', 'formulacao', 'resultado-operacional'];
 const suites = new Set(process.env.FEEDYOURCOW_SUITES?.split(',') || nomesSuites);
@@ -112,6 +113,7 @@ try {
       if (suites.has('falhas')) await testarFalhas(browser, url, artefatos, nome);
       if (suites.has('guias')) await testarGuias(browser, url, artefatos, nome);
       if (suites.has('exemplos')) await testarExemplos(browser, url, artefatos, nome);
+      if (suites.has('auditoria')) await testarAuditoria(browser, url, artefatos, nome);
       if (!suites.has('fluxos')) continue;
       await testarTemplates(page, url, artefatos, nome);
       await testarAjuda(page, url, artefatos, nome);

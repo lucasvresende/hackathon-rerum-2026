@@ -177,3 +177,14 @@ matéria seca dos componentes. Atualizar um componente não modifica automaticam
 já cadastrada da mistura. O cenário inicial usa o lote `ex-l03` e cinco ingredientes; suas
 datas civis são preenchidas ao abrir o formulário. Preços e estoques são hipóteses do cenário.
 A [procedência e as limitações](FONTES.md) explicam o uso dessas referências.
+
+## Complemento de aceite — comparação e cadastros
+
+- A data opcional da composição deve ser civil válida em `AAAA-MM-DD`. Datas inválidas
+  legadas exigem correção ou confirmação de remoção ao criar nova revisão.
+- O histórico preserva filtros e uma referência fixada entre páginas, inclusive sem JavaScript.
+- RF-12 inclui consumo, oferta, custos por ingrediente, revisões de composição, balanço e
+  dimensões dos pareceres preservados. Resultado ausente ou associação ambígua é indisponível.
+- Datas, versões e toda a estrutura do conhecimento preservado participam da equivalência.
+  Diferenças permitem inspeção de custos com aviso específico. A recusa entre lotes ou
+  revisões distintos permanece obrigatória; comparar não reexecuta o motor.

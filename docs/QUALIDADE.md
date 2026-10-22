@@ -117,3 +117,20 @@ O caso de reutilização foi repetido isoladamente nos dois navegadores afetados
 x86-64 gerado por `scripts/build_producao.sh` passou em `scripts/testar_producao.py`, incluindo
 preparação, histórico, backup, motor e HTTP. Isso verifica o estado local desta revisão; o
 resultado do GitHub Actions no commit final deve ser conferido à parte.
+
+## Regressões da auditoria de fluxos
+
+`tests/cadastros_auditoria.rs` cobre data civil, preservação dos campos, dados legados e
+cancelamento. `tests/historico_referencia.rs` verifica referência fora da página e parâmetros
+codificados. `tests/comparacao_quantidades.rs` cobre resultado contínuo/prático e associação
+por composição; `tests/comparacao.rs` verifica datas e conhecimento preservado completo.
+A suíte `auditoria` do navegador cadastra do zero e por exemplo, calcula nos dois modos e
+compara entre páginas com mais de 100 execuções, com e sem JavaScript, incluindo capturas de
+desktop, mobile e impressão. Os testes usam banco temporário e executável congelado.
+
+Referências de implementação consultadas: [datas civis do chrono][chrono],
+[comparação estrutural via serde_json][serde] e [parâmetros GET no Axum][query].
+
+[chrono]: https://docs.rs/chrono/latest/chrono/struct.NaiveDate.html#method.parse_from_str
+[serde]: https://docs.rs/serde_json/latest/serde_json/fn.to_value.html
+[query]: https://docs.rs/axum/0.8.9/axum/extract/struct.Query.html

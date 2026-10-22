@@ -13,7 +13,6 @@ impl Render for Comparacao<'_> {
     fn render(&self) -> Markup {
         let a = &self.comparacao.referencia;
         let b = &self.comparacao.alternativa;
-        let equivalentes = self.comparacao.equivalentes;
         if !self.comparacao.mesma_revisao {
             return Principal {
                 titulo: "Comparação indisponível",
@@ -42,6 +41,15 @@ impl Render for Comparacao<'_> {
                 tbody {
                     @for (nome, va, vb) in [
                         ("Perfil", a.cenario.perfil_id.clone(), b.cenario.perfil_id.clone()),
+                        ("Data de avaliação", a.cenario.data_avaliacao.clone(),
+                            b.cenario.data_avaliacao.clone()),
+                        ("Data de aplicação das regras", a.cenario.data_aplicacao.clone(),
+                            b.cenario.data_aplicacao.clone()),
+                        ("Versão do perfil", a.conhecimento.versao.clone(),
+                            b.conhecimento.versao.clone()),
+                        ("Método", a.conhecimento.metodo.clone(), b.conhecimento.metodo.clone()),
+                        ("Versão da aplicação", a.conhecimento.versao_app.clone(),
+                            b.conhecimento.versao_app.clone()),
                         ("Produção kg/dia", numero(a.cenario.lote.producao, 3),
                             numero(b.cenario.lote.producao, 3)),
                         ("Consumo kg MS", numero(a.parecer.consumo_ms, 4),
@@ -106,8 +114,15 @@ impl Render for Comparacao<'_> {
                     }
                 }
             }
-            @if !equivalentes { p.alert { "Há mudanças em produção, consumo, horizonte, perfil ou \
-                critérios. Os cenários não são diretamente equivalentes." } }
+            @if !self.comparacao.equivalentes {
+                div.alert role="alert" {
+                    p { "Os cenários não são diretamente equivalentes:" }
+                    ul { @for motivo in &self.comparacao.motivos { li { (motivo) } } }
+                    p { "A diferença de custo permanece disponível para inspeção; "
+                        "não implica substituição equivalente." }
+                }
+            }
+            (super::super::componentes::comparacao_conhecimento::Conhecimento(a, b))
             @if let Some(economia) = &self.comparacao.economia {
                 p { "Diferença de custo contínuo (referência − alternativa): "
                     strong { (dinheiro(economia.absoluta)) }
