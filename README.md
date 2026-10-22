@@ -301,7 +301,8 @@ As versões reproduzíveis estão nos lockfiles. Código `unsafe` próprio é pr
 
 | Diretório               | Responsabilidade                                                   |
 | ----------------------- | ------------------------------------------------------------------ |
-| `src/dominio/`          | Unidades, validações, cálculos, inferência e otimização.           |
+| `src/dominio/`          | Unidades, validações, cálculos e regras do motor.                   |
+| `src/dominio/motor.rs`  | Entrada dos modos verificar e formular e contrato do processo.     |
 | `src/aplicacao/`        | Serviços de cadastros, cenários, execução, histórico e comparação. |
 | `src/persistencia/`     | Banco, cargas, revisões, histórico e recuperação.                  |
 | `src/web/handlers/`     | Rotas por recurso e tratamento HTTP.                               |
@@ -316,6 +317,12 @@ As requisições passam pelos handlers e pela conversão das entradas; os servi�
 o domínio e a persistência. Templates recebem dados preparados, sem consultar o banco ou
 executar regras de negócio. O servidor mantém validações, decisões e proteção de escrita
 por POST, token CSRF e verificação de origem. Recursos estáticos são servidos localmente.
+
+`dominio::motor::avaliar` recebe o cenário e o conhecimento congelados e seleciona o modo de
+verificação (`inferencia`) ou formulação (`otimizacao`). É a entrada usada pela aplicação e pelo
+processo filho, sem acesso a HTTP ou SQLite. `aplicacao::execucao` controla o prazo e salva o
+parecer; as regras e cálculos permanecem no domínio. Testes específicos em `tests/motor.rs`
+verificam os dois modos e o contrato serializado do processo.
 
 O motor distingue dados desconhecidos, violações e bloqueios, com conclusão por dimensão.
 A formulação usa `microlp` para cinco programas lineares, um por degrau de fibra,

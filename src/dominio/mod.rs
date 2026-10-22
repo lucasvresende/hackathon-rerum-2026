@@ -7,6 +7,7 @@ mod fornecimento;
 pub mod inferencia;
 mod linear;
 pub mod modelos;
+pub mod motor;
 pub mod otimizacao;
 pub mod parecer;
 pub mod unidades;

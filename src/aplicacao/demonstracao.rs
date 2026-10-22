@@ -146,7 +146,7 @@ pub async fn cenarios_salvos(pool: &SqlitePool) -> Resultado<()> {
     cadastros::salvar_alimento(pool, &mut item.alimento).await?;
     cenarios.push(bloqueio);
     for c in cenarios {
-        let p = crate::dominio::inferencia::verificar(&c, &base);
+        let p = crate::dominio::motor::avaliar(&c, &base);
         historico::salvar(pool, &c, &p, &base).await?;
     }
     Ok(())

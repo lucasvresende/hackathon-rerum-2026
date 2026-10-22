@@ -4,7 +4,8 @@
 use std::path::PathBuf;
 
 use feed_your_cow::Resultado;
-use feed_your_cow::aplicacao::{demonstracao, execucao::PedidoMotor};
+use feed_your_cow::aplicacao::demonstracao;
+use feed_your_cow::dominio::motor::{self, PedidoMotor};
 use feed_your_cow::persistencia::{banco, conhecimento, recuperacao};
 
 #[tokio::main]
@@ -13,8 +14,7 @@ async fn main() -> Resultado<()> {
     let comando = args.first().map(String::as_str).unwrap_or("servir");
     if comando == "__motor" {
         let pedido: PedidoMotor = serde_json::from_reader(std::io::stdin())?;
-        let parecer =
-            feed_your_cow::dominio::otimizacao::formular(&pedido.cenario, &pedido.conhecimento);
+        let parecer = motor::avaliar(&pedido.cenario, &pedido.conhecimento);
         serde_json::to_writer(std::io::stdout(), &parecer)?;
         return Ok(());
     }

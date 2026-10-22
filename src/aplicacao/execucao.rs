@@ -2,18 +2,12 @@
 use std::process::Stdio;
 use std::time::{Duration, Instant};
 
-use serde::{Deserialize, Serialize};
 use sqlx::SqlitePool;
 use tokio::io::AsyncWriteExt;
 
 use crate::Resultado;
-use crate::dominio::{Cenario, Conhecimento, Parecer};
-
-#[derive(Serialize, Deserialize)]
-pub struct PedidoMotor {
-    pub cenario: Cenario,
-    pub conhecimento: Conhecimento,
-}
+use crate::dominio::motor::PedidoMotor;
+use crate::dominio::{Cenario, Conhecimento, Parecer, motor};
 
 /// O processo filho é encerrado e aguardado ao expirar o orçamento; não sobra cálculo em thread.
 pub async fn calcular(cenario: Cenario, conhecimento: Conhecimento) -> Resultado<Parecer> {
@@ -26,17 +20,11 @@ pub async fn calcular_no_executavel(
     executavel: &std::path::Path,
 ) -> Resultado<Parecer> {
     if !cenario.formular {
-        return Ok(crate::dominio::inferencia::verificar(
-            &cenario,
-            &conhecimento,
-        ));
+        return Ok(motor::avaliar(&cenario, &conhecimento));
     }
     let limite = cenario.limite_segundos;
     if !crate::dominio::validacao::validar(&cenario).is_empty() {
-        return Ok(crate::dominio::otimizacao::formular(
-            &cenario,
-            &conhecimento,
-        ));
+        return Ok(motor::avaliar(&cenario, &conhecimento));
     }
     let prazo = tokio::time::Instant::now() + Duration::from_secs_f64(limite);
     let mut filho = tokio::process::Command::new(executavel)
