@@ -5,8 +5,8 @@ formulação de alternativas de menor custo para vacas adultas em lactação. A 
 conhecimento versionado, um motor determinístico e uma interface web em português. Cada parecer
 conserva as entradas, as regras e as evidências usadas no cálculo.
 
-O perfil implementado é `E2020_NRC1989_RUMEN_MVP_v1`; a pesquisa original do Tema 2 está em relatório
-separado. Os exemplos numéricos e cadastros iniciais são sintéticos.
+O perfil é `E2020_NRC1989_RUMEN_MVP_v1`. Os exemplos iniciais são sintéticos. O processo
+de desenvolvimento e a pesquisa do Tema 2 estão em PDFs separados nesta entrega.
 
 ## 1.1. Problema e objetivos
 
@@ -46,64 +46,12 @@ animais. O sistema não apresenta uma dieta como segura ou adequada em todas as 
 | Fornecimento prático | Oferta arredondada à resolução de pesagem e revalidada. |
 | Revisão / execução | Versão de um cadastro / avaliação imutável de um cenário. |
 
-# 2. Concepção e desenvolvimento assistido por IA
-
-A escolha do problema precedeu a definição das regras e da arquitetura. A assistência por IA
-participou da pesquisa e da implementação; as decisões do sistema em uso são produzidas pelo motor.
-
-## 2.1. Escolha do tema
-
-Foram avaliados três caminhos para um sistema especialista no contexto da pecuária leiteira:
-
-| Tema     | Pergunta central                | Principal dificuldade para um MVP confiável |
-| -------- | ------------------------------- | ------------------------------------------- |
-| Triagem  | Que sinais exigem atenção?      | Evidência clínica e encaminhamento.         |
-| Dietas   | Atende limites? Há menor custo? | Composição, segurança e otimização.         |
-| Economia | Como variam custos e receitas?  | Custos, tempo e causalidade.                |
-
-A escolha recaiu em **verificação e formulação de dietas** porque o problema permite regras
-explícitas, entradas auditáveis, exemplos numéricos e testes de regressão. A comparação econômica
-foi mantida como função limitada ao custo alimentar de cenários comparáveis. Triagem clínica,
-previsão de produção e contabilidade integral ficaram fora do produto.
-
-## 2.2. Construção do conhecimento
-
-A pesquisa inicial separou quatro tipos de informação: tabelas de exigências, composição de
-alimentos, barreiras técnicas de dieta e normas aplicáveis a ingredientes. Sistemas nutricionais
-de épocas e escopos diferentes não foram tratados como coeficientes intercambiáveis. O produto
-fixou um perfil fechado e versionado: exigências e consumo da publicação da Embrapa usada na
-carga, barreiras de fibra/amido e políticas explícitas do MVP. O [motor](#5-motor-de-inferência) documenta as
-fórmulas; [fontes](#9-referências-exemplos-e-manutenção-do-conhecimento) identifica obras, cargas e hipóteses.
-
-A pesquisa também revelou dimensões que não podiam receber uma conclusão completa com os dados
-do MVP: fibra física, micronutrientes, água, segurança sem laudo e respostas clínicas. A decisão
-foi preservar estados **inconclusivo** ou **não avaliado**, mantendo o cálculo químico disponível
-quando independente. Extrapolações controladas recebem aviso em vez de parecer precisão plena.
-
-## 2.3. Organização do trabalho
-
-A assistência por Codex apoiou a comparação de alternativas, a organização da pesquisa, a
-formulação dos requisitos, a implementação, a documentação e a investigação de regressões. O
-fluxo adotado foi:
-
-![Diagrama de processo](diagramas/processo-1.svg)
-
-Decisões relevantes de escopo e interpretação foram registradas antes de alterar regras.
-Compilador, testes, comparação de resultados e inspeção visual foram usados para questionar as
-saídas produzidas pela IA. Links e referências foram preservados para permitir auditoria;
-hipóteses sintéticas foram rotuladas para não serem confundidas com dados observados.
-
-O motor entregue é determinístico com as entradas e versões preservadas. Ele **não** consulta
-modelos de linguagem na execução, nem transforma texto livre ou páginas externas em regras
-novas. A assistência por IA descreve o processo de desenvolvimento, não uma dependência de
-produção ou uma fonte de autoridade nutricional.
-
-# 3. Dados e requisitos
+# 2. Dados e requisitos
 
 O contrato separa a identidade dos cadastros, suas revisões e os dados comerciais de cada
 cenário. Os identificadores RF, RN e RNF permitem relacionar requisitos, implementação e testes.
 
-## 3.1. Dados de lote
+## 2.1. Dados de lote
 
 Registrar identidade, revisão, número positivo de animais, raça, idade quando conhecida, peso,
 produção de leite em kg/animal/dia, gordura em pontos percentuais, dias em lactação, estado
@@ -112,7 +60,7 @@ confinamento, água e correções por ambiente/atividade usam **sim**, **não** 
 Desconhecido não confirma ausência de uma condição. Ordem de parto, dispersão de peso e condição
 corporal são complementares. Lotes heterogêneos devem ser separados antes da análise.
 
-## 3.2. Dados de alimento e produto
+## 2.2. Dados de alimento e produto
 
 Separar identidade do alimento, revisão de composição e produto/lote físico. A composição traz
 MS em kg MS/kg MN; NDT, PB, Ca, P, FDN, amido e EE em kg nutriente/kg MS. Preservar valor e
@@ -125,7 +73,7 @@ lote e limites de rótulo quando aplicáveis. Laudos de contaminantes precisam d
 unidade, umidade, método, documento e qualificador. Ausência de laudo não comprova ausência de
 contaminação. Não inventar fabricantes, laudos ou autorizações para completar exemplos.
 
-## 3.3. Dados de cenário
+## 2.3. Dados de cenário
 
 Registrar nome, revisão do lote, perfil, datas de avaliação e aplicação de regras, horizonte
 positivo em dias, modo verificar/formular, base das quantidades, ingredientes selecionados,
@@ -141,7 +89,7 @@ ingredientes na verificação** e de **1 a 10 na formulação**. O limite total 
 e não excede 10 segundos. Entradas não finitas, unidades incoerentes, percentuais fora da faixa,
 estoque negativo ou preço sem origem devem ser rejeitados com indicação de campo.
 
-## 3.4. Requisitos funcionais
+## 2.4. Requisitos funcionais
 
 | ID    | Comportamento e critério observável                                              |
 | ----- | -------------------------------------------------------------------------------- |
@@ -169,7 +117,7 @@ A consulta ao histórico não oferece reexecução com versões originais. **Dup
 conhecimento ativo em uma nova execução. A impressão curta de fornecimento deve indicar recusa
 quando as quantidades práticas não estiverem validadas.
 
-## 3.5. Regras de negócio
+## 2.5. Regras de negócio
 
 | Identificação | Tema | Requisito |
 | --- | --- | --- |
@@ -183,7 +131,7 @@ quando as quantidades práticas não estiverem validadas.
 | RN-20–21 | prática e economia: | resolução zero conserva aproximação contínua; pesagem recomendável exige resolução positiva dos itens usados e revalidação. Custo e economia dependem de base e premissas comparáveis, sem prever produção futura. |
 | RN-22–24 | explicação e histórico: | preservar entrada, regra, fonte, versão e traço. Execução concluída é imutável; tolerâncias e formatação não podem esconder violações. |
 
-## 3.6. Requisitos não funcionais
+## 2.6. Requisitos não funcionais
 
 | Identificação | Requisito |
 | --- | --- |
@@ -193,7 +141,7 @@ quando as quantidades práticas não estiverem validadas.
 | RNF-10–12 | testes Rust, navegador e pacote; build, testes, Clippy, rustfmt, SQLx e qualidade textual no CI; documentação sincronizada às mudanças. |
 | RNF-13–14 | recarga opcional em desenvolvimento, interface de trabalho em português, ajuda contextual, teclado, impressão e fluxos essenciais sem JavaScript. |
 
-## 3.7. Critérios de aceite
+## 2.7. Critérios de aceite
 
 Uma revisão só atende o contrato quando:
 
@@ -205,12 +153,12 @@ Uma revisão só atende o contrato quando:
 6. Build, testes Rust, verificações estáticas e testes de navegador do CI passam.
 7. Pacote de release prepara, serve e restaura um banco temporário com documentação local.
 
-# 4. Fluxo de uso e interpretação
+# 3. Fluxo de uso e interpretação
 
 Com o banco preparado, o trabalho segue da escolha do lote à leitura do parecer. Os comandos
-de instalação e preparação estão no capítulo 7; este capítulo descreve as ações na interface.
+de instalação e preparação estão no capítulo 6; este capítulo descreve as ações na interface.
 
-## 4.1. Percurso da primeira simulação
+## 3.1. Percurso da primeira simulação
 
 ![Diagrama de uso](diagramas/uso-1.svg)
 
@@ -229,7 +177,7 @@ pedem confirmação antes de substituir o rascunho.
 
 *Captura de teste; os contadores de um banco novo serão diferentes.*
 
-## 4.2. Cadastros, cópias e revisões
+## 3.2. Cadastros, cópias e revisões
 
 **Lotes de animais:** cadastre ou revise identificação, número de animais, peso médio, produção,
 gordura do leite, dias em lactação e condições de manejo. Estados como gestação, crescimento e
@@ -258,7 +206,7 @@ A data da composição é opcional. Quando preenchida, deve ser uma data civil v
 correção ou confirmação explícita de remoção. Execuções históricas permanecem intactas.
 Cancelar preserva o tipo: cadastrar novamente após cancelar lote abre outro lote.
 
-## 4.3. Montagem do cenário
+## 3.3. Montagem do cenário
 
 Em **Nova dieta**, dê um nome, selecione lote e tipo de cálculo, informe horizonte e datas de
 avaliação e de aplicação das regras. Em **Selecionar ingredientes**, marque somente as composições
@@ -294,7 +242,7 @@ A verificação aceita até **20 ingredientes**; a formulação, até **10**. Se
 inválidos são identificados e o rascunho válido permanece. O fluxo essencial funciona sem
 JavaScript; atualizações por htmx tornam a interação mais rápida quando disponíveis.
 
-## 4.4. Leitura do parecer
+## 3.4. Leitura do parecer
 
 - **ATENDE** descreve somente a dimensão avaliada.
 - **NÃO ATENDE** indica pelo menos uma restrição violada naquela dimensão.
@@ -320,7 +268,7 @@ conclusão química favorável não aprova a dieta integralmente.
 | Dimensão | `ATENDE`, `NAO_ATENDE`, `INCONCLUSIVO`, `NAO_AVALIADO`. |
 | Execução | `INVALIDO`, `FORA_DO_PERFIL`, `BLOQUEADO`, `AVALIADO`. |
 
-## 4.5. Histórico, comparação e impressão
+## 3.5. Histórico, comparação e impressão
 
 **Duplicar e simular** cria um cenário editável vinculado à execução de origem sem substituir o
 parecer antigo. Após uma formulação com candidata, **Refazer otimização** conserva as premissas,
@@ -358,14 +306,14 @@ bloqueado. A comparação usa apenas dados históricos, sem executar novamente o
 Na impressão da comparação, o relatório pode continuar nas páginas seguintes sem separar o título
 da primeira tabela. Cabeçalhos e linhas curtas são mantidos juntos quando houver espaço.
 
-# 5. Motor de inferência
+# 4. Motor de inferência
 
 A entrada pública `dominio::motor::avaliar` recebe o cenário e o conhecimento da execução.
 O domínio calcula sem acessar HTTP ou SQLite; o serviço da aplicação preserva o resultado
 em transação após o cálculo. Os coeficientes e regras vêm de
 `dados_referencia/001_conhecimento.sql`.
 
-## 5.1. Sequência de avaliação
+## 4.1. Sequência de avaliação
 
 ![Diagrama de motor](diagramas/motor-1.svg)
 
@@ -373,7 +321,7 @@ A agenda de verificação percorre etapas em ordem fixa e registra uma trilha de
 Restrições independentes continuam sendo avaliadas quando outra dimensão viola um limite ou
 possui dado desconhecido. O parecer não converte ausência de informação em zero.
 
-## 5.2. Normalização, exigências e custos
+## 4.2. Normalização, exigências e custos
 
 Seja `qᵢ` a quantidade digitada do ingrediente `i`, `sᵢ` sua fração de MS, `r` a fração de
 sobras e `lᵢ` a perda anterior ao fornecimento. A quantidade consumida `xᵢ`, em kg MS por
@@ -429,7 +377,7 @@ Preço é armazenado em representação decimal. Custos são somados após norma
 embalagem/tonelada. O estoque informado é bruto; o motor testa a necessidade bruta do horizonte
 contra ele. Valor ausente não é estoque ilimitado, salvo hipótese explícita do cenário.
 
-## 5.3. Barreiras de fibra e políticas do perfil
+## 4.3. Barreiras de fibra e políticas do perfil
 
 A FDN de forragem é dividida pela MS total da dieta para selecionar a **maior linha cujo limiar
 foi alcançado**. O limite mínimo absoluto é 15% da MS. Os números carregados são:
@@ -447,7 +395,7 @@ Sobre a linha selecionada, a política operacional do MVP impõe **FDN total ≥
 barreiras são técnicas e não devem ser apresentadas como limites legais brasileiros. Fibra
 fisicamente efetiva não é deduzida automaticamente de FDN química ou de peneiras incompletas.
 
-## 5.4. Elegibilidade e contaminantes
+## 4.4. Elegibilidade e contaminantes
 
 O motor distingue três situações: violação comprovada, falta de informação e regra não avaliada.
 Lote fora do perfil produz `FORA_DO_PERFIL`; estado fisiológico indispensável desconhecido
@@ -461,7 +409,7 @@ laudo são compatíveis. O motor normaliza µg/kg e mg/kg, base MN/MS e base de 
 A referência de AFB1 da União Europeia só é aplicada quando o operador a ativa e a regra está
 vigente. A ausência de laudo ou de limite brasileiro universal carregado não é uma aprovação.
 
-## 5.5. Busca de menor custo
+## 4.5. Busca de menor custo
 
 O motor resolve **cinco problemas de programação linear** com `microlp`, um para cada linha de
 fibra. Cada variável `xᵢ` é o consumo do ingrediente em kg MS/animal/dia. Minimiza o custo de
@@ -489,7 +437,7 @@ serviço o encerra ao atingir o prazo. Uma interrupção não é prova de inviab
 A certificação se refere ao problema **contínuo** definido pelo perfil e pelo cenário, não a
 uma dieta integral, a uma recomendação clínica ou ao problema discreto de pesagem.
 
-## 5.6. Revalidação das quantidades práticas
+## 4.6. Revalidação das quantidades práticas
 
 Para cada item com resolução positiva em kg MN, a oferta é arredondada ao múltiplo mais próximo.
 O motor calcula novamente consumo, nutrientes, linha de fibra, custo, estoque e demais limites.
@@ -498,7 +446,7 @@ não exigem resolução. Resolução zero mantém aproximação contínua identi
 a dieta arredondada viola uma restrição, o parecer informa `FORNECIMENTO_INCOMPATIVEL`, conserva
 o resultado contínuo e não certifica ótimo para as quantidades práticas.
 
-## 5.7. Explicação e agregação dos estados
+## 4.7. Explicação e agregação dos estados
 
 Cada verificação conserva ID da regra, dimensão, estado, valor, limite, unidade, fonte,
 explicação e dependências. Os estados atômicos são `ATENDE`, `VIOLA`, `DESCONHECIDO` e
@@ -507,13 +455,13 @@ dado desconhecido produz `INCONCLUSIVO`; verificações favoráveis produzem `AT
 sem avaliação produz `NAO_AVALIADO`. Dimensões separadas incluem núcleo químico, barreiras,
 ingredientes, inclusão/estoque, contaminantes e o que ficou fora do núcleo.
 
-# 6. Arquitetura e persistência
+# 5. Arquitetura e persistência
 
 A aplicação é um monólito local com páginas renderizadas no servidor. Os casos de uso
 coordenam o domínio e a persistência; a interface recebe dados já preparados para apresentação.
 A divisão mantém as regras independentes das rotas e do banco.
 
-## 6.1. Componentes e tecnologias
+## 5.1. Componentes e tecnologias
 
 ![Diagrama de arquitetura](diagramas/arquitetura-1.svg)
 
@@ -540,9 +488,9 @@ no código da aplicação. `microlp` é embutido: o pacote não depende de solve
 JavaScript necessários são distribuídos em `static/`, sem CDN em tempo de execução. O projeto
 usa um CSS plano em `static/app.css`, com variáveis no começo do arquivo.
 
-As referências oficiais das tecnologias estão no capítulo 9.
+As referências oficiais das tecnologias estão no capítulo 8.
 
-## 6.2. Organização do repositório
+## 5.2. Organização do repositório
 
 | Caminho | Responsabilidade |
 | --- | --- |
@@ -565,9 +513,9 @@ As referências oficiais das tecnologias estão no capítulo 9.
 `src/web/rotas.rs` compõe os roteadores. Os handlers convertem entradas e chamam serviços; os
 templates recebem dados já preparados. `src/aplicacao/execucoes/execucao.rs` decide se formulação
 precisa de processo filho e impõe o prazo. A entrada `src/dominio/motor/mod.rs` seleciona
-verificação ou formulação. A sequência do motor está no capítulo 5.
+verificação ou formulação. A sequência do motor está no capítulo 4.
 
-## 6.3. Modelo de dados, versões e cargas
+## 5.3. Modelo de dados, versões e cargas
 
 ![Diagrama de arquitetura](diagramas/arquitetura-2.svg)
 
@@ -582,7 +530,7 @@ o mesmo conteúdo é idempotente e uma colisão é recusada. As consultas ficam 
 são chamadas por macros `query_file!`; `.sqlx/` permite build offline. O script
 `scripts/verificar_sqlx.py` recria o esquema em banco limpo e compara os metadados do cache.
 
-## 6.4. Proteção das requisições e interface
+## 5.4. Proteção das requisições e interface
 
 O servidor recusa escuta fora de loopback. Escritas usam POST, token CSRF e verificação de origem;
 requisições possuem limites. O produto não inclui usuários, autenticação ou acesso simultâneo
@@ -590,12 +538,12 @@ remoto. A interface funciona sem JavaScript nos fluxos essenciais; htmx atualiza
 enquanto os scripts preservam rascunhos, foco e estado entre trocas. Dicas, expansíveis e impressão
 não alteram regras de negócio: a validação final ocorre no servidor.
 
-# 7. Instalação, operação e distribuição
+# 6. Instalação, operação e distribuição
 
 O desenvolvimento exige ferramentas de compilação; o pacote de uso contém um binário nativo
 e seus recursos locais. A operação após a instalação não depende de serviços externos.
 
-## 7.1. Pré-requisitos
+## 6.1. Pré-requisitos
 
 - Desenvolvimento e build: Rust estável, Cargo e ferramentas de compilação/linker C.
 - Empacotamento: `sh`, `tar`, `gzip` e `sha256sum`.
@@ -605,7 +553,7 @@ e seus recursos locais. A operação após a instalação não depende de servi�
 O programa distribuído não precisa de Node, Python, Cargo, CDN ou serviço externo. Ele exige
 bibliotecas de sistema compatíveis com as da máquina que compilou o binário.
 
-## 7.2. Preparação e execução local
+## 6.2. Preparação e execução local
 
 ```sh
 cargo build --locked
@@ -638,7 +586,7 @@ A feature ativa `tower-livereload`. Se `bacon` estiver instalado, `bacon servir`
 servidor e `bacon testar` acompanha os testes. As tarefas do Bacon estão em `bacon.toml`.
 `RUST_LOG=debug` aumenta o detalhamento dos logs de tracing.
 
-## 7.3. Configuração
+## 6.3. Configuração
 
 | Variável | Padrão | Função |
 | --- | --- | --- |
@@ -663,7 +611,7 @@ antes de preparar **e** antes de servir:
 export FEEDYOURCOW_BANCO="$HOME/feedyourcow-dados/aplicacao.sqlite3"
 ```
 
-## 7.4. Administração, backup e restauração
+## 6.4. Administração, backup e restauração
 
 No checkout, use `cargo run -- <comando>`. No pacote, use `./iniciar.sh <comando>`.
 
@@ -693,7 +641,7 @@ as referências entre tabelas. Para abrir o banco restaurado, aponte `FEEDYOURCO
 `/tmp/feedyourcow-restaurado/aplicacao.sqlite3`. A restauração não troca automaticamente o banco
 ativo.
 
-## 7.5. Pacote nativo e atualização
+## 6.5. Pacote nativo e atualização
 
 ```sh
 sh scripts/build_producao.sh
@@ -724,7 +672,7 @@ outra pasta, mantenha `FEEDYOURCOW_BANCO` apontando para o mesmo arquivo, execut
 então `servir`. Guarde o pacote e o backup anteriores. Para voltar ao binário antigo, restaure o
 backup anterior em um destino novo; não abra um banco já migrado com uma versão antiga.
 
-## 7.6. Diagnóstico operacional
+## 6.6. Diagnóstico operacional
 
 - **Banco não preparado:** execute `preparar` usando o mesmo caminho de banco que `servir`.
 - **Porta ocupada:** configure outra porta de loopback em `FEEDYOURCOW_ENDERECO`.
@@ -733,13 +681,13 @@ backup anterior em um destino novo; não abra um banco já migrado com uma vers�
 - **Binário não executa no destino:** gere o pacote para o sistema/arquitetura corretos e confira
   a compatibilidade das bibliotecas de sistema.
 
-# 8. Validação e rastreabilidade
+# 7. Validação e rastreabilidade
 
-A cobertura é organizada por camada e vinculada aos requisitos do capítulo 3. As evidências
+A cobertura é organizada por camada e vinculada aos requisitos do capítulo 2. As evidências
 representativas orientam a revisão; a aprovação de uma entrega depende de executar as
 verificações no commit e na plataforma correspondentes.
 
-## 8.1. Camadas de teste
+## 7.1. Camadas de teste
 
 | Camada | O que verifica | Comando principal |
 | --- | --- | --- |
@@ -752,9 +700,9 @@ verificações no commit e na plataforma correspondentes.
 Os testes Rust em `tests/*.rs` usam banco temporário quando necessário. Os testes de navegador
 criam banco e servidor temporários; `tests/javascript/e2e/navegadores.mjs` copia o executável
 antes de iniciar o servidor para estabilizar o processo filho do motor. Capturas ficam em
-`output/playwright/`, fora do Git. As imagens do capítulo 4 ilustram os fluxos.
+`output/playwright/`, fora do Git. As imagens do capítulo 3 ilustram os fluxos.
 
-## 8.2. Matriz de rastreabilidade
+## 7.2. Matriz de rastreabilidade
 
 | Requisitos | Implementação | Evidência representativa |
 | --- | --- | --- |
@@ -779,7 +727,7 @@ JavaScript; CSRF e falhas HTTP; formulação interrompida versus inviável; reva
 custo com perdas/sobras; comparação recusada para revisões diferentes; histórico imutável;
 backup/restauração e primeira simulação em banco limpo.
 
-## 8.3. Execução das verificações
+## 7.3. Execução das verificações
 
 ```sh
 cargo build --locked
@@ -812,7 +760,7 @@ FEEDYOURCOW_NAVEGADORES=chromium FEEDYOURCOW_SUITES=formulacao npm run test:e2e
 falhas; a entrega deve usar a suíte completa nos navegadores definidos pelo CI. Para testar o
 binário otimizado, defina `FEEDYOURCOW_BINARIO` com o caminho do executável de release.
 
-## 8.4. Qualidade estática e desempenho
+## 7.4. Qualidade estática e desempenho
 
 `cargo fmt --check` valida formatação Rust. `scripts/qualidade.py` limita a 100 caracteres por
 linha os arquivos de código/configuração que inspeciona e avisa quando módulos relevantes
@@ -826,7 +774,7 @@ e nos arquivos Markdown de `docs/`.
 **1 segundo** para verificar 20 ingredientes e **5 segundos** para formular com 10. A meta é
 um critério de aceite, não garantia de tempo em qualquer hardware.
 
-## 8.5. Integração contínua
+## 7.5. Integração contínua
 
 `.github/workflows/ci.yml` roda em `push` e `pull_request`:
 
@@ -839,7 +787,7 @@ O script de produção e seu teste são uma validação local adicional; não fa
 atual. Para aprovar uma entrega final, confira o resultado do CI no commit exato e rode o teste
 do pacote gerado para a plataforma de destino.
 
-## 8.6. Evidências registradas em 22/10/2026
+## 7.6. Evidências registradas em 22/10/2026
 
 Os resultados a seguir são os registros da revisão técnica documentada em 22/10/2026;
 a reformulação editorial deste PDF não executou novamente as suítes da aplicação.
@@ -856,13 +804,13 @@ x86-64 gerado por `scripts/build_producao.sh` passou em `scripts/testar_producao
 preparação, histórico, backup, motor e HTTP. Isso verifica o estado local desta revisão; o
 resultado do GitHub Actions no commit final deve ser conferido à parte.
 
-# 9. Referências, exemplos e manutenção do conhecimento
+# 8. Referências, exemplos e manutenção do conhecimento
 
 Cada referência tem um papel delimitado: fornecer coeficientes, contextualizar o modelo,
 orientar composição ou identificar normas. Os valores efetivamente usados estão nas cargas
 SQL versionadas. O cálculo não consulta as URLs em tempo de execução.
 
-## 9.1. Base nutricional
+## 8.1. Base nutricional
 
 | ID | Referência | Uso e limite |
 | --- | --- | --- |
@@ -875,11 +823,11 @@ SQL versionadas. O cálculo não consulta as URLs em tempo de execução.
 
 
 As tabelas numéricas exatas do perfil podem ser vistas em **Perfil nutricional** na aplicação
-ou no SQL versionado. A [explicação das fórmulas](#5-motor-de-inferência) define bases, interpolação e
+ou no SQL versionado. A [explicação das fórmulas](#4-motor-de-inferência) define bases, interpolação e
 extrapolação. O nome `E2020_NRC1989_RUMEN_MVP_v1` identifica uma combinação histórica
 específica; não atribui ao NRC, à NASEM ou à Embrapa as políticas criadas para o produto.
 
-## 9.2. Catálogo sintético e modelos de preenchimento
+## 8.2. Catálogo sintético e modelos de preenchimento
 
 `dados_referencia/005_exemplos.sql` instala seis lotes e quinze alimentos sintéticos. O cadastro
 de cada exemplo aponta para a fonte `EXEMPLOS-V1` e preserva contexto, campos e hipóteses. Entre
@@ -908,7 +856,7 @@ modelos são ponto de partida editável, não validação automática. As origen
 [Embrapa 2014](https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/1007523) e
 [estudo com Jersey](https://doi.org/10.1590/S1516-35982005000600027).
 
-## 9.3. Normas e limites de contaminantes
+## 8.3. Normas e limites de contaminantes
 
 A carga `001_conhecimento.sql` contém entradas normativas com IDs, jurisdição, datas,
 condições e fontes. A aplicação testa vigência na data de aplicação do cenário. A entrada
@@ -929,7 +877,7 @@ sanitário sobre um produto real.
 
 Localizadores em cargas antigas permanecem como metadados históricos da versão instalada.
 
-## 9.4. Documentação técnica e licenças
+## 8.4. Documentação técnica e licenças
 
 A implementação se apoia nas documentações oficiais das versões declaradas no projeto:
 
@@ -947,21 +895,21 @@ A implementação se apoia nas documentações oficiais das versões declaradas 
 
 As cópias de `htmx.min.js` e `hx-live.min.js` em `static/vendor/` vieram do pacote
 `htmx.org@4.0.0` e são distribuídas localmente, sob a licença preservada em
-avisos do capítulo 10. Os SVGs são locais; o desenho da vaca deriva de
-EmojiOne/JoyPixels e mantém o aviso original em avisos do capítulo 10.
+avisos do capítulo 9. Os SVGs são locais; o desenho da vaca deriva de
+EmojiOne/JoyPixels e mantém o aviso original em avisos do capítulo 9.
 [SVG Repo](https://www.svgrepo.com/) foi usado para os ícones; confira a licença de cada ativo
 antes de redistribuir versões alteradas. Os ícones e scripts não carregam recursos externos em
 tempo de execução.
 
-## 9.5. Atualização de referências
+## 8.5. Atualização de referências
 
 1. Verifique a edição, o método, a unidade, a população e a vigência na fonte primária.
 2. Registre o que foi transcrito e o que é hipótese do produto; não preencha lacunas por analogia.
 3. Crie nova carga versionada sem reescrever silenciosamente uma versão já instalada.
-4. Atualize [requisitos](#3-dados-e-requisitos), [motor](#5-motor-de-inferência) e testes do cálculo afetado.
+4. Atualize [requisitos](#2-dados-e-requisitos), [motor](#4-motor-de-inferência) e testes do cálculo afetado.
 5. Revise a explicação exibida em **Perfil nutricional** e em pareceres preservados.
 
-## 9.6. Catálogo inicial
+## 8.6. Catálogo inicial
 
 `dados_referencia/005_exemplos.sql` preserva o conteúdo integral, fontes, hipóteses e receitas.
 Há seis lotes de um animal (`ex-l01` a `ex-l06`): Holandesa, Jersey, Girolando 5/8 Holandês,
@@ -979,14 +927,14 @@ As misturas são composições próprias: proporções em massa natural e nutrie
 matéria seca dos componentes. Atualizar um componente não modifica automaticamente a composição
 já cadastrada da mistura. O cenário inicial usa o lote `ex-l03` e cinco ingredientes; suas
 datas civis são preenchidas ao abrir o formulário. Preços e estoques são hipóteses do cenário.
-A [procedência e as limitações](#9-referências-exemplos-e-manutenção-do-conhecimento) explicam o uso dessas referências.
+A [procedência e as limitações](#8-referências-exemplos-e-manutenção-do-conhecimento) explicam o uso dessas referências.
 
-# 10. Avisos de licença
+# 9. Avisos de licença
 
 Os avisos abaixo acompanham os recursos distribuídos. As referências dos demais componentes
 permanecem no projeto e nas respectivas dependências.
 
-## 10.1. htmx e hx-live
+## 9.1. htmx e hx-live
 
 ```text
 Zero-Clause BSD
@@ -1004,7 +952,7 @@ AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT
 OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 ```
 
-## 10.2. Ilustração da vaca
+## 9.2. Ilustração da vaca
 
 ```text
 #### EmojiOne Artwork
