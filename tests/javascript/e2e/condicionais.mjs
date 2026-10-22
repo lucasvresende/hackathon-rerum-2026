@@ -31,8 +31,13 @@ export async function testarCondicionais(browser, url, artefatos, navegador) {
     const unidade = ingrediente.locator('select[name^="unidade-preco-"]');
     const embalagem = ingrediente.locator('input[name^="embalagem-"]');
     const quantidade = ingrediente.locator('input[name^="q-"]');
+    const origem = ingrediente.locator('input[name^="origem-"]');
+    await origem.fill('');
+    assert.equal(await origem.evaluate(e => e.required), false);
+    assert.equal(await origem.locator('xpath=..').locator('label .required').count(), 0);
     assert.equal(await quantidade.evaluate(e => e.required), true);
     await unidade.selectOption('embalagem');
+    assert.equal(await origem.evaluate(e => e.required), false);
     assert.equal(await embalagem.evaluate(e => e.required), true);
     await embalagem.fill('0');
     await semEnvio(page, () => page.getByRole('button',
@@ -41,8 +46,10 @@ export async function testarCondicionais(browser, url, artefatos, navegador) {
     await unidade.selectOption('kg');
     assert.equal(await embalagem.evaluate(e => e.required), false);
     await page.locator('#modo').selectOption('formular');
+    assert.equal(await origem.evaluate(e => e.required), false);
     assert.equal(await quantidade.evaluate(e => e.required), false);
     await page.locator('#modo').selectOption('verificar');
+    assert.equal(await origem.evaluate(e => e.required), false);
     assert.equal(await quantidade.evaluate(e => e.required), true);
     const ms = ingrediente.locator('input[name^="ms-"]');
     await ms.fill('0');

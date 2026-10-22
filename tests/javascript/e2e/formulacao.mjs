@@ -44,14 +44,19 @@ export async function testarFormulacao(browser, url, artefatos, navegador) {
         await route.continue();
       }, { times: 1 });
     });
+    await page.locator('.ingredient .expand-toggle').first().click();
     await page.locator('#usar-milho-demo-v1').uncheck();
     await chegou;
     await page.locator('#nome').fill('Cálculo depois da seleção');
+    const origem = page.locator('.ingredient input[name^="origem-"]').first();
+    await origem.fill('');
+    assert.equal(await origem.evaluate(e => e.required), false);
     await page.getByRole('button', { name: 'Calcular e salvar cenário' }).click();
     liberar();
     await page.waitForURL(/\/execucoes\//);
     assert.match(await page.locator('h1').innerText(), /Cálculo depois da seleção/);
     assert.equal(await page.locator('[data-busca]').getAttribute('data-busca'), 'OTIMO_NO_MODELO');
+    assert.match(await page.locator('#entradas-preservadas').textContent(), /Não informadas/);
   });
 
   for (const javaScriptEnabled of [true, false]) {

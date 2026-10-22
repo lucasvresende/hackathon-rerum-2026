@@ -136,7 +136,7 @@ function configurarCondicionais() {
     const unidade = ingrediente.querySelector('select[name^="unidade-preco-"]');
     ingrediente.querySelectorAll('input:not([type=checkbox])').forEach(c => {
       const prefixo = c.name.split('-')[0];
-      c.required = usar.checked && (['ms', 'perda', 'preco', 'origem'].includes(prefixo)
+      c.required = usar.checked && (['ms', 'perda', 'preco'].includes(prefixo)
         || (prefixo === 'q' && form.querySelector('#modo').value !== 'formular')
         || (prefixo === 'embalagem' && unidade.value === 'embalagem'));
       if (prefixo === 'q') {

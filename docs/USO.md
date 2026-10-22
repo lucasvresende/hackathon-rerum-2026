@@ -77,7 +77,8 @@ ou **oferta em kg MN/animal/dia**. Na verificação, preencha a quantidade de ca
 formulação, as quantidades digitadas não são usadas como ponto inicial: o motor calcula uma
 distribuição. Preencha o preço de cada item. A origem e a data da cotação são opcionais; informe-as
 quando disponíveis. A interface aceita R$/kg MN, preço por tonelada MN ou por embalagem com massa
-informada. Se usar preço zero, registre a justificativa quando possível.
+informada. A origem e a data continuam opcionais ao trocar o modo ou a unidade de preço. Se usar
+preço zero, registre a justificativa quando possível.
 
 Estoque vazio significa **desconhecido**. Informe estoque bruto em kg MN ou marque explicitamente
 a hipótese de disponibilidade ilimitada. Nas configurações do ingrediente, ajuste MS apenas para
