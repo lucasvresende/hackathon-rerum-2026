@@ -303,8 +303,8 @@ As versões reproduzíveis estão nos lockfiles. Código `unsafe` próprio é pr
 | ----------------------- | ------------------------------------------------------------------ |
 | `src/dominio/`          | Unidades, cenários, conhecimento, parecer e motor.                  |
 | `src/dominio/motor/`   | Verificação, avaliação e formulação com entrada única.             |
-| `src/aplicacao/`        | Serviços de cadastros, cenários, execução, histórico e comparação. |
-| `src/persistencia/`     | Banco, cargas, revisões, histórico e recuperação.                  |
+| `src/aplicacao/`        | Casos de uso agrupados por cadastros, cenários e execuções.        |
+| `src/persistencia/`     | Banco e consultas agrupados por recurso.                            |
 | `src/web/handlers/`     | Rotas por recurso e tratamento HTTP.                               |
 | `src/web/entradas/`     | Conversão e validação de formulários HTTP.                         |
 | `src/web/templates/`    | Layouts, páginas, formulários e componentes Maud com `Render`.     |

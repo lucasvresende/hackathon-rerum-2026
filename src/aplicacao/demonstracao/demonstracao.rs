@@ -95,7 +95,7 @@ pub fn cenario(lote: Lote, alimentos: Vec<Alimento>, dieta_a: bool) -> Cenario {
 pub async fn preparar(pool: &SqlitePool) -> Resultado<()> {
     crate::persistencia::conhecimento::carregar(
         pool,
-        include_str!("../../dados_referencia/002_demonstracao.sql"),
+        include_str!("../../../dados_referencia/002_demonstracao.sql"),
     )
     .await?;
     if crate::persistencia::cadastros::lotes(pool)

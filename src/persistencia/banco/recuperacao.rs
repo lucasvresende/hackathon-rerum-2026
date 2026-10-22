@@ -15,27 +15,27 @@ pub async fn backup(pool: &SqlitePool, destino: &Path) -> Resultado<()> {
         .await?;
     std::fs::write(
         destino.join("anexo.md"),
-        include_str!("../../hackathon/TEMA_2_DIETAS_LITERATURA_E_MOTOR.md"),
+        include_str!("../../../hackathon/TEMA_2_DIETAS_LITERATURA_E_MOTOR.md"),
     )?;
     std::fs::write(
         destino.join("requisitos.md"),
-        include_str!("../../docs/REQUISITOS.md"),
+        include_str!("../../../docs/REQUISITOS.md"),
     )?;
     std::fs::write(
         destino.join("conhecimento.sql"),
-        include_str!("../../dados_referencia/001_conhecimento.sql"),
+        include_str!("../../../dados_referencia/001_conhecimento.sql"),
     )?;
     std::fs::write(
         destino.join("modelos.md"),
-        include_str!("../../fontes/MODELOS.md"),
+        include_str!("../../../fontes/MODELOS.md"),
     )?;
     std::fs::write(
         destino.join("modelos.sql"),
-        include_str!("../../dados_referencia/004_modelos.sql"),
+        include_str!("../../../dados_referencia/004_modelos.sql"),
     )?;
     std::fs::write(
         destino.join("exemplos.sql"),
-        include_str!("../../dados_referencia/005_exemplos.sql"),
+        include_str!("../../../dados_referencia/005_exemplos.sql"),
     )?;
     let mut manifesto = std::collections::BTreeMap::new();
     for nome in [

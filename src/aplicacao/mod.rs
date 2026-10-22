@@ -1,13 +1,21 @@
 //! Casos de uso que coordenam domínio e persistência sem depender da camada HTTP.
+#[path = "cadastros/cadastros.rs"]
 pub mod cadastros;
+#[path = "cenarios/cenarios.rs"]
 pub mod cenarios;
+#[path = "cenarios/comparacao.rs"]
 pub mod comparacao;
+#[path = "demonstracao/demonstracao.rs"]
 pub mod demonstracao;
+#[path = "demonstracao/ensaio.rs"]
 pub mod ensaio;
+#[path = "execucoes/execucao.rs"]
 pub mod execucao;
-pub mod historico;
-pub mod modelos_preenchimento;
-
+#[path = "demonstracao/exemplos.rs"]
 pub mod exemplos;
-
+#[path = "execucoes/historico.rs"]
+pub mod historico;
+#[path = "cadastros/modelos_preenchimento.rs"]
+pub mod modelos_preenchimento;
+#[path = "cenarios/reutilizacao.rs"]
 pub mod reutilizacao;
