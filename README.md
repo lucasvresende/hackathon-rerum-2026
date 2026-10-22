@@ -73,6 +73,24 @@ acesso compartilhado.
 
 ## Usar a aplicação
 
+```mermaid
+flowchart TD
+    A[Visão geral] --> B{Como começar?}
+    B -->|Experimentar| C[Abrir cenário de exemplo]
+    B -->|Usar dados próprios| D[Revisar ou cadastrar lotes e alimentos]
+    C --> E[Revisar entradas e premissas]
+    D --> F[Nova dieta]
+    E --> G{Tipo de cálculo}
+    F --> G
+    G -->|Verificar| H[Informar quantidades]
+    G -->|Formular| I[Definir ingredientes, preços e restrições]
+    H --> J[Calcular e salvar cenário]
+    I --> J
+    J --> K[Conferir parecer, dimensões e avisos]
+    K --> L[Histórico: reproduzir, duplicar ou comparar]
+    L --> F
+```
+
 ### Começar pela demonstração
 
 O menu lateral leva à **Visão geral**, aos cadastros, a **Nova dieta**, ao **Histórico e análise**,
