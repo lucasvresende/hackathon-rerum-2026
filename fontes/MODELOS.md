@@ -15,18 +15,17 @@ Os quatro modelos abaixo permanecem preservados para procedência e reprodução
 O seletor atual apresenta o catálogo sintético completo; estas referências não são seus presets.
 As restrições descritas a seguir se aplicam à carga histórica, não às hipóteses do novo catálogo.
 
-
 Pesquisa consultada em 20/10/2026; a carga `dados_referencia/004_modelos.sql` preserva valores,
 unidades, número de observações, contexto e hashes. Aprovação nesta conversa: carregar valores
 verificados e manter lacunas explícitas. Modelos podem ser carregados e editados antes de salvar.
 Não confirmam estados de segurança nem representam medições da fazenda.
 
-| Modelo | Fonte | Campos nutricionais ausentes |
-| --- | --- | --- |
-| Silagem de milho 30–35% MS | [Feedipedia 12871][s] | NDT |
-| Farelo de soja | [Embrapa 2014][e], p. 44–45 | Amido |
-| Milho em grão, América Central e do Sul | [Feedipedia 11664][m] | NDT |
-| Jersey, estudo RS 2005 | [Duarte et al.][j], Material e Métodos | Gordura e DEL |
+| Modelo                                  | Fonte                                  | Campos nutricionais ausentes |
+| --------------------------------------- | -------------------------------------- | ---------------------------- |
+| Silagem de milho 30–35% MS              | [Feedipedia 12871][s]                  | NDT                          |
+| Farelo de soja                          | [Embrapa 2014][e], p. 44–45            | Amido                        |
+| Milho em grão, América Central e do Sul | [Feedipedia 11664][m]                  | NDT                          |
+| Jersey, estudo RS 2005                  | [Duarte et al.][j], Material e Métodos | Gordura e DEL                |
 
 MS é % MN; nutrientes são % MS. Ca/P da Feedipedia estão em g/kg MS e são divididos por 10
 para exibição em % MS. O motor converte percentuais em frações. Na silagem, FDN é média

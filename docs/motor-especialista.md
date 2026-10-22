@@ -304,7 +304,8 @@ entradas congeladas + verificações + traço de inferência → commit atômico
 
 - Falha → nenhum parecer parcial é marcado como concluído
 - Execução salva → imutável; atualizações do catálogo não a alteram
-- Histórico permite **reproduzir** o resultado com as versões originais
+- Histórico permite consultar entradas, fontes e parecer preservados. **Duplicar e simular**
+  calcula uma nova execução com o conhecimento ativo; não reexecuta versões originais.
 
 ---
 

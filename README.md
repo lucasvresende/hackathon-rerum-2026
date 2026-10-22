@@ -257,7 +257,8 @@ sh scripts/build_producao.sh
 
 O script gera `dist/feedyourcow-<alvo>.tar.gz` e seu arquivo `.sha256`, com build
 `--release --locked --no-default-features` e SQLx offline. O autoreload fica desativado.
-O pacote inclui executável, inicializador, recursos estáticos, migrações, cargas e documentação;
+O pacote inclui executável, inicializador, recursos estáticos, migrações, cargas e documentação
+com suas referências locais;
 bancos, backups e ferramentas de desenvolvimento ficam de fora.
 
 A distribuição é nativa para o sistema e a arquitetura da máquina de build. Para Linux,
@@ -299,19 +300,19 @@ O monólito usa Rust, Axum com tracing, Maud, SQLite e SQLx. A interface combina
 no servidor, htmx v4 e hx-live locais, com CSS plano e variáveis no início do arquivo.
 As versões reproduzíveis estão nos lockfiles. Código `unsafe` próprio é proibido.
 
-| Diretório               | Responsabilidade                                                   |
-| ----------------------- | ------------------------------------------------------------------ |
+| Diretório               | Responsabilidade                                                    |
+| ----------------------- | ------------------------------------------------------------------- |
 | `src/dominio/`          | Unidades, cenários, conhecimento, parecer e motor.                  |
-| `src/dominio/motor/`   | Verificação, avaliação e formulação com entrada única.             |
-| `src/aplicacao/`        | Casos de uso agrupados por cadastros, cenários e execuções.        |
+| `src/dominio/motor/`    | Verificação, avaliação e formulação com entrada única.              |
+| `src/aplicacao/`        | Casos de uso agrupados por cadastros, cenários e execuções.         |
 | `src/persistencia/`     | Banco e consultas agrupados por recurso.                            |
-| `src/web/<recurso>/`     | Rotas, handlers, entradas e templates próximos por funcionalidade. |
-| `src/web/comum/`         | Segurança, estado, respostas, layouts e componentes compartilhados. |
-| `src/web/templates/`    | Declaração dos módulos Maud nos caminhos públicos anteriores.      |
-| `static/`               | CSS, JavaScript e dependências locais com licenças.                |
-| `tests/`                | Testes Rust e testes de navegador em `javascript/e2e/`.            |
-| `scripts/`              | Qualidade, conferência SQLx, distribuição e teste do pacote.       |
-| `fontes/`, `hackathon/` | Fontes, pesquisa, requisitos do evento e planos.                   |
+| `src/web/<recurso>/`    | Rotas, handlers, entradas e templates próximos por funcionalidade.  |
+| `src/web/comum/`        | Segurança, estado, respostas, layouts e componentes compartilhados. |
+| `src/web/templates/`    | Declaração dos módulos Maud nos caminhos públicos anteriores.       |
+| `static/`               | CSS, JavaScript e dependências locais com licenças.                 |
+| `tests/`                | Testes Rust e testes de navegador em `javascript/e2e/`.             |
+| `scripts/`              | Qualidade, conferência SQLx, distribuição e teste do pacote.        |
+| `fontes/`, `hackathon/` | Fontes, pesquisa, requisitos do evento e planos.                    |
 
 As requisições passam pelos handlers e pela conversão das entradas; os serviços coordenam
 o domínio e a persistência. Templates recebem dados preparados, sem consultar o banco ou
@@ -412,6 +413,12 @@ as capturas. O build do pacote de produção é executado localmente.
 
 ## Documentação
 
+- [Mapa da documentação](docs/README.md): caminho de leitura por tarefa e distinção entre
+  especificação vigente e registros históricos.
+- [Entrega e rastreabilidade](docs/ENTREGA.md): requisitos, implementação, testes, tecnologias,
+  dependências, pesquisa inicial e desenvolvimento assistido por IA.
+- [Motor especialista](docs/motor-especialista.md): fluxo de inferência e formulação.
+- [Interface ilustrada](docs/INTERFACE.md): capturas e comportamento dos formulários.
 - [Diagnóstico da formulação](diagnosticos/DIAGNOSTICO_FORMULACAO.md): inspeção do fluxo de menor custo
   nos três navegadores, variações de valores, problemas reproduzidos e evidências locais.
 - [Requisitos](docs/REQUISITOS.md) (versão documental 1.6): especificação funcional vigente,
@@ -429,55 +436,8 @@ as capturas. O build do pacote de produção é executado localmente.
 O desenvolvimento teve auxílio de IA, com verificação por compilador e testes.
 O cálculo operacional é determinístico e não utiliza modelos de linguagem.
 
-### Preenchimento de novas dietas
-
-As demonstrações A/B exigem confirmação antes de substituir o rascunho, inclusive sem JavaScript.
-“Manter rascunho” cancela a troca. O tipo de cálculo escolhido é preservado.
-Na formulação, os campos de quantidade inicial ficam ocultos; ao voltar à verificação na mesma
-página, seus valores continuam disponíveis. A hipótese de disponibilidade ilimitada fica visível
-junto ao estoque. A seleção oferece pesquisa, agrupamento por classe e contador do limite;
-filtrar não remove ingredientes marcados. Sem JavaScript, o botão aplica a pesquisa e a seleção.
-
-Durante uma atualização, respostas obsoletas não substituem o rascunho. Uma nova atualização
-usa os valores atuais, preservando seleção, nome e preço digitados enquanto a resposta chegava.
-Um clique em calcular durante essa espera é retomado após a atualização. O formulário usa
-[`hx-sync`](https://four.htmx.org/reference/attributes/hx-sync) e os
-[eventos htmx 4](https://four.htmx.org/reference/events) para coordenar as requisições.
-O modificador [`settle:0`](https://four.htmx.org/reference/attributes/hx-swap) evita que a
-restauração temporária dos atributos antigos altere valores dos controles focados na substituição.
-As transições CSS dos expansíveis continuam disponíveis.
-
-A formulação ignora quantidades iniciais no servidor. Uma pesagem parcialmente preenchida exige
-os demais dados, em vez de ser descartada. A origem efetiva do consumo é derivada do alvo ou da
-pesagem; comentários próprios são preservados. Textos automáticos de estimativa e taxas zero são
-atualizados quando deixam de corresponder às entradas. A revalidação arredondada preserva um
-parecer separado, com consumo, custo e violações, sem alterar o ótimo contínuo.
-O parecer mostra o estado da busca antes dos números. Sem candidata, o diagnóstico das entradas
-fica recolhido e identificado como tal. Consumo-alvo, origem efetiva e valor informado aparecem
-nas premissas e nas entradas preservadas. Números e estados dos resultados usam apresentação
-em português; os IDs técnicos permanecem em atributos e nos detalhes de auditoria.
-Histórico, resumo inicial e comparação não apresentam o custo de uma entrada sem candidata como
-custo de solução, nem calculam economia com esse valor. O histórico original permanece preservado.
-
-Novas dietas começam com horizonte de um dia, datas civis atuais de São Paulo, consumo
-estimado, quantidades em kg MS/animal/dia e hipóteses explícitas de sobras/perdas zero.
-Nome, lote, ingredientes, cotação e disponibilidade exigem escolha ou informação do operador.
-As opções de datas, consumo, sobras, bases, preço do leite e referência UE ficam em
-“Configurações avançadas”. Os valores das demonstrações e cópias são preservados.
-
-Em “Selecionar ingredientes”, marque as composições desejadas. O htmx atualiza o formulário
-sem exigir que os demais campos estejam completos; somente os selecionados exibem editores.
-Desmarcar preserva o rascunho para uma nova seleção, mas exclui o ingrediente do cálculo.
-Sem JavaScript, use “Atualizar ingredientes selecionados”. As configurações avançadas ficam
-expostas nessa alternativa. Preços, estoque e disponibilidade ilimitada não são presumidos.
-As opções comerciais, MS, perdas, inclusão e resolução ficam no expansível de cada ingrediente.
-
-A seleção usa o evento `change` do [htmx 4](https://four.htmx.org/reference/attributes/hx-trigger)
-e a rota existente de atualização, com validação e persistência somente ao calcular.
-
-O seletor de ingredientes usa o mesmo componente expansível dos demais dropdowns, com
-transições de abertura/fechamento, teclado, estado preservado após htmx e respeito à preferência
-de movimento reduzido. Sem JavaScript e na impressão, seu conteúdo fica disponível.
+Os detalhes de seleção, atualização do rascunho e apresentação dos resultados estão no
+[guia da interface](docs/INTERFACE.md).
 
 ## Notas
 

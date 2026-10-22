@@ -25,7 +25,7 @@ Referências integrantes desta especificação:
 - [Relatório dos temas e arquitetura](../hackathon/RELATORIO_TEMAS_E_ARQUITETURA.md): leitura do
   desafio, componentes do sistema especialista e arquitetura sugerida.
 - [Regulamento](../hackathon/Hackathon2026.pdf) e
-  [apresentação](<hackathon/Apresentação Hackathon2026.pdf>): requisitos do evento.
+  [apresentação](<../hackathon/Apresentação Hackathon2026.pdf>): requisitos do evento.
 
 Para o produto, este documento consolida as escolhas do tema 2 e substitui alternativas genéricas
 do relatório inicial, como a base principal em JSON e a formulação inicial somente por grade.
@@ -1098,8 +1098,9 @@ com as tolerâncias de RN-24. Na interface, os totais monetários serão apresen
 - **CT-21 — Histórico:** editar lote/composição, atualizar perfil e reabrir execução antiga;
   valores, fontes e parecer anteriores deverão permanecer idênticos.
   Cobertura: RF-02, RF-03, RF-14; RN-23.
-- **CT-22 — Reexecução:** corrigir resposta e reconstruir fatos, sem manter conclusão antiga;
-  duplicar o cenário para nova simulação, mantendo intactos o resultado e o traço originais.
+- **CT-22 — Nova simulação:** duplicar o cenário, corrigir entradas e gerar uma nova execução,
+  mantendo intactos o resultado e o traço originais. A consulta histórica não oferece
+  reexecução com as versões originais.
   Cobertura: RF-13, RF-14; RN-22, RN-23; RNF-06.
 - **CT-23 — Carga:** aplicar migrações/carga em banco vazio, reaplicar sem duplicar e rejeitar
   fonte ausente, versão colidente e unidade inválida sem ativação parcial. Conferir seis lotes e
