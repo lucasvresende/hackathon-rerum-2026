@@ -14,13 +14,15 @@ mkdir -p "$raiz/dist"
 temporario=$(mktemp -d "$raiz/dist/.producao.XXXXXX")
 trap 'rm -rf "$temporario"' EXIT HUP INT TERM
 pacote="$temporario/feedyourcow"
-mkdir -p "$pacote/hackathon"
+mkdir -p "$pacote/tests/javascript" "$pacote/scripts"
 cp "target/$alvo/release/feed-your-cow" "$pacote/"
 cp scripts/iniciar_producao.sh "$pacote/iniciar.sh"
 chmod 755 "$pacote/iniciar.sh"
 cp -R static dados_referencia fontes migrations "$pacote/"
-cp README.md docs/REQUISITOS.md .env.example "$pacote/"
-cp docs/tema_2_dietas_literatura_e_motor.md "$pacote/hackathon/"
+cp -R docs hackathon diagnosticos "$pacote/"
+cp README.md AGENTS.md Cargo.toml .env.example "$pacote/"
+cp tests/javascript/README.md "$pacote/tests/javascript/"
+cp scripts/testar_producao.py "$pacote/scripts/"
 {
     cargo --version
     rustc -vV

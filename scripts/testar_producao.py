@@ -27,6 +27,12 @@ def testar(arquivo):
             assert not any('/node_modules/' in n or '/target/' in n for n in nomes)
             pacote.extractall(raiz, filter='data')
         instalacao = raiz / 'feedyourcow'
+        for documento in (
+            'README.md', 'docs/README.md', 'docs/REQUISITOS.md', 'docs/ENTREGA.md',
+            'docs/INTERFACE.md', 'docs/motor-especialista.md',
+            'docs/imagens/visao-geral.png', 'hackathon/RELATORIO_TEMAS_E_ARQUITETURA.md',
+        ):
+            assert (instalacao / documento).is_file(), f'Documento ausente: {documento}'
         iniciar = instalacao / 'iniciar.sh'
         assert iniciar.is_file() and os.access(iniciar, os.X_OK)
         ambiente = dict(os.environ)
