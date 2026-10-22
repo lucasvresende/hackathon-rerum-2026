@@ -73,29 +73,119 @@ acesso compartilhado.
 
 ## Usar a aplicação
 
-1. Cadastre ou revise um lote, informando seus estados fisiológicos.
-2. Consulte o catálogo ou cadastre uma composição com fonte e condições de uso.
-3. Crie um cenário com lote, datas, consumo, ingredientes, preços, estoques e premissas.
-4. Informe quantidades para verificar a dieta ou solicite uma formulação de menor custo.
-5. Consulte balanços, restrições, fornecimento, custo, fontes e explicações do resultado.
-6. Use o histórico para reproduzir, duplicar, simular, comparar e imprimir cenários.
+### Começar pela demonstração
+
+O menu lateral leva à **Visão geral**, aos cadastros, a **Nova dieta**, ao **Histórico e análise**,
+ao **Perfil nutricional** e à **Ajuda**. Os formulários de cadastro e o atalho de nova dieta abrem
+em outra guia para que seja possível voltar à tarefa em andamento.
+
+Na **Visão geral**, clique em **Abrir cenário de exemplo**. O formulário é preenchido com o lote
+de demonstração e os ingredientes sintéticos disponíveis para o exemplo (silagem, milho, soja e
+mineral). Revise quantidades, preços e premissas e clique em **Calcular e salvar cenário**. Esse
+atalho verifica as quantidades informadas; não as otimiza. Em **Nova dieta**, os links
+**Demonstração A** e **Demonstração B** também preenchem o formulário com duas combinações de
+quantidades para comparação. Todos são cenários editáveis. Os dados são sintéticos e não
+representam análises ou cotações reais.
+
+### Preparar os cadastros
+
+Em **Lotes de animais**, use **Cadastrar lote**, **Revisar** ou **Criar cópia**. Registre o número
+de animais, o peso médio, produção e gordura do leite, dias em lactação, estado produtivo, raça e
+condições fisiológicas e de manejo. Marque cada condição como sim, não ou desconhecida; não use
+“não” para representar falta de informação. Separe em lotes diferentes grupos com condições
+distintas. **Salvar revisão** disponibiliza os dados revisados em cálculos futuros sem alterar as
+entradas já preservadas no histórico.
+
+Em **Alimentos**, pesquise por nome e filtre por forragem, concentrado ou suplemento. Confira a
+natureza dos valores e abra **Procedência e condições** para ver origem, método, data, evidências
+e versão. Matéria natural (MN) inclui água; matéria seca (MS) é a parte sem água. NDT, PB, Ca, P,
+FDN, amido e EE são percentuais da MS; MS é percentual da MN. “Desconhecido” não equivale a zero.
+Use **Cadastrar composição**, **Criar revisão ou nova análise** ou **Criar cópia**. Registre
+fonte, origem, método, data e evidências; para composição real, confira se a análise corresponde
+ao produto disponível. Preço e estoque são registrados em cada cenário e não alteram a composição
+do catálogo.
+
+### Criar e calcular um cenário
+
+Abra **Nova dieta** ou escolha **Verificar dieta**/**Formular dieta** na Visão geral. Dê um nome,
+selecione o lote e escolha o tipo de cálculo. Informe horizonte, data da avaliação e data de
+aplicação das regras. Em **Selecionar ingredientes**, marque as composições que entram no
+cenário e atualize a seleção; a interface mostra os campos de cada ingrediente marcado. Você
+pode cadastrar um alimento em outra guia e usar **Atualizar cadastros** para atualizar as opções
+do formulário.
+
+Escolha como interpretar as quantidades informadas: consumo em kg MS/animal/dia, consumo em kg
+MN/animal/dia ou oferta em kg MN/animal/dia. Na verificação, preencha a quantidade para cada
+ingrediente. Na formulação, essa quantidade é ignorada: o motor calcula as quantidades, então
+informe os preços e as restrições que devem limitar a busca. O preço é por kg MN por padrão;
+também pode ser informado por tonelada MN ou embalagem, indicando a massa da embalagem. Informe
+a origem da cotação, inclusive se o preço for zero.
+
+Em **Configurações avançadas**, indique o consumo-alvo em kg MS/animal/dia ou deixe-o vazio para
+usar a estimativa de referência. Também é possível informar consumo observado: MS ofertada e MS
+das sobras para o mesmo lote e período, deixando o consumo-alvo vazio. Oferta não é consumo; a
+seleção de partículas pode fazer com que a composição ingerida difira da composição média. Registre
+sobras planejadas e a origem das sobras e perdas; zero também é uma hipótese. Preço do leite é
+opcional e serve para calcular margem sobre alimentação. A referência UE adicional para
+contaminantes também é opcional e não representa legislação brasileira.
+
+Para cada ingrediente, confira MS, preço e unidade comercial. Abra **Configurações avançadas do
+ingrediente** para informar ajuste de MS usado apenas nesta simulação, perdas anteriores ao
+fornecimento, inclusão mínima e máxima, resolução de oferta e estoque bruto em kg MN. Estoque
+vazio significa desconhecido; marque **Hipótese explícita: disponibilidade sem limite neste
+cenário** somente quando essa for a premissa desejada. A quantidade ofertada, as perdas, as sobras,
+o número de animais e o horizonte afetam o fornecimento bruto necessário.
+
+**Verificar dieta** aceita até 20 ingredientes e avalia as quantidades fornecidas sem alterá-las.
+**Formular dieta** aceita até 10 ingredientes; a busca minimiza o custo sob as restrições do perfil
+e do cenário. A solução contínua pode não ser praticável após arredondamento para pesagem. O
+parecer informa se o fornecimento prático foi revalidado. Busca inconclusiva ou interrompida não
+prova inviabilidade. Confira também os bloqueios de elegibilidade e de ingredientes.
+
+Clique em **Calcular e salvar cenário**. Se o formulário indicar erros, corrija os campos
+destacados; os valores válidos permanecem preenchidos. A execução salva no histórico o cenário, o
+parecer e as versões de conhecimento e cadastros usadas.
+
+### Ler resultados e continuar a análise
+
+No parecer, comece por **Resultados por dimensão** e pelos avisos. **ATENDE** aplica-se somente às
+dimensões avaliadas pelo perfil. **INCONCLUSIVO**, **DESCONHECIDO**, **NÃO AVALIADO**, **FORA DO
+PERFIL** e **BLOQUEADO** não são aprovação. Depois confira o balanço de NDT, PB, Ca e P; o custo;
+as quantidades de consumo em MS e de oferta em MN por animal, lote e horizonte; e as restrições.
+Excesso sobre um requisito mínimo não é, por si só, diagnóstico de intoxicação. Na formulação,
+leia o estado de cada subproblema e confirme se o fornecimento prático é válido antes de usar as
+quantidades como referência.
+
+Abra **Cálculos e regras aplicadas** para ver o caminho de inferência, verificações, limites e
+fontes. **Entradas preservadas nesta execução** e **Fontes e versões preservadas** permitem
+conferir os dados efetivamente usados. **Imprimir parecer** abre a impressão do navegador, de onde
+é possível imprimir ou salvar como PDF.
+
+Em **Histórico e análise**, filtre pelo nome do lote e/ou pela data da execução e use **Ver
+parecer** para abrir uma execução. **Reproduzir versões originais** calcula novamente com as
+entradas e referências preservadas. **Duplicar e simular** abre uma cópia editável, vinculada à
+execução de origem, para testar outras quantidades ou premissas sem substituir o original. Na
+seção **Comparar duas execuções**, selecione referência e alternativa e clique em **Comparar
+premissas e custos**. Confira diferenças de perfil, produção, consumo, horizonte, ingredientes,
+preço, perdas e estoque; a tela sinaliza quando as condições não são equivalentes ou quando a
+alternativa não tem fornecimento validado.
 
 No parecer, cálculos e regras, entradas preservadas e fontes e versões ficam em cartas
 expansíveis. Ao imprimir, o conteúdo dessas cartas é mostrado mesmo quando estavam recolhidas.
 
-Os formulários apresentam todos os campos, sem modo de preenchimento simplificado.
-As seções expansíveis continuam disponíveis para organizar grupos de informações.
-Use **Preencher com exemplo** em um formulário ou **Criar cópia** em um cadastro existente.
-Exemplos permitem edição e remoção como os demais registros. **Restaurar exemplos** oferece cópia
-independente ou restauração do registro inicial com nova revisão, mediante confirmação explícita.
-O original versionado e o histórico são preservados. Reiniciar ou repetir `preparar` não desfaz
-alterações nem recria exclusões; a inicialização dos registros e seu marcador são atômicos.
+Os formulários mostram todos os campos, com grupos secundários recolhidos em seções expansíveis.
+Em cadastros, **Preencher com exemplo** abre uma prévia; confirme para preencher e revise os
+valores antes de **Salvar revisão**. **Criar cópia** gera um cadastro independente. Exemplos podem
+ser removidos das opções; a remoção exige confirmação e preserva o histórico. Para recuperá-los,
+use **Restaurar exemplos** e escolha entre criar uma cópia independente ou restaurar o registro
+inicial como nova revisão. A ação exige confirmação explícita. Repetir `preparar` não desfaz
+alterações nem recria exemplos removidos.
+
 Valores nutricionais, preços e condições sintéticas são hipóteses de demonstração. A procedência
-acompanha o cadastro e o parecer; a ausência de laudo continua desconhecida. Para suplementos
-sintéticos, o máximo de inclusão explícito do cenário pode ser um teto demonstrativo, identificado
-no parecer; não representa rótulo comercial. Produtos reais continuam exigindo limite de rótulo.
-Cadastros abrem em nova guia; ao retornar, o cenário atualiza as opções e preserva os campos.
-“Atualizar cadastros” oferece a atualização manual.
+acompanha cadastro e parecer; ausência de laudo continua desconhecida. Para suplemento sintético,
+um máximo de inclusão sugerido no cenário é apenas um teto demonstrativo, não um rótulo comercial.
+Produtos reais exigem que se informe o limite aplicável do rótulo. Consulte **Ajuda** ou **Ajuda
+nesta página** para explicações contextuais; os fluxos essenciais também funcionam sem JavaScript.
 
 Acesse **Ajuda** no menu para consultar as instruções. **Ajuda nesta página** abre a seção
 correspondente em uma nova guia, mantendo a tarefa atual aberta.
