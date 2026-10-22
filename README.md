@@ -397,14 +397,14 @@ as capturas. O build do pacote de produção é executado localmente.
 
 ## Documentação
 
-- [Diagnóstico da formulação](DIAGNOSTICO_FORMULACAO.md): inspeção do fluxo de menor custo
+- [Diagnóstico da formulação](diagnosticos/DIAGNOSTICO_FORMULACAO.md): inspeção do fluxo de menor custo
   nos três navegadores, variações de valores, problemas reproduzidos e evidências locais.
-- [Requisitos](REQUISITOS.md) (versão documental 1.5): especificação funcional vigente,
+- [Requisitos](docs/REQUISITOS.md) (versão documental 1.5): especificação funcional vigente,
   escopo, regras, limitações e casos de aceitação CT-01 a CT-35. Os requisitos definem o
   comportamento esperado; a implementação está em `src/` e a cobertura automatizada em `tests/`.
   Os testes são a evidência de conformidade. Mudanças de comportamento, regras, escopo ou aceite
   devem atualizar este documento e o README na mesma alteração.
-- [Anexo nutricional](hackathon/TEMA_2_DIETAS_LITERATURA_E_MOTOR.md): tabelas, fórmulas e pesquisa.
+- [Anexo nutricional](docs/tema_2_dietas_literatura_e_motor.md): tabelas, fórmulas e pesquisa.
 - [Fontes preservadas](fontes/README.md) e [modelos de preenchimento](fontes/MODELOS.md):
   procedência, unidades, conversões e limitações dos dados.
 - [Recursos visuais](static/README.md) e [bibliotecas locais](static/vendor/README.md):

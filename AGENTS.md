@@ -1,6 +1,6 @@
 ## Instruções
 
-1. Leia o documento REQUISITOS.md para a implementação
+1. Leia o documento docs/REQUISITOS.md para a implementação
 2. Pause a execução e pergunte ao programador como proceder quando houver decisões relevantes
 3. Faça commits contínuos sempre que uma nova funcionalidade ou alteração for realizada, ainda que
    dentro de uma mesma sessão de execução

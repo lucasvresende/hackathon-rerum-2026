@@ -19,12 +19,12 @@ aumento de leite, resposta clínica ou adequação nutricional integral.
 
 Referências integrantes desta especificação:
 
-- [Instruções do repositório](AGENTS.md): stack, qualidade, testes, documentação e commits.
-- [Relatório específico do tema 2](hackathon/TEMA_2_DIETAS_LITERATURA_E_MOTOR.md): literatura,
+- [Instruções do repositório](../AGENTS.md): stack, qualidade, testes, documentação e commits.
+- [Relatório específico do tema 2](tema_2_dietas_literatura_e_motor.md): literatura,
   normas, tabelas A/B/C, fórmulas F01–F15 e exemplos numéricos.
-- [Relatório dos temas e arquitetura](hackathon/RELATORIO_TEMAS_E_ARQUITETURA.md): leitura do
+- [Relatório dos temas e arquitetura](../hackathon/RELATORIO_TEMAS_E_ARQUITETURA.md): leitura do
   desafio, componentes do sistema especialista e arquitetura sugerida.
-- [Regulamento](hackathon/Hackathon2026.pdf) e
+- [Regulamento](../hackathon/Hackathon2026.pdf) e
   [apresentação](<hackathon/Apresentação Hackathon2026.pdf>): requisitos do evento.
 
 Para o produto, este documento consolida as escolhas do tema 2 e substitui alternativas genéricas

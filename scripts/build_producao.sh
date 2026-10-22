@@ -19,8 +19,8 @@ cp "target/$alvo/release/feed-your-cow" "$pacote/"
 cp scripts/iniciar_producao.sh "$pacote/iniciar.sh"
 chmod 755 "$pacote/iniciar.sh"
 cp -R static dados_referencia fontes migrations "$pacote/"
-cp README.md REQUISITOS.md .env.example "$pacote/"
-cp hackathon/TEMA_2_DIETAS_LITERATURA_E_MOTOR.md "$pacote/hackathon/"
+cp README.md docs/REQUISITOS.md .env.example "$pacote/"
+cp docs/tema_2_dietas_literatura_e_motor.md "$pacote/hackathon/"
 {
     cargo --version
     rustc -vV
