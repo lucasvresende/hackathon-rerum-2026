@@ -120,7 +120,7 @@ const CARTAS: &[Carta] = &[
     },
     Carta {
         id: "resultados",
-        titulo: "Ler o parecer, imprimir, reproduzir e simular",
+        titulo: "Ler o parecer, imprimir e simular",
         passos: super::ajuda_conteudos::RESULTADOS,
         destino: "/historico",
         acao: "Escolher um parecer no histórico",

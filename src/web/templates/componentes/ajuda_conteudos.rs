@@ -86,8 +86,7 @@ pub const RESULTADOS: &[&str] = &[
     "Abra Cálculos e regras aplicadas para consultar entradas, hipóteses, fontes e \
             caminho de inferência. Use Imprimir parecer para gerar uma versão de impressão \
             ou salvar como PDF pelo navegador.",
-    "Use Reproduzir versões originais para executar novamente com as entradas e \
-            artefatos preservados. Use Duplicar e simular para criar outro cenário: altere \
+    "Use Duplicar e simular para criar outro cenário: altere \
             preços, MS ou premissas e escolha a base da simulação de MS (MS ou MN fixas). \
             Calcule com outro nome e compare no histórico; o original continua preservado.",
 ];

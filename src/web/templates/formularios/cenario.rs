@@ -105,8 +105,8 @@ impl Render for FormularioCenario<'_> {
                             tipo: "number", dica: "Inteiro positivo", obrigatorio: true })
                     }
                     p.muted {
-                        "Padrão: consumo estimado, quantidades em kg MS/animal/dia e "
-                        "hipótese de sobras e perdas zero. Revise conforme sua realidade."
+                        "Confira a unidade junto às quantidades e revise consumo, sobras e perdas "
+                        "nas configurações avançadas."
                     }
                     (super::configuracoes_cenario::ConfiguracoesCenario(self))
                 }

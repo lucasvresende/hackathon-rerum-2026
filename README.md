@@ -87,7 +87,7 @@ flowchart TD
     H --> J[Calcular e salvar cenário]
     I --> J
     J --> K[Conferir parecer, dimensões e avisos]
-    K --> L[Histórico: reproduzir, duplicar ou comparar]
+    K --> L[Histórico: consultar, duplicar ou comparar]
     L --> F
 ```
 
@@ -181,8 +181,7 @@ conferir os dados efetivamente usados. **Imprimir parecer** abre a impressão do
 é possível imprimir ou salvar como PDF.
 
 Em **Histórico e análise**, filtre pelo nome do lote e/ou pela data da execução e use **Ver
-parecer** para abrir uma execução. **Reproduzir versões originais** calcula novamente com as
-entradas e referências preservadas. **Duplicar e simular** abre uma cópia editável, vinculada à
+parecer** para abrir uma execução preservada. **Duplicar e simular** abre uma cópia editável, vinculada à
 execução de origem, para testar outras quantidades ou premissas sem substituir o original. Na
 seção **Comparar duas execuções**, selecione referência e alternativa e clique em **Comparar
 premissas e custos**. Confira diferenças de perfil, produção, consumo, horizonte, ingredientes,
@@ -475,7 +474,7 @@ um aviso de menor precisão. O consumo-alvo é opcional e, quando informado, tem
 
 ### Precisão e recomendação de pesagem
 
-Na formulação, resolução zero mantém uma solução contínua aproximada. Para recomendar pesagem,
+Na verificação e na formulação, resolução zero mantém quantidades aproximadas. Para recomendar pesagem,
 informe resolução positiva para cada ingrediente usado; ingredientes zerados não exigem resolução.
 A aprovação prática depende da revalidação, sem modificar o ótimo contínuo ou suas tolerâncias.
 O histórico distingue busca e fornecimento; a comparação considera a validade prática da alternativa.
@@ -492,3 +491,34 @@ Os atalhos históricos A/B só aparecem quando seus cadastros estão disponívei
 quantidades diárias. A ficha sem resolução ou com restrições traz a recusa de recomendação.
 **Imprimir parecer** continua incluindo a auditoria completa. No celular, o fornecimento aparece
 por ingrediente, com a pesagem prática antes das aproximações contínuas e unidades por dia.
+
+
+### Correções do diagnóstico de dietas — 22/10/2026
+
+Duplicar uma simulação de MS preserva as quantidades já convertidas e usa a MS da cópia como
+referência de uma nova alteração. A conversão não é reaplicada contra a composição do catálogo.
+A referência acompanha o rascunho, inclusive após atualizar ingredientes ou corrigir erros.
+
+Verificar avalia as quantidades informadas; o alvo opcional não impõe igualdade nesse modo.
+O parecer identifica consumo estimado de nutrientes, piso global de FDN de forragem e linha
+selecionada. Termos de ótimo e solução contínua ficam restritos à formulação. A auditoria prioriza
+violações e pendências e inclui ingrediente ou comparação no título de cada regra.
+
+A pesagem exige resolução positiva para todos os ingredientes utilizados, também na verificação.
+Sem resolução, o atendimento químico continua visível, mas não há recomendação de pesagem.
+Dados ausentes, entrada inválida e violações comprovadas têm resumos distintos, com os motivos.
+Números práticos removem resíduos binários sem arredondar na precisão das tabelas de apresentação.
+Históricos preservam suas entradas e resultados; o estado operacional é apresentado pela regra
+atual de resolução, inclusive para execuções antigas sem precisão de pesagem.
+
+As regressões estão em `tests/diagnostico_dietas.rs` e na suíte Playwright `verificacao-desktop`.
+Para repetir somente o diagnóstico em Chromium desktop (1440 × 1000), com banco temporário:
+
+```sh
+cargo build --locked
+FEEDYOURCOW_NAVEGADORES=chromium FEEDYOURCOW_SUITES=verificacao-desktop npm run test:e2e
+```
+
+As capturas ficam em `output/playwright/chromium-verificacao-*.png`.
+A suíte cobre cópia com MS alterada, unidades, sobras, alvo, amido, estoque desconhecido/insuficiente,
+MS zero, sensibilidade a preço, inviabilidade e recusa de arredondamento incompatível.

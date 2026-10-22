@@ -143,7 +143,12 @@ function configurarCondicionais() {
         const formular = form.querySelector('#modo').value === 'formular';
         c.type = formular ? 'hidden' : 'number';
         c.min = '0'; c.step = 'any';
-        c.closest('[data-quantidade]').hidden = formular;
+        const grupo = c.closest('[data-quantidade]');
+        grupo.hidden = formular;
+        const base = form.querySelector('#base').value;
+        grupo.querySelector('label').firstChild.textContent = base === 'OFERTA_MN'
+          ? 'Oferta (kg MN/animal/dia)' : base === 'CONSUMO_MN'
+            ? 'Consumo (kg MN/animal/dia)' : 'Consumo (kg MS/animal/dia)';
         if (formular) { c.setCustomValidity(''); c.removeAttribute('aria-invalid'); }
       }
       if (!usar.checked) c.setCustomValidity('');

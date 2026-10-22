@@ -23,7 +23,8 @@ impl Render for Ingredientes<'_, '_> {
                 @if self.0.valor(&format!("usar-{id}")) != "on" {
                     // Mantém o rascunho ao desmarcar e marcar novamente, sem exibir controles.
                     @for prefixo in ["q", "preco", "unidade-preco", "embalagem", "ms",
-                        "perda", "estoque", "min", "max", "resolucao", "origem", "livre"] {
+                        "perda", "estoque", "min", "max", "resolucao", "origem", "livre",
+                        "referencia_ms"] {
                         @let nome = format!("{prefixo}-{id}");
                         @if self.0.campos.contains_key(&nome) {
                             input type="hidden" name=(&nome) value=(self.0.valor(&nome));
@@ -31,6 +32,9 @@ impl Render for Ingredientes<'_, '_> {
                     }
                 } @else {
                     article.ingredient data-composicao=(id) {
+                        input type="hidden" name=(format!("referencia_ms-{id}"))
+                            value=(self.0.campos.get(&format!("referencia_ms-{id}"))
+                                .cloned().unwrap_or_else(|| a.ms.to_string()));
                         h3 { (&a.nome) }
                         div.form-grid {
                             @for (prefixo, rotulo) in [("q", "Quantidade na base escolhida"),
@@ -40,12 +44,18 @@ impl Render for Ingredientes<'_, '_> {
                                 @let formular = self.0.valor("modo") == "formular";
                                 div data-quantidade=[(prefixo == "q").then_some("")]
                                     hidden[prefixo == "q" && formular] {
-                                (Campo { erro: self.0.erro(&nome), nome: &nome, rotulo,
+                                @let quantidade = match self.0.valor("base") {
+                                    "CONSUMO_MN" => "Consumo (kg MN/animal/dia)",
+                                    "OFERTA_MN" => "Oferta (kg MN/animal/dia)",
+                                    _ => "Consumo (kg MS/animal/dia)",
+                                };
+                                (Campo { erro: self.0.erro(&nome), nome: &nome,
+                                    rotulo: if prefixo == "q" { quantidade } else { rotulo },
                                     valor: self.0.valor(&nome),
                                     tipo: if prefixo == "q" && formular { "hidden" }
                                         else { "number" },
                                     dica: if prefixo == "estoque" { "Vazio significa desconhecido" }
-                                        else if prefixo == "q" { "Ignorada ao formular" }
+                                        else if prefixo == "q" { "Quantidade por animal e por dia" }
                                         else { "Padrão: R$/kg MN; informe sua cotação" },
                                     obrigatorio: prefixo == "preco" || (prefixo == "q"
                                         && !formular) })

@@ -15,7 +15,7 @@ pub mod cadastros {
 
 pub mod cenarios {
     pub use crate::web::handlers::cenarios::{atualizar, executar, novo};
-    pub use crate::web::handlers::execucoes::{duplicar, reproduzir, resultado};
+    pub use crate::web::handlers::execucoes::{duplicar, resultado};
 }
 
 pub mod comparacao {

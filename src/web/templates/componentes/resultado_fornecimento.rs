@@ -19,9 +19,9 @@ impl Render for Fornecimento<'_> {
                     (super::conceitos_resultado::FORNECIMENTO)
                 }
                 p { (estado(p.estado_fornecimento(c))) }
-                @if c.formular {
+                @if pendente {
                     p.muted {
-                        "Consumo e oferta contínuos são aproximações de apresentação. "
+                        "Consumo e oferta sem resolução são aproximações de apresentação. "
                         "Não copie esses valores como pesagem validada. "
                         "A resolução zero exige definir a precisão de pesagem e recalcular."
                     }
@@ -31,24 +31,29 @@ impl Render for Fornecimento<'_> {
                     thead { tr {
                         th { "Ingrediente" }
                         th { "Oferta prática kg MN / animal / dia" }
-                        th { "Consumo contínuo kg MS / animal / dia ≈" }
-                        th { "Oferta contínua kg MN / animal / dia ≈" }
-                        th { "Oferta contínua kg MN / lote / dia ≈" }
-                        th { "Bruto contínuo kg MN / lote / horizonte ≈" }
+                        th { (if c.formular { "Consumo contínuo" }
+                            else { "Consumo informado" })
+                            " kg MS / animal / dia ≈" }
+                        th { "Oferta calculada kg MN / animal / dia ≈" }
+                        th { "Oferta calculada kg MN / lote / dia ≈" }
+                        th { "Bruto calculado kg MN / lote / horizonte ≈" }
                     } }
                     tbody { @for f in &p.fornecimento {
                         tr class=(if f.consumo_ms == 0.0 { "muted" } else { "" }) {
                             td { (&f.ingrediente) }
                             td data-rotulo="Oferta prática kg MN/animal/dia" {
-                                @if !pendente {
+                                @if c.itens.iter().any(|i|
+                                    i.alimento.composicao_id == f.composicao_id
+                                    && i.resolucao_mn > 0.0) || f.consumo_ms == 0.0 {
                                     (quantidade_pratica(f.pratico_mn))
                                 } @else { "Não definida" }
                             }
                             @for (rotulo, v) in [
-                                ("Consumo contínuo kg MS/animal/dia ≈", f.consumo_ms),
-                                ("Oferta contínua kg MN/animal/dia ≈", f.oferta_mn),
-                                ("Oferta contínua kg MN/lote/dia ≈", f.oferta_lote),
-                                ("Bruto contínuo kg MN/lote/horizonte ≈", f.necessidade_bruta),
+                                (if c.formular { "Consumo contínuo kg MS/animal/dia ≈" }
+                                    else { "Consumo informado kg MS/animal/dia ≈" }, f.consumo_ms),
+                                ("Oferta calculada kg MN/animal/dia ≈", f.oferta_mn),
+                                ("Oferta calculada kg MN/lote/dia ≈", f.oferta_lote),
+                                ("Bruto calculado kg MN/lote/horizonte ≈", f.necessidade_bruta),
                             ] { td data-rotulo=(rotulo) { (numero(v, 4)) } }
                         }
                     } }

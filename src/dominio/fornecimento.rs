@@ -6,29 +6,43 @@ impl Parecer {
     /// Resolução zero mantém a aproximação contínua; somente ingredientes usados exigem pesagem.
     /// Históricos antigos sem ID de composição usam o nome apenas quando não há ambiguidade.
     pub fn resolucao_pendente(&self, c: &Cenario) -> bool {
-        c.formular
-            && self.fornecimento.iter().any(|f| {
-                if f.consumo_ms <= TOLERANCIA {
-                    return false;
-                }
-                let itens: Vec<_> = c
-                    .itens
-                    .iter()
-                    .filter(|i| {
-                        if f.composicao_id.is_empty() {
-                            i.alimento.nome == f.ingrediente
-                        } else {
-                            i.alimento.composicao_id == f.composicao_id
-                        }
-                    })
-                    .collect();
-                itens.len() != 1 || itens[0].resolucao_mn <= 0.0
-            })
+        self.fornecimento.iter().any(|f| {
+            if f.consumo_ms <= TOLERANCIA {
+                return false;
+            }
+            let itens: Vec<_> = c
+                .itens
+                .iter()
+                .filter(|i| {
+                    if f.composicao_id.is_empty() {
+                        i.alimento.nome == f.ingrediente
+                    } else {
+                        i.alimento.composicao_id == f.composicao_id
+                    }
+                })
+                .collect();
+            itens.len() != 1 || itens[0].resolucao_mn <= 0.0
+        })
     }
 
-    pub fn estado_fornecimento(&self, c: &Cenario) -> &'static str {
+    pub fn estado_fornecimento(&self, c: &Cenario) -> &str {
         if self.busca.is_some() && self.custo_resultado().is_none() {
             "SEM_SOLUCAO"
+        } else if matches!(
+            self.condicao.as_str(),
+            "INVALIDO" | "FORA_DO_PERFIL" | "BLOQUEADO"
+        ) {
+            &self.condicao
+        } else if !self.pratico_valido
+            && !self
+                .pratico
+                .as_deref()
+                .unwrap_or(self)
+                .verificacoes
+                .iter()
+                .any(|v| v.estado == super::Estado::Viola)
+        {
+            "PENDENCIAS_FORNECIMENTO"
         } else if !self.pratico_valido {
             "FORNECIMENTO_INCOMPATIVEL"
         } else if self.resolucao_pendente(c) {

@@ -86,11 +86,3 @@ pub async fn duplicar(pool: &SqlitePool, id: &str) -> Resultado<Cenario> {
     cenario.nome = format!("{} · simulação", cenario.nome);
     Ok(cenario)
 }
-
-/// Reproduz com conhecimento e entradas congelados, preservando o histórico original.
-pub async fn reproduzir(pool: &SqlitePool, id: &str) -> Resultado<String> {
-    let anterior = historico::obter(pool, id).await?;
-    let mut cenario = anterior.cenario;
-    cenario.original_id = Some(anterior.cenario_id);
-    execucao::executar(pool, &cenario, &anterior.conhecimento).await
-}

@@ -56,7 +56,7 @@ export async function testarAjuda(page, url, artefatos, navegador) {
   await page.locator('#resultados-botao').click();
   await page.locator('#resultados-conteudo').waitFor({ state: 'hidden' });
   await page.getByRole('navigation', { name: 'Seções da ajuda' })
-    .getByRole('link', { name: 'Ler o parecer, imprimir, reproduzir e simular' }).click();
+    .getByRole('link', { name: 'Ler o parecer, imprimir e simular' }).click();
   await page.locator('#resultados-conteudo').waitFor({ state: 'visible' });
   await page.emulateMedia({ media: 'print' });
   assert.equal(await page.locator('.help-content:visible').count(), 10);

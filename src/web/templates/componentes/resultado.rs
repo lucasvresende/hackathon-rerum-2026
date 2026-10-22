@@ -30,6 +30,13 @@ impl Render for ResultadoExecucao<'_> {
                     .to_string()
             })
             .unwrap_or(e.criada_em.clone());
+        let mut verificacoes: Vec<_> = p.verificacoes.iter().enumerate().collect();
+        verificacoes.sort_by_key(|(_, v)| match v.estado {
+            Estado::Viola => 0,
+            Estado::Desconhecido => 1,
+            Estado::Atende => 2,
+            Estado::NaoAplicavel => 3,
+        });
         html! {
             (Cabecalho { titulo: &c.nome, texto: &format!("{} · {} · Execução {}",
             c.lote.nome, data, e.id), ajuda: "resultados" })
@@ -40,10 +47,7 @@ impl Render for ResultadoExecucao<'_> {
                 button.button.secondary type="button" data-imprimir { "Imprimir parecer" }
                 button.button.secondary type="button" data-imprimir="ficha" {
                     "Imprimir ficha de fornecimento" }
-                form method="post" action=(format!("/execucoes/{}/reproduzir", e.id)) {
-                    input type="hidden" name="csrf" value=(self.token);
-                    button.button.secondary { "Reproduzir versões originais" }
-                }
+
             }
             (super::ficha_fornecimento::Ficha(c, p, &e.id))
             (super::situacao_execucao::Situacao(c, p))
@@ -106,7 +110,7 @@ impl Render for ResultadoExecucao<'_> {
                     "Fornecimento incompatível:")) } }
             }
             (numeros::Balanco(p))
-            (super::resultado_barreiras::Barreiras(p, &e.conhecimento))
+            (super::resultado_barreiras::Barreiras(p, &e.conhecimento, c.formular))
             (super::resultado_fornecimento::Fornecimento { cenario: c, parecer: p })
             (numeros::Economia { cenario: c, parecer: p })
             };
@@ -126,13 +130,14 @@ impl Render for ResultadoExecucao<'_> {
                 p.muted { "Entradas → normalização → cálculo → comparação → conclusão. \
                         Todas as verificações independentes são preservadas." }
                 ol { @for etapa in &p.caminho { li { (etapa) } } }
-                @for (indice, v) in p.verificacoes.iter().enumerate() {
+                @for (indice, v) in verificacoes {
                     (super::expansivel::Expansivel { id: &format!("regra-{indice}-{}", v.regra),
                         aberto:
                         false, titulo: html! { span class=(if v.estado == Estado::Viola {
                                 "pill danger" }
                             else { "pill" }) { (v.estado.rotulo()) }
                             " " strong { (&v.regra) } " · " (&v.dimensao)
+                            " · " (v.explicacao.split('.').next().unwrap_or(&v.explicacao))
                         }, conteudo: html! {
                             p { (&v.explicacao) }
                             @if let (Some(valor), Some(limite)) = (v.valor, v.limite) {

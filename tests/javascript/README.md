@@ -153,3 +153,20 @@ aprovadas nos três navegadores; testes Rust do cenário, clippy e formatação 
 A suíte `resultado-operacional` cobre solução contínua sem resolução, recusa prática no topo,
 valores de fibra, premissas da comparação, estados do histórico, leitura móvel e impressão curta.
 Exemplo de execução isolada: `FEEDYOURCOW_SUITES=resultado-operacional npm run test:e2e`.
+
+
+### Regressão do diagnóstico de dietas em desktop
+
+`verificacao-desktop` usa viewport de 1440 × 1000, sem alternar para celular. Ela verifica
+conversão de MS na duplicação, rótulos e unidades, consumo-alvo na verificação, estados e motivos
+de pendência/invalidade/violação, sobras, amido, preços, ótimo contínuo e revalidação de pesagem.
+Executar após compilar o binário:
+
+```sh
+FEEDYOURCOW_NAVEGADORES=chromium FEEDYOURCOW_SUITES=verificacao-desktop npm run test:e2e
+```
+
+Os dados são temporários; capturas ficam em `output/playwright/chromium-verificacao-*.png`.
+As interações usam a biblioteca Playwright já fixada no projeto, sem dependências adicionais.
+Referências consultadas: [assertions Playwright](https://playwright.dev/docs/test-assertions)
+e [formatação numérica Rust](https://doc.rust-lang.org/std/fmt/#precision).

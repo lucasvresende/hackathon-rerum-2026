@@ -27,7 +27,7 @@ impl Render for ResultadoPratico<'_> {
                 }
                 div.table-wrap { table {
                     caption { "Balanço das quantidades práticas por animal/dia" }
-                    thead { tr { th { "Nutriente" } th { "Oferta (kg)" }
+                    thead { tr { th { "Nutriente" } th { "Consumo estimado (kg)" }
                         th { "Requisito (kg)" } th { "Balanço (kg)" } } }
                     tbody { @for (i, nome) in NUTRIENTES.iter().enumerate().take(4) {
                         @let requisito = p.requisitos.map(|r| r[i]);
@@ -55,7 +55,13 @@ impl Render for ResultadoPratico<'_> {
                         " · Fonte: " (&v.fonte)
                     }
                 } }
-                p.muted { "O ótimo contínuo e seu custo permanecem separados deste diagnóstico." }
+                p.muted {
+                    @if self.1.formular {
+                        "O ótimo contínuo e seu custo permanecem separados deste diagnóstico."
+                    } @else {
+                        "A dieta informada e seu custo permanecem separados da dieta arredondada."
+                    }
+                }
             }
         }
     }

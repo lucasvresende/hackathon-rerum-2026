@@ -3,7 +3,7 @@ use crate::dominio::{Conhecimento, Parecer};
 use crate::web::formatacao::{medida, numero, sinal};
 use maud::{Markup, Render, html};
 
-pub struct Barreiras<'a>(pub &'a Parecer, pub &'a Conhecimento);
+pub struct Barreiras<'a>(pub &'a Parecer, pub &'a Conhecimento, pub bool);
 impl Render for Barreiras<'_> {
     fn render(&self) -> Markup {
         let p = self.0;
@@ -23,10 +23,12 @@ impl Render for Barreiras<'_> {
         });
         html! {
             section.card.table-wrap #barreiras-ruminais {
-                h2 { "Fibra, amido e gordura da solução contínua" }
+                h2 { "Fibra, amido e gordura"
+                    @if self.2 { " da solução contínua" } @else { " da dieta informada" } }
                 p {
                     @if let Some(linha) = linha {
-                        "Linha efetiva: FDN de forragem ≥ " (numero(linha.eixo, 0)) "% da MS."
+                        "Linha efetiva: FDN de forragem ≥ " (numero(linha.eixo, 0)) "% da MS; "
+                            "governa os limites de FDN total e amido."
                     } @else { "Sem linha efetiva de fibra admissível." }
                 }
                 p.muted { "FDN: fibra em detergente neutro; EE: extrato etéreo. "
@@ -39,7 +41,8 @@ impl Render for Barreiras<'_> {
                         @for v in p.verificacoes.iter()
                             .filter(|v| v.dimensao == "Barreiras ruminais") {
                             tr {
-                                th { @if v.regra == "RUM-01" { "FDN de forragem (mínimo)" }
+                                th { @if v.regra == "RUM-01" {
+                                    "FDN de forragem (piso global do perfil)" }
                                     @else { (v.explicacao.split(':').next().unwrap_or("Barreira"))
                                         @if v.explicacao.starts_with("FDN") { " (mínimo)" }
                                         @else { " (máximo)" } }

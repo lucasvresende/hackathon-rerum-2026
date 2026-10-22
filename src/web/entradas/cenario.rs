@@ -51,15 +51,23 @@ pub fn ler_cenario(
         } else {
             obrigatorio(c, &chave("q"), &mut erros)
         };
-        if alimento.ms > 0.0 {
+        // A referência pertence ao rascunho; uma cópia já contém quantidades convertidas.
+        let referencia = numero(c, &chave("referencia_ms"), &mut erros).unwrap_or(a.ms);
+        if !referencia.is_finite() || referencia <= 0.0 || referencia > 1.0 {
+            erros.push(problema(
+                &chave("ms"),
+                "MS de referência inválida; reabra o cenário.",
+            ));
+        }
+        if alimento.ms > 0.0 && referencia > 0.0 {
             if texto(c, "base_comparacao") == "Quantidade de MN fixa"
                 && base == BaseQuantidade::ConsumoMs
             {
-                quantidade *= alimento.ms / a.ms;
+                quantidade *= alimento.ms / referencia;
             } else if texto(c, "base_comparacao") == "Consumo de MS fixo"
                 && base != BaseQuantidade::ConsumoMs
             {
-                quantidade *= a.ms / alimento.ms;
+                quantidade *= referencia / alimento.ms;
             }
         }
         let cotacao = CotacaoOriginal {
@@ -182,6 +190,7 @@ pub fn campos_cenario(c: &Cenario) -> Campos {
                     .unwrap_or_default(),
             ),
             ("ms", (i.alimento.ms * 100.0).to_string()),
+            ("referencia_ms", i.alimento.ms.to_string()),
             ("perda", (i.perda * 100.0).to_string()),
             ("min", i.minimo_ms.to_string()),
             (

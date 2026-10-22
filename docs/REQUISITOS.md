@@ -315,11 +315,11 @@ uma conclusão foi obtida, incluindo dependências e nós percorridos.
 **Aceite:** uma violação de amido de 26,7778% frente a 25% explicará a diferença em pontos
 percentuais e sua natureza de política do MVP.
 
-### RF-14 — Histórico, revisão e reprodução
+### RF-14 — Histórico e revisão
 
 Listar e abrir execuções anteriores, suas entradas, resultados e explicações. Uma edição deverá
-criar execução nova, sem sobrescrever a anterior. Permitir reproduzir uma execução com seus dados
-e versões originais, em instalação com artefatos compatíveis preservados.
+criar execução nova, sem sobrescrever a anterior. A consulta ao histórico exibirá o parecer
+preservado, sem oferecer reexecução com versões originais. Para recalcular, usar Duplicar e simular.
 
 **Aceite:** alterar catálogo ou preços atuais não alterará o resultado histórico nem sua fonte.
 
@@ -350,7 +350,7 @@ Disponibilizar procedimento documentado e verificável de backup consistente do 
 artefatos de fontes necessários. Restaurar deverá preservar histórico, versões e vínculos.
 Uma restauração não deverá sobrescrever silenciosamente um banco existente.
 
-**Aceite:** restaurar em diretório de teste e reproduzir um caso salvo com o mesmo resultado.
+**Aceite:** restaurar em diretório de teste e consultar um caso salvo com o mesmo resultado.
 
 ### RF-18 — Demonstração e entrega
 
@@ -477,7 +477,7 @@ consultar os sites oficiais durante uma execução.
 
 1. Localizar uma execução pelo lote/data e abrir o parecer preservado.
 2. Consultar premissas, fontes, cálculos e regras.
-3. Imprimir o parecer ou iniciar reprodução com os mesmos artefatos.
+3. Imprimir o parecer preservado ou duplicar o cenário para uma nova simulação.
 4. Para recuperação de dados, restaurar backup em destino controlado e verificar sua integridade.
 
 ### FL-07 — Experimentar e reutilizar exemplos
@@ -1087,7 +1087,7 @@ com as tolerâncias de RN-24. Na interface, os totais monetários serão apresen
   valores, fontes e parecer anteriores deverão permanecer idênticos.
   Cobertura: RF-02, RF-03, RF-14; RN-23.
 - **CT-22 — Reexecução:** corrigir resposta e reconstruir fatos, sem manter conclusão antiga;
-  reproduzir execução com artefatos originais e obter mesmo resultado e traço.
+  duplicar o cenário para nova simulação, mantendo intactos o resultado e o traço originais.
   Cobertura: RF-13, RF-14; RN-22, RN-23; RNF-06.
 - **CT-23 — Carga:** aplicar migrações/carga em banco vazio, reaplicar sem duplicar e rejeitar
   fonte ausente, versão colidente e unidade inválida sem ativação parcial. Conferir seis lotes e
@@ -1096,7 +1096,7 @@ com as tolerâncias de RN-24. Na interface, os totais monetários serão apresen
 - **CT-24 — Transação:** injetar falha ao salvar resultado/traço e comprovar que não existe
   execução concluída parcialmente gravada. Validar integridade referencial.
   Cobertura: RF-14; RN-23; RNF-04, RNF-09.
-- **CT-25 — Recuperação:** criar backup consistente, restaurar em destino de teste e reproduzir
+- **CT-25 — Recuperação:** criar backup consistente, restaurar em destino de teste e consultar
   um caso; verificar fontes e impedir sobrescrita acidental do banco original. Preservar catálogo,
   hipóteses, personalizações, exclusões e inicialização; reabrir sem recriar exemplos removidos.
   Cobertura: RF-17; RN-23.
@@ -1400,3 +1400,33 @@ RF-11, RN-20 e RN-24 e não altera tolerâncias nem o objetivo dos programas lin
 Histórico e comparação devem mostrar o estado da busca separado da condição de fornecimento.
 Diferenças menores que a precisão usual do balanço devem continuar visíveis quando causam
 violação. A comparação inclui resolução, inclusão mínima/máxima e diagnóstico prático.
+
+
+## Esclarecimentos do diagnóstico desktop — 22/10/2026
+
+- **RF-14/15 e RN-23:** duplicar sem alterações deve preservar quantidades, nutrientes e custo.
+  Uma nova alteração de MS parte da MS do rascunho copiado; não reaplica a conversão do catálogo.
+- **RF-09/13 e RN-03/07:** o balanço mostra consumo estimado de nutrientes por animal/dia.
+  Na verificação, o consumo é derivado das quantidades; o alvo informado não impõe igualdade.
+  A origem do alvo não será apresentada como origem do consumo calculado da dieta.
+- **RF-11 e RN-20:** a exigência de resolução positiva por ingrediente utilizado também se aplica
+  à verificação para recomendar pesagem. A avaliação nutricional independente permanece visível.
+  Resolução ausente não será substituída silenciosamente por uma precisão padrão.
+- **RF-13 e RN-02/09:** o resumo distingue pendência de dados, invalidade e violação comprovada,
+  com motivo e ingrediente quando aplicável. O piso global de fibra será distinguido do limiar
+  que seleciona os limites de FDN total e amido. A auditoria prioriza violações e pendências.
+- **RN-24:** remover resíduos de representação binária na apresentação da pesagem não muda
+  quantidades canônicas nem tolerâncias nutricionais. A formatação conserva casas significativas.
+- **RNF-03/14:** campos de quantidade exibem unidade e significado atuais mesmo com configurações
+  recolhidas. O modo verificar não alegará otimização nem ótimo de uma dieta apenas informada.
+
+As regressões automáticas estão em `tests/diagnostico_dietas.rs` e na suíte de navegador
+`verificacao-desktop`. A alteração não inclui otimização discreta ou relaxamento do consumo-alvo.
+
+
+## Remoção da reexecução com versões originais — 22/10/2026
+
+A ação “Reproduzir versões originais” e sua rota HTTP foram removidas. O histórico mantém
+entradas, conhecimento e pareceres preservados para consulta e auditoria. Duplicar e simular
+continua disponível para recalcular em um novo cenário com o conhecimento ativo.
+A propriedade de determinismo do motor permanece requisito técnico, sem ação de reexecução na UI.

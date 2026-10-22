@@ -46,7 +46,7 @@ impl Render for Balanco<'_> {
                 span.pill {
                     "BASE: MATÉRIA SECA" } }
             table {
-                thead { tr { th { "Nutriente" } th { "Oferta (kg/dia)" } th {
+                thead { tr { th { "Nutriente" } th { "Consumo estimado (kg/animal/dia)" } th {
                             "Requisito" }
                         th { "Balanço" } th { "Déficit" } th { "Excesso" } th {
                             "Cobertura" } } }

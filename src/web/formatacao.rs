@@ -18,7 +18,8 @@ pub fn estado(valor: &str) -> String {
         "NAO_AVALIADO" => "Não avaliado",
         "AVALIADO" => "Avaliado",
         "SEM_SOLUCAO" => "Sem combinação validada",
-        "RESOLUCAO_PENDENTE" => "Solução contínua aproximada; informar resolução de pesagem",
+        "RESOLUCAO_PENDENTE" => "Quantidades aproximadas; informar resolução de pesagem",
+        "PENDENCIAS_FORNECIMENTO" => "Fornecimento pendente de dados; não usar como recomendação",
         "FORNECIMENTO_VALIDADO" => "Fornecimento validado no perfil",
         "FORNECIMENTO_INCOMPATIVEL" => "Fornecimento incompatível; não usar como recomendação",
         "INVALIDO" => "Inválido",
@@ -48,8 +49,17 @@ pub fn balanco(oferta: f64, requisito: f64) -> String {
     }
 }
 
-/// Representação que permite copiar a pesagem sem perder casas decimais validadas.
+/// Remove apenas ruído binário, preservando casas significativas da pesagem validada.
+/// O erro de apresentação fica limitado a quatro epsilons relativos, sem tolerância nutricional.
 pub fn quantidade_pratica(valor: f64) -> String {
+    for casas in 0..=16 {
+        let texto = format!("{valor:.casas$}");
+        if let Ok(lido) = texto.parse::<f64>()
+            && (lido - valor).abs() <= 4.0 * f64::EPSILON * valor.abs()
+        {
+            return texto.replace('.', ",");
+        }
+    }
     valor.to_string().replace('.', ",")
 }
 

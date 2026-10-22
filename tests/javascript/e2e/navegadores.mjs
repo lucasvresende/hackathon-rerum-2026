@@ -1,3 +1,4 @@
+import { testarVerificacaoDesktop } from './verificacao-desktop.mjs';
 import { abrirConfiguracoesCenario } from './apoio.mjs';
 import { testarFormulacao } from './formulacao.mjs';
 import { testarResultadoOperacional } from './resultado-operacional.mjs';
@@ -18,7 +19,8 @@ import { resolve, join } from 'node:path';
 import { spawn, spawnSync } from 'node:child_process';
 import { chromium, firefox, webkit } from 'playwright';
 
-const nomesSuites = ['htmx', 'condicionais', 'falhas', 'guias', 'inicio', 'dicas',
+const nomesSuites = ['verificacao-desktop', 'htmx', 'condicionais', 'falhas', 'guias',
+  'inicio', 'dicas',
   'fluxos', 'exemplos', 'cenario-simplificado', 'formulacao', 'resultado-operacional'];
 const suites = new Set(process.env.FEEDYOURCOW_SUITES?.split(',') || nomesSuites);
 for (const suite of suites) assert.ok(nomesSuites.includes(suite), `Suíte desconhecida: ${suite}`);
@@ -85,6 +87,9 @@ try {
         const [nova] = await Promise.all([contexto.waitForEvent('page'), link.click()]);
         await nova.waitForLoadState();
         page = nova;
+      }
+      if (suites.has('verificacao-desktop')) {
+        await testarVerificacaoDesktop(browser, url, artefatos, nome);
       }
       if (suites.has('resultado-operacional')) {
         await testarResultadoOperacional(browser, url, artefatos, nome);

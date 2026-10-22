@@ -32,7 +32,7 @@ impl Render for Ficha<'_> {
                     table {
                         thead { tr { th { "Ingrediente" }
                             th { "Prática kg MN/animal/dia" }
-                            th { "Oferta contínua aproximada kg MN/animal/dia" } } }
+                            th { "Oferta calculada aproximada kg MN/animal/dia" } } }
                         tbody { @for f in p.fornecimento.iter().filter(|f| f.consumo_ms > 0.0) {
                             tr { th { (&f.ingrediente) }
                                 td { @if !pendente { (quantidade_pratica(f.pratico_mn)) }
