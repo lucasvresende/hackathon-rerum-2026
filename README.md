@@ -307,7 +307,7 @@ As versões reproduzíveis estão nos lockfiles. Código `unsafe` próprio é pr
 | `src/persistencia/`     | Banco e consultas agrupados por recurso.                            |
 | `src/web/<recurso>/`     | Rotas, handlers, entradas e templates próximos por funcionalidade. |
 | `src/web/comum/`         | Segurança, estado, respostas, layouts e componentes compartilhados. |
-| `src/web/templates/`    | Reexportações dos caminhos Maud anteriores à migração.            |
+| `src/web/templates/`    | Declaração dos módulos Maud nos caminhos públicos anteriores.      |
 | `static/`               | CSS, JavaScript e dependências locais com licenças.                |
 | `tests/`                | Testes Rust e testes de navegador em `javascript/e2e/`.            |
 | `scripts/`              | Qualidade, conferência SQLx, distribuição e teste do pacote.       |
@@ -318,7 +318,8 @@ o domínio e a persistência. Templates recebem dados preparados, sem consultar 
 executar regras de negócio. O servidor mantém validações, decisões e proteção de escrita
 por POST, token CSRF e verificação de origem. Recursos estáticos são servidos localmente.
 Cada recurso da web tem `handlers.rs`, `rotas.rs` e `templates/` separados. `web/rotas.rs`
-compõe os roteadores; os módulos de compatibilidade preservam os caminhos públicos existentes.
+compõe os roteadores. Os arquivos Maud ficam junto ao recurso; `web/templates/` os declara nos
+caminhos públicos anteriores, e os módulos de recurso oferecem reexportações por funcionalidade.
 
 `dominio::motor::avaliar` recebe o cenário e o conhecimento congelados e seleciona o modo de
 verificação (`inferencia`) ou formulação (`otimizacao`). É a entrada usada pela aplicação e pelo
