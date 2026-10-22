@@ -1,11 +1,11 @@
 //! Renderização do parecer e dos resultados de uma execução.
 use maud::{Markup, Render, html};
 
+use super::resultado_numeros as numeros;
 use super::{cabecalho::Cabecalho, conceitos_resultado as conceitos};
 use crate::dominio::Estado;
-use crate::dominio::calculos::NUTRIENTES;
-use crate::dominio::unidades::{dinheiro, preco_f64};
 use crate::persistencia::historico::Execucao;
+use crate::web::formatacao::{estado, numero, sinal};
 
 pub struct ResultadoExecucao<'a> {
     pub execucao: &'a Execucao,
@@ -17,6 +17,11 @@ impl Render for ResultadoExecucao<'_> {
         let e = self.execucao;
         let p = &e.parecer;
         let c = &e.cenario;
+        let sem_candidata = c.formular
+            && !matches!(
+                p.busca.as_deref(),
+                Some("OTIMO_NO_MODELO" | "VIAVEL_SEM_OTIMO")
+            );
         let data = chrono::DateTime::parse_from_rfc3339(&e.criada_em)
             .ok()
             .map(|d| {
@@ -38,26 +43,34 @@ impl Render for ResultadoExecucao<'_> {
                     button.button.secondary { "Reproduzir versões originais" }
                 }
             }
-            div.alert {
-                strong { (&p.condicao) }
-                " · Atendimento ao perfil implementado. Não constitui \
-                    avaliação nutricional integral nem previsão de produção ou
-                        diagnóstico clínico."
+            @if let Some(busca) = &p.busca {
+                section.card {
+                    div.concept-label.section-concept {
+                        h2 data-busca=(busca) { "Formulação: " (estado(busca)) } (conceitos::OTIMO)
+                    }
+                    p { (&e.conhecimento.metodo) }
+                    p.muted {
+                        "Ótimo se refere ao modelo contínuo. Não prova mínimo global de \
+                            ingredientes ou ótimo das quantidades arredondadas." }
+                    @for s in &p.subproblemas {
+                        p { strong { "FDN de forragem ≥ " (numero(s.limiar, 0)) "%: "
+                            (estado(&s.estado)) }
+                            " · " (s.motivo.replace("ProvenOptimal", "Ótimo comprovado")) }
+                    }
+                }
             }
-            section.stats {
-                @for (nome, valor, dica) in [
-                ("Custo / animal / dia", p.custo.map(dinheiro).unwrap_or("—".into()),
-                "Oferta, perdas e sobras incluídas"),
-                ("Consumo da dieta", format!("{:.3} kg MS", p.consumo_ms),
-                "Por animal e por dia"),
-                ("Custo do lote / dia", p.custo.map(|v| dinheiro(v * c.lote.animais
-                as f64))
-                .unwrap_or("—".into()),
-                "Custo alimentar; outros custos não incluídos"),
-                ("Horizonte", format!("{} dias", c.horizonte),
-                "Estoque não é baixado pelo cálculo"),
-                ] { article.stat { small { (nome) } strong { (valor) } span { (dica) } } }
+            div.alert class=[sem_candidata.then_some("error")] {
+                @if sem_candidata {
+                    strong { "Nenhuma combinação validada foi encontrada." }
+                    " Custos e quantidades da entrada não representam uma solução de menor custo."
+                } @else {
+                    strong { (estado(&p.condicao)) }
+                    " · Avaliação do perfil implementado; não é avaliação nutricional integral, "
+                    "previsão de produção ou diagnóstico clínico."
+                }
             }
+            @let dados = html! {
+            (numeros::Resumo { cenario: c, parecer: p })
             section.card {
                 div.concept-label.section-concept {
                     h2 { "Resultados por dimensão" } (conceitos::ESTADOS)
@@ -85,119 +98,27 @@ impl Render for ResultadoExecucao<'_> {
                                     (conceitos::FIBRA_FISICA)
                                 }
                             }
-                            strong { (estado.replace('_', " ")) }
+                            strong { (crate::web::formatacao::estado(estado)) }
                         }
                     }
                 }
                 @for aviso in &p.avisos { p.alert { (aviso) } }
             }
-            section.card.table-wrap {
-                div.section-title {
-                    div.concept-label { h2 { "Balanço nutricional" } (conceitos::BALANCO) }
-                    span.pill {
-                        "BASE: MATÉRIA SECA" } }
-                table {
-                    thead { tr { th { "Nutriente" } th { "Oferta (kg/dia)" } th {
-                                "Requisito" }
-                            th { "Balanço" } th { "Déficit" } th { "Excesso" } th {
-                                "Cobertura" } } }
-                    tbody {
-                        @for (i, nome) in NUTRIENTES.iter().enumerate().take(4) {
-                            @let requisito = p.requisitos.map(|r| r[i]);
-                            @let valor = p.totais[i];
-                            tr {
-                                td { strong { (nome) } }
-                                td { (valor.map(|v|
-                                    format!("{v:.5}")).unwrap_or("Desconhecido".into())) }
-                                td { (requisito.map(|v|
-                                    format!("{v:.5}")).unwrap_or("—".into())) }
-                                td { (valor.zip(requisito).map(|(v, r)| format!("{:+.5}",
-                                    v-r))
-                                    .unwrap_or("—".into())) }
-                                td { (valor.zip(requisito)
-                                    .map(|(v,r)|format!("{:.5}",(r-v).max(0.0)))
-                                    .unwrap_or("—".into())) }
-                                td { (valor.zip(requisito)
-                                    .map(|(v,r)|format!("{:.5}",(v-r).max(0.0)))
-                                    .unwrap_or("—".into())) }
-                                td { (valor.zip(requisito).filter(|(_, r)| *r > 0.0)
-                                    .map(|(v, r)| format!("{:.1}%",
-                                    100.0*v/r)).unwrap_or("—".into())) }
-                            }
-                        }
-                    }
+            (numeros::Balanco(p))
+            (numeros::Fornecimento(p))
+            (numeros::Economia { cenario: c, parecer: p })
+            };
+            @if sem_candidata {
+                (super::expansivel::Expansivel { id: "diagnostico-entrada", aberto: false,
+                    titulo: html! { "Diagnóstico das quantidades de entrada (não é solução)" },
+                    conteudo: dados })
+            } @else {
+                @if c.formular {
+                    h2 { "Resultados da solução contínua" }
                 }
-                p.muted { "Balanço negativo = déficit; positivo = excesso sobre o mínimo. \
-                        Excesso não é diagnóstico de intoxicação." }
-            }
-            section.card.table-wrap {
-                div.concept-label.section-concept {
-                    h2 { "Quantidades de fornecimento" } (conceitos::FORNECIMENTO)
-                }
-                p.muted {
-                    "Consumo estimado e oferta são grandezas diferentes. MN: matéria natural." }
-                table {
-                    thead { tr { th { "Ingrediente" } th { "Consumo kg MS / animal" }
-                            th { "Oferta kg MN / animal" } th { "Oferta kg MN / lote / dia" }
-                            th { "Bruto kg MN / horizonte" } th {
-                                "Oferta prática kg MN / animal" } } }
-                    tbody {
-                        @for f in &p.fornecimento {
-                            tr { td { (&f.ingrediente) }
-                                @for v in [f.consumo_ms, f.oferta_mn, f.oferta_lote,
-                                f.necessidade_bruta, f.pratico_mn] { td {
-                                        (format!("{v:.4}")) } }
-                            }
-                        }
-                    }
-                }
-                p.alert { @if p.pratico_valido {
-                        "Quantidades compatíveis com o núcleo e restrições \
-                        avaliadas. Dimensões não avaliadas permanecem indicadas." }
-                    @else {
-                        "Fornecimento sem recomendação prática validada. Consulte as pendências \
-                            e restrições; uma solução contínua pode continuar disponível." }
-                }
-            }
-            @if let Some(busca) = &p.busca {
-                section.card {
-                    div.concept-label.section-concept {
-                        h2 { "Formulação: " (busca) } (conceitos::OTIMO)
-                    }
-                    p { (&e.conhecimento.metodo) }
-                    p.muted {
-                        "Ótimo se refere ao modelo contínuo. Não prova mínimo global de \
-                            ingredientes ou ótimo das quantidades arredondadas." }
-                    @for s in &p.subproblemas {
-                        p { strong { "FDN de forragem ≥ " (s.limiar) "%: " (&s.estado) }
-                            " · " (&s.motivo) }
-                    }
-                }
-            }
-            section.card {
-                h2 { "Premissas e economia" }
-                dl.details-grid {
-                    dt { "Consumo de referência" }
-                    dd { (p.consumo_referencia.map(|v| format!("{v:.4} kg MS/animal/dia"))
-                        .unwrap_or("Fora da Tabela B; informar consumo".into())) }
-                    dt { "Origem do consumo" } dd { (&c.origem_consumo) }
-                    dt { "Sobras planejadas" } dd { (format!("{:.2}% · {}", c.sobras*100.0,
-                        c.origem_sobras)) }
-                    dt { "Base da comparação" } dd { (&c.base_comparacao) }
-                    dt { "Custo no horizonte" } dd { (p.custo.map(|v|
-                        dinheiro(v*c.lote.animais as f64
-                        * c.horizonte as f64)).unwrap_or("—".into())) }
-                    @if let Some(custo) = p.custo {
-                        @if c.lote.producao > 0.0 {
-                            dt { "Custo por kg de leite" } dd { (dinheiro(custo /
-                                c.lote.producao)) }
-                        }
-                        @if let Some(preco) = c.preco_leite.as_deref().and_then(preco_f64) {
-                            dt { "Margem sobre alimentação / animal / dia" }
-                            dd { (dinheiro(preco*c.lote.producao-custo))
-                                " · não é lucro total" }
-                        }
-                    }
+                (dados)
+                @if let Some(pratico) = &p.pratico {
+                    (super::resultado_pratico::ResultadoPratico(pratico))
                 }
             }
             (super::expansivel::Expansivel { id: "calculos-regras",
@@ -215,9 +136,9 @@ impl Render for ResultadoExecucao<'_> {
                         }, conteudo: html! {
                             p { (&v.explicacao) }
                             @if let (Some(valor), Some(limite)) = (v.valor, v.limite) {
-                                p.code { "Calculado: " (format!("{valor:.8}")) " · limite: "
-                                    (format!("{limite:.8}")) " · diferença: "
-                                    (format!("{:+.8}", valor-limite)) " " (&v.unidade) }
+                                p.code { "Calculado: " (numero(valor, 8)) " · limite: "
+                                    (numero(limite, 8)) " · diferença: "
+                                    (sinal(valor-limite, 8)) " " (&v.unidade) }
                             }
                             p.muted { "Fonte: " (&v.fonte) " · perfil "
                                 (&e.conhecimento.perfil_id) }

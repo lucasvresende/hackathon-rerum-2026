@@ -17,3 +17,7 @@ pub mod resultado;
 pub mod resumo_erros;
 
 pub mod exemplos;
+
+mod consumo_execucao;
+mod resultado_numeros;
+mod resultado_pratico;

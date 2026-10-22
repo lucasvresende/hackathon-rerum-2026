@@ -9,6 +9,9 @@ rejeitar medições parciais (F04), ignorar quantidades iniciais na formulação
 atualizar somente textos automáticos de origem (F07) e preservar a revalidação prática completa
 (parte de F05). Regressões de domínio e entradas estão em `tests/otimizacao.rs` e
 `tests/entradas_formulacao.rs`. As mudanças de apresentação são acompanhadas nas próximas etapas.
+F03, F05, F06 e F13 receberam apresentação específica: ausência de candidata no topo,
+diagnóstico parcial recolhido, quadro prático independente e alvo/origem nas entradas.
+Os rótulos e números do resultado usam português, preservando os estados canônicos no histórico.
 
 Foram executados 23 cenários em Chromium, Firefox e WebKit, além de inspeção móvel nos três
 navegadores, seis ensaios de seleção concorrente e casos adicionais de navegação, cópia e estoque.

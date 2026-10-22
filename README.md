@@ -420,6 +420,10 @@ os demais dados, em vez de ser descartada. A origem efetiva do consumo é deriva
 pesagem; comentários próprios são preservados. Textos automáticos de estimativa e taxas zero são
 atualizados quando deixam de corresponder às entradas. A revalidação arredondada preserva um
 parecer separado, com consumo, custo e violações, sem alterar o ótimo contínuo.
+O parecer mostra o estado da busca antes dos números. Sem candidata, o diagnóstico das entradas
+fica recolhido e identificado como tal. Consumo-alvo, origem efetiva e valor informado aparecem
+nas premissas e nas entradas preservadas. Números e estados dos resultados usam apresentação
+em português; os IDs técnicos permanecem em atributos e nos detalhes de auditoria.
 
 Novas dietas começam com horizonte de um dia, datas civis atuais de São Paulo, consumo
 estimado, quantidades em kg MS/animal/dia e hipóteses explícitas de sobras/perdas zero.

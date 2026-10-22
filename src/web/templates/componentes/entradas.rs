@@ -50,6 +50,10 @@ impl Render for Entradas<'_> {
                             ("Limite da formulação",format!("{} segundos",c.limite_segundos)),
                             ] { dt { (nome) } dd { (valor) } }
                         }
+                        dl.details-grid {
+                            (super::consumo_execucao::ConsumoExecucao {
+                                cenario: c, parecer: &self.0.parecer })
+                        }
                         @if let Some(m)=&c.medicao {
                             p { "Pesagem observada do lote: " (m.oferta_ms)
                                 " kg MS de oferta − "

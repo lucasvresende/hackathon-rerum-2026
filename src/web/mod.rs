@@ -4,6 +4,7 @@ mod compatibilidade;
 pub mod entradas;
 pub mod erro;
 pub mod estado;
+pub mod formatacao;
 pub mod handlers;
 pub mod resposta;
 pub mod rotas;

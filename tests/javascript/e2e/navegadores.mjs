@@ -194,7 +194,7 @@ try {
       await preco.fill(String(Number(await preco.inputValue()) * 1.1));
       await page.getByRole('button', { name: 'Calcular e salvar cenário' }).click();
       await page.waitForURL(/\/execucoes\/[a-f0-9-]+$/);
-      assert.match(await page.locator('.stats .stat').nth(1).innerText(), /10.800 kg MS/);
+      assert.match(await page.locator('.stats .stat').nth(1).innerText(), /10,800 kg MS/);
       const custo = Number((await page.locator('.stats .stat').first().innerText())
         .match(/R\$ ([0-9,]+)/)[1].replace(',', '.'));
       assert.ok(custo > 13.10, 'Mudanças de preço e MS devem alterar o custo');
@@ -202,7 +202,7 @@ try {
       await page.locator('#nome').fill(`Formulação ${nome}`);
       await page.getByRole('button', { name: 'Calcular e salvar cenário' }).click();
       await page.waitForURL(/\/execucoes\/[a-f0-9-]+$/);
-      await page.getByRole('heading', { name: 'Formulação: OTIMO_NO_MODELO' }).waitFor();
+      await page.getByRole('heading', { name: 'Formulação: Ótimo no modelo' }).waitFor();
       await page.emulateMedia({ media: 'print' });
       await page.screenshot({ path: join(artefatos, `${nome}-impressao.png`), fullPage: true });
       await page.emulateMedia({ media: 'screen' });
