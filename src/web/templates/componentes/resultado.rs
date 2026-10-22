@@ -43,6 +43,16 @@ impl Render for ResultadoExecucao<'_> {
                     button.button.secondary { "Reproduzir versões originais" }
                 }
             }
+            div class=(if sem_candidata { "alert error" } else { "alert" }) {
+                @if sem_candidata {
+                    strong { "Nenhuma combinação validada foi encontrada." }
+                    " Custos e quantidades da entrada não representam uma solução de menor custo."
+                } @else {
+                    strong { (estado(&p.condicao)) }
+                    " · Avaliação do perfil implementado; não é avaliação nutricional integral, "
+                    "previsão de produção ou diagnóstico clínico."
+                }
+            }
             @if let Some(busca) = &p.busca {
                 section.card {
                     div.concept-label.section-concept {
@@ -57,16 +67,6 @@ impl Render for ResultadoExecucao<'_> {
                             (estado(&s.estado)) }
                             " · " (s.motivo.replace("ProvenOptimal", "Ótimo comprovado")) }
                     }
-                }
-            }
-            div.alert class=[sem_candidata.then_some("error")] {
-                @if sem_candidata {
-                    strong { "Nenhuma combinação validada foi encontrada." }
-                    " Custos e quantidades da entrada não representam uma solução de menor custo."
-                } @else {
-                    strong { (estado(&p.condicao)) }
-                    " · Avaliação do perfil implementado; não é avaliação nutricional integral, "
-                    "previsão de produção ou diagnóstico clínico."
                 }
             }
             @let dados = html! {

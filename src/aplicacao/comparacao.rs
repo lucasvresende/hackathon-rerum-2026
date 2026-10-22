@@ -27,8 +27,8 @@ impl Comparacao {
             && a.cenario.referencia_ue == b.cenario.referencia_ue;
         let economia = a
             .parecer
-            .custo
-            .zip(b.parecer.custo)
+            .custo_resultado()
+            .zip(b.parecer.custo_resultado())
             .map(|(ca, cb)| Economia {
                 absoluta: ca - cb,
                 percentual: (ca > 0.0).then(|| 100.0 * (ca - cb) / ca),

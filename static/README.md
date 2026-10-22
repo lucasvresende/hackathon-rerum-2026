@@ -40,3 +40,12 @@ Isso evita a tentativa de focar um controle ainda `inert`, reproduzida no WebKit
 A sinalização entre guias usa `BroadcastChannel` e `localStorage`, transportando somente um
 identificador de atualização. Entregas repetidas do mesmo sinal são ignoradas, evitando POST
 repetido. A atualização manual continua disponível quando a sinalização não estiver acessível.
+
+`cenarios.js` coordena os rascunhos de dieta: confere os valores atuais antes da substituição,
+descarta respostas obsoletas e repete a atualização com as entradas atuais. Um envio solicitado
+durante a espera é retomado. A sincronização usa eventos nativos de htmx 4 e `hx-sync`, sem
+substituir `fetch` nem modificar as bibliotecas vendorizadas. `settle:0` nas trocas do cenário
+evita copiar atributos antigos de controles focados durante o período de acomodação do htmx.
+O mesmo arquivo filtra ingredientes sem desmarcá-los, atualiza o contador e abre os grupos
+indicados pelos links do resumo de erros. Sem JavaScript, confirmação e pesquisa usam POST
+com CSRF e preservação do rascunho no servidor.

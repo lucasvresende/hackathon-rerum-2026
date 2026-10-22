@@ -25,6 +25,7 @@ impl Render for Documento<'_> {
                     script src="/static/app.js" defer {}
                     script src="/static/dicas.js" defer {}
                     script src="/static/formularios.js" defer {}
+                    script src="/static/cenarios.js" defer {}
                 }
                 body class=[isolada.then_some("pagina-cadastro")] {
                     a.skip href="#principal" { "Pular para o conteúdo" }

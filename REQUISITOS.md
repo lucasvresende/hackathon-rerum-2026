@@ -401,6 +401,9 @@ desmarcar preservará o rascunho sem incluir o ingrediente no cálculo.
 Asteriscos, mensagens acima dos controles e validação do navegador complementarão a validação
 obrigatória no servidor. Expansões respeitarão teclado, foco, movimento reduzido, impressão e
 alternativa sem JavaScript. Recursos visuais serão locais.
+Atualizações concorrentes preservarão seleções e edições posteriores ao envio. Demonstrações
+manterão o tipo de cálculo e exigirão confirmação antes de substituir o rascunho, com alternativa
+equivalente sem JavaScript. Pesquisa e agrupamento da seleção não removerão itens já marcados.
 
 **Aceite:** selecionar silagem já cadastrada deverá dispensar preenchimento prévio. Criar cópia,
 editar PB e salvar preservará o registro de origem e registrará a alteração e a procedência.

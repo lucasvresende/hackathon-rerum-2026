@@ -129,7 +129,6 @@ window.addEventListener('focus', atualizarCadastros);
 function configurarCondicionais() {
   const form = document.getElementById('formulario');
   if (!form) return;
-  const lote = form.querySelector('#lote');
   const consumo = form.querySelector('#consumo_alvo');
   if (consumo) consumo.required = false;
   form.querySelectorAll('.ingredient').forEach(ingrediente => {
@@ -140,6 +139,13 @@ function configurarCondicionais() {
       c.required = usar.checked && (['ms', 'perda', 'preco', 'origem'].includes(prefixo)
         || (prefixo === 'q' && form.querySelector('#modo').value !== 'formular')
         || (prefixo === 'embalagem' && unidade.value === 'embalagem'));
+      if (prefixo === 'q') {
+        const formular = form.querySelector('#modo').value === 'formular';
+        c.type = formular ? 'hidden' : 'number';
+        c.min = '0'; c.step = 'any';
+        c.closest('[data-quantidade]').hidden = formular;
+        if (formular) { c.setCustomValidity(''); c.removeAttribute('aria-invalid'); }
+      }
       if (!usar.checked) c.setCustomValidity('');
     });
   });

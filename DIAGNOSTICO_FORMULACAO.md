@@ -1,6 +1,6 @@
 # Diagnóstico do fluxo de formulação de menor custo
 
-Inspeção em 21/10/2026, com código-base `29bdd20`. Nenhuma correção funcional foi aplicada.
+Inspeção original em 21/10/2026, com código-base `29bdd20`, anterior às correções abaixo.
 
 ## Acompanhamento das correções
 
@@ -8,10 +8,29 @@ O diagnóstico abaixo registra o comportamento anterior. A implementação poste
 rejeitar medições parciais (F04), ignorar quantidades iniciais na formulação (parte de F10),
 atualizar somente textos automáticos de origem (F07) e preservar a revalidação prática completa
 (parte de F05). Regressões de domínio e entradas estão em `tests/otimizacao.rs` e
-`tests/entradas_formulacao.rs`. As mudanças de apresentação são acompanhadas nas próximas etapas.
+`tests/entradas_formulacao.rs`. A apresentação e os formulários receberam as correções abaixo.
 F03, F05, F06 e F13 receberam apresentação específica: ausência de candidata no topo,
 diagnóstico parcial recolhido, quadro prático independente e alvo/origem nas entradas.
 Os rótulos e números do resultado usam português, preservando os estados canônicos no histórico.
+
+F01, F02, F08, F09, F10, F11 e F12 receberam correções no formulário: atualização de rascunho
+protegida contra respostas obsoletas, confirmação processada no servidor, modo preservado,
+erros associados a grupos acessíveis, quantidade inicial oculta na formulação, disponibilidade
+visível e seleção pesquisável com classes e contador. A regressão de F01 inclui edição do preço
+com foco mantido no campo, além de seleção rápida e cálculo solicitado durante a atualização.
+F03 também protege custos no histórico, resumo e comparação. F07 cobre a troca de consumo
+informado de volta para estimado. Os comentários próprios do operador não são sobrescritos.
+
+Cobertura adicionada: `tests/exemplo_cenario_http.rs`, `tests/comparacao.rs`,
+`tests/javascript/e2e/formulacao.mjs`, além dos testes de domínio e entradas citados acima.
+Os treze itens seguintes descrevem as falhas originais para reprodução e rastreabilidade.
+
+Validação após as correções: build com lockfile, 67 testes Rust, Clippy com avisos tratados como
+erros, formatação e qualidade textual passaram. A suíte completa de interface passou em Chromium,
+Firefox e WebKit. As regressões de formulação também cobrem pesquisa e confirmação sem JavaScript,
+onze ingredientes, respostas atrasadas e cálculo pendente nos três navegadores.
+Capturas finais estão em `output/playwright/`: `*-selecao-preservada.png`,
+`*-medicao-corrigir.png`, `*-sem-candidata.png` e `*-pratico-mobile.png`.
 
 Foram executados 23 cenários em Chromium, Firefox e WebKit, além de inspeção móvel nos três
 navegadores, seis ensaios de seleção concorrente e casos adicionais de navegação, cópia e estoque.

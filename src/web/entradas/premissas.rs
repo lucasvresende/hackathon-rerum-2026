@@ -5,6 +5,9 @@ pub(super) fn atualizar(c: &mut Cenario) {
     if [
         "Estimativa do perfil; não observado",
         "Referência Tabela B; consumo estimado.",
+        "Informado pelo operador",
+        "Observado por pesagem do lote",
+        "Estimado pelo perfil",
     ]
     .contains(&c.origem_consumo.as_str())
     {

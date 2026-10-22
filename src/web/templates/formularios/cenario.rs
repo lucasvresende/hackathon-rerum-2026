@@ -35,7 +35,8 @@ impl Render for FormularioCenario<'_> {
         html! {
             form #formulario method="post" action="/cenarios"
             hx-post="/cenarios"
-            hx-target="#formulario" hx-swap="outerHTML"
+            hx-target="#formulario" hx-swap="outerHTML settle:0"
+            hx-sync:inherited="this:drop"
             {
                 input type="hidden" name="csrf" value=(self.token);
                 input type="hidden" name="original_id"
@@ -46,10 +47,9 @@ impl Render for FormularioCenario<'_> {
                     formnovalidate
                     formaction="/cenarios/atualizar"
                     hx-post="/cenarios/atualizar"
-                    hx-target="#formulario" hx-swap="outerHTML"
+                    hx-target="#formulario" hx-swap="outerHTML settle:0"
                     data-sem-validacao { "Atualizar cadastros" }
-                    a href="/cenarios/novo?dieta=A" { "Demonstração A" }
-                    a href="/cenarios/novo?dieta=B" { "Demonstração B" }
+                    (super::exemplo_cenario::ExemploCenario(self))
                 }
                 p.muted { "Campos obrigatórios: *" }
                 section.card {

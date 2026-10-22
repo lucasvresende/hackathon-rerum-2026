@@ -4,6 +4,14 @@ Os arquivos Rust continuam em `tests/*.rs`, com descoberta automática pelo Carg
 Os testes JavaScript de integração ficam em `tests/javascript/e2e/`:
 
 - `navegadores.mjs`: prepara banco e servidor temporários e executa os três navegadores.
+- `formulacao.mjs`: regressões do diagnóstico de menor custo: seleção e edição durante resposta
+  atrasada, cálculo pendente, confirmação/cancelamento de demonstração com e sem JavaScript,
+  preservação do modo, medição parcial, links de erro, pesquisa, disponibilidade visível,
+  ausência de candidata, alvo preservado, números em português e diagnóstico prático no móvel.
+  Executar isoladamente com `FEEDYOURCOW_SUITES=formulacao npm run test:e2e`.
+  A inspeção pós-correção passou nos três navegadores, junto à suíte completa existente.
+  As capturas de seleção, erro de medição, ausência de candidata e fornecimento prático móvel
+  são preservadas em `output/playwright/` para inspeção visual.
 - `exemplos.mjs`: primeiro cálculo preenchido, remoção e restauração explícita de exemplos,
   identificação sintética, tela móvel e execução com e sem JavaScript nos três navegadores.
 - `templates.mjs`: preenchimento com exemplos, cadastros e componentes dos formulários.

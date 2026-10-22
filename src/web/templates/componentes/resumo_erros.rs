@@ -10,8 +10,10 @@ impl Render for ResumoErros<'_> {
             @if !problemas.is_empty() {
                 div #erros-formulario.alert.error tabindex="-1" role="alert" {
                     strong { "Revise os campos para continuar" }
-                    ul { @for erro in problemas { li { a href=(format!("#{}", erro.campo)) {
-                                    (&erro.campo) ": " (&erro.mensagem) } } } }
+                    ul { @for erro in problemas { li {
+                            a href=(format!("#{}", if erro.campo == "itens" {
+                                    "selecao-ingredientes" } else { &erro.campo })) {
+                                    (&erro.mensagem) } } } }
                 }
             }
         }

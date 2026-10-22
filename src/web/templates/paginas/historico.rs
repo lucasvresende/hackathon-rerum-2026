@@ -63,7 +63,8 @@ impl Render for Historico<'_> {
                         tbody { @for x in execucoes {
                                 tr { td { (&x.cenario.nome) } td { (&x.cenario.lote.nome) }
                                     td { span.pill { (&x.parecer.condicao) } }
-                                    td { (x.parecer.custo.map(dinheiro).unwrap_or("—".into())) }
+                                    td { (x.parecer.custo_resultado().map(dinheiro)
+                                            .unwrap_or("—".into())) }
                                     td { a href=(format!("/execucoes/{}", x.id)) {
                                             "Ver parecer ↗" } }
                                 }

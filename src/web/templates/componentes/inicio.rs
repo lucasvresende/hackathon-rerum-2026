@@ -61,7 +61,8 @@ impl Render for Inicio<'_> {
                                 tr { td { strong { (&e.cenario.nome) } } td {
                                         (&e.cenario.lote.nome) }
                                     td {
-                                        (e.parecer.custo.map(dinheiro).unwrap_or("—".into())) }
+                                        (e.parecer.custo_resultado().map(dinheiro)
+                                            .unwrap_or("—".into())) }
                                     td { span.pill {
                                             (e.parecer.dimensao("Núcleo químico")) } }
                                     td { a href=(format!("/execucoes/{}", e.id)) {

@@ -101,6 +101,14 @@ impl Default for Parecer {
 }
 
 impl Parecer {
+    /// Diagnóstico parcial da entrada não representa custo de uma solução encontrada.
+    pub fn custo_resultado(&self) -> Option<f64> {
+        match self.busca.as_deref() {
+            None | Some("OTIMO_NO_MODELO" | "VIAVEL_SEM_OTIMO") => self.custo,
+            _ => None,
+        }
+    }
+
     pub fn registrar(&mut self, regra: &str, dimensao: &str, estado: Estado, texto: String) {
         let fonte = match regra.split('-').next().unwrap_or("") {
             "NUT" | "ESC" => "C01 · perfil v1",

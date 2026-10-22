@@ -100,7 +100,7 @@ em outra guia para que seja possível voltar à tarefa em andamento.
 Na **Visão geral**, clique em **Abrir cenário de exemplo**. O formulário é preenchido com o lote
 de demonstração e os ingredientes sintéticos disponíveis para o exemplo (silagem, milho, soja e
 mineral). Revise quantidades, preços e premissas e clique em **Calcular e salvar cenário**. Esse
-atalho verifica as quantidades informadas; não as otimiza. Em **Nova dieta**, os links
+atalho verifica as quantidades informadas; não as otimiza. Em **Nova dieta**, os botões
 **Demonstração A** e **Demonstração B** também preenchem o formulário com duas combinações de
 quantidades para comparação. Todos são cenários editáveis. Os dados são sintéticos e não
 representam análises ou cotações reais.
@@ -149,7 +149,8 @@ contaminantes também é opcional e não representa legislação brasileira.
 
 Para cada ingrediente, confira MS, preço e unidade comercial. Abra **Configurações avançadas do
 ingrediente** para informar ajuste de MS usado apenas nesta simulação, perdas anteriores ao
-fornecimento, inclusão mínima e máxima, resolução de oferta e estoque bruto em kg MN. Estoque
+fornecimento, inclusão mínima e máxima e resolução de oferta. Estoque bruto em kg MN fica
+junto ao preço, com a opção de disponibilidade ilimitada visível. Estoque
 vazio significa desconhecido; marque **Hipótese explícita: disponibilidade sem limite neste
 cenário** somente quando essa for a premissa desejada. A quantidade ofertada, as perdas, as sobras,
 o número de animais e o horizonte afetam o fornecimento bruto necessário.
@@ -415,6 +416,22 @@ O cálculo operacional é determinístico e não utiliza modelos de linguagem.
 
 ### Preenchimento de novas dietas
 
+As demonstrações A/B exigem confirmação antes de substituir o rascunho, inclusive sem JavaScript.
+“Manter rascunho” cancela a troca. O tipo de cálculo escolhido é preservado.
+Na formulação, os campos de quantidade inicial ficam ocultos; ao voltar à verificação na mesma
+página, seus valores continuam disponíveis. A hipótese de disponibilidade ilimitada fica visível
+junto ao estoque. A seleção oferece pesquisa, agrupamento por classe e contador do limite;
+filtrar não remove ingredientes marcados. Sem JavaScript, o botão aplica a pesquisa e a seleção.
+
+Durante uma atualização, respostas obsoletas não substituem o rascunho. Uma nova atualização
+usa os valores atuais, preservando seleção, nome e preço digitados enquanto a resposta chegava.
+Um clique em calcular durante essa espera é retomado após a atualização. O formulário usa
+[`hx-sync`](https://four.htmx.org/reference/attributes/hx-sync) e os
+[eventos htmx 4](https://four.htmx.org/reference/events) para coordenar as requisições.
+O modificador [`settle:0`](https://four.htmx.org/reference/attributes/hx-swap) evita que a
+restauração temporária dos atributos antigos altere valores dos controles focados na substituição.
+As transições CSS dos expansíveis continuam disponíveis.
+
 A formulação ignora quantidades iniciais no servidor. Uma pesagem parcialmente preenchida exige
 os demais dados, em vez de ser descartada. A origem efetiva do consumo é derivada do alvo ou da
 pesagem; comentários próprios são preservados. Textos automáticos de estimativa e taxas zero são
@@ -424,6 +441,8 @@ O parecer mostra o estado da busca antes dos números. Sem candidata, o diagnós
 fica recolhido e identificado como tal. Consumo-alvo, origem efetiva e valor informado aparecem
 nas premissas e nas entradas preservadas. Números e estados dos resultados usam apresentação
 em português; os IDs técnicos permanecem em atributos e nos detalhes de auditoria.
+Histórico, resumo inicial e comparação não apresentam o custo de uma entrada sem candidata como
+custo de solução, nem calculam economia com esse valor. O histórico original permanece preservado.
 
 Novas dietas começam com horizonte de um dia, datas civis atuais de São Paulo, consumo
 estimado, quantidades em kg MS/animal/dia e hipóteses explícitas de sobras/perdas zero.

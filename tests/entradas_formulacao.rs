@@ -65,6 +65,10 @@ async fn formulacao_ignora_quantidade_e_atualiza_apenas_premissas_geradas() {
     assert_eq!(c.origem_consumo, "Planejamento da fazenda");
     assert_eq!(c.origem_sobras, "Pesagem em 21/10/2026");
     assert_eq!(c.tipo_consumo(), "Informado pelo operador");
+    campos.insert("origem_consumo".into(), "Informado pelo operador".into());
+    campos.remove("consumo_alvo");
+    let c = ler_cenario(&campos, &lotes, &alimentos).unwrap();
+    assert_eq!(c.origem_consumo, "Estimado pelo perfil");
 }
 
 #[tokio::test]
@@ -99,6 +103,7 @@ async fn resultado_sem_candidata_separa_diagnostico_e_expoe_alvo() {
     .into_string();
     let antes = html.split("id=\"diagnostico-entrada\"").next().unwrap();
     assert!(antes.contains("Nenhuma combinação validada"));
+    assert!(antes.contains("class=\"alert error\""));
     assert!(!antes.contains("Custo / animal / dia"));
     assert!(html.contains("1,0000 kg MS/animal/dia"));
     assert!(html.contains("Informado pelo operador"));

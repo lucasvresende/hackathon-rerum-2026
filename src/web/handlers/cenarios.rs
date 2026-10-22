@@ -21,6 +21,7 @@ use std::collections::BTreeMap;
 pub fn rotas() -> Router<EstadoApp> {
     Router::new()
         .route("/cenarios/atualizar", post(atualizar))
+        .route("/cenarios/exemplo", post(carregar_exemplo))
         .route("/cenarios/novo", get(novo))
         .route("/cenarios", post(executar))
 }
@@ -101,6 +102,55 @@ pub async fn atualizar(
     formularios::completar_cenario(&mut c, &cadastros::alimentos(&e.pool).await?);
     Ok(
         apresentacao::cenario(&e, &c, &[], headers.contains_key("hx-request"))
+            .await?
+            .into_response(),
+    )
+}
+
+/// A primeira etapa preserva o rascunho e exige confirmação explícita, inclusive sem JS.
+pub async fn carregar_exemplo(
+    State(e): State<EstadoApp>,
+    Query(q): Query<BTreeMap<String, String>>,
+    headers: HeaderMap,
+    Form(mut campos): Form<Campos>,
+) -> Result<Response, ErroWeb> {
+    if !autorizado(&e, &headers, &campos) {
+        return Ok(StatusCode::FORBIDDEN.into_response());
+    }
+    let dieta = match q.get("dieta").map(String::as_str) {
+        Some("A") => DietaDemonstracao::A,
+        Some("B") => DietaDemonstracao::B,
+        _ => return Ok(StatusCode::BAD_REQUEST.into_response()),
+    };
+    let mut erros = vec![];
+    if q.get("acao").is_some_and(|a| a == "cancelar") {
+        campos.remove("exemplo_pendente");
+        campos.remove("confirmar_exemplo");
+    } else if q.get("acao").is_some_and(|a| a == "aplicar")
+        && campos.get("confirmar_exemplo").is_some_and(|v| v == "on")
+    {
+        let opcoes = servico::opcoes(&e.pool).await?;
+        if let Some(mut exemplo) = servico::exemplo(&opcoes, dieta) {
+            exemplo.formular = campos.get("modo").is_some_and(|v| v == "formular");
+            campos = formularios::campos_cenario(&exemplo);
+            formularios::completar_cenario(&mut campos, &opcoes.alimentos);
+        } else {
+            erros.push(crate::dominio::validacao::problema(
+                "exemplo_pendente",
+                "Cadastros da demonstração indisponíveis; seu rascunho foi preservado.",
+            ));
+        }
+    } else {
+        campos.insert("exemplo_pendente".into(), q["dieta"].clone());
+        if q.get("acao").is_some_and(|a| a == "aplicar") {
+            erros.push(crate::dominio::validacao::problema(
+                "confirmar_exemplo",
+                "Confirme a substituição do rascunho antes de preencher com o exemplo.",
+            ));
+        }
+    }
+    Ok(
+        apresentacao::cenario(&e, &campos, &erros, headers.contains_key("hx-request"))
             .await?
             .into_response(),
     )

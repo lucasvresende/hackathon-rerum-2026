@@ -64,11 +64,15 @@ impl Render for ConfiguracoesCenario<'_, '_> {
                                 obrigatorio: true })
                         }
                     }
-                    (Expansivel { id: "medicao", aberto:
-                        false, titulo:
+                    (Expansivel { id: "medicao", aberto: self.0.valor("expansao-medicao") == "true"
+                        || self.0.erro("medicao").is_some()
+                        || ["oferta_observada", "sobras_observadas", "periodo_observado"]
+                            .iter().any(|nome| self.0.erro(nome).is_some()), titulo:
                         html! { "Consumo observado por pesagem do lote (opcional)" },
                         conteudo:
                         html! {
+                            (super::super::componentes::campo::MensagemErro {
+                                nome: "medicao", erro: self.0.erro("medicao") })
                             p.muted {
                                 "Mesmos animais e período; informe MS de oferta e sobras. \
                             Isso não determina a composição ingerida quando há seleção de
@@ -80,7 +84,8 @@ impl Render for ConfiguracoesCenario<'_, '_> {
                                 "MS das sobras do lote (kg)"),
                                 ("periodo_observado",
                                 "Período da medição (dias)")] {
-                                    (Campo { erro: self.0.erro(nome), nome, rotulo,
+                                    (Campo { erro: self.0.erro(nome)
+                                        .or_else(|| self.0.erro("medicao")), nome, rotulo,
                                         valor:
                                         self.0.valor(nome), tipo: "number",
                                         dica:

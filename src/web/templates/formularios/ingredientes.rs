@@ -17,33 +17,7 @@ impl Render for Ingredientes<'_, '_> {
                 "Selecione uma composição por alimento. Formulação: até 10; verificação: até 20. "
                 "Preços em R$/kg MN; limites em kg MS/animal/dia."
             }
-            (Expansivel {
-                id: "selecao-ingredientes",
-                aberto: self.0.valor("expansao-selecao-ingredientes") == "true",
-                titulo: html! { "Selecionar ingredientes" },
-                conteudo: html! {
-                    div
-                    hx-post="/cenarios/atualizar" hx-trigger="change target:'input[type=checkbox]'"
-                    hx-target="#formulario" hx-swap="outerHTML" hx-include="#formulario"
-                    hx-validate="false" {
-                        p.muted { "Marque os ingredientes para editar suas condições abaixo." }
-                        @for a in self.0.alimentos {
-                            @let id = &a.composicao_id;
-                            label.check {
-                                input type="checkbox" name=(format!("usar-{id}"))
-                                id=(format!("usar-{id}"))
-                                checked[self.0.valor(&format!("usar-{id}")) == "on"];
-                                (&a.nome) " · " (&a.natureza)
-                            }
-                        }
-                        button.button.secondary type="submit" formnovalidate
-                        formaction="/cenarios/atualizar" hx-post="/cenarios/atualizar"
-                        hx-target="#formulario" hx-swap="outerHTML" data-sem-validacao {
-                            "Atualizar ingredientes selecionados"
-                        }
-                    }
-                },
-            })
+            (super::selecao_ingredientes::SelecaoIngredientes(self.0))
             @for a in self.0.alimentos {
                 @let id = &a.composicao_id;
                 @if self.0.valor(&format!("usar-{id}")) != "on" {
@@ -63,15 +37,29 @@ impl Render for Ingredientes<'_, '_> {
                                 ("preco", "Preço na unidade comercial"),
                                 ("estoque", "Estoque bruto (kg MN)")] {
                                 @let nome = format!("{prefixo}-{id}");
+                                @let formular = self.0.valor("modo") == "formular";
+                                div data-quantidade=[(prefixo == "q").then_some("")]
+                                    hidden[prefixo == "q" && formular] {
                                 (Campo { erro: self.0.erro(&nome), nome: &nome, rotulo,
-                                    valor: self.0.valor(&nome), tipo: "number",
+                                    valor: self.0.valor(&nome),
+                                    tipo: if prefixo == "q" && formular { "hidden" }
+                                        else { "number" },
                                     dica: if prefixo == "estoque" { "Vazio significa desconhecido" }
                                         else if prefixo == "q" { "Ignorada ao formular" }
                                         else { "Padrão: R$/kg MN; informe sua cotação" },
                                     obrigatorio: prefixo == "preco" || (prefixo == "q"
-                                        && self.0.valor("modo") != "formular") })
+                                        && !formular) })
+                                }
                             }
                         }
+                        p.muted { "Informe o estoque, deixe vazio para desconhecido ou marque "
+                            "a hipótese de disponibilidade sem limite abaixo." }
+                                label.check { input type="checkbox"
+                                    name=(format!("livre-{id}"))
+                                    checked[self.0.valor(&format!("livre-{id}")) ==
+                                    "on"];
+                                    "Hipótese explícita: disponibilidade sem limite neste cenário"
+                                }
                         (Expansivel {
                             id: &format!("ingrediente-{id}"),
                             aberto: self.0.valor(&format!("expansao-ingrediente-{id}"))
@@ -137,12 +125,6 @@ impl Render for Ingredientes<'_, '_> {
                                         dica: "Justifique também preços zero",
                                         obrigatorio: self.0.valor(&format!("usar-{id}")) ==
                                         "on" })
-                                }
-                                label.check { input type="checkbox"
-                                    name=(format!("livre-{id}"))
-                                    checked[self.0.valor(&format!("livre-{id}")) ==
-                                    "on"];
-                                    "Hipótese explícita: disponibilidade sem limite neste cenário"
                                 }
                             },
                         })

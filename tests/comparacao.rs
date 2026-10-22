@@ -60,3 +60,16 @@ async fn equivalencia_preserva_criterios_independentemente_do_custo() {
     b.parecer.custo = Some(1.0);
     assert!(Comparacao::entre(a, b).equivalentes);
 }
+
+#[tokio::test]
+async fn busca_sem_candidata_nao_apresenta_economia_da_entrada() {
+    let mut a = execucao().await;
+    a.parecer.custo = Some(10.0);
+    let mut b = a.clone();
+    b.parecer.custo = Some(0.0);
+    for estado in ["INVIAVEL_NO_MODELO", "INCONCLUSIVA"] {
+        b.parecer.busca = Some(estado.into());
+        assert!(b.parecer.custo_resultado().is_none());
+        assert!(Comparacao::entre(a.clone(), b.clone()).economia.is_none());
+    }
+}

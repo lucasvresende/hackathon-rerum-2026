@@ -33,8 +33,8 @@ impl Render for Comparacao<'_> {
                         b.cenario.base_comparacao.clone()),
                     ] { tr { th { (nome) } td { (va) } td { (vb) } } }
                     tr { th { "Custo / animal / dia" }
-                        td { (a.parecer.custo.map(dinheiro).unwrap_or("—".into())) }
-                        td { (b.parecer.custo.map(dinheiro).unwrap_or("—".into())) }
+                        td { (a.parecer.custo_resultado().map(dinheiro).unwrap_or("—".into())) }
+                        td { (b.parecer.custo_resultado().map(dinheiro).unwrap_or("—".into())) }
                     }
                 }
             }

@@ -265,3 +265,8 @@ td .cadastro-actions { min-width: 110px; }
 .cadastro-actions details { width: 100%; }
 .cadastro-actions details form { padding-top: 12px; }
 .cadastro-actions summary { cursor: pointer; }
+
+/* Pesquisa e confirmação no formulário de dieta. */
+.selecao-classe { border: 0; padding: 0; margin: 1rem 0; }
+.selecao-classe legend { font-weight: 700; margin-bottom: .5rem; }
+.actions > #exemplo_pendente { flex-basis: 100%; }

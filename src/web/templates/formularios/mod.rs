@@ -8,3 +8,6 @@ mod ingredientes;
 pub mod lote;
 
 mod configuracoes_cenario;
+
+mod exemplo_cenario;
+mod selecao_ingredientes;
