@@ -144,3 +144,9 @@ os filtros e a navegação entre páginas pela URL. Escolha a alternativa na pá
 clique em **Comparar premissas e custos**. Alternativas de outro lote ou revisão ficam
 identificadas como incompatíveis. **Remover referência** libera uma nova escolha.
 Uma referência inexistente permite limpar a seleção. O fluxo funciona sem JavaScript.
+
+A comparação apresenta consumo, oferta e custo de cada ingrediente a partir do parecer salvo,
+e não das quantidades iniciais de uma otimização. Mostra revisões diferentes, balanço
+nutricional e estados por dimensão. Quantidades práticas ficam separadas e mantêm o aviso de
+validação. Sem candidata, pesagem definida ou associação única da composição, mostra
+**Indisponível**. Registros antigos só usam o nome para associação quando ele é único.

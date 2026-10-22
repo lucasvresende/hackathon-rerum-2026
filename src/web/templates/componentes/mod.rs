@@ -55,3 +55,6 @@ mod resultado_barreiras;
 
 #[path = "../../execucoes/templates/componentes/ficha_fornecimento.rs"]
 mod ficha_fornecimento;
+
+#[path = "../../comparacao/templates/componentes/comparacao_balanco.rs"]
+pub mod comparacao_balanco;

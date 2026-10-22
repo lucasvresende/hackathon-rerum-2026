@@ -56,3 +56,7 @@ pub async fn comparar(pool: &SqlitePool, a: &str, b: &str) -> Resultado<Comparac
     let b = historico::obter(pool, b).await?;
     Ok(Comparacao::entre(a, b))
 }
+
+#[path = "comparacao_fornecimento.rs"]
+mod fornecimento;
+pub use fornecimento::{fornecimento, tem_resultado};

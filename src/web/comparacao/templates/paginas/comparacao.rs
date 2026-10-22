@@ -1,6 +1,6 @@
 //! Página de apresentação para comparacao, mantendo a renderização desta responsabilidade isolada.
 use super::super::componentes::cabecalho::Cabecalho;
-use super::super::componentes::comparacao_item::PremissasItem;
+use super::super::componentes::comparacao_item::{PremissasItem, QuantidadesItem};
 use super::super::layouts::Principal;
 use crate::dominio::unidades::dinheiro;
 use crate::web::formatacao::{estado, numero};
@@ -78,6 +78,7 @@ impl Render for Comparacao<'_> {
                     }
                 }
             }
+            (super::super::componentes::comparacao_balanco::Balanco(a, b))
             h2 { "Ingredientes e premissas de custo" }
             table {
                 thead { tr { th { "Ingrediente" } th { "Referência" } th { "Alternativa" } } }
@@ -85,16 +86,22 @@ impl Render for Comparacao<'_> {
                     @for item in &a.cenario.itens {
                         @let outro=b.cenario.itens.iter()
                             .find(|i|i.alimento.id==item.alimento.id);
-                        tr { th { (&item.alimento.nome) }
-                            @for i in [Some(item),outro] {
-                                td { (PremissasItem(i)) }
+                        tr { th { (&item.alimento.nome)
+                            @if outro.is_some_and(|i| i.alimento.composicao_id
+                                != item.alimento.composicao_id) {
+                                p { "Revisões de composição diferentes" }
+                            }
+                        }
+                            @for (e, i) in [(a, Some(item)), (b, outro)] {
+                                td { (PremissasItem(i))
+                                    @if let Some(i) = i { (QuantidadesItem(e, i)) } }
                             }
                         }
                     }
                     @for i in b.cenario.itens.iter().filter(|i|!a.cenario.itens.iter()
                         .any(|original|original.alimento.id==i.alimento.id)) {
                         tr { th { (&i.alimento.nome) } td { "Ausente" }
-                            td { (PremissasItem(Some(i))) } }
+                            td { (PremissasItem(Some(i))) (QuantidadesItem(b, i)) } }
 
                     }
                 }
