@@ -45,8 +45,29 @@ Exporte as variáveis no ambiente antes de executar os comandos:
 | `FEEDYOURCOW_ENDERECO` | `127.0.0.1:3000`          | Endereço e porta do servidor. |
 | `RUST_LOG`             | `info`                    | Nível de logs.                |
 
-O arquivo `.env.example` é uma referência e não é carregado automaticamente.
-O servidor aceita apenas loopback; o MVP não inclui autenticação ou acesso compartilhado.
+O aplicativo não carrega arquivos `.env` automaticamente. Para usar os valores de
+`.env.example` no Bash, carregue-o no shell antes de preparar e iniciar:
+
+```sh
+set -a
+. ./.env.example
+set +a
+cargo run -- preparar
+cargo run -- servir
+```
+
+O `set -a` exporta as variáveis definidas pelo arquivo para os processos iniciados
+nesse mesmo terminal. Alternativamente, configure somente as variáveis desejadas:
+
+```sh
+export FEEDYOURCOW_BANCO="$HOME/feedyourcow-dados/aplicacao.sqlite3"
+export FEEDYOURCOW_ENDERECO="127.0.0.1:3000"
+export RUST_LOG=info
+```
+
+No pacote de produção, use `./iniciar.sh preparar` e `./iniciar.sh servir` no lugar dos
+comandos `cargo run`. O servidor aceita apenas loopback; o MVP não inclui autenticação ou
+acesso compartilhado.
 
 ## Usar a aplicação
 
