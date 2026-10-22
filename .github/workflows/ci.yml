@@ -15,6 +15,8 @@ jobs:
       - run: cargo clippy --locked --all-targets --all-features -- -D warnings
       - run: cargo fmt --check
       - run: python3 scripts/qualidade.py
+      - run: python3 -B -m unittest discover -s scripts -p 'test_*.py'
+      - run: python3 scripts/verificar_estrutura.py
       - run: python3 scripts/verificar_sqlx.py
       - run: RUST_LOG=warn cargo run --quiet -- ensaiar
       - uses: actions/upload-artifact@v4

@@ -356,6 +356,8 @@ cargo test --locked
 cargo clippy --locked --all-targets --all-features -- -D warnings
 cargo fmt --check
 python3 scripts/qualidade.py
+python3 -B -m unittest discover -s scripts -p 'test_*.py'
+python3 scripts/verificar_estrutura.py
 python3 scripts/verificar_sqlx.py
 RUST_LOG=warn cargo run --quiet -- ensaiar
 ```
@@ -366,6 +368,9 @@ atômica, preservação de alterações/exclusões, restauração explícita e b
 selecionadas por identidade, independentemente do catálogo incluído no primeiro uso.
 `qualidade.py` exige até 100 caracteres por linha nos arquivos de código e configuração, exceto
 Markdown, e avisa sobre módulos acima de 300 linhas.
+`verificar_estrutura.py` limita a 10 os arquivos `.rs` diretamente em cada diretório de `src/`,
+incluindo `mod.rs`, e lista os diretórios que excederem o limite. Os subdiretórios são contados
+separadamente; o CI executa a regra e seus testes.
 `verificar_sqlx.py` recria o banco de compilação e compara as consultas com o cache `.sqlx/`.
 `ensaiar` usa banco isolado, cinco aquecimentos e 100 execuções por operação: a meta de p95
 é até 1 segundo para verificar 20 ingredientes e 5 segundos para formular com 10 ingredientes.
