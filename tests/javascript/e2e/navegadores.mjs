@@ -201,6 +201,7 @@ try {
       await page.locator('#sobras').fill('10');
       await page.getByRole('button', { name: 'Calcular e salvar cenário' }).click();
       await page.waitForURL(/\/execucoes\/[a-f0-9-]+$/);
+      const idSimulacao = page.url().split('/').pop();
       assert.match(await page.locator('main').innerText(), /R\$ 13,10/);
       await novaGuia(page.getByRole('link', { name: 'Duplicar e simular' }));
       await abrirConfiguracoesCenario(page);
@@ -212,6 +213,7 @@ try {
       await preco.fill(String(Number(await preco.inputValue()) * 1.1));
       await page.getByRole('button', { name: 'Calcular e salvar cenário' }).click();
       await page.waitForURL(/\/execucoes\/[a-f0-9-]+$/);
+      const idPrecoMs = page.url().split('/').pop();
       assert.match(await page.locator('.stats .stat').nth(1).innerText(), /10,800 kg MS/);
       const custo = Number((await page.locator('.stats .stat').first().innerText())
         .match(/R\$ ([0-9,]+)/)[1].replace(',', '.'));
@@ -226,7 +228,8 @@ try {
       await page.emulateMedia({ media: 'screen' });
       await page.goto(`${url}/historico`);
       await conferirTela('Histórico e análise');
-      await page.locator('#a').selectOption({ index: 1 });
+      await page.locator('#a').selectOption(idPrecoMs);
+      await page.locator('#b').selectOption(idSimulacao);
       await page.getByRole('button', { name: 'Comparar premissas e custos' }).click();
       await conferirTela('Comparação de cenários');
       await page.goto(`${url}/alimentos`);

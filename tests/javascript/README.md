@@ -41,6 +41,8 @@ O job JavaScript do CI recebe o binário produzido pelo job Rust.
 A suíte usa Playwright e `node:assert/strict`, sem dependências adicionais.
 As capturas ficam em `output/playwright/`, fora do Git. O banco operacional não é utilizado.
 `FEEDYOURCOW_NAVEGADORES=chromium npm run test:e2e` restringe um diagnóstico; a entrega usa os três.
+O fluxo completo compara duas simulações do mesmo lote por ID, sem depender da ordem do
+histórico ou de outros lotes já presentes.
 
 Testes de DOM e htmx pertencem a `e2e/`. A pasta `unitarios/` e o comando `test:unit` serão
 adicionados quando houver funções puras relevantes; não há uma suíte unitária JavaScript atual.
