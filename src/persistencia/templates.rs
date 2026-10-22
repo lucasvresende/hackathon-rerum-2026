@@ -19,9 +19,12 @@ pub async fn ler(conexao: &mut SqliteConnection) -> Resultado<Vec<ModeloPreenchi
                     .filter(|v| v.modelo_id == m.id)
                     .map(|v| ValorModelo {
                         campo: v.campo.clone(),
-                        valor: v.valor.clone(),
+                        valor: valor_apresentavel(&v.valor, &v.unidade),
                         unidade: v.unidade.clone(),
-                        valor_original: v.valor_original.clone(),
+                        valor_original: valor_apresentavel(
+                            &v.valor_original,
+                            &v.unidade_original,
+                        ),
                         unidade_original: v.unidade_original.clone(),
                         natureza: v.natureza.clone(),
                         fonte_id: v.fonte_id.clone(),
@@ -31,14 +34,41 @@ pub async fn ler(conexao: &mut SqliteConnection) -> Resultado<Vec<ModeloPreenchi
                 nome: m.nome,
                 versao: m.versao,
                 tipo: m.tipo,
-                contexto: m.contexto,
-                lacunas: m.lacunas,
+                contexto: referencia_atual(&m.contexto),
+                lacunas: referencia_atual(&m.lacunas),
                 fonte_id: m.fonte_id,
                 fonte_titulo: m.fonte_titulo,
                 fonte_url: m.fonte_url,
             })
             .collect(),
     )
+}
+
+/// Mantém as referências do formulário alinhadas à versão vigente dos requisitos.
+fn referencia_atual(texto: &str) -> String {
+    texto.replace(
+        "REQUISITOS.md, anexo A, versão 1.4",
+        "REQUISITOS.md, anexo A, versão 1.5",
+    )
+}
+
+/// Remove apenas dígitos que representam ruído binário em valores decimais publicados.
+fn valor_apresentavel(valor: &str, unidade: &str) -> String {
+    if unidade == "texto" {
+        return referencia_atual(valor);
+    }
+    let Ok(numero) = valor.parse::<f64>() else {
+        return valor.into();
+    };
+    for casas in 0..=16 {
+        let candidato = format!("{numero:.casas$}");
+        if let Ok(lido) = candidato.parse::<f64>()
+            && (lido - numero).abs() <= 4.0 * f64::EPSILON * numero.abs()
+        {
+            return candidato;
+        }
+    }
+    valor.into()
 }
 
 pub async fn validar(conexao: &mut SqliteConnection) -> Resultado<()> {

@@ -193,7 +193,8 @@ expansíveis. Ao imprimir, o conteúdo dessas cartas é mostrado mesmo quando es
 
 Os formulários mostram todos os campos, com grupos secundários recolhidos em seções expansíveis.
 Em cadastros, **Preencher com exemplo** abre uma prévia; confirme para preencher e revise os
-valores antes de **Salvar revisão**. **Criar cópia** gera um cadastro independente. Exemplos podem
+valores antes de **Salvar revisão**. A prévia remove resíduos de precisão binária e acompanha a
+versão documental vigente. **Criar cópia** gera um cadastro independente. Exemplos podem
 ser removidos das opções; a remoção exige confirmação e preserva o histórico. Para recuperá-los,
 use **Restaurar exemplos** e escolha entre criar uma cópia independente ou restaurar o registro
 inicial como nova revisão. A ação exige confirmação explícita. Repetir `preparar` não desfaz
