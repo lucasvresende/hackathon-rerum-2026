@@ -2,10 +2,10 @@
 
 PDFs preparados em 22/10/2026, em A4, com capa, sumário navegável e páginas numeradas.
 
-- [Documentação completa](DOCUMENTACAO_COMPLETA.pdf): 37 páginas com o README principal,
-  o mapa de documentação e os guias de uso, operação, requisitos, motor, arquitetura,
+- [Documentação completa](DOCUMENTACAO_COMPLETA.pdf): 36 páginas com o README principal,
+  os guias de uso, operação, requisitos, motor, arquitetura,
   qualidade, fontes e processo de desenvolvimento. Inclui imagens de uso e avisos de licença.
-  Os relatórios de auditoria e seus trechos de índice foram excluídos desta compilação.
+  O mapa da documentação e os relatórios de auditoria foram excluídos desta compilação.
 - [Literatura e motor do Tema 2](TEMA_2_DIETAS_LITERATURA_E_MOTOR.pdf): 30 páginas com o
   conteúdo de `hackathon/TEMA_2_DIETAS_LITERATURA_E_MOTOR.md`. Preserva a pesquisa e proposta
   documental original de 20/10/2026; o contrato implementado está na documentação completa.
