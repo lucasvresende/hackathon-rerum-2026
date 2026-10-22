@@ -415,6 +415,12 @@ O cálculo operacional é determinístico e não utiliza modelos de linguagem.
 
 ### Preenchimento de novas dietas
 
+A formulação ignora quantidades iniciais no servidor. Uma pesagem parcialmente preenchida exige
+os demais dados, em vez de ser descartada. A origem efetiva do consumo é derivada do alvo ou da
+pesagem; comentários próprios são preservados. Textos automáticos de estimativa e taxas zero são
+atualizados quando deixam de corresponder às entradas. A revalidação arredondada preserva um
+parecer separado, com consumo, custo e violações, sem alterar o ótimo contínuo.
+
 Novas dietas começam com horizonte de um dia, datas civis atuais de São Paulo, consumo
 estimado, quantidades em kg MS/animal/dia e hipóteses explícitas de sobras/perdas zero.
 Nome, lote, ingredientes, cotação e disponibilidade exigem escolha ou informação do operador.

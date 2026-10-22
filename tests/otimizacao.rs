@@ -264,3 +264,32 @@ async fn ct16_desempate_lexicografico_com_custos_identicos() {
         assert!(proximos(x.consumo_ms, y.consumo_ms));
     }
 }
+
+#[tokio::test]
+async fn arredondamento_preserva_balanco_custo_e_violacoes_praticas() {
+    let (mut c, base) = exemplo().await;
+    for i in &mut c.itens {
+        i.resolucao_mn = 1.0;
+    }
+    let p = formular(&c, &base);
+    let pratico = p.pratico.as_ref().expect("diagnóstico prático preservado");
+    assert_eq!(p.busca.as_deref(), Some("OTIMO_NO_MODELO"));
+    assert!(!pratico.pratico_valido);
+    assert!(pratico.pratico.is_none());
+    assert!(!proximos(pratico.consumo_ms, p.consumo_ms));
+    assert!(!proximos(pratico.custo.unwrap(), p.custo.unwrap()));
+    assert!(pratico.verificacoes.iter().any(|v| v.regra == "OPT-ALVO"));
+    assert!(
+        pratico
+            .verificacoes
+            .iter()
+            .any(|v| v.estado == Estado::Viola)
+    );
+    let mut json = serde_json::to_value(&p).unwrap();
+    json.as_object_mut().unwrap().remove("pratico");
+    let antigo: Parecer = serde_json::from_value(json).unwrap();
+    assert!(
+        antigo.pratico.is_none(),
+        "histórico anterior continua legível"
+    );
+}

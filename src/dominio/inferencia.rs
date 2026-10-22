@@ -25,6 +25,7 @@ pub fn verificar(c: &Cenario, base: &Conhecimento) -> Parecer {
                     .into(),
             );
         }
+        p.pratico = Some(Box::new(revalidado));
     }
     p
 }

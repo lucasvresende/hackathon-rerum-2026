@@ -282,3 +282,16 @@ impl Item {
         })
     }
 }
+
+impl Cenario {
+    /// Origem determinada pelas entradas estruturadas; o comentário livre é preservado à parte.
+    pub fn tipo_consumo(&self) -> &'static str {
+        if self.consumo_alvo.is_some() {
+            "Informado pelo operador"
+        } else if self.medicao.is_some() {
+            "Observado por pesagem do lote"
+        } else {
+            "Estimado pelo perfil"
+        }
+    }
+}

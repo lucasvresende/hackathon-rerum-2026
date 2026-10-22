@@ -205,6 +205,7 @@ pub fn formular(c: &Cenario, base: &Conhecimento) -> Parecer {
     });
     let mut p = if let Some((_, quantidades, p)) = candidatas.into_iter().next() {
         let mut pratica = ordenado.clone();
+        pratica.formular = false;
         for ((item, q), f) in pratica
             .itens
             .iter_mut()
@@ -216,8 +217,21 @@ pub fn formular(c: &Cenario, base: &Conhecimento) -> Parecer {
             if item.resolucao_mn > 0.0 {
                 item.quantidade = f.pratico_mn * item.alimento.ms * (1.0 - c.sobras);
             }
+            item.resolucao_mn = 0.0;
         }
-        let verificada = inferencia::verificar(&pratica, base);
+        let mut verificada = inferencia::verificar(&pratica, base);
+        if !proximos(verificada.consumo_ms, alvo) {
+            verificada.pratico_valido = false;
+            verificada.registrar(
+                "OPT-ALVO",
+                "Consumo-alvo",
+                Estado::Viola,
+                format!(
+                    "Consumo prático {} kg MS difere do alvo {} kg MS.",
+                    verificada.consumo_ms, alvo
+                ),
+            );
+        }
         let mut p = p;
         p.pratico_valido = verificada.pratico_valido && proximos(verificada.consumo_ms, alvo);
         if !p.pratico_valido {
@@ -226,6 +240,9 @@ pub fn formular(c: &Cenario, base: &Conhecimento) -> Parecer {
                 solução contínua preservada. Não há certificado de ótimo para quantidades práticas."
                     .into(),
             );
+        }
+        if c.itens.iter().any(|i| i.resolucao_mn > 0.0) {
+            p.pratico = Some(Box::new(verificada));
         }
         p.busca = Some(classificar_busca(&estados, true).into());
         p

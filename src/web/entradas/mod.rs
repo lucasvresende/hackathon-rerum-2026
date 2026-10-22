@@ -1,6 +1,7 @@
 //! Conversão dos campos HTTP em modelos de domínio e utilitários de leitura dos formulários.
 mod cadastros;
 mod cenario;
+mod premissas;
 
 pub use cadastros::*;
 pub use cenario::*;

@@ -67,6 +67,9 @@ pub struct Parecer {
     pub busca: Option<String>,
     pub subproblemas: Vec<Subproblema>,
     pub pratico_valido: bool,
+    /// Revalidação das quantidades arredondadas, separada da solução contínua.
+    #[serde(default)]
+    pub pratico: Option<Box<Parecer>>,
     pub duracao_ms: u64,
     pub avisos: Vec<String>,
     #[serde(default)]
@@ -89,6 +92,7 @@ impl Default for Parecer {
             busca: None,
             subproblemas: Vec::new(),
             pratico_valido: false,
+            pratico: None,
             duracao_ms: 0,
             avisos: Vec::new(),
             caminho: Vec::new(),

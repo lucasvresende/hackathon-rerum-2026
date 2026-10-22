@@ -47,7 +47,7 @@ pub fn ler_cenario(
             }
         }
         let mut quantidade = if texto(c, "modo") == "formular" {
-            numero(c, &chave("q"), &mut erros).unwrap_or(0.0)
+            0.0
         } else {
             obrigatorio(c, &chave("q"), &mut erros)
         };
@@ -100,7 +100,10 @@ pub fn ler_cenario(
         sobras: obrigatorio(c, "sobras", &mut erros) / 100.0,
         origem_sobras: texto(c, "origem_sobras").into(),
         consumo_alvo: numero(c, "consumo_alvo", &mut erros),
-        medicao: if texto(c, "oferta_observada").is_empty() {
+        medicao: if ["oferta_observada", "sobras_observadas", "periodo_observado"]
+            .iter()
+            .all(|nome| texto(c, nome).is_empty())
+        {
             None
         } else {
             Some(MedicaoConsumo {
@@ -121,6 +124,8 @@ pub fn ler_cenario(
         limite_segundos: 10.0,
         itens,
     };
+    let mut cenario = cenario;
+    super::premissas::atualizar(&mut cenario);
     erros.extend(crate::dominio::validacao::validar(&cenario));
     if erros.is_empty() {
         Ok(cenario)

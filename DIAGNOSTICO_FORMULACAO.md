@@ -2,6 +2,14 @@
 
 Inspeção em 21/10/2026, com código-base `29bdd20`. Nenhuma correção funcional foi aplicada.
 
+## Acompanhamento das correções
+
+O diagnóstico abaixo registra o comportamento anterior. A implementação posterior passou a
+rejeitar medições parciais (F04), ignorar quantidades iniciais na formulação (parte de F10),
+atualizar somente textos automáticos de origem (F07) e preservar a revalidação prática completa
+(parte de F05). Regressões de domínio e entradas estão em `tests/otimizacao.rs` e
+`tests/entradas_formulacao.rs`. As mudanças de apresentação são acompanhadas nas próximas etapas.
+
 Foram executados 23 cenários em Chromium, Firefox e WebKit, além de inspeção móvel nos três
 navegadores, seis ensaios de seleção concorrente e casos adicionais de navegação, cópia e estoque.
 Os 23 cenários tiveram os mesmos estados de busca e validação nos três navegadores.

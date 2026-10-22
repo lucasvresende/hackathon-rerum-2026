@@ -258,6 +258,7 @@ servidor será obrigatória mesmo quando houver validação no navegador.
 **Aceite:** PV 650 kg sem consumo-alvo usará referência extrapolada com aviso; PV 300 e 800 kg
 serão aceitos com os avisos aplicáveis; PV abaixo de 300 ou acima de 800 kg produzirá
 FORA_DO_PERFIL. Dados contraditórios deverão ser resolvidos pelo operador.
+Qualquer campo de pesagem preenchido exigirá oferta, sobras e período completos.
 
 ### RF-08 — Determinação de consumo
 
@@ -737,6 +738,8 @@ formulação contínua exigida. Uma futura busca em grade deverá declarar seu a
 Arredondar somente após obter a candidata contínua e registrar resolução por ingrediente.
 Recalcular consumo, nutrientes, linha de fibra, limites, oferta, custo e estoque.
 Se houver violação, sinalizar FORNECIMENTO_INCOMPATIVEL e impedir recomendação prática.
+Preservar o diagnóstico prático com consumo, custo, balanços e verificações das violações,
+separadamente do parecer contínuo, inclusive quando o arredondamento alterar o consumo-alvo.
 Não conservar a alegação de ótimo global para o problema arredondado sem prova específica.
 
 ### RN-21 — Economia
