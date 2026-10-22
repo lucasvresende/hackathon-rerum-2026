@@ -74,7 +74,7 @@ pub const BALANCO: Dica = Dica {
 pub const FORNECIMENTO: Dica = Dica {
     id: "dica-fornecimento",
     conceito: "Fornecimento prático",
-    texto: "Quantidades para fornecer após o arredondamento escolhido por ingrediente. \
+    texto: "A recomendação prática exige resolução positiva nos ingredientes usados e revalidação. \
         Arredondar pode alterar o atendimento das restrições; use a indicação de revalidação. \
         Consumo em MS, oferta em MN e necessidade bruta de estoque são grandezas diferentes.",
 };

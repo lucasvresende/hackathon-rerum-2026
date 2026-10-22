@@ -148,3 +148,8 @@ da transição; em seguida, o teste ativa movimento reduzido e confere que a ani
 
 Transições do seletor validadas em 21/10/2026: `cenario-simplificado` e `condicionais`
 aprovadas nos três navegadores; testes Rust do cenário, clippy e formatação aprovados.
+
+
+A suíte `resultado-operacional` cobre solução contínua sem resolução, recusa prática no topo,
+valores de fibra, premissas da comparação, estados do histórico, leitura móvel e impressão curta.
+Exemplo de execução isolada: `FEEDYOURCOW_SUITES=resultado-operacional npm run test:e2e`.

@@ -38,11 +38,14 @@ impl Render for ResultadoExecucao<'_> {
                 target="_blank" rel="noopener" title="Abre em nova guia" {
                     "Duplicar e simular" }
                 button.button.secondary type="button" data-imprimir { "Imprimir parecer" }
+                button.button.secondary type="button" data-imprimir="ficha" {
+                    "Imprimir ficha de fornecimento" }
                 form method="post" action=(format!("/execucoes/{}/reproduzir", e.id)) {
                     input type="hidden" name="csrf" value=(self.token);
                     button.button.secondary { "Reproduzir versões originais" }
                 }
             }
+            (super::ficha_fornecimento::Ficha(c, p, &e.id))
             (super::situacao_execucao::Situacao(c, p))
             @if !sem_candidata {
                 @if let Some(pratico) = &p.pratico {
@@ -69,7 +72,8 @@ impl Render for ResultadoExecucao<'_> {
             (numeros::Resumo { cenario: c, parecer: p })
             section.card {
                 div.concept-label.section-concept {
-                    h2 { "Resultados por dimensão da solução contínua" } (conceitos::ESTADOS)
+                    h2 { "Resultados por dimensão"
+                        @if c.formular { " da solução contínua" } } (conceitos::ESTADOS)
                 }
                 div.dimension-grid {
                     @for nome in ["Dados", "Elegibilidade", "Núcleo químico",
@@ -98,7 +102,8 @@ impl Render for ResultadoExecucao<'_> {
                         }
                     }
                 }
-                @for aviso in &p.avisos { p.alert { (aviso) } }
+                @for aviso in &p.avisos { p.alert { (aviso.replace("FORNECIMENTO_INCOMPATIVEL:",
+                    "Fornecimento incompatível:")) } }
             }
             (numeros::Balanco(p))
             (super::resultado_barreiras::Barreiras(p, &e.conhecimento))

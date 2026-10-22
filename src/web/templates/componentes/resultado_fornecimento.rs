@@ -14,7 +14,10 @@ impl Render for Fornecimento<'_> {
         let pendente = p.resolucao_pendente(c);
         html! {
             section.card.table-wrap #fornecimento {
-                h2 { "Quantidades de fornecimento" }
+                div.concept-label.section-concept {
+                    h2 { "Quantidades de fornecimento" }
+                    (super::conceitos_resultado::FORNECIMENTO)
+                }
                 p { (estado(p.estado_fornecimento(c))) }
                 @if c.formular {
                     p.muted {
@@ -36,13 +39,17 @@ impl Render for Fornecimento<'_> {
                     tbody { @for f in &p.fornecimento {
                         tr class=(if f.consumo_ms == 0.0 { "muted" } else { "" }) {
                             td { (&f.ingrediente) }
-                            td {
+                            td data-rotulo="Oferta prática kg MN/animal/dia" {
                                 @if !pendente {
                                     (quantidade_pratica(f.pratico_mn))
                                 } @else { "Não definida" }
                             }
-                            @for v in [f.consumo_ms, f.oferta_mn, f.oferta_lote,
-                                f.necessidade_bruta] { td { (numero(v, 4)) } }
+                            @for (rotulo, v) in [
+                                ("Consumo contínuo kg MS/animal/dia ≈", f.consumo_ms),
+                                ("Oferta contínua kg MN/animal/dia ≈", f.oferta_mn),
+                                ("Oferta contínua kg MN/lote/dia ≈", f.oferta_lote),
+                                ("Bruto contínuo kg MN/lote/horizonte ≈", f.necessidade_bruta),
+                            ] { td data-rotulo=(rotulo) { (numero(v, 4)) } }
                         }
                     } }
                 }

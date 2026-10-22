@@ -487,3 +487,8 @@ inviabilidade só são atribuídas quando demonstradas por um limite superior ma
 O relatório mostra os valores de FDN, FDN de forragem, amido e EE com a linha efetiva e seus limites.
 Em banco recém-preparado, o formulário oferece **Cenário de exemplo** com confirmação do rascunho.
 Os atalhos históricos A/B só aparecem quando seus cadastros estão disponíveis.
+
+**Imprimir ficha de fornecimento** gera uma versão operacional curta, com a condição de uso e as
+quantidades diárias. A ficha sem resolução ou com restrições traz a recusa de recomendação.
+**Imprimir parecer** continua incluindo a auditoria completa. No celular, o fornecimento aparece
+por ingrediente, com a pesagem prática antes das aproximações contínuas e unidades por dia.

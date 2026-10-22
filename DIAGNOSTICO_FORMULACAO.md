@@ -2,6 +2,39 @@
 
 Inspeção original em 21/10/2026, com código-base `29bdd20`, anterior às correções abaixo.
 
+## Correções da revisão no Chromium — 22/10/2026
+
+A revisão adicional usou banco limpo e trinta execuções. O oráculo independente confirmou
+22 soluções viáveis e três casos inviáveis. O solver e as tolerâncias foram preservados;
+as correções concentram-se na recomendação, explicação e leitura operacional.
+
+| Achado adicional | Correção e cobertura |
+| --- | --- |
+| Quantidades visuais incompatíveis com validação | Resolução zero indica aproximação contínua; recomendação exige resolução positiva nos ingredientes usados. Pesagens preservam casas decimais. Teste de cópia e nova verificação em `fornecimento_apresentacao.rs`. |
+| Déficit exibido como zero | Diferenças relevantes pequenas usam notação científica; balanços equivalentes pela tolerância mostram zero sem sinal negativo. |
+| Histórico confunde estados | Busca e condição de fornecimento são independentes; inviabilidade não é apresentada como entrada inválida. |
+| Comparação omite premissas | Mostra resolução, inclusão mínima/máxima, teto de suplemento, consumo/custo práticos e escopo do custo contínuo. |
+| Recusa prática escondida | Estado operacional e diagnóstico prático precedem o certificado da busca e os valores contínuos. |
+| Pendências genéricas | Identificam alimento e campo; explicações de inviabilidade só atribuem causa com prova matemática conservadora. |
+| A/B indisponíveis no banco limpo | Formulário oferece o cenário inicial com confirmação; A/B só aparecem com os cadastros históricos necessários. |
+| Barreiras pouco acessíveis | Quadro de FDN, FDN de forragem, amido e EE apresenta valores, limites e linha efetiva. |
+| Oferta prática fora da área móvel | Fornecimento por ingrediente no celular; pesagem prática precede aproximações. |
+| Unidades e linguagem | Grandezas de fornecimento explicitam animal/dia e lote/horizonte; comparação e avisos usam formatação brasileira. |
+| Impressão operacional longa | Ficha curta com condição de uso e quantidades, mantendo o parecer completo para auditoria. |
+
+Decisão confirmada pelo programador: não assumir resolução de pesagem. Zero mantém somente
+solução contínua aproximada. Ingrediente com quantidade zero não exige resolução positiva.
+Históricos antigos mantêm seus dados; a apresentação distingue os estados sem alterar o registro.
+
+Regressões: `tests/fornecimento_apresentacao.rs`, `tests/comparacao.rs`,
+`tests/exemplo_cenario_http.rs` e `tests/javascript/e2e/resultado-operacional.mjs`.
+A validação desta revisão passou em build, 72 testes Rust, Clippy, formatação, qualidade textual
+e 37 consultas SQLx. A suíte completa passou no Chromium. A tentativa em Firefox parou em
+um seletor ambíguo do novo teste; o seletor foi isolado por navegador. As reexecuções adicionais
+não foram autorizadas, portanto Firefox/WebKit não têm validação completa desta revisão.
+A ficha do exemplo com arredondamento incompatível foi gerada em uma página A4, com recusa
+explícita. Artefatos ficam em `output/playwright/`, incluindo `chromium-ficha-operacional.pdf`.
+
 ## Acompanhamento das correções
 
 O diagnóstico abaixo registra o comportamento anterior. A implementação posterior passou a

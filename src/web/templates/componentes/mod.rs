@@ -28,3 +28,5 @@ mod situacao_execucao;
 pub mod comparacao_item;
 
 mod resultado_barreiras;
+
+mod ficha_fornecimento;

@@ -40,10 +40,10 @@ pub fn medida(valor: f64, casas: usize) -> String {
 
 /// Valores equivalentes na tolerância do motor não recebem sinal negativo por ruído binário.
 pub fn balanco(oferta: f64, requisito: f64) -> String {
-    if crate::dominio::unidades::proximos(oferta, requisito) {
+    let delta = diferenca(oferta, requisito);
+    if delta == 0.0 {
         numero(0.0, 5)
     } else {
-        let delta = oferta - requisito;
         format!("{}{}", if delta > 0.0 { "+" } else { "" }, medida(delta, 5))
     }
 }
@@ -51,4 +51,13 @@ pub fn balanco(oferta: f64, requisito: f64) -> String {
 /// Representação que permite copiar a pesagem sem perder casas decimais validadas.
 pub fn quantidade_pratica(valor: f64) -> String {
     valor.to_string().replace('.', ",")
+}
+
+/// Usa o mesmo critério de proximidade no balanço, déficit e excesso apresentados.
+pub fn diferenca(oferta: f64, requisito: f64) -> f64 {
+    if crate::dominio::unidades::proximos(oferta, requisito) {
+        0.0
+    } else {
+        oferta - requisito
+    }
 }

@@ -1,5 +1,6 @@
 import { abrirConfiguracoesCenario } from './apoio.mjs';
 import { testarFormulacao } from './formulacao.mjs';
+import { testarResultadoOperacional } from './resultado-operacional.mjs';
 import { testarCenarioSimplificado } from './cenario-simplificado.mjs';
 import { testarExemplos } from './exemplos.mjs';
 import { testarDicas } from './dicas.mjs';
@@ -18,7 +19,7 @@ import { spawn, spawnSync } from 'node:child_process';
 import { chromium, firefox, webkit } from 'playwright';
 
 const nomesSuites = ['htmx', 'condicionais', 'falhas', 'guias', 'inicio', 'dicas',
-  'fluxos', 'exemplos', 'cenario-simplificado', 'formulacao'];
+  'fluxos', 'exemplos', 'cenario-simplificado', 'formulacao', 'resultado-operacional'];
 const suites = new Set(process.env.FEEDYOURCOW_SUITES?.split(',') || nomesSuites);
 for (const suite of suites) assert.ok(nomesSuites.includes(suite), `Suíte desconhecida: ${suite}`);
 
@@ -84,6 +85,9 @@ try {
         const [nova] = await Promise.all([contexto.waitForEvent('page'), link.click()]);
         await nova.waitForLoadState();
         page = nova;
+      }
+      if (suites.has('resultado-operacional')) {
+        await testarResultadoOperacional(browser, url, artefatos, nome);
       }
       if (suites.has('formulacao')) {
         await testarFormulacao(browser, url, artefatos, nome);

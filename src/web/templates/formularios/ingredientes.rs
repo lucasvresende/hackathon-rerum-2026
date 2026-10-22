@@ -101,7 +101,7 @@ impl Render for Ingredientes<'_, '_> {
                                     "Vazio: sem restrição adicional"),
                                     ("resolucao",
                                     "Resolução de oferta (kg MN/animal)",
-                                    "Zero mantém a quantidade contínua"),
+                                    "Zero: aproximação contínua, sem recomendação de pesagem"),
                                     ] {
                                         @let nome = format!("{prefixo}-{id}");
                                         (Campo { erro: self.0.erro(&nome), nome:

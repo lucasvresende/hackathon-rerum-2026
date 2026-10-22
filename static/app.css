@@ -270,3 +270,26 @@ td .cadastro-actions { min-width: 110px; }
 .selecao-classe { border: 0; padding: 0; margin: 1rem 0; }
 .selecao-classe legend { font-weight: 700; margin-bottom: .5rem; }
 .actions > #exemplo_pendente { flex-basis: 100%; }
+
+/* A pesagem precede a auditoria e permanece legível em telas estreitas. */
+.alert.notice { background: #f7f5e9; color: #665329; border-color: #dfd3ab; }
+#fornecimento td:nth-child(2) { font-weight: 700; overflow-wrap: anywhere; }
+.ficha-operacional { display: none; }
+@media (max-width: 540px) {
+    #fornecimento table, #fornecimento tbody, #fornecimento tr,
+    #fornecimento td { display: block; width: 100%; }
+    #fornecimento thead { display: none; }
+    #fornecimento tr { margin-bottom: 18px; border-bottom: 1px solid var(--borda); }
+    #fornecimento td { display: flex; justify-content: space-between; gap: 12px;
+        text-align: right; padding: 8px 0; border: 0; }
+    #fornecimento td::before { content: attr(data-rotulo); text-align: left;
+        font-weight: 400; flex: 0 0 55%; }
+    #fornecimento td:first-child { font-weight: 700; text-align: left; }
+    #fornecimento td:first-child::before { display: none; }
+}
+@media print {
+    .impressao-ficha main > :not(.ficha-operacional) { display: none !important; }
+    .impressao-ficha .ficha-operacional { display: block; }
+    .impressao-ficha h2 { margin-top: 16px; }
+    .impressao-ficha .ficha-operacional td { overflow-wrap: anywhere; }
+}

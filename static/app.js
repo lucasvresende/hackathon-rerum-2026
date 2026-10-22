@@ -1,8 +1,12 @@
 'use strict';
 // Comportamentos de apresentação; validação e decisões pertencem ao servidor.
 document.addEventListener('click', (evento) => {
-  if (evento.target.closest('[data-imprimir]')) window.print();
+  const botao = evento.target.closest('[data-imprimir]');
+  if (!botao) return;
+  document.body.classList.toggle('impressao-ficha', botao.dataset.imprimir === 'ficha');
+  window.print();
 });
+window.addEventListener('afterprint', () => document.body.classList.remove('impressao-ficha'));
 document.addEventListener('htmx:after:swap', () => {
   const erros = document.querySelector('#erros-formulario');
   if (erros) erros.focus();

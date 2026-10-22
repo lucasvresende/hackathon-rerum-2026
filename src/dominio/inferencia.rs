@@ -176,9 +176,9 @@ fn calcular(c: &Cenario, base: &Conhecimento, p: &mut Parecer) {
         if diferenca > base.discrepancia && !super::unidades::proximos(diferenca, base.discrepancia)
         {
             p.avisos.push(format!(
-                "MS da dieta difere {:.2}% da referência; aviso operacional, \
+                "MS da dieta difere {}% da referência; aviso operacional, \
                 sem diagnóstico de capacidade de consumo.",
-                100.0 * diferenca
+                format!("{:.2}", 100.0 * diferenca).replace('.', ",")
             ));
         }
     }

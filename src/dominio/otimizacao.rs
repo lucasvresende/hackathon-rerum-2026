@@ -246,7 +246,8 @@ pub fn formular(c: &Cenario, base: &Conhecimento) -> Parecer {
                 Estado::Viola,
                 format!(
                     "Consumo prático {} kg MS difere do alvo {} kg MS.",
-                    verificada.consumo_ms, alvo
+                    format!("{:.8}", verificada.consumo_ms).replace('.', ","),
+                    format!("{alvo:.8}").replace('.', ",")
                 ),
             );
         }

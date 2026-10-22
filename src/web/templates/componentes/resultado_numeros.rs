@@ -3,7 +3,7 @@ use super::conceitos_resultado as conceitos;
 use crate::dominio::calculos::NUTRIENTES;
 use crate::dominio::unidades::{dinheiro, preco_f64};
 use crate::dominio::{Cenario, Parecer};
-use crate::web::formatacao::{balanco, medida, numero};
+use crate::web::formatacao::{balanco, diferenca, medida, numero};
 use maud::{Markup, Render, html};
 
 pub struct Resumo<'a> {
@@ -63,10 +63,10 @@ impl Render for Balanco<'_> {
                             td { (valor.zip(requisito).map(|(v, r)| balanco(v, r))
                                 .unwrap_or("—".into())) }
                             td { (valor.zip(requisito)
-                                .map(|(v,r)|medida((r-v).max(0.0), 5))
+                                .map(|(v,r)|medida((-diferenca(v,r)).max(0.0), 5))
                                 .unwrap_or("—".into())) }
                             td { (valor.zip(requisito)
-                                .map(|(v,r)|medida((v-r).max(0.0), 5))
+                                .map(|(v,r)|medida(diferenca(v,r).max(0.0), 5))
                                 .unwrap_or("—".into())) }
                             td { (valor.zip(requisito).filter(|(_, r)| *r > 0.0)
                                 .map(|(v, r)| format!("{}%", numero(100.0*v/r, 1)))

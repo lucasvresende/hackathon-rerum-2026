@@ -74,7 +74,8 @@ pub const RESULTADOS: &[&str] = &[
             um diagnóstico de intoxicação. Consulte também as regras e limitações.",
     "Ótimo no modelo significa menor custo para os dados e restrições utilizados \
             na solução contínua. Ao arredondar para a pesagem real, uma restrição pode \
-            deixar de ser atendida. Por isso, confira a revalidação do fornecimento prático. \
+            deixar de ser atendida. Resolução zero indica aproximação contínua; informe resolução \
+            positiva nos ingredientes usados e confira a revalidação prática. \
             Resultado inconclusivo ou interrompido não prova que não exista uma solução.",
     "Leia as dimensões separadamente: integridade, nutrientes, barreiras ruminais, \
             ingredientes e avaliações fora do núcleo. ATENDE é atendimento ao perfil avaliado; \

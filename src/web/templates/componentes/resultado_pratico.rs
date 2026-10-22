@@ -44,7 +44,8 @@ impl Render for ResultadoPratico<'_> {
                 ul { @for v in p.verificacoes.iter().filter(|v| v.estado != Estado::Atende
                     && v.estado != Estado::NaoAplicavel) {
                     li {
-                        strong { (&v.regra) " · " (&v.dimensao) " · " (v.estado.rotulo()) }
+                        strong { (&v.dimensao) " · " (v.estado.rotulo()) }
+                        span.muted { " · referência " (&v.regra) }
                         " · " (&v.explicacao)
                         @if let (Some(valor), Some(limite)) = (v.valor, v.limite) {
                             " Calculado: " (numero(valor, 8)) " · limite: "
