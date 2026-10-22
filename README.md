@@ -480,3 +480,10 @@ informe resolução positiva para cada ingrediente usado; ingredientes zerados n
 A aprovação prática depende da revalidação, sem modificar o ótimo contínuo ou suas tolerâncias.
 O histórico distingue busca e fornecimento; a comparação considera a validade prática da alternativa.
 Valores muito pequenos do balanço usam notação científica quando necessário para explicar violações.
+
+A comparação exibe inclusão mínima/máxima, teto do suplemento, resolução e diagnóstico prático,
+além do custo contínuo. Pendências da busca identificam ingrediente e campo a revisar; causas de
+inviabilidade só são atribuídas quando demonstradas por um limite superior matemático.
+O relatório mostra os valores de FDN, FDN de forragem, amido e EE com a linha efetiva e seus limites.
+Em banco recém-preparado, o formulário oferece **Cenário de exemplo** com confirmação do rascunho.
+Os atalhos históricos A/B só aparecem quando seus cadastros estão disponíveis.

@@ -45,6 +45,7 @@ pub fn formular(c: &Cenario, base: &Conhecimento) -> Parecer {
         problema.set_time_limit(Duration::from_secs_f64(restante));
         let mut variaveis = Vec::new();
         let mut invalido = false;
+        let mut pendencias = Vec::new();
         for item in &ordenado.itens {
             let mut teste = ordenado.clone();
             teste.itens = vec![item.clone()];
@@ -61,6 +62,11 @@ pub fn formular(c: &Cenario, base: &Conhecimento) -> Parecer {
                     teto = teto.min(rotulo);
                 } else {
                     invalido = true;
+                    pendencias.push(format!(
+                        "{}: informe o teto de rótulo ou o máximo demonstrativo \
+                            do suplemento sintético",
+                        item.alimento.nome
+                    ));
                 }
             }
             if let Some(estoque) = item.estoque {
@@ -70,6 +76,11 @@ pub fn formular(c: &Cenario, base: &Conhecimento) -> Parecer {
                 );
             } else if !item.sem_limite {
                 invalido = true;
+                pendencias.push(format!(
+                    "{}: informe o estoque bruto ou a hipótese explícita \
+                        de disponibilidade sem limite",
+                    item.alimento.nome
+                ));
             }
             if excluido {
                 teto = 0.0;
@@ -78,10 +89,17 @@ pub fn formular(c: &Cenario, base: &Conhecimento) -> Parecer {
                 || item.alimento.natureza.starts_with("GARANTIA")
             {
                 invalido = true;
+                pendencias.push(format!(
+                    "{}: composição incompleta ou garantia unilateral; revise a análise utilizada",
+                    item.alimento.nome
+                ));
             }
             if item.minimo_ms > teto {
                 estado.estado = "INVIAVEL_NO_MODELO".into();
-                estado.motivo = "Mínimo obrigatório excede estoque, rótulo ou exclusão.".into();
+                estado.motivo = format!(
+                    "{}: mínimo obrigatório excede estoque, rótulo ou exclusão. Revise a inclusão.",
+                    item.alimento.nome
+                );
                 invalido = true;
             }
             variaveis.push(problema.add_var(
@@ -91,8 +109,7 @@ pub fn formular(c: &Cenario, base: &Conhecimento) -> Parecer {
         }
         if invalido {
             if estado.motivo.is_empty() {
-                estado.motivo =
-                    "Dados obrigatórios, autorização, composição ou estoque pendentes.".into();
+                estado.motivo = pendencias.join("; ");
             }
             estados.push(estado);
             continue;
@@ -182,7 +199,8 @@ pub fn formular(c: &Cenario, base: &Conhecimento) -> Parecer {
             }
             Err(microlp::Error::Infeasible) => {
                 estado.estado = "INVIAVEL_NO_MODELO".into();
-                estado.motivo = "Inviabilidade comprovada pelo solver.".into();
+                estado.motivo =
+                    super::diagnostico_otimizacao::inviabilidade(c, alvo, requisitos, linha.eixo);
             }
             Err(erro) => {
                 estado.motivo = format!("Falha numérica/método: {erro}");

@@ -16,3 +16,5 @@ pub use modelos::*;
 pub use parecer::*;
 pub mod templates;
 mod validacao_itens;
+
+mod diagnostico_otimizacao;

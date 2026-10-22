@@ -101,6 +101,7 @@ impl Render for ResultadoExecucao<'_> {
                 @for aviso in &p.avisos { p.alert { (aviso) } }
             }
             (numeros::Balanco(p))
+            (super::resultado_barreiras::Barreiras(p, &e.conhecimento))
             (super::resultado_fornecimento::Fornecimento { cenario: c, parecer: p })
             (numeros::Economia { cenario: c, parecer: p })
             };

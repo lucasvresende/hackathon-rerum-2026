@@ -59,3 +59,48 @@ async fn exemplo_exige_csrf_confirmacao_e_preserva_modo_sem_javascript() {
         assert!(html.contains("value=\"formular\" selected"));
     }
 }
+
+#[tokio::test]
+async fn instalacao_limpa_oferece_exemplo_disponivel_e_preserva_o_modo() {
+    let dir = tempfile::tempdir().unwrap();
+    let pool = banco::preparar(&dir.path().join("limpo.sqlite3"))
+        .await
+        .unwrap();
+    let estado = EstadoApp::novo(pool, "http://127.0.0.1:3000".into());
+    let app = app(estado.clone());
+    for (metodo, uri, corpo) in [
+        ("GET", "/cenarios/novo?modo=formular", String::new()),
+        (
+            "POST",
+            "/cenarios/exemplo?dieta=inicial&acao=aplicar",
+            format!(
+                "csrf={}&modo=formular&nome=Rascunho&confirmar_exemplo=on",
+                estado.csrf
+            ),
+        ),
+    ] {
+        let resposta = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .method(metodo)
+                    .uri(uri)
+                    .header("content-type", "application/x-www-form-urlencoded")
+                    .body(Body::from(corpo))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(resposta.status(), 200);
+        let bytes = resposta.into_body().collect().await.unwrap().to_bytes();
+        let html = std::str::from_utf8(&bytes).unwrap();
+        assert!(html.contains("Cenário de exemplo"));
+        assert!(!html.contains(">Demonstração A<"));
+        assert!(!html.contains(">Demonstração B<"));
+        assert!(!html.contains("Cadastros da demonstração indisponíveis"));
+        if metodo == "POST" {
+            assert!(html.contains("Primeira simulação — exemplo sintético"));
+            assert!(html.contains("value=\"formular\" selected"));
+        }
+    }
+}

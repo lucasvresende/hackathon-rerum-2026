@@ -24,7 +24,20 @@ pub enum DietaDemonstracao {
     B,
 }
 
+/// Só oferece as fixtures históricas quando o lote e as quatro composições estão disponíveis.
+pub fn demonstracao_disponivel(lotes: &[Lote], alimentos: &[Alimento]) -> bool {
+    lotes.iter().any(|l| l.nome == "Lote demonstração")
+        && ["silagem", "milho", "soja", "mineral"].iter().all(|id| {
+            alimentos
+                .iter()
+                .any(|a| a.id == *id && a.natureza == "SINTETICA")
+        })
+}
+
 pub fn exemplo(opcoes: &OpcoesCenario, dieta: DietaDemonstracao) -> Option<Cenario> {
+    if !demonstracao_disponivel(&opcoes.lotes, &opcoes.alimentos) {
+        return None;
+    }
     let lote = opcoes
         .lotes
         .iter()

@@ -24,3 +24,7 @@ mod resultado_pratico;
 
 mod resultado_fornecimento;
 mod situacao_execucao;
+
+pub mod comparacao_item;
+
+mod resultado_barreiras;

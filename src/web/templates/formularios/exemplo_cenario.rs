@@ -8,13 +8,24 @@ impl Render for ExemploCenario<'_, '_> {
         let f = self.0;
         let pendente = f.valor("exemplo_pendente");
         html! {
-            @for dieta in ["A", "B"] {
+            @for dieta in ["inicial", "A", "B"].into_iter().filter(|dieta| {
+                if *dieta == "inicial" {
+                    f.lotes.iter().any(|l| l.id == "ex-l03")
+                        && ["ex-a01", "ex-a06", "ex-a07", "ex-a10", "ex-a12"].iter()
+                            .all(|id| f.alimentos.iter().any(|a| a.id == *id))
+                } else {
+                    crate::aplicacao::cenarios::demonstracao_disponivel(f.lotes, f.alimentos)
+                }
+            }) {
                 @let rota = format!("/cenarios/exemplo?dieta={dieta}");
                 button.button.secondary type="submit" formnovalidate data-sem-validacao
                     formaction=(&rota) hx-post=(&rota) hx-target="#formulario"
-                    hx-swap="outerHTML settle:0" { "Demonstração " (dieta) }
+                    hx-swap="outerHTML settle:0" {
+                        @if dieta == "inicial" { "Cenário de exemplo" }
+                        @else { "Demonstração " (dieta) }
+                    }
             }
-            @if ["A", "B"].contains(&pendente) {
+            @if ["A", "B", "inicial"].contains(&pendente) {
                 section.card #exemplo_pendente {
                     h2 { "Substituir pelo exemplo " (pendente) "?" }
                     p { "O preenchimento substituirá nome, lote, ingredientes e premissas. "

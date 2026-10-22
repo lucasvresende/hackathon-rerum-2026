@@ -118,8 +118,9 @@ pub async fn carregar_exemplo(
         return Ok(StatusCode::FORBIDDEN.into_response());
     }
     let dieta = match q.get("dieta").map(String::as_str) {
-        Some("A") => DietaDemonstracao::A,
-        Some("B") => DietaDemonstracao::B,
+        Some("A") => Some(DietaDemonstracao::A),
+        Some("B") => Some(DietaDemonstracao::B),
+        Some("inicial") => None,
         _ => return Ok(StatusCode::BAD_REQUEST.into_response()),
     };
     let mut erros = vec![];
@@ -130,7 +131,21 @@ pub async fn carregar_exemplo(
         && campos.get("confirmar_exemplo").is_some_and(|v| v == "on")
     {
         let opcoes = servico::opcoes(&e.pool).await?;
-        if let Some(mut exemplo) = servico::exemplo(&opcoes, dieta) {
+        let exemplo = match dieta {
+            Some(dieta) => servico::exemplo(&opcoes, dieta),
+            None => {
+                let inicial = crate::aplicacao::exemplos::cenario_inicial(&e.pool).await?;
+                let disponivel = opcoes.lotes.iter().any(|l| l.id == inicial.lote.id)
+                    && inicial.itens.iter().all(|i| {
+                        opcoes
+                            .alimentos
+                            .iter()
+                            .any(|a| a.composicao_id == i.alimento.composicao_id)
+                    });
+                disponivel.then_some(inicial)
+            }
+        };
+        if let Some(mut exemplo) = exemplo {
             exemplo.formular = campos.get("modo").is_some_and(|v| v == "formular");
             campos = formularios::campos_cenario(&exemplo);
             formularios::completar_cenario(&mut campos, &opcoes.alimentos);

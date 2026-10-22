@@ -73,3 +73,37 @@ async fn busca_sem_candidata_nao_apresenta_economia_da_entrada() {
         assert!(Comparacao::entre(a.clone(), b.clone()).economia.is_none());
     }
 }
+
+#[tokio::test]
+async fn comparacao_expoe_resolucao_inclusao_e_diagnostico_pratico() {
+    use feed_your_cow::aplicacao::exemplos;
+    use feed_your_cow::dominio::otimizacao;
+    use feed_your_cow::web::templates::paginas::comparacao::Comparacao as Tela;
+    use maud::Render;
+    let dir = tempfile::tempdir().unwrap();
+    let pool = banco::preparar(&dir.path().join("teste.sqlite3"))
+        .await
+        .unwrap();
+    let mut a = execucao().await;
+    a.cenario = exemplos::cenario_inicial(&pool).await.unwrap();
+    a.cenario.formular = true;
+    a.parecer = otimizacao::formular(&a.cenario, &a.conhecimento);
+    let mut b = a.clone();
+    for i in &mut b.cenario.itens {
+        i.resolucao_mn = 1.0;
+    }
+    b.parecer = otimizacao::formular(&b.cenario, &b.conhecimento);
+    let comparacao = Comparacao::entre(a, b);
+    let html = Tela {
+        comparacao: &comparacao,
+    }
+    .render()
+    .into_string();
+    assert!(html.contains("Resolução de oferta"));
+    assert!(html.contains("Inclusão mínima"));
+    assert!(html.contains("Inclusão máxima"));
+    assert!(html.contains("16,6300"));
+    assert!(html.contains("R$ 17,35"));
+    assert!(!html.contains("16.868500000000004"));
+    assert!(html.contains("não usar como recomendação"));
+}

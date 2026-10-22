@@ -1,7 +1,9 @@
 //! Página de apresentação para comparacao, mantendo a renderização desta responsabilidade isolada.
 use super::super::componentes::cabecalho::Cabecalho;
+use super::super::componentes::comparacao_item::PremissasItem;
 use super::super::layouts::Principal;
 use crate::dominio::unidades::dinheiro;
+use crate::web::formatacao::{estado, numero};
 use maud::{Markup, Render, html};
 
 pub struct Comparacao<'a> {
@@ -21,20 +23,39 @@ impl Render for Comparacao<'_> {
                 tbody {
                     @for (nome, va, vb) in [
                         ("Perfil", a.cenario.perfil_id.clone(), b.cenario.perfil_id.clone()),
-                        ("Produção kg/dia", a.cenario.lote.producao.to_string(),
-                            b.cenario.lote.producao.to_string()),
-                        ("Consumo kg MS", a.parecer.consumo_ms.to_string(),
-                        b.parecer.consumo_ms.to_string()),
-                        ("Sobras %", (100.0*a.cenario.sobras).to_string(),
-                            (100.0*b.cenario.sobras).to_string()),
+                        ("Produção kg/dia", numero(a.cenario.lote.producao, 3),
+                            numero(b.cenario.lote.producao, 3)),
+                        ("Consumo kg MS", numero(a.parecer.consumo_ms, 4),
+                        numero(b.parecer.consumo_ms, 4)),
+                        ("Sobras %", numero(100.0*a.cenario.sobras, 2),
+                            numero(100.0*b.cenario.sobras, 2)),
                         ("Horizonte dias", a.cenario.horizonte.to_string(),
                         b.cenario.horizonte.to_string()),
+                        ("Fornecimento", estado(a.parecer.estado_fornecimento(&a.cenario)),
+                            estado(b.parecer.estado_fornecimento(&b.cenario))),
                         ("Base", a.cenario.base_comparacao.clone(),
                         b.cenario.base_comparacao.clone()),
                     ] { tr { th { (nome) } td { (va) } td { (vb) } } }
-                    tr { th { "Custo / animal / dia" }
+                    tr { th { "Custo da solução contínua / animal / dia" }
                         td { (a.parecer.custo_resultado().map(dinheiro).unwrap_or("—".into())) }
                         td { (b.parecer.custo_resultado().map(dinheiro).unwrap_or("—".into())) }
+                    }
+                }
+            }
+            h2 { "Diagnóstico do fornecimento prático" }
+            p.muted { "Valores práticos revalidados, inclusive quando incompatíveis. "
+                "Ausência de resolução não representa pesagem validada." }
+            table {
+                thead { tr { th { "Grandeza" } th { "Referência" } th { "Alternativa" } } }
+                tbody {
+                    tr { th { "Consumo prático kg MS/animal/dia" }
+                        @for e in [a, b] { td { (e.parecer.pratico.as_deref()
+                            .map(|p| numero(p.consumo_ms, 4)).unwrap_or("Não definido".into())) } }
+                    }
+                    tr { th { "Custo prático R$/animal/dia" }
+                        @for e in [a, b] { td { (e.parecer.pratico.as_deref()
+                            .and_then(|p| p.custo).map(dinheiro)
+                            .unwrap_or("Não definido".into())) } }
                     }
                 }
             }
@@ -47,32 +68,25 @@ impl Render for Comparacao<'_> {
                             .find(|i|i.alimento.id==item.alimento.id);
                         tr { th { (&item.alimento.nome) }
                             @for i in [Some(item),outro] {
-                                td { @if let Some(i)=i {
-                                    "MS " (i.alimento.ms*100.0) "% · preço " (&i.preco)
-                                    " R$/kg MN · perda " (i.perda*100.0) "% · estoque "
-                                    (i.estoque.map(|v|v.to_string()).unwrap_or_else(|| {
-                                        if i.sem_limite { "Sem limite (hipótese)".into() }
-                                        else { "Desconhecido".into() }
-                                    }))
-                                } @else { "Ausente" } }
+                                td { (PremissasItem(i)) }
                             }
                         }
                     }
                     @for i in b.cenario.itens.iter().filter(|i|!a.cenario.itens.iter()
                         .any(|original|original.alimento.id==i.alimento.id)) {
                         tr { th { (&i.alimento.nome) } td { "Ausente" }
-                            td { "Ingrediente adicionado · MS " (i.alimento.ms*100.0)
-                                "% · preço " (&i.preco) " R$/kg MN" } }
+                            td { (PremissasItem(Some(i))) } }
+
                     }
                 }
             }
             @if !equivalentes { p.alert { "Há mudanças em produção, consumo, horizonte, perfil ou \
                 critérios. Os cenários não são diretamente equivalentes." } }
             @if let Some(economia) = &self.comparacao.economia {
-                p { "Diferença de custo (referência − alternativa): "
+                p { "Diferença de custo contínuo (referência − alternativa): "
                     strong { (dinheiro(economia.absoluta)) }
                     @if let Some(percentual) = economia.percentual {
-                        " · " (format!("{percentual:.2}%")) }
+                        " · " (numero(percentual, 2)) "%" }
                 }
                 @if !economia.alternativa_validada { p.alert {
                     "Alternativa sem fornecimento validado. \
