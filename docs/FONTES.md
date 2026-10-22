@@ -39,7 +39,7 @@ as referências consultadas para aproximar valores e categorias estão:
 - [Embrapa, raças e cruzamentos leiteiros][racas].
 
 [embrapa14]: https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/1007523
-[missouri]: http://agebb.missouri.edu/dairy/byprod/energygain.php
+[missouri]: https://agebb.missouri.edu/dairy/byprod/energygain.php
 [racas]: https://www.infoteca.cnptia.embrapa.br/infoteca/handle/doc/737102
 
 As fontes têm amostras, métodos, populações e bases diferentes. Valores de NDT, amido e outros
@@ -79,6 +79,9 @@ um teto brasileiro universal de micotoxinas para a dieta. Um limite de AFM1 no l
 convertido em limite de AFB1 na ração. Ausência de laudo, identidade incompleta ou base de
 umidade incompatível geram pendência. A regra técnica não constitui parecer jurídico ou
 sanitário sobre um produto real.
+
+Localizadores textuais em cargas antigas permanecem como metadados históricos da versão
+instalada. Para navegar pela documentação desta revisão, use esta página e [MOTOR.md](MOTOR.md).
 
 ## Bibliotecas e documentação técnica
 

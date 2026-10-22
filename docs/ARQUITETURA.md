@@ -103,7 +103,7 @@ comandos.
 ## Limites de confiança e interface
 
 O servidor recusa escuta fora de loopback. Escritas usam POST, token CSRF e verificação de origem;
-requisitações possuem limites. O produto não inclui usuários, autenticação ou acesso simultâneo
+requisições possuem limites. O produto não inclui usuários, autenticação ou acesso simultâneo
 remoto. A interface funciona sem JavaScript nos fluxos essenciais; htmx atualiza fragmentos,
 enquanto os scripts preservam rascunhos, foco e estado entre trocas. Dicas, expansíveis e impressão
 não alteram regras de negócio: a validação final ocorre no servidor.

@@ -15,7 +15,7 @@ pub async fn backup(pool: &SqlitePool, destino: &Path) -> Resultado<()> {
         .await?;
     std::fs::write(
         destino.join("anexo.md"),
-        include_str!("../../../hackathon/TEMA_2_DIETAS_LITERATURA_E_MOTOR.md"),
+        include_str!("../../../docs/MOTOR.md"),
     )?;
     std::fs::write(
         destino.join("requisitos.md"),
@@ -27,7 +27,7 @@ pub async fn backup(pool: &SqlitePool, destino: &Path) -> Resultado<()> {
     )?;
     std::fs::write(
         destino.join("modelos.md"),
-        include_str!("../../../fontes/MODELOS.md"),
+        include_str!("../../../docs/FONTES.md"),
     )?;
     std::fs::write(
         destino.join("modelos.sql"),

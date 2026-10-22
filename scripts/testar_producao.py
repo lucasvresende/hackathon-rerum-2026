@@ -28,9 +28,10 @@ def testar(arquivo):
             pacote.extractall(raiz, filter='data')
         instalacao = raiz / 'feedyourcow'
         for documento in (
-            'README.md', 'docs/README.md', 'docs/REQUISITOS.md', 'docs/ENTREGA.md',
-            'docs/INTERFACE.md', 'docs/motor-especialista.md',
-            'docs/imagens/visao-geral.png', 'hackathon/RELATORIO_TEMAS_E_ARQUITETURA.md',
+            'README.md', 'docs/README.md', 'docs/REQUISITOS.md', 'docs/OPERACAO.md',
+            'docs/USO.md', 'docs/MOTOR.md', 'docs/ARQUITETURA.md',
+            'docs/QUALIDADE.md', 'docs/FONTES.md', 'docs/PROCESSO.md',
+            'docs/imagens/visao-geral.png', 'docs/licencas/cow.txt',
         ):
             assert (instalacao / documento).is_file(), f'Documento ausente: {documento}'
         iniciar = instalacao / 'iniciar.sh'
@@ -56,6 +57,10 @@ def testar(arquivo):
             assert conexao.execute('SELECT COUNT(*) FROM execucoes').fetchone()[0] == 4
         rodar('backup', str(raiz / 'backup'))
         assert (raiz / 'backup/manifesto.json').is_file()
+        assert (raiz / 'backup/anexo.md').read_bytes() == (
+            instalacao / 'docs/MOTOR.md').read_bytes()
+        assert (raiz / 'backup/modelos.md').read_bytes() == (
+            instalacao / 'docs/FONTES.md').read_bytes()
         rodar('restaurar', str(raiz / 'backup'), str(raiz / 'restaurado'))
         with sqlite3.connect(raiz / 'restaurado/aplicacao.sqlite3') as conexao:
             assert conexao.execute('SELECT COUNT(*) FROM execucoes').fetchone()[0] == 4
