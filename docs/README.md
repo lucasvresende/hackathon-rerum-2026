@@ -1,31 +1,19 @@
 # Mapa da documentação
 
-Comece pelo [README principal](../README.md) para instalar, usar, desenvolver, testar e gerar o
-pacote de produção. Os documentos abaixo aprofundam os assuntos sem substituir o guia de uso.
+O [README principal](../README.md) oferece o início rápido em desenvolvimento e release.
+Continue conforme sua tarefa:
 
-| Objetivo | Documento |
-| --- | --- |
-| Operar e distribuir | [README principal](../README.md) |
-| Conhecer os fluxos e ver a interface | [Interface ilustrada](INTERFACE.md) |
-| Conferir o contrato funcional | [Requisitos](REQUISITOS.md) |
-| Entender regras, estados e otimização | [Motor especialista](motor-especialista.md) |
-| Consultar fórmulas e fontes | [Anexo nutricional](tema_2_dietas_literatura_e_motor.md) |
-| Relacionar código, requisitos e testes | [Entrega e rastreabilidade](ENTREGA.md) |
-| Examinar procedência dos cadastros | [Fontes preservadas](../fontes/README.md) |
+1. **Operar:** [uso e telas](USO.md) → [instalação, configuração e backup](OPERACAO.md).
+2. **Entender o produto:** [requisitos](REQUISITOS.md) → [motor](MOTOR.md).
+3. **Manter o código:** [arquitetura e banco](ARQUITETURA.md) →
+   [testes, CI e rastreabilidade](QUALIDADE.md).
+4. **Auditar decisões:** [fontes, hipóteses e dependências](FONTES.md) →
+   [concepção e assistência por IA](PROCESSO.md).
 
-## Ordem e caráter dos documentos
+Cada tema tem um documento principal. Requisitos definem o comportamento; Motor detalha
+cálculos; Qualidade mostra onde verificá-los. Números do perfil têm origem na carga SQL
+versionada. Capturas em `imagens/` ilustram fluxos de teste e são identificadas como tais.
 
-`REQUISITOS.md` é a especificação funcional vigente. O anexo nutricional contém a base de pesquisa
-e as fórmulas que a sustentam. `motor-especialista.md` descreve a implementação do motor em
-linguagem de fluxo; o código e os testes prevalecem na verificação do comportamento efetivo.
-
-O [relatório inicial dos três temas](../hackathon/RELATORIO_TEMAS_E_ARQUITETURA.md) e a
-[sequência de implementação](../hackathon/SEQUENCIA_IMPLEMENTACAO.md) registram a concepção e o
-processo de desenvolvimento. O arquivo
-[`hackathon/TEMA_2_DIETAS_LITERATURA_E_MOTOR.md`](../hackathon/TEMA_2_DIETAS_LITERATURA_E_MOTOR.md)
-preserva uma versão anterior da pesquisa. Para consulta atual, use o anexo em `docs/`, que
-incorpora revisões posteriores. Os documentos históricos podem conter propostas substituídas.
-
-Os [diagnósticos de formulação](../diagnosticos/DIAGNOSTICO_FORMULACAO.md) registram observações
-de rodadas específicas, não o estado garantido da versão corrente. Os testes automatizados em
-`tests/` e a execução do CI são as evidências atuais de conformidade.
+Ao mudar código, regra, dependência ou operação, atualize a página correspondente no mesmo
+commit. Evite reproduzir grandes tabelas de fonte em vários arquivos: a carga versionada é a
+referência numérica e a interface **Perfil nutricional** expõe seus valores.
