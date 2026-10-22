@@ -1,3 +1,4 @@
+import { testarReutilizacao } from './reutilizacao.mjs';
 import { testarVerificacaoDesktop } from './verificacao-desktop.mjs';
 import { abrirConfiguracoesCenario } from './apoio.mjs';
 import { testarFormulacao } from './formulacao.mjs';
@@ -19,7 +20,8 @@ import { resolve, join } from 'node:path';
 import { spawn, spawnSync } from 'node:child_process';
 import { chromium, firefox, webkit } from 'playwright';
 
-const nomesSuites = ['verificacao-desktop', 'htmx', 'condicionais', 'falhas', 'guias',
+const nomesSuites = ['reutilizacao', 'verificacao-desktop', 'htmx', 'condicionais',
+  'falhas', 'guias',
   'inicio', 'dicas',
   'fluxos', 'exemplos', 'cenario-simplificado', 'formulacao', 'resultado-operacional'];
 const suites = new Set(process.env.FEEDYOURCOW_SUITES?.split(',') || nomesSuites);
@@ -87,6 +89,9 @@ try {
         const [nova] = await Promise.all([contexto.waitForEvent('page'), link.click()]);
         await nova.waitForLoadState();
         page = nova;
+      }
+      if (suites.has('reutilizacao')) {
+        await testarReutilizacao(browser, url, artefatos, nome);
       }
       if (suites.has('verificacao-desktop')) {
         await testarVerificacaoDesktop(browser, url, artefatos, nome);

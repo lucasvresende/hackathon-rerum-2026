@@ -170,3 +170,12 @@ Os dados são temporários; capturas ficam em `output/playwright/chromium-verifi
 As interações usam a biblioteca Playwright já fixada no projeto, sem dependências adicionais.
 Referências consultadas: [assertions Playwright](https://playwright.dev/docs/test-assertions)
 e [formatação numérica Rust](https://doc.rust-lang.org/std/fmt/#precision).
+
+### Reutilização e comparação restrita
+
+`FEEDYOURCOW_NAVEGADORES=chromium FEEDYOURCOW_SUITES=reutilizacao npm run test:e2e`
+repete os fluxos de otimização, cópia contínua/prática, ajuste e verificação no desktop.
+Confere a preservação do original, bases de quantidade, custos com sobras/perdas, comparação
+entre execuções da mesma revisão e recusa HTTP 422 para outro lote. As capturas correspondentes
+ficam em `output/playwright/chromium-reutilizacao-*.png` e
+`output/playwright/chromium-comparacao-outro-lote-recusada.png`.

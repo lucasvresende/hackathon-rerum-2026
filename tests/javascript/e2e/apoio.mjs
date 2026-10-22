@@ -42,7 +42,7 @@ export async function executarCaso(browser, url, artefatos, navegador, nome, tes
       // Chromium/WebKit registram HTTP >=400; htmx também registra o fetch abortado.
       const esperado = falha.rede
         ? /Failed to load resource|htmx: htmx:error:.*(fetch|network|load)/i
-        : /Failed to load resource.*(403|500|Forbidden|Internal Server Error)/i;
+        : /Failed to load resource.*(403|422|500|Forbidden|Unprocessable|Internal Server Error)/i;
       assert.match(texto, esperado);
     }
     console.log(`${navegador}: ${nome} passou`);
