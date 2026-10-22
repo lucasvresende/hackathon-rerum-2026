@@ -15,3 +15,4 @@
 12. Testes automatizados, proteção de escrita, backup/restauração e ensaio de desempenho
 13. Configuração do GitHub Actions e documentação de operação e cobertura
 14. Iterações com novas implementações refinando os requisitos
+15. Correção de bugs e adição de novos testes
