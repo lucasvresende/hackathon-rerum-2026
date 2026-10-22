@@ -1,13 +1,25 @@
 //! Composição Maud das páginas completas apresentadas pela aplicação.
+#[path = "../../ajuda/templates/paginas/ajuda.rs"]
 pub mod ajuda;
+#[path = "../../alimentos/templates/paginas/alimentos.rs"]
 pub mod alimentos;
+#[path = "../../cadastros/templates/paginas/cadastro.rs"]
 pub mod cadastro;
+#[path = "../../cadastros/templates/paginas/cadastro_salvo.rs"]
 pub mod cadastro_salvo;
+#[path = "../../cenarios/templates/paginas/cenario.rs"]
 pub mod cenario;
+#[path = "../../comparacao/templates/paginas/comparacao.rs"]
 pub mod comparacao;
+#[path = "../../conhecimento/templates/paginas/conhecimento.rs"]
 pub mod conhecimento;
+#[path = "../../comum/templates/paginas/erro.rs"]
 pub mod erro;
+#[path = "../../execucoes/templates/paginas/execucao.rs"]
 pub mod execucao;
+#[path = "../../historico/templates/paginas/historico.rs"]
 pub mod historico;
+#[path = "../../inicio/templates/paginas/inicio.rs"]
 pub mod inicio;
+#[path = "../../lotes/templates/paginas/lotes.rs"]
 pub mod lotes;

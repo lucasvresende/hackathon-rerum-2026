@@ -1,6 +1,9 @@
 //! Conversão dos campos HTTP em modelos de domínio e utilitários de leitura dos formulários.
+#[path = "../cadastros/entradas.rs"]
 mod cadastros;
+#[path = "../cenarios/entradas/cenario.rs"]
 mod cenario;
+#[path = "../cenarios/entradas/premissas.rs"]
 mod premissas;
 
 pub use cadastros::*;

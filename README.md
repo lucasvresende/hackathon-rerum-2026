@@ -305,9 +305,9 @@ As versões reproduzíveis estão nos lockfiles. Código `unsafe` próprio é pr
 | `src/dominio/motor/`   | Verificação, avaliação e formulação com entrada única.             |
 | `src/aplicacao/`        | Casos de uso agrupados por cadastros, cenários e execuções.        |
 | `src/persistencia/`     | Banco e consultas agrupados por recurso.                            |
-| `src/web/handlers/`     | Rotas por recurso e tratamento HTTP.                               |
-| `src/web/entradas/`     | Conversão e validação de formulários HTTP.                         |
-| `src/web/templates/`    | Layouts, páginas, formulários e componentes Maud com `Render`.     |
+| `src/web/<recurso>/`     | Rotas, handlers, entradas e templates próximos por funcionalidade. |
+| `src/web/comum/`         | Segurança, estado, respostas, layouts e componentes compartilhados. |
+| `src/web/templates/`    | Reexportações dos caminhos Maud anteriores à migração.            |
 | `static/`               | CSS, JavaScript e dependências locais com licenças.                |
 | `tests/`                | Testes Rust e testes de navegador em `javascript/e2e/`.            |
 | `scripts/`              | Qualidade, conferência SQLx, distribuição e teste do pacote.       |
@@ -317,6 +317,8 @@ As requisições passam pelos handlers e pela conversão das entradas; os servi�
 o domínio e a persistência. Templates recebem dados preparados, sem consultar o banco ou
 executar regras de negócio. O servidor mantém validações, decisões e proteção de escrita
 por POST, token CSRF e verificação de origem. Recursos estáticos são servidos localmente.
+Cada recurso da web tem `handlers.rs`, `rotas.rs` e `templates/` separados. `web/rotas.rs`
+compõe os roteadores; os módulos de compatibilidade preservam os caminhos públicos existentes.
 
 `dominio::motor::avaliar` recebe o cenário e o conhecimento congelados e seleciona o modo de
 verificação (`inferencia`) ou formulação (`otimizacao`). É a entrada usada pela aplicação e pelo
