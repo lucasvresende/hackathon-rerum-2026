@@ -195,7 +195,8 @@ Os dois achados foram corrigidos em 22/10/2026:
 - O contêiner da comparação permite fragmentação na impressão, mantendo linhas curtas juntas.
   O PDF A4 conferido inicia título e tabela de premissas na primeira página.
 
-As suítes Chromium `revisoes-impressao` e `resultado-operacional` passaram. A suíte Rust completa,
+A suíte Chromium completa passou, incluindo `revisoes-impressao` e `resultado-operacional`.
+A suíte Rust completa,
 Clippy com todas as features, rustfmt e verificações SQLx e estruturais passaram. Não houve
 migração ou alteração do motor. As capturas seguintes registram a correção:
 

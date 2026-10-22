@@ -18,8 +18,11 @@ Ao mudar código, regra, dependência ou operação, atualize a página correspo
 commit. Evite reproduzir grandes tabelas de fonte em vários arquivos: a carga versionada é a
 referência numérica e a interface **Perfil nutricional** expõe seus valores.
 
-A [auditoria dos fluxos no navegador](AUDITORIA_FLUXOS.md) registra a inspeção de 22/10/2026,
+A [auditoria inicial](auditorias/AUDITORIA_FLUXOS.md) registra a inspeção de 22/10/2026,
 com achados reproduzíveis sobre cadastros, cálculos, comparação e navegação.
 
-A [nova inspeção dos 18 fluxos](AUDITORIA_18_FLUXOS.md) complementa essa auditoria com cópias,
+A [inspeção dos 18 fluxos](auditorias/AUDITORIA_18_FLUXOS.md) complementa a auditoria com cópias,
 revisões, conferência aritmética dos relatórios e inspeção de PDFs no Chromium.
+
+Os relatórios e suas capturas ficam em [`auditorias/`](auditorias/README.md). Essa pasta mantém
+o registro da inspeção original e o acompanhamento das correções.
