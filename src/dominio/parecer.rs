@@ -36,6 +36,8 @@ pub struct Verificacao {
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Fornecimento {
+    #[serde(default)]
+    pub composicao_id: String,
     pub ingrediente: String,
     pub consumo_ms: f64,
     pub oferta_mn: f64,

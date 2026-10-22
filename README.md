@@ -472,3 +472,11 @@ dimensões sem dados suficientes, como fibra física e micronutrientes, permanec
 O perfil aceita PV de 300 a 800 kg. As tabelas de referência cobrem apenas 400–700 kg para
 exigências e 400–600 kg para consumo; nas extensões, o sistema usa extrapolação linear e exibe
 um aviso de menor precisão. O consumo-alvo é opcional e, quando informado, tem precedência.
+
+### Precisão e recomendação de pesagem
+
+Na formulação, resolução zero mantém uma solução contínua aproximada. Para recomendar pesagem,
+informe resolução positiva para cada ingrediente usado; ingredientes zerados não exigem resolução.
+A aprovação prática depende da revalidação, sem modificar o ótimo contínuo ou suas tolerâncias.
+O histórico distingue busca e fornecimento; a comparação considera a validade prática da alternativa.
+Valores muito pequenos do balanço usam notação científica quando necessário para explicar violações.

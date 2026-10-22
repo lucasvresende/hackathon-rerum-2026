@@ -58,13 +58,24 @@ impl Render for Historico<'_> {
                     button.button.secondary { "Comparar premissas e custos" }
                 }
                 section.card.table-wrap {
-                    table { thead { tr { th { "Cenário" } th { "Lote" } th { "Estado" }
+                    table { thead { tr { th { "Cenário" } th { "Lote" }
+                                th { "Busca / fornecimento" }
                                 th { "Custo / animal / dia" } th {} } }
                         tbody { @for x in execucoes {
                                 tr { td { (&x.cenario.nome) } td { (&x.cenario.lote.nome) }
-                                    td { span.pill { (&x.parecer.condicao) } }
+                                    td {
+                                        @if let Some(busca) = &x.parecer.busca {
+                                            span.pill { (crate::web::formatacao::estado(busca)) }
+                                        }
+                                        p { (crate::web::formatacao::estado(
+                                            x.parecer.estado_fornecimento(&x.cenario))) }
+                                    }
                                     td { (x.parecer.custo_resultado().map(dinheiro)
-                                            .unwrap_or("—".into())) }
+                                            .unwrap_or("—".into()))
+                                        @if x.cenario.formular
+                                            && x.parecer.custo_resultado().is_some() {
+                                            small { " · solução contínua" }
+                                        } }
                                     td { a href=(format!("/execucoes/{}", x.id)) {
                                             "Ver parecer ↗" } }
                                 }

@@ -2,19 +2,22 @@
 use crate::dominio::calculos::NUTRIENTES;
 use crate::dominio::unidades::dinheiro;
 use crate::dominio::{Estado, Parecer};
-use crate::web::formatacao::{numero, sinal};
+use crate::web::formatacao::{balanco, numero, sinal};
 use maud::{Markup, Render, html};
 
-pub struct ResultadoPratico<'a>(pub &'a Parecer);
+pub struct ResultadoPratico<'a>(pub &'a Parecer, pub &'a crate::dominio::Cenario);
 impl Render for ResultadoPratico<'_> {
     fn render(&self) -> Markup {
         let p = self.0;
+        let pendente = p.resolucao_pendente(self.1);
         html! {
             section.card #resultado-pratico {
                 h2 { "Revalidação das quantidades práticas" }
-                p class=(if p.pratico_valido { "alert" } else { "alert error" }) {
-                    @if p.pratico_valido { "Fornecimento prático validado no perfil." }
-                    @else { "Fornecimento prático incompatível. Não usar como recomendação." }
+                p class=(if p.pratico_valido && !pendente { "alert" } else { "alert error" }) {
+                    @if p.pratico_valido && !pendente { "Fornecimento prático validado no perfil." }
+                    @else if pendente && p.pratico_valido {
+                        "Resolução de pesagem incompleta. Não usar como recomendação."
+                    } @else { "Fornecimento prático incompatível. Não usar como recomendação." }
                 }
                 dl.details-grid {
                     dt { "Consumo prático por animal/dia" }
@@ -32,7 +35,7 @@ impl Render for ResultadoPratico<'_> {
                             td { (p.totais[i].map(|v| numero(v, 5))
                                 .unwrap_or("Desconhecido".into())) }
                             td { (requisito.map(|v| numero(v, 5)).unwrap_or("—".into())) }
-                            td { (p.totais[i].zip(requisito).map(|(v,r)| sinal(v-r, 5))
+                            td { (p.totais[i].zip(requisito).map(|(v,r)| balanco(v, r))
                                 .unwrap_or("—".into())) }
                         }
                     } }

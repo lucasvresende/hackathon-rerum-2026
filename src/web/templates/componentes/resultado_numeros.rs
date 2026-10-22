@@ -3,7 +3,7 @@ use super::conceitos_resultado as conceitos;
 use crate::dominio::calculos::NUTRIENTES;
 use crate::dominio::unidades::{dinheiro, preco_f64};
 use crate::dominio::{Cenario, Parecer};
-use crate::web::formatacao::{numero, sinal};
+use crate::web::formatacao::{balanco, medida, numero};
 use maud::{Markup, Render, html};
 
 pub struct Resumo<'a> {
@@ -40,6 +40,7 @@ impl Render for Balanco<'_> {
         let p = self.0;
         html! {
         section.card.table-wrap {
+            p.muted.no-print { "Arraste a tabela para consultar todas as colunas." }
             div.section-title {
                 div.concept-label { h2 { "Balanço nutricional" } (conceitos::BALANCO) }
                 span.pill {
@@ -59,13 +60,13 @@ impl Render for Balanco<'_> {
                                 numero(v, 5)).unwrap_or("Desconhecido".into())) }
                             td { (requisito.map(|v|
                                 numero(v, 5)).unwrap_or("—".into())) }
-                            td { (valor.zip(requisito).map(|(v, r)| sinal(v-r, 5))
+                            td { (valor.zip(requisito).map(|(v, r)| balanco(v, r))
                                 .unwrap_or("—".into())) }
                             td { (valor.zip(requisito)
-                                .map(|(v,r)|numero((r-v).max(0.0), 5))
+                                .map(|(v,r)|medida((r-v).max(0.0), 5))
                                 .unwrap_or("—".into())) }
                             td { (valor.zip(requisito)
-                                .map(|(v,r)|numero((v-r).max(0.0), 5))
+                                .map(|(v,r)|medida((v-r).max(0.0), 5))
                                 .unwrap_or("—".into())) }
                             td { (valor.zip(requisito).filter(|(_, r)| *r > 0.0)
                                 .map(|(v, r)| format!("{}%", numero(100.0*v/r, 1)))
@@ -76,45 +77,6 @@ impl Render for Balanco<'_> {
             }
             p.muted { "Balanço negativo = déficit; positivo = excesso sobre o mínimo. \
                     Excesso não é diagnóstico de intoxicação." }
-        }
-
-        }
-    }
-}
-
-pub struct Fornecimento<'a>(pub &'a Parecer);
-impl Render for Fornecimento<'_> {
-    fn render(&self) -> Markup {
-        let p = self.0;
-        html! {
-        section.card.table-wrap {
-            div.concept-label.section-concept {
-                h2 { "Quantidades de fornecimento" } (conceitos::FORNECIMENTO)
-            }
-            p.muted {
-                "Consumo estimado e oferta são grandezas diferentes. MN: matéria natural." }
-            table {
-                thead { tr { th { "Ingrediente" } th { "Consumo kg MS / animal" }
-                        th { "Oferta kg MN / animal" } th { "Oferta kg MN / lote / dia" }
-                        th { "Bruto kg MN / horizonte" } th {
-                            "Oferta prática kg MN / animal" } } }
-                tbody {
-                    @for f in &p.fornecimento {
-                        tr { td { (&f.ingrediente) }
-                            @for v in [f.consumo_ms, f.oferta_mn, f.oferta_lote,
-                            f.necessidade_bruta, f.pratico_mn] { td {
-                                    (numero(v, 4)) } }
-                        }
-                    }
-                }
-            }
-            p.alert { @if p.pratico_valido {
-                    "Quantidades compatíveis com o núcleo e restrições \
-                    avaliadas. Dimensões não avaliadas permanecem indicadas." }
-                @else {
-                    "Fornecimento sem recomendação prática validada. Consulte as pendências \
-                        e restrições; uma solução contínua pode continuar disponível." }
-            }
         }
 
         }

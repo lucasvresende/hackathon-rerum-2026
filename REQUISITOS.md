@@ -1387,3 +1387,16 @@ resolução de fornecimento zero. Usar consumo estimado pela Tabela B e preço d
 Preços são hipóteses de demonstração de 21/10/2026, sem alegação de cotação de mercado.
 O cenário deverá atender ao núcleo químico e às barreiras ruminais; contaminantes e dimensões
 sem dados continuarão com seus estados próprios. Não haverá declaração global de dieta segura.
+
+## Revisão do fornecimento e da leitura dos resultados — 21/10/2026
+
+Na formulação, resolução zero significa solução contínua aproximada, sem recomendação de pesagem.
+Uma recomendação prática exige resolução positiva para cada ingrediente de quantidade positiva e
+revalidação integral; ingredientes não utilizados não exigem resolução. Não adotar resolução
+padrão silenciosamente. A apresentação das quantidades práticas deve preservar os números
+revalidados; aproximações contínuas devem ser identificadas como tais. Essa decisão complementa
+RF-11, RN-20 e RN-24 e não altera tolerâncias nem o objetivo dos programas lineares.
+
+Histórico e comparação devem mostrar o estado da busca separado da condição de fornecimento.
+Diferenças menores que a precisão usual do balanço devem continuar visíveis quando causam
+violação. A comparação inclui resolução, inclusão mínima/máxima e diagnóstico prático.

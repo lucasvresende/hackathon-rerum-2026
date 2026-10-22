@@ -32,7 +32,7 @@ impl Comparacao {
             .map(|(ca, cb)| Economia {
                 absoluta: ca - cb,
                 percentual: (ca > 0.0).then(|| 100.0 * (ca - cb) / ca),
-                alternativa_validada: b.parecer.pratico_valido,
+                alternativa_validada: b.parecer.fornecimento_recomendado(&b.cenario),
             });
         Self {
             referencia: a,

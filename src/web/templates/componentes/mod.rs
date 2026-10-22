@@ -21,3 +21,6 @@ pub mod exemplos;
 mod consumo_execucao;
 mod resultado_numeros;
 mod resultado_pratico;
+
+mod resultado_fornecimento;
+mod situacao_execucao;

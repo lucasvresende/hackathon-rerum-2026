@@ -161,6 +161,7 @@ fn calcular(c: &Cenario, base: &Conhecimento, p: &mut Parecer) {
             mn
         };
         p.fornecimento.push(Fornecimento {
+            composicao_id: item.alimento.composicao_id.clone(),
             ingrediente: item.alimento.nome.clone(),
             consumo_ms: x,
             oferta_mn: mn,

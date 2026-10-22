@@ -43,14 +43,10 @@ impl Render for ResultadoExecucao<'_> {
                     button.button.secondary { "Reproduzir versões originais" }
                 }
             }
-            div class=(if sem_candidata { "alert error" } else { "alert" }) {
-                @if sem_candidata {
-                    strong { "Nenhuma combinação validada foi encontrada." }
-                    " Custos e quantidades da entrada não representam uma solução de menor custo."
-                } @else {
-                    strong { (estado(&p.condicao)) }
-                    " · Avaliação do perfil implementado; não é avaliação nutricional integral, "
-                    "previsão de produção ou diagnóstico clínico."
+            (super::situacao_execucao::Situacao(c, p))
+            @if !sem_candidata {
+                @if let Some(pratico) = &p.pratico {
+                    (super::resultado_pratico::ResultadoPratico(pratico, c))
                 }
             }
             @if let Some(busca) = &p.busca {
@@ -73,7 +69,7 @@ impl Render for ResultadoExecucao<'_> {
             (numeros::Resumo { cenario: c, parecer: p })
             section.card {
                 div.concept-label.section-concept {
-                    h2 { "Resultados por dimensão" } (conceitos::ESTADOS)
+                    h2 { "Resultados por dimensão da solução contínua" } (conceitos::ESTADOS)
                 }
                 div.dimension-grid {
                     @for nome in ["Dados", "Elegibilidade", "Núcleo químico",
@@ -105,7 +101,7 @@ impl Render for ResultadoExecucao<'_> {
                 @for aviso in &p.avisos { p.alert { (aviso) } }
             }
             (numeros::Balanco(p))
-            (numeros::Fornecimento(p))
+            (super::resultado_fornecimento::Fornecimento { cenario: c, parecer: p })
             (numeros::Economia { cenario: c, parecer: p })
             };
             @if sem_candidata {
@@ -117,9 +113,7 @@ impl Render for ResultadoExecucao<'_> {
                     h2 { "Resultados da solução contínua" }
                 }
                 (dados)
-                @if let Some(pratico) = &p.pratico {
-                    (super::resultado_pratico::ResultadoPratico(pratico))
-                }
+
             }
             (super::expansivel::Expansivel { id: "calculos-regras",
                 aberto: false, titulo: html! { "Cálculos e regras aplicadas" }, conteudo: html! {
