@@ -37,7 +37,8 @@
    macros para validação em tempo de compilação e o sistema próprio de migração. Os queries devem
    estar em arquivos .sql separados.
 8. Estilo: Um arquivo **css plano**, com variáveis definidas na parte inicial.
-9. Teste no browser: Playwright, inspeção visual, testar no chromium, webkit e firefox
+9. Teste no browser: Playwright, inspeção visual, testar no chromium. webkit e firefox ganharão
+   compatibilidade plena apenas no release final da aplicação.
 10. Outras bibliotecas/crates e recursos podem ser adicionados caso necessário, priorizando recursos
     bem mantidos e sem excesso de dependências
 
