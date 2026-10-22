@@ -31,7 +31,7 @@ antes de iniciar o servidor para estabilizar o processo filho do motor. Capturas
 | RN-01–10 | `dominio/cenario/`, `dominio/motor/` | `nucleo.rs`, `cenarios.rs`, `motor.rs` |
 | RN-11–16 | `dominio/motor/` | `integracao.rs`, `diagnostico_dietas.rs` |
 | RN-17–24 | `dominio/motor/`, `dominio/parecer/` | `otimizacao.rs`, `reutilizacao.rs` |
-| RNF-01–14 | `web/`, `scripts/`, CI | Rust, Python, Playwright e pacote |
+| RNF-01–15 | `web/`, `scripts/`, CI | Rust, Python, Playwright e pacote |
 
 Os nomes de testes Rust da última coluna pertencem a `tests/`. A suíte de navegador cobre,
 entre outras áreas, `inicio`, `exemplos`, `cenario-simplificado`, `formulacao`,

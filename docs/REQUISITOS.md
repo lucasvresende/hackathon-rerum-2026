@@ -143,6 +143,8 @@ fornecimento prático é independente da certificação da busca.
   qualidade textual no CI; documentação sincronizada às mudanças.
 - **RNF-13–14:** recarga opcional em desenvolvimento, interface de trabalho em português,
   ajuda contextual, teclado, impressão e fluxos essenciais sem JavaScript.
+- **RNF-15:** a versão final deve funcionar em Chromium, Firefox e WebKit, com os fluxos
+  essenciais validados pela suíte de navegador nos três motores.
 
 ## Aceite da entrega
 

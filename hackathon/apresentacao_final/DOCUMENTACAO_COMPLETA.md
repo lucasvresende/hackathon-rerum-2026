@@ -140,6 +140,7 @@ quando as quantidades práticas não estiverem validadas.
 | RNF-08–09 | meta p95 de até 1 s para verificar 20 ingredientes e 5 s para formular 10, timeout/cancelamento efetivo, erros úteis e tracing. |
 | RNF-10–12 | testes Rust, navegador e pacote; build, testes, Clippy, rustfmt, SQLx e qualidade textual no CI; documentação sincronizada às mudanças. |
 | RNF-13–14 | recarga opcional em desenvolvimento, interface de trabalho em português, ajuda contextual, teclado, impressão e fluxos essenciais sem JavaScript. |
+| RNF-15 | A versão final deve funcionar em Chromium, Firefox e WebKit, com os fluxos essenciais validados pela suíte de navegador nos três motores. |
 
 ## 2.7. Critérios de aceite
 
@@ -714,7 +715,7 @@ antes de iniciar o servidor para estabilizar o processo filho do motor. Capturas
 | RN-01–10 | `dominio/cenario/`, `dominio/motor/` | `nucleo.rs`, `cenarios.rs`, `motor.rs` |
 | RN-11–16 | `dominio/motor/` | `integracao.rs`, `diagnostico_dietas.rs` |
 | RN-17–24 | `dominio/motor/`, `dominio/parecer/` | `otimizacao.rs`, `reutilizacao.rs` |
-| RNF-01–14 | `web/`, `scripts/`, CI | Rust, Python, Playwright e pacote |
+| RNF-01–15 | `web/`, `scripts/`, CI | Rust, Python, Playwright e pacote |
 
 Os nomes de testes Rust da última coluna pertencem a `tests/`. A suíte de navegador cobre,
 entre outras áreas, `inicio`, `exemplos`, `cenario-simplificado`, `formulacao`,
