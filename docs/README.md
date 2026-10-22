@@ -20,3 +20,6 @@ referência numérica e a interface **Perfil nutricional** expõe seus valores.
 
 A [auditoria dos fluxos no navegador](AUDITORIA_FLUXOS.md) registra a inspeção de 22/10/2026,
 com achados reproduzíveis sobre cadastros, cálculos, comparação e navegação.
+
+A [nova inspeção dos 18 fluxos](AUDITORIA_18_FLUXOS.md) complementa essa auditoria com cópias,
+revisões, conferência aritmética dos relatórios e inspeção de PDFs no Chromium.
